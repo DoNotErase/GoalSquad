@@ -1,5 +1,5 @@
-# react-starter
-Simple Boilerplate for React Project
+# goal-squad
+awesome app
 
 ## To start the app
 
