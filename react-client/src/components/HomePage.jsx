@@ -13,7 +13,9 @@ const HomePage = (props) => {
                 </Grid.Row>
                 <Grid.Row>
                     <Grid.Column>
-                        <Button>Connect</Button>
+                        <a href="/auth/fitbit">
+                            <Button>Connect</Button>
+                        </a>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
