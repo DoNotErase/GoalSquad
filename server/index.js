@@ -7,14 +7,19 @@ var passport = require('passport');
 var config = require('../config.js');
 
 var app = express();
-
 var db = require('../database-mysql');
 
 app.use(express.static(__dirname + '/../react-client/dist'));
 
-
 app.use(cookieParser());
 app.use(bodyParser());
+
+app.use(function (req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
+});
 
 app.use(session({
   secret: 'keyboard cat'
@@ -27,7 +32,7 @@ app.use(passport.session({
 }));
 
 let logger = function (req, res, next) {
-  console.log('!!!!', req.url);
+  console.log('!!!!', req.url, req.headers);
   next();
 }
 app.use(logger);
@@ -52,17 +57,20 @@ passport.use(new FitbitStrategy({
 ));
 
 passport.serializeUser(function (user, done) {
+  console.log('serializing', user);
   done(null, user);
 });
 
 passport.deserializeUser(function (user, done) {
+  console.log('deserializing', user)
   done(null, user);
 });
 
 app.get('/auth/fitbit',
   passport.authenticate('fitbit', {
     scope: ['activity', 'heartrate', 'location', 'profile']
-  }));
+  })
+);
 
 app.get('/auth/fitbit/callback', passport.authenticate('fitbit', {
   successRedirect: '/auth/fitbit/success',
@@ -72,9 +80,14 @@ app.get('/auth/fitbit/callback', passport.authenticate('fitbit', {
 app.get('/auth/fitbit/success', function (req, res) {
   console.log(req.body, req.headers);
   console.log('hooray!');
-  res.redirect('/');
-})
+  res.json({ user: 'can we put some data here?' });
+});
 
+app.get('/auth/fitbit/failure', function (req, res) {
+  console.log(req.body, req.headers);
+  console.log('boo didn\'t work!');
+  res.json({user: 'can we put some data here?'});
+})
 
 app.listen(3000, function() {
   console.log('listening on port 3000!');
