@@ -1,11 +1,16 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 const HomePage = (props) => {
     render(
         <div>
-            "Hi"
+            "Hello World"
         </div>
     ) 
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
+const mapDispatchToProps = (dispatch) => {              //this grabs the dispatch method from store
+    return bindActionCreators({login}, dispatch);       //this attaches dispatch to an action (like login)
+}
+
+export default connect(null, mapDispatchToProps)(HomePage);
