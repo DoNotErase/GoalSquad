@@ -1,7 +1,13 @@
 
-const mainReducer = (state = {state}, action) => {
-    switch(action.type) {
+const initialState = null
 
+const mainReducer = (state = initialState, action) => {
+    switch(action.type) {
+        case 'TEST': {
+            return {
+                ...state
+            }
+        }
     }
 }
 
