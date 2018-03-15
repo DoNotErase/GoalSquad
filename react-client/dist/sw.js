@@ -1,8 +1,6 @@
 var cacheName = 'goalsquad-page';
 
-var filesToCache = [
-	'/index.html'
-];
+var filesToCache = ['/', '/index.html', '/styles.css'];
 
 self.addEventListener('install', event => {
 	console.log('[ServiceWorker] Install');
@@ -25,3 +23,4 @@ self.addEventListener('fetch', event => {
     })
   );
 });
+

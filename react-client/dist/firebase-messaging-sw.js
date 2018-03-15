@@ -1,13 +1,14 @@
 importScripts('https://www.gstatic.com/firebasejs/4.11.0/firebase.js');
 importScripts('https://www.gstatic.com/firebasejs/4.11.0/firebase-messaging.js');
 var config = {
-	apiKey: "AIzaSyAXK4Orxl2CghIQvKiUPtkhEngSgzteqE0",
-	authDomain: "hello-world-pwa-8669c.firebaseapp.com",
-	databaseURL: "https://hello-world-pwa-8669c.firebaseio.com",
-	projectId: "hello-world-pwa-8669c",
-	storageBucket: "hello-world-pwa-8669c.appspot.com",
-	messagingSenderId: "660239288739"
+	apiKey: "AIzaSyDbOhdxctAyUdSrr0xbDxSazzQfu1wYeNY",
+	authDomain: "https://goalsquad-f12a7.firebaseapp.com",
+	databaseURL: "https://goalsquad-f12a7.firebaseio.com",
+	projectId: "goalsquad-f12a7",
+	// storageBucket: "",
+	messagingSenderId: "177647825623"
 };
+
 firebase.initializeApp(config);
 const messaging = firebase.messaging();
 messaging.setBackgroundMessageHandler(function(payload) {
