@@ -7,5 +7,5 @@ module.exports.aws = {
   RDS_HOSTNAME: 'goalsquad.c56utpsczdro.us-east-2.rds.amazonaws.com',
   RDS_USERNAME: 'shahzebmeghani',
   RDS_PASSWORD: 'Meghani8*',
-  RDS_PORT: '3306'
-}
+  RDS_PORT: '3306',
+};
