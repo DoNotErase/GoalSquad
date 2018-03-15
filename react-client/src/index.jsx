@@ -13,18 +13,12 @@ class App extends React.Component {
   }
 
   authorize() {
-    axios.get('/auth/fitbit', function(err, res) {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(res.data);
-      }
-    });
+    axios.get('/auth/fitbit') 
   }
 
   render () {
     return (<div>
-      <button onClick={this.authorize}> Connect to Fitbit </button>
+      <a href="http://127.0.0.1:3000/auth/fitbit"><button> Connect to Fitbit </button></a>
     </div>)
   }
 }
