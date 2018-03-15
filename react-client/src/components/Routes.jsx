@@ -6,13 +6,17 @@ import { BrowserRouter as Router, Route, Switch, withRouter, browserHistory } fr
 //  VIEW TO RENDER
 import HomePage from './HomePage.jsx';
 
-const Routes = (props) => {
-    render (
-        <Router history={ browserHistory }>
-            <Switch>
-                <Route exact path='/' component={ HomePage } />
-                {/* <Router path='/futurpage' component={ nameOfCOmponent } /> */}
-            </Switch>
-        </Router>
-    )
+class Routes extends React.Component {
+    render() {
+        return (
+            <Router history={ browserHistory }>
+                <Switch>
+                    <Route exact path='/' component={ HomePage } />
+                    {/* <Router path='/futurpage' component={ nameOfCOmponent } /> */}
+                </Switch>
+            </Router>
+        )
+    }   
 }
+
+export default Routes;
