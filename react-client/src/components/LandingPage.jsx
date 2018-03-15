@@ -9,7 +9,7 @@ const LandingPage = (props) => {
     return (
     <div>
         <p> hello world </p>
-        <a href="http://127.0.0.1:3000/auth/fitbit"><button> Connect to Fitbit </button></a>
+        <a href="/auth/fitbit"><button> Connect to Fitbit </button></a>
 
         <button onClick={props.actions.getLifetimeData}> getLifeTimeData </button>
         <p>Lifetime Steps: {props.state.main.lifetimeSteps}</p>

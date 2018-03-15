@@ -39,7 +39,7 @@ passport.use(new FitbitStrategy({
     clientID: config.fitbit.id,
     clientSecret: config.fitbit.secret,
     scope: ['activity', 'profile', 'sleep', 'social'],
-    callbackURL: "http://127.0.0.1:3000/auth/fitbit/callback"
+  callbackURL: "http://localhost:8080/callback"
   },
   function (accessToken, refreshToken, profile, done) {
     // User.findOrCreate({
@@ -70,7 +70,7 @@ app.get('/auth/fitbit',
   })
 );
 
-app.get('/auth/fitbit/callback', passport.authenticate('fitbit', {
+app.get('/callback', passport.authenticate('fitbit', {
   successRedirect: '/auth/fitbit/success',
   failureRedirect: '/auth/fitbit/failure'
 }));
@@ -130,7 +130,7 @@ app.get('/fitbit/dailySummary', function (req, res) {
     })
 })
 
-app.listen(3000, function() {
-  console.log('listening on port 3000!');
+app.listen(8080, function() {
+  console.log('listening on port 8080!');
 });
 
