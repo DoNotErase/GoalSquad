@@ -1,6 +1,8 @@
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { routerReducer } from 'react-router-redux';
 import mainReducer from '../reducers/mainReducer.js';
+import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProduction';
+import thunk from 'redux-thunk';
 
 const reducer = combineReducers({  //combines reducers from reducer folder
     main: mainReducer,
@@ -8,6 +10,6 @@ const reducer = combineReducers({  //combines reducers from reducer folder
 });
 
 //creates store and allows for chrome redux plugin
-const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
 
 export default store;
