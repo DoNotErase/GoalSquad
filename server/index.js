@@ -1,3 +1,4 @@
+var axios = require('axios');
 var express = require('express');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -28,7 +29,8 @@ app.use(passport.session({
 // app.use(logger);
 
 let globalProfile;
-
+let globalAccessToken;
+let globalRefreshToken;
 /****************OAUTH*****************/
 
 var FitbitStrategy = require('passport-fitbit-oauth2').FitbitOAuth2Strategy;;
@@ -45,18 +47,20 @@ passport.use(new FitbitStrategy({
     // }, function (err, user) {
     //   return done(err, user);
     // });
+    globalAccessToken = accessToken; //should go in db
+    globalRefreshToken = refreshToken; //should go in db
     globalProfile = profile;
     return done(null, profile)
   }
 ));
 
 passport.serializeUser(function (user, done) {
-  console.log('serializing', user);
+  console.log('serializing');
   done(null, user);
 });
 
 passport.deserializeUser(function (user, done) {
-  console.log('deserializing', user)
+  console.log('deserializing')
   done(null, user);
 });
 
@@ -72,18 +76,43 @@ app.get('/auth/fitbit/callback', passport.authenticate('fitbit', {
 }));
 
 app.get('/auth/fitbit/success', function (req, res) {
-  console.log(req.body, req.headers);
+  console.log(req.session.passport.user._json);
   console.log('hooray!');
-  res.json({ user: globalProfile.displayName });
+  res.redirect('/');
 });
 
 app.get('/auth/fitbit/failure', function (req, res) {
-  console.log(req.body, req.headers);
   console.log('boo didn\'t work!');
   res.json({err: 'failure!'});
 })
 
 /**************************************************/
+
+app.get('/user', function (req, res) {
+  console.log(req.session);
+  if (req.session.passport) {
+    res.json({user: req.session.passport.user.displayName});
+  } else {
+    res.json({user: 'please connect your account'});
+  }
+})
+
+app.get('/fitbit/lifetime', function (req, res) {
+
+  console.log(req.session);
+  axios.get('https://api.fitbit.com/1/user/-/activities.json', {
+    headers: {
+      Authorization: `Bearer ${globalAccessToken}` //TODO: replace this with db call
+    }
+  })
+    .then(data => {
+      res.json(data.data); //TODO: replace this with db storage?
+    })
+    .catch(err => {
+      console.log('eroror', err)
+      res.end()
+    })
+})
 
 app.listen(3000, function() {
   console.log('listening on port 3000!');
