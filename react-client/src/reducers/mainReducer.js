@@ -6,6 +6,14 @@ const mainReducer = (state = {}, action) => {
                 ...state
             }
         }
+        case 'USER_LIFETIME_ACTIVITY': {
+            return {
+                ...state, 
+                lifetimeSteps : action.payload.lifetimeSteps,
+                lifetimeFloors: action.payload.lifetimeFloors,
+                lifetimeDistance: action.payload.lifetimeDistance,
+            }
+        }
         default: return state;
     }
 }

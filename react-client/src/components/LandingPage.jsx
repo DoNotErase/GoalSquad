@@ -2,32 +2,29 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import axios from 'axios';
+import * as actions from '../actions/actions'
 
 const LandingPage = (props) => {
-    
-    let getData = function() {
-        console.log('click')
-        axios('/fitbit/lifetime')
-            .then(res => {
-                console.log(res.data);
-            })
-            .catch(err => {
-                console.log(err);
-            })
-    }
-
+    console.log(props);
     return (
     <div>
         <p> hello world </p>
         <a href="http://127.0.0.1:3000/auth/fitbit"><button> Connect to Fitbit </button></a>
 
-        <button onClick={getData}> getLifeTimeData </button>
+        <button onClick={props.actions.getLifetimeData}> getLifeTimeData </button>
+        <p>Lifetime Steps: {props.state.main.lifetimeSteps}</p>
+        <p>Lifetime Floors: {props.state.main.lifetimeFloors}</p>
+        <p>Lifetime Distance: {props.state.main.lifetimeDistance}</p>
     </div> 
     ) 
 }
 
 const mapDispatchToProps = (dispatch) => {              //this grabs the dispatch method from store
-    return bindActionCreators({}, dispatch);       //this attaches dispatch to an action (like login)
+    return {actions: bindActionCreators(actions, dispatch)};       //this attaches dispatch to an action (like login)
 }
 
-export default connect(null, mapDispatchToProps)(LandingPage);
+const mapStateToProps = (state) => {
+    return {state: state};
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);
