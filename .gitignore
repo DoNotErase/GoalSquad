@@ -21,13 +21,14 @@ coverage
 # Compiled Dirs (http://nodejs.org/api/addons.html)
 build/
 react-client/dist/bundle.js
-config.js
+
 
 # Dependency directorys
 # Deployed apps should consider commenting these lines out:
 # see https://npmjs.org/doc/faq.html#Should-I-check-my-node_modules-folder-into-git
 node_modules/
 bower_components/
+config.js
 
 # Floobits
 .floo
