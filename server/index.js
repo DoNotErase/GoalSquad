@@ -110,7 +110,23 @@ app.get('/fitbit/lifetime', function (req, res) {
     })
     .catch(err => {
       console.log('eroror', err)
-      res.end()
+      res.send(err)
+    })
+})
+
+app.get('/fitbit/dailySummary', function (req, res) {
+  let date = req.query.date; //must be in YYYY-MM-DD format string
+  axios.get(`https://api.fitbit.com/1/user/-/activities/date/${date}.json`, {
+    headers: {
+      Authorization: `Bearer ${globalAccessToken}` //TODO: replace this with db call based on req.session.passport.user.id
+    }
+  })
+    .then(data => {
+      res.json(data.data);
+    })
+    .catch(err => {
+      console.log('ereror', err);
+      res.send(err);
     })
 })
 
