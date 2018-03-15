@@ -1,14 +1,14 @@
-var axios = require('axios');
-var express = require('express');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var session = require('express-session');
-var FitbitStrategy = require('passport-fitbit-oauth2').FitbitOAuth2Strategy;
-var passport = require('passport');
-var config = require('../config.js');
+const express = require('express');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const session = require('express-session');
+const FitbitStrategy = require('passport-fitbit-oauth2').FitbitOAuth2Strategy;
+const passport = require('passport');
+const config = require('../config.js');
 
-var app = express();
-var db = require('../database-mysql');
+const axios = require('axios');
+const app = express();
+const db = require('../database-mysql');
 
 app.use(express.static(__dirname + '/../react-client/dist'));
 app.use(cookieParser());
