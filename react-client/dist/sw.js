@@ -1,9 +1,7 @@
 var cacheName = 'goalsquad-page';
 
 var filesToCache = [
-  './',
-	'./index.html',
-	'./index.jsx'
+	'/index.html'
 ];
 
 self.addEventListener('install', event => {
