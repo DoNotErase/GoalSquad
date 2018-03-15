@@ -1,9 +1,22 @@
 import React from 'react';
+import { Header, Grid, Button } from 'semantic-ui-react';
 
 const HomePage = (props) => {
     return (
         <div>
-            "Hello World Home Page"
+            <Grid columns='equal'>
+                <Grid.Row>
+                    <Grid.Column>
+                        <Header as='h1' size='huge' textAlign='center'>GOAL</Header>
+                        <Header as='h1' size='huge' textAlign='center'>SQUAD</Header>
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row>
+                    <Grid.Column>
+                        <Button>Connect</Button>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
         </div>
     ) 
 }
