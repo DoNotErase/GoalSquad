@@ -35,3 +35,6 @@ bower_components/
 .flooignore
 
 .DS_Store
+
+# Webstorm
+.idea
