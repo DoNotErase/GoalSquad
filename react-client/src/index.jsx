@@ -1,24 +1,9 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
+import Root from './components/Root.jsx';
+import store from './store/index.js';
 
-
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { 
-      items: []
-    }
-  }
-
-  componentDidMount() {
-    
-  }
-
-  render () {
-    return (<div>
-      "Hello World"
-    </div>)
-  }
-}
-
-ReactDOM.render(<App />, document.getElementById('app'));
+render (
+  <Root store={store} />,
+  document.getElementById('app')
+)
