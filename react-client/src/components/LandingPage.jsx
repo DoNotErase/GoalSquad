@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-const HomePage = (props) => {
+const LandingPage = (props) => {
     return (
         <div>
             "Hello World"
@@ -14,4 +14,4 @@ const mapDispatchToProps = (dispatch) => {              //this grabs the dispatc
     return bindActionCreators({}, dispatch);       //this attaches dispatch to an action (like login)
 }
 
-export default connect(null, mapDispatchToProps)(HomePage);
+export default connect(null, mapDispatchToProps)(LandingPage);
