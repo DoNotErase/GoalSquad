@@ -7,3 +7,5 @@ const HomePage = (props) => {
         </div>
     ) 
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
