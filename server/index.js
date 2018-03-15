@@ -33,8 +33,6 @@ let globalAccessToken;
 let globalRefreshToken;
 /****************OAUTH*****************/
 
-var FitbitStrategy = require('passport-fitbit-oauth2').FitbitOAuth2Strategy;;
-
 passport.use(new FitbitStrategy({
     clientID: config.fitbit.id,
     clientSecret: config.fitbit.secret,
