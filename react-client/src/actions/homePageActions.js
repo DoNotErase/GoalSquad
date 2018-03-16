@@ -7,10 +7,7 @@ export const attemptLogin = () => (
     axios.get('/login')
       .then((res) => {
         if (res.data) {
-          console.log('dispatching user');
           dispatch(authenticateUser(res.data[0]));
-        } else {
-          console.log('no user');
         }
       })
       .catch((err) => {

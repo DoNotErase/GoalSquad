@@ -36,11 +36,9 @@ passport.use(new FitbitStrategy(
   async (accessToken, refreshToken, profile, done) => {
     try {
       if (await db.userExists(profile.id)) {
-        console.log('user exists');
         await db.updateTokens(profile.id, accessToken, refreshToken);
         return done(null, profile);
       }
-      console.log('new user');
       await db.createUser(profile.id, profile.displayName, accessToken, refreshToken);
       return done(null, profile);
     } catch (e) {
@@ -78,23 +76,37 @@ app.get('/auth/fitbit/failure', (req, res) => {
   res.status(401).json({ err: 'failure!' });
 });
 
-/** *********************************************** */
+/** *******************REDIRECT ROUTES**************************** */
+
+app.get('/landingPage', (req, res) => {
+  res.redirect('/');
+});
+
+app.get('/goalPage', (req, res) => {
+  res.redirect('/');
+});
+
+app.get('/homePage', (req, res) => {
+  res.redirect('/');
+});
+
+/** *******************FITBIT FETCHES**************************** */
 
 app.get('/login', async (req, res) => {
   if (req.session.passport) {
     const user = await db.getUserByID(req.session.passport.user.id);
-    res.json({ ...user });
+    res.json(user);
   } else {
     res.json();
   }
 });
 
 app.get('/fitbit/lifetime', async (req, res) => {
-  const token = db.getAccessToken(req.session.passort.user.id);
   try {
+    const token = await db.getAccessToken(req.session.passport.user.id);
     const activities = await axios.get('https://api.fitbit.com/1/user/-/activities.json', {
       headers: {
-        Authorization: `Bearer ${token}`, // TODO: replace this with db call
+        Authorization: `Bearer ${token}`,
       },
     });
     res.json(activities.data); // TODO: replace this with db storage?
@@ -105,7 +117,7 @@ app.get('/fitbit/lifetime', async (req, res) => {
 
 app.get('/fitbit/dailySummary', async (req, res) => {
   const { date } = req.query; // must be in YYYY-MM-DD format string
-  const token = db.getAccessToken(req.session.passort.user.id);
+  const token = db.getAccessToken(req.session.passport.user.id);
   try {
     const summary = await axios.get(`https://api.fitbit.com/1/user/-/activities/date/${date}.json`, {
       headers: {

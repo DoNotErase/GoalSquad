@@ -2,20 +2,19 @@ import React from 'react';
 import { Header, Grid, Button } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
 import * as actions from '../actions/homePageActions';
 
 class HomePage extends React.Component {
-  constructor(props) {
-    super(props);
+  componentWillMount() {
+    if (!this.props.state.user.id) {
+      this.props.actions.attemptLogin();
+    }
   }
 
-  componentWillMount() {
-    console.log('mounting', this.props.state);
-    if (this.props.state.user) {
+  componentDidUpdate() {
+    if (this.props.state.user.id) {
       this.props.history.push('/landingPage');
-      console.log(this.props.history.location);
-    } else {
-      this.props.actions.attemptLogin();
     }
   }
 
@@ -47,6 +46,29 @@ class HomePage extends React.Component {
     );
   }
 }
+
+HomePage.propTypes = {
+  state: PropTypes.shape({
+    user: PropTypes.shape({
+      id: PropTypes.string,
+      username: PropTypes.string,
+    }),
+  }).isRequired,
+  actions: PropTypes.objectOf(PropTypes.func).isRequired,
+  history: PropTypes.shape({
+    action: PropTypes.string,
+    block: PropTypes.func,
+    createHref: PropTypes.func,
+    go: PropTypes.func,
+    goBack: PropTypes.func,
+    goForward: PropTypes.func,
+    length: PropTypes.number,
+    listen: PropTypes.func,
+    location: PropTypes.object,
+    push: PropTypes.func,
+    replace: PropTypes.func,
+  }).isRequired,
+};
 
 const mapDispatchToProps = dispatch => ({ actions: bindActionCreators(actions, dispatch) });
 const mapStateToProps = state => ({ state: state.main });
