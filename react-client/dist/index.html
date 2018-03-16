@@ -2,7 +2,6 @@
 <html>
 <head>
   <title>Goal Squad</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.12/semantic.min.css"></link>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#ffffff">
@@ -11,7 +10,6 @@
 </head>
 <body>
 	<div id="app"></div>
-
 
 	<!-- FIREBASE SCRIPT TAG - DON'T PASTE SCRIPTS ABOVE THIS -->
 <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
@@ -52,6 +50,8 @@ firebase.initializeApp(config);
 	    console.log('Unable to get permission to notify.', err);
 	  });
 	</script>
+
+	<!-- noscript tag used to satisfy Lighthouse test that wants a display page/notification when there is no JS -->
 	<noscript>Javascript is needed to run the site. Please enable JavaScript.</noscript>
 </body>
 </html>
