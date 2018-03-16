@@ -13,7 +13,8 @@ class GoalItemsPage extends React.Component {
 	render() {
 		const styles = {
 			goalDiv: {
-				border: '1px solid black'
+				border: '1px solid black',
+				borderRadius: '5px'
 			}
 		}
 		return (
@@ -29,16 +30,21 @@ class GoalItemsPage extends React.Component {
 				<Grid
 				  style={{ height: '100%' }}
 				  verticalAlign="middle"
+				  celled="internally"
 				>
-					<Grid.Column textAlign="left" className="goal-item" width={15} style={{ maxWidth: 500 }}>
+					<Grid.Column width={2}>
+		        	<img src="./../../dist/assets/icons/running.png"/>
+					</Grid.Column>
+					<Grid.Column textAlign="left" width={12}>
 						<List>
 			        <List.Content>
-			        	<img src="./../../dist/assets/icons/running.png"/>
-			        	<List.Icon name="chevron right"></List.Icon>
 			        	<List.Header>Goal Name goes here</List.Header>
 			        	<List.Description>goal description</List.Description>
 			        </List.Content>
 			      </List>
+					</Grid.Column>
+					<Grid.Column width={2}>
+						<List.Icon name="chevron right"></List.Icon>
 					</Grid.Column>
 				</Grid>
 			</div>

@@ -15,10 +15,12 @@ class IncubatorPage extends React.Component {
 		const styles = {
 			goalContainer: {
 				border: '1px solid black',
+				borderRadius: '5px',
 				minHeight: '500px',
+				paddingTop: '30px'
 			},
 			goals: {
-				marginLeft: '20px',
+				marginLeft: '25px',
 				marginTop: '20px'
 			}
 		}
