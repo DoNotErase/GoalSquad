@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "bluebird": "^3.5.1",
     "body-parser": "^1.17.2",
     "cookie-parser": "^1.4.3",
     "express": "^4.15.0",
@@ -35,6 +36,7 @@
     "mysql": "^2.13.0",
     "passport": "^0.4.0",
     "passport-fitbit-oauth2": "^1.0.2",
+    "nodemon": "^1.17.2",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.7",
