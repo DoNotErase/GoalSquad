@@ -14,19 +14,12 @@ const db = mysql.createConnection({
 });
 
 // test function for example
-const findUserId = async () => {
+module.exports.getUserByID = async (fitbitID) => {
   try {
-    const result = await db.queryAsync('SELECT * FROM user');
-    console.log(result);
-    return result;
+    return await db.queryAsync(`SELECT * FROM user WHERE user_id = '${fitbitID}'`);
   } catch (e) {
     return e;
   }
-};
-
-module.exports = {
-  db,
-  findUserId,
 };
 
 module.exports.userExists = async (fitbitID) => {
@@ -67,7 +60,8 @@ module.exports.createUser = async (fitbitID, displayName, accessToken, refreshTo
 
 module.exports.getAccessToken = async (fitbitID) => {
   try {
-    return await db.queryAsync(`SELECT user_accesstoken FROM user WHERE user_id = '${fitbitID}';`);
+    const data = await db.queryAsync(`SELECT user_accesstoken FROM user WHERE user_id = '${fitbitID}';`);
+    return data[0].user_accesstoken;
   } catch (e) {
     return e;
   }
