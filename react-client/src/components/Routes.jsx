@@ -8,16 +8,16 @@ import HomePage from './HomePage.jsx';
 import LandingPage from './LandingPage.jsx';
 
 class Routes extends React.Component {
-    render() {
-        return (
-            <Router history={ browserHistory }>
-                <Switch>
-                    <Route exact path='/' component={ HomePage } />
-                    {/* <Router path='/futurpage' component={ nameOfCOmponent } /> */}
-                </Switch>
-            </Router>
-        )
-    }   
+  render() {
+    return (
+      <Router history={browserHistory}>
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          {/* <Router path='/futurpage' component={ nameOfCOmponent } /> */}
+        </Switch>
+      </Router>
+    );
+  }
 }
 
 export default Routes;
