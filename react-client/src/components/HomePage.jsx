@@ -1,33 +1,30 @@
 import React from 'react';
-import { Header, Grid, Button } from 'semantic-ui-react';
+import { Header, Grid, Button, Segment, Container } from 'semantic-ui-react';
 
 const HomePage = (props) => {
     return (
-        <div>
-            <Grid columns='equal'>
+        <div className='homepage'>
+        <style>{`
+            body > div,
+            body > div > div,
+            body > div > div > div.homepage {
+                height: 100%;
+            }
+        `}</style>
+            <Grid 
+              textAlign='center'
+              verticalAlign='middle'
+              style={{ height: '80%' }} >
                 <Grid.Row>
-                    <Grid.Column color='red'>
-                    </Grid.Column>
-                    <Grid.Column width={8} color='blue'>
-                        <Header as='h1' size='huge' textAlign='center'>GOAL</Header>
-                        <Header as='h1' size='huge' textAlign='center'>SQUAD</Header>
-                    </Grid.Column>
-                    <Grid.Column color='red'>
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row>
-                    <Grid.Column>
-                    </Grid.Column>
-                    <Grid.Column>
-                        <a href="/auth/fitbit">
-                            <Button>Connect</Button>
-                        </a>
-                    </Grid.Column>
-                    <Grid.Column>
+                    <Grid.Column width={10} color='blue'>
+                        
+                            <Header as='h1' textAlign='center' content='GOAL'/>
+                            <Header as='h1' textAlign='center' content='SQUAD'/>
+                        
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
-        </div>
+       </div>
     ) 
 }
 
