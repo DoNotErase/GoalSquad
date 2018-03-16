@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "src",
+    "public": "react-client",
     "ignore": [
       "firebase.json",
       "**/.*",

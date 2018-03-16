@@ -12,21 +12,21 @@
 <div id="app"></div>
 
 	<!-- FIREBASE SCRIPT TAG - DON'T PASTE SCRIPTS ABOVE THIS -->
-	<script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
-	<script>
-	  // Initialize Firebase
-	  var config = {
-	    apiKey: "AIzaSyDbOhdxctAyUdSrr0xbDxSazzQfu1wYeNY",
-	    authDomain: "goalsquad-f12a7.firebaseapp.com",
-	    databaseURL: "https://goalsquad-f12a7.firebaseio.com",
-	    projectId: "goalsquad-f12a7",
-	    storageBucket: "",
-	    messagingSenderId: "177647825623"
-	  };
-	  firebase.initializeApp(config);
-	</script>
+<script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+<script>
+// Initialize Firebase
+var config = {
+	apiKey: "AIzaSyDbOhdxctAyUdSrr0xbDxSazzQfu1wYeNY",
+	authDomain: "goalsquad-f12a7.firebaseapp.com",
+	databaseURL: "https://goalsquad-f12a7.firebaseio.com",
+	projectId: "goalsquad-f12a7",
+	storageBucket: "",
+	messagingSenderId: "177647825623"
+};
+firebase.initializeApp(config);
+</script>
 	<!-- END OF FIREBASE SCRIPT -->
-
+	
 	<script type="text/javascript" src="/bundle.js"></script>
 	<script>
 	  if ('serviceWorker' in navigator) {
@@ -50,5 +50,7 @@
 	    console.log('Unable to get permission to notify.', err);
 	  });
 	</script>
+	<noscript>Javascript is needed to run the site. Please enable JavaScript.</noscript>
 </body>
 </html>
+
