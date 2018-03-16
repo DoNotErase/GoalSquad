@@ -21,6 +21,9 @@ body {
 
 .goal-page {
     /*height: 100vh;*/
+    margin: 5px;
+    margin-top: 45px;
+    padding: 20px;
     background-color: #EFF7F0;
     /*background-image: linear-gradient(#845EC2, #008F7A); */
 }
