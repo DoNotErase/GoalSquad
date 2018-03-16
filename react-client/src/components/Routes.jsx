@@ -17,5 +17,6 @@ const Routes = () => (
     </Switch>
   </Router>
 );
+/* <Router path='/futurpage' component={ nameOfCOmponent } /> */
 
 export default Routes;

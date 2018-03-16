@@ -1,17 +1,7 @@
 
 import axios from 'axios';
 
-export const textAction = (arg1, arg2) => (
-  {
-    type: 'TEST_TYPE',
-    payload: {
-      arg1: arg1,
-      arg2: arg2,
-    },
-  }
-);
-
-const setUserData = userData => ({
+export const setUserData = userData => ({
   type: 'USER_LIFETIME_ACTIVITY',
   payload: {
     lifetimeSteps: userData.lifetime.total.steps,
@@ -23,12 +13,9 @@ const setUserData = userData => ({
 export const getLifetimeData = () => (
   dispatch => (
     axios.get('fitbit/lifetime')
-      .then((data) => {
-        console.log(data.data);
-        if (data.data) {
-          dispatch(setUserData(data.data));
-        } else {
-          console.log('probably no user');
+      .then((res) => {
+        if (res.data) {
+          dispatch(setUserData(res.data));
         }
       })
       .catch((err) => {
