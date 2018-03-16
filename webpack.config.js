@@ -20,6 +20,14 @@ module.exports = {
           presets: ['react', 'es2015'],
         },
       },
+      {
+        test: /\.(?:png|jpg|svg)$/,
+        loader: 'file-loader',
+        query: {
+          // Inline images smaller than 10kb as data URIs
+          limit: 10000,
+        },
+      },
     ],
   },
   devServer: {
