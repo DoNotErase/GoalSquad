@@ -6,7 +6,6 @@ const FitbitStrategy = require('passport-fitbit-oauth2').FitbitOAuth2Strategy;
 const passport = require('passport');
 const config = require('../config.js');
 const axios = require('axios');
-const path = require('path')
 
 const app = express();
 const db = require('../database-mysql/index.js');
@@ -24,6 +23,20 @@ app.use(passport.session({
   resave: false,
   saveUninitialized: true,
 }));
+
+/** *******************REDIRECT ROUTES**************************** */
+
+app.get('/landing', (req, res) => {
+  res.redirect('/');
+});
+
+app.get('/goals', (req, res) => {
+  res.redirect('/');
+});
+
+app.get('/homePage', (req, res) => {
+  res.redirect('/');
+});
 
 /** **************OAUTH**************** */
 
@@ -56,10 +69,6 @@ passport.deserializeUser((user, done) => {
   done(null, user);
 });
 
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../react-client/dist', '/index.html'));
-})
-
 app.get(
   '/auth/fitbit',
   passport.authenticate(
@@ -79,20 +88,6 @@ app.get('/auth/fitbit/success', (req, res) => {
 
 app.get('/auth/fitbit/failure', (req, res) => {
   res.status(401).json({ err: 'failure!' });
-});
-
-/** *******************REDIRECT ROUTES**************************** */
-
-app.get('/landing', (req, res) => {
-  res.redirect('/');
-});
-
-app.get('/goals', (req, res) => {
-  res.redirect('/');
-});
-
-app.get('/homePage', (req, res) => {
-  res.redirect('/');
 });
 
 /** *******************FITBIT FETCHES**************************** */

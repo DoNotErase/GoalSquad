@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Switch, withRouter, browserHistory } fr
 //  VIEW TO RENDER
 import HomePage from './HomePage.jsx';
 import LandingPage from './LandingPage.jsx';
-import GoalsPage from './GoalsPage.jsx'
+import GoalsPage from './GoalsPage.jsx';
 
 const Routes = () => (
   <Router history={browserHistory}>
