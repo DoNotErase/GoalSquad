@@ -1,6 +1,6 @@
 import React from 'react';
 import GoalItemsPage from './GoalItemsPage.jsx'
-import { Divider, Grid, Header } from 'semantic-ui-react';
+import { Divider, Grid, Header, List } from 'semantic-ui-react';
 
 class IncubatorPage extends React.Component {
 	constructor(props) {
@@ -21,14 +21,12 @@ class IncubatorPage extends React.Component {
 				minHeight: '100vh'
 			},
 			goals: {
-				marginLeft: '25px',
-				marginTop: '20px'
+				margin: '5px'
 			}
 		}
 
 		return (
 			<div className="goals-page">
-			
 				<Grid
 				  textAlign="center"
 				  verticalAlign="middle"
@@ -36,7 +34,12 @@ class IncubatorPage extends React.Component {
 				>
 				<Grid.Column width={16} className="goal-page">
 					<div style={ styles.goalContainer }>
-		        <Header size="large" textAlign="left">Your Goals</Header>
+						<Grid celled="internally">
+							<Grid.Column width={16}>
+				        <Header width={12} size="large" textAlign="left">Your Goals</Header>
+				        <div><img src="../../dist/assets/icons/plus-button.png"/></div>
+		        	</Grid.Column>
+		        </Grid>
 		        <Divider fitted />
 		        <div style={ styles.goals }>
 		        	<GoalItemsPage />

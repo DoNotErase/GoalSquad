@@ -31,14 +31,15 @@ class GoalItemsPage extends React.Component {
 				  style={{ height: '100%' }}
 				  verticalAlign="middle"
 				  celled="internally"
+				  className="goal-item"
 				>
 					<Grid.Column width={2}>
-		        	<img src="./../../dist/assets/icons/running.png"/>
+		        	<img src="../../dist/assets/icons/running-512x512.png" alt="running person"/>
 					</Grid.Column>
 					<Grid.Column textAlign="left" width={12}>
 						<List>
 			        <List.Content>
-			        	<List.Header>Goal Name goes here</List.Header>
+			        	<List.Header>Goal Name (Should be bold)</List.Header>
 			        	<List.Description>goal description</List.Description>
 			        </List.Content>
 			      </List>
