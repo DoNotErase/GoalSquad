@@ -4,56 +4,30 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../actions/homePageActions';
 
-class HomePage extends React.Component {
-  constructor (props) {
-    super(props);
-  }
+const HomePage = () => (
+  <div className="homepage">
+    <style>{`
+        body > div,
+        body > div > div,
+        body > div > div > div.homepage {
+            height: 100%;
+        }
+    `}
+    </style>
+    <Grid
+      textAlign="center"
+      verticalAlign="middle"
+      style={{ height: '100%' }}
+    >
+      <Grid.Column width={10} style={{ maxWidth: 450 }}>
+        <Header as="h1" textAlign="center" className="white" content="GOAL" />
+        <Header as="h1" textAlign="center" className="white" content="SQUAD" />
+        <a href="/auth/fitbit">
+          <Button color="violet" fluid size="large" style={{ marginTop: 250 }}>Connect</Button>
+        </a>
+      </Grid.Column>
+    </Grid>
+  </div>
+);
 
-  componentWillMount() {
-    //this.props.actions.attemptLogin();
-  }
-
-  componentDidMount() {
-    // if (this.props.state.authenticated) {
-    //   this.history.push('/goals');
-    // }
-  }
-
-  render() {
-    return (
-      <div>
-        <Grid columns="equal">
-          <Grid.Row>
-            <Grid.Column color="red">
-            </Grid.Column>
-            <Grid.Column width={8} color="blue">
-              <Header as="h1" size="huge" textAlign="center">GOAL</Header>
-              <Header as="h1" size="huge" textAlign="center">SQUAD</Header>
-            </Grid.Column>
-            <Grid.Column color="red">
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column>
-            </Grid.Column>
-            <Grid.Column>
-              <a href="/auth/fitbit">
-                <Button>Connect</Button>
-              </a>
-            </Grid.Column>
-            <Grid.Column>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </div>
-    );
-  }
-}
-
-// this attaches dispatch to an action (like login)
-const mapDispatchToProps = dispatch => ({ actions: bindActionCreators(actions, dispatch) });
-
-// this grabs the dispatch method from store
-const mapStateToProps = state => ({ ...state });
-
-export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
+export default HomePage;
