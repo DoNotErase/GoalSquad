@@ -2,6 +2,7 @@ import React from 'react';
 import { Header, Grid, Button } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import * as actions from '../actions/homePageActions';
 
 class HomePage extends React.Component {
   constructor (props) {
@@ -9,13 +10,13 @@ class HomePage extends React.Component {
   }
 
   componentWillMount() {
-    this.props.actions.attemptLogin();
+    //this.props.actions.attemptLogin();
   }
 
   componentDidMount() {
-    if (this.props.state.authenticated) {
-      this.history.push('/goals');
-    }
+    // if (this.props.state.authenticated) {
+    //   this.history.push('/goals');
+    // }
   }
 
   render() {

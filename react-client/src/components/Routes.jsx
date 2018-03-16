@@ -2,8 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch, withRouter, browserHistory } from 'react-router-dom';
 
 //  VIEW TO RENDER
-import HomePage from './HomePage';
-import LandingPage from './LandingPage';
+import HomePage from './HomePage.jsx';
+import LandingPage from './LandingPage.jsx';
 
 const Routes = () => (
   <Router history={browserHistory}>
