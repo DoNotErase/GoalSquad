@@ -24,8 +24,12 @@ CREATE TABLE user (
 
 CREATE TABLE goal (
   goal_id int NOT NULL AUTO_INCREMENT,
-  goal_type varchar(255) NOT NULL,
-  goal_target int,
+  goal_activity varchar(50) NOT NULL,
+  goal_amount int NOT NULL,
+  goal_difficulty varchar(50) NOT NULL,
+  goal_class varchar(50) NOT NULL,
+  goal_points varchar(50) NOT NULL,
+  goal_timedivisor int NOT NULL,
   PRIMARY KEY (goal_id)
 );
 
@@ -53,7 +57,6 @@ CREATE TABLE user_egg (
   FOREIGN KEY (user_id) REFERENCES user (user_id),
   FOREIGN KEY (egg_id) REFERENCES egg (egg_id)
 );
-
 
 CREATE TABLE user_monster (
   user_monster_id int NOT NULL AUTO_INCREMENT,
@@ -108,15 +111,27 @@ VALUES
   ('Sean_egg'),
   ('BeardGuy_egg');
 
-insert into goal
-  (goal_type, goal_target)
+insert into goal 
+  (goal_activity, goal_amount, goal_difficulty, goal_class, goal_points, goal_timedivisor)
 VALUES
-  ('Steps', 100),
-  ('Steps', 200),
-  ('Steps', 300),
-  ('Floor', 100),
-  ('Floor', 200),
-  ('Floor', 300);
+  ('distance', 1, 'easy', 'short', 10, 2),
+  ('distance', 2, 'med', 'short', 25, 2),
+  ('distance', 5, 'hard', 'short', 100, 2),
+  ('distance', 10, 'easy', 'long', 200, 24),
+  ('distance', 25, 'med', 'long', 500, 24),
+  ('distance', 50, 'hard', 'long', 1000, 24),
+  ('steps', 2000, 'easy', 'short', 10, 2),
+  ('steps', 4000, 'med', 'short', 25, 2),
+  ('steps', 10000, 'hard', 'short', 100, 2),
+  ('steps', 20000, 'easy', 'long', 200, 24),
+  ('steps', 50000, 'med', 'long', 500, 24),
+  ('steps', 100000, 'hard', 'long', 1000, 24),
+  ('stairs', 3, 'easy', 'short', 10, 2),
+  ('stairs', 5, 'med', 'short', 25, 2),
+  ('stairs', 20, 'hard', 'short', 100, 2),
+  ('stairs', 40, 'easy', 'long', 200, 24),
+  ('stairs', 100, 'med', 'long', 500, 24),
+  ('stairs', 200, 'hard', 'long', 1000, 24);
 
 insert into user_egg
   (user_id, egg_id)
@@ -137,7 +152,6 @@ VALUES
   ('3XP8GJ', 4, 0, 2, 2018-03-15, 2018-03-20),
   ('3XP8GJ', 5, 0, 2, 2018-03-15, 2018-03-20),
   ('3XP8GJ', 6, 0, 2, 2018-03-15, 2018-03-20);
-
 
 
 /*  Execute this file from the command line by typing:

@@ -24,12 +24,6 @@ app.use(passport.session({
   saveUninitialized: true,
 }));
 
-// let logger = function (req, res, next) {
-//   console.log('!!!!', req.url, req.headers);
-//   next();
-// }
-// app.use(logger);
-
 /** **************OAUTH**************** */
 
 passport.use(new FitbitStrategy(
@@ -40,14 +34,18 @@ passport.use(new FitbitStrategy(
     callbackURL: 'http://localhost:8080/callback',
   },
   async (accessToken, refreshToken, profile, done) => {
-    if (await db.userExists(profile.id)) {
-      console.log('user exists');
-      await db.updateTokens(profile.id, accessToken, refreshToken);
+    try {
+      if (await db.userExists(profile.id)) {
+        console.log('user exists');
+        await db.updateTokens(profile.id, accessToken, refreshToken);
+        return done(null, profile);
+      }
+      console.log('new user');
+      await db.createUser(profile.id, profile.displayName, accessToken, refreshToken);
       return done(null, profile);
+    } catch (e) {
+      return done(e);
     }
-    console.log('new user');
-    await db.createUser(profile.id, profile.displayName, accessToken, refreshToken);
-    return done(null, profile);
   },
 ));
 
@@ -63,9 +61,7 @@ app.get(
   '/auth/fitbit',
   passport.authenticate(
     'fitbit',
-    {
-      scope: ['activity', 'heartrate', 'location', 'profile'],
-    },
+    { scope: ['activity', 'heartrate', 'location', 'profile'] },
   ),
 );
 
@@ -92,37 +88,33 @@ app.get('/user', (req, res) => {
   }
 });
 
-app.get('/fitbit/lifetime', (req, res) => {
-  console.log(req.session);
+app.get('/fitbit/lifetime', async (req, res) => {
   const token = db.getAccessToken(req.session.passort.user.id);
-  axios.get('https://api.fitbit.com/1/user/-/activities.json', {
-    headers: {
-      Authorization: `Bearer ${token}`, // TODO: replace this with db call
-    },
-  })
-    .then((data) => {
-      res.json(data.data); // TODO: replace this with db storage?
-    })
-    .catch((err) => {
-      res.status(401).send(err);
+  try {
+    const activities = await axios.get('https://api.fitbit.com/1/user/-/activities.json', {
+      headers: {
+        Authorization: `Bearer ${token}`, // TODO: replace this with db call
+      },
     });
+    res.json(activities.data); // TODO: replace this with db storage?
+  } catch (err) {
+    res.status(401).send(err);
+  }
 });
 
-app.get('/fitbit/dailySummary', (req, res) => {
+app.get('/fitbit/dailySummary', async (req, res) => {
   const { date } = req.query; // must be in YYYY-MM-DD format string
   const token = db.getAccessToken(req.session.passort.user.id);
-  axios.get(`https://api.fitbit.com/1/user/-/activities/date/${date}.json`, {
-    headers: {
-      Authorization: `Bearer ${token}`, // TODO: replace this with db call based on req.session.passport.user.id
-    },
-  })
-    .then((data) => {
-      res.json(data.data);
-    })
-    .catch((err) => {
-      console.log('ereror', err);
-      res.send(err);
+  try {
+    const summary = await axios.get(`https://api.fitbit.com/1/user/-/activities/date/${date}.json`, {
+      headers: {
+        Authorization: `Bearer ${token}`, // TODO: replace this with db call based on req.session.passport.user.id
+      },
     });
+    res.json(summary.data);
+  } catch (err) {
+    res.status(401).send(err);
+  }
 });
 
 app.get('/test', async (req, res) => {
