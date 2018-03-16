@@ -2,7 +2,7 @@ import React from 'react';
 import GoalItemsPage from './GoalItemsPage.jsx'
 import { Divider, Grid, Header } from 'semantic-ui-react';
 
-class GoalsPage extends React.Component {
+class IncubatorPage extends React.Component {
 	constructor(props) {
 		super(props)
 	}
@@ -16,7 +16,10 @@ class GoalsPage extends React.Component {
 			goalContainer: {
 				border: '1px solid black',
 				minHeight: '500px',
-				padding: '10px'
+			},
+			goals: {
+				marginLeft: '20px',
+				marginTop: '20px'
 			}
 		}
 
@@ -35,11 +38,13 @@ class GoalsPage extends React.Component {
 				  verticalAlign="middle"
 				  style={{ height: '100%' }}
 				>
-				<Grid.Column width={10} style={{ maxWidth: 450 }}>
+				<Grid.Column width={16} className="goal-page" style={{ maxWidth: 500 }}>
 					<div style={ styles.goalContainer }>
 		        <Header size="large" textAlign="left">Your Goals</Header>
 		        <Divider fitted />
-		        <GoalItemsPage />
+		        <div style={ styles.goals }>
+		        	<GoalItemsPage />
+		        </div>
 	        </div>
 				</Grid.Column>
 				</Grid>
@@ -48,4 +53,4 @@ class GoalsPage extends React.Component {
 	}
 }
 
-export default GoalsPage;
+export default IncubatorPage;

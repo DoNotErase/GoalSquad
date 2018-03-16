@@ -18,3 +18,14 @@ body {
 .white {
     color: white !important;
 }
+
+.goal-page {
+    /*height: 100vh;*/
+    background-color: #EFF7F0;
+    /*background-image: linear-gradient(#845EC2, #008F7A); */
+}
+
+.goal-item {
+    background: white;
+    border: 1px solid black;
+}

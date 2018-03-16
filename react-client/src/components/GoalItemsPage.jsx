@@ -1,5 +1,5 @@
 import React from 'react';
-import  { Grid, Header, Item } from 'semantic-ui-react';
+import  { Grid, Header, Item, List } from 'semantic-ui-react';
 
 class GoalItemsPage extends React.Component {
 	constructor(props) {
@@ -13,7 +13,7 @@ class GoalItemsPage extends React.Component {
 	render() {
 		const styles = {
 			goalDiv: {
-				paddingTop: '10px'
+				border: '1px solid black'
 			}
 		}
 		return (
@@ -30,15 +30,16 @@ class GoalItemsPage extends React.Component {
 				  style={{ height: '100%' }}
 				  verticalAlign="middle"
 				>
-				<Grid.Column textAlign="left" width={10} style={{ maxWidth: 450 }}>
-					<Item>
-		        <Item.Content>
-		        	<Item.Header>Goal Name goes here</Item.Header>
-		        	<Item.Meta>goal description goes here</Item.Meta>
-		        	<Item.Description>this is where a description would go...if we wanted one</Item.Description>
-		        </Item.Content>
-		      </Item>
-				</Grid.Column>
+					<Grid.Column textAlign="left" className="goal-item" width={15} style={{ maxWidth: 500 }}>
+						<List>
+			        <List.Content>
+			        	<img src="./../../dist/assets/icons/running.png"/>
+			        	<List.Icon name="chevron right"></List.Icon>
+			        	<List.Header>Goal Name goes here</List.Header>
+			        	<List.Description>goal description</List.Description>
+			        </List.Content>
+			      </List>
+					</Grid.Column>
 				</Grid>
 			</div>
 		)
