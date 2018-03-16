@@ -17,7 +17,7 @@ const HomePage = () => (
       style={{ height: '80%' }}
     >
       <Grid.Row>
-        <Grid.Column width={10} color="blue">
+        <Grid.Column width={10}>
           <Header as="h1" textAlign="center" content="GOAL" />
           <Header as="h1" textAlign="center" content="SQUAD" />
         </Grid.Column>

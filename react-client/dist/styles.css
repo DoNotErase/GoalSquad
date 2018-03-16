@@ -1,3 +1,4 @@
-.homepage body{
-    background-color: red;
+.homepage {
+    background-color: #845EC2;
+    background-image: linear-gradient(#845EC2, #008F7A);
 }
