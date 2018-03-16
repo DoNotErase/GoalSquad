@@ -1,3 +1,7 @@
+body {
+  background-color: #ffffff;
+  color: black;
+}
 .homepage {
     position: fixed;
     top: 0;
@@ -13,8 +17,4 @@
 
 .white {
     color: white !important;
-}
-body {
-  background-color: #ffffff;
-  color: black;
 }
