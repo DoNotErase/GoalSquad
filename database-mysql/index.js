@@ -27,4 +27,28 @@ const findUserId = async () => {
 module.exports = {
   db,
   findUserId,
+}
+
+module.exports.userExists = async (fitbitID) => {
+  const query = `SELECT * FROM user WHERE user_id = '${fitbitID}';`;
+
+  const user = await db.query(query);
+  if (user.length === 0) {
+    return false;
+  }
+  return true;
+};
+
+module.exports.updateTokens = async (fitbitID, accessToken, refreshToken) => {
+  const query = `UPDATE user SET user_accesstoken = '${accessToken}', user_refreshtoken = '${refreshToken}' ` +
+    `WHERE user_id = '${fitbitID}';`;
+
+  await db.query(query);
+};
+
+module.exports.createUser = async (fitbitID, displayName, accessToken, refreshToken) => {
+  const query = 'INSERT INTO user (user_id, user_username, user_accesstoken, user_refreshtoken) ' +
+    `VALUES ('${fitbitID}', '${displayName}', '${accessToken}', '${refreshToken}');`;
+
+  await db.query(query);
 };

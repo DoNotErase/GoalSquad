@@ -1,3 +1,7 @@
+DROP DATABASE IF EXISTS goalsquad;
+
+CREATE DATABASE goalsquad;
+
 USE goalsquad;
 
 DROP TABLE IF EXISTS user_egg;
@@ -9,11 +13,9 @@ DROP TABLE IF EXISTS monster;
 DROP TABLE IF EXISTS user;
 
 CREATE TABLE user (
-  user_id int NOT NULL AUTO_INCREMENT,
+  user_id varchar(255) NOT NULL,
   user_username varchar(255) NOT NULL,
-  user_password varchar(255) NOT NULL,
-  user_fitbit_id varchar(255),
-  user_sessiontoken varchar(255),
+  user_accesstoken varchar(255),
   user_refreshtoken varchar(255),
   user_level int NOT NULL DEFAULT 1,
   user_current_xp int NOT NULL DEFAULT 0,
@@ -43,7 +45,7 @@ CREATE TABLE monster (
 
 CREATE TABLE user_egg (
   user_egg_id int NOT NULL AUTO_INCREMENT,
-  user_id int NOT NULL,
+  user_id varchar(255) NOT NULL,
   egg_id int NOT NULL,
   egg_xp int NOT NULL DEFAULT 0,
 
@@ -55,7 +57,7 @@ CREATE TABLE user_egg (
 
 CREATE TABLE user_monster (
   user_monster_id int NOT NULL AUTO_INCREMENT,
-  user_id int NOT NULL,
+  user_id varchar(255) NOT NULL,
   monster_id int NOT NULL,
   user_monster_level int NOT NULL DEFAULT 1,
   user_monster_new_name varchar(255),
@@ -70,7 +72,7 @@ CREATE TABLE user_monster (
 
 CREATE TABLE user_goal (
   user_goal_id int NOT NULL AUTO_INCREMENT,
-  user_id int NOT NULL,
+  user_id varchar(255) NOT NULL,
   goal_id int NOT NULL,
   user_goal_start_value int,
   user_goal_current int,
@@ -84,9 +86,9 @@ CREATE TABLE user_goal (
 );
 
 insert into user
-  (user_username, user_password, user_fitbit_id)
+  (user_username, user_id)
 VALUES
-  ('mickey', 'mickey', '3XP8GJ');
+  ('mickey', '3XP8GJ');
 
 insert into monster
   (monster_name)
@@ -119,23 +121,22 @@ VALUES
 insert into user_egg
   (user_id, egg_id)
 VALUES
-  (1, 5);
+  ('3XP8GJ', 5);
 
 insert into user_monster
   (user_id, monster_id)
 VALUES
-  (1, 2);
+  ('3XP8GJ', 2);
 
---date = YYYY-MM-DD
 insert into user_goal
   (user_id, goal_id, user_goal_start_value, user_goal_current, user_goal_start_date, user_goal_end_date)
 VALUES
-  (1, 1, 0, 2, 2018-03-15, 2018-03-20),
-  (1, 2, 0, 2, 2018-03-15, 2018-03-20),
-  (1, 3, 0, 2, 2018-03-15, 2018-03-20),
-  (1, 4, 0, 2, 2018-03-15, 2018-03-20),
-  (1, 5, 0, 2, 2018-03-15, 2018-03-20),
-  (1, 6, 0, 2, 2018-03-15, 2018-03-20);
+  ('3XP8GJ', 1, 0, 2, 2018-03-15, 2018-03-20),
+  ('3XP8GJ', 2, 0, 2, 2018-03-15, 2018-03-20),
+  ('3XP8GJ', 3, 0, 2, 2018-03-15, 2018-03-20),
+  ('3XP8GJ', 4, 0, 2, 2018-03-15, 2018-03-20),
+  ('3XP8GJ', 5, 0, 2, 2018-03-15, 2018-03-20),
+  ('3XP8GJ', 6, 0, 2, 2018-03-15, 2018-03-20);
 
 
 

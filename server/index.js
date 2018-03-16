@@ -39,16 +39,18 @@ passport.use(new FitbitStrategy(
     scope: ['activity', 'profile', 'sleep', 'social'],
     callbackURL: 'http://localhost:8080/callback',
   },
-  (accessToken, refreshToken, profile, done) => {
-    // User.findOrCreate({
-    //   fitbitId: profile.id
-    // }, function (err, user) {
-    //   return done(err, user);
-    // });
-    globalAccessToken = accessToken; // should go in db
-    globalRefreshToken = refreshToken; // should go in db
-    globalProfile = profile;
+  async (accessToken, refreshToken, profile, done) => {
+    if (await db.userExists(profile.id)) {
+      console.log('existing user');
+      await db.updateTokens(profile.id, accessToken, refreshToken);
+      return done(null, profile);
+    }
+    console.log('new user!');
+    await db.createUser(profile.id, profile.displayName, accessToken, refreshToken);
     return done(null, profile);
+    // globalAccessToken = accessToken; // should go in db
+    // globalRefreshToken = refreshToken; // should go in db
+    // globalProfile = profile;
   },
 ));
 
@@ -95,9 +97,10 @@ app.get('/user', (req, res) => {
 
 app.get('/fitbit/lifetime', (req, res) => {
   console.log(req.session);
+  const token = db.getUserToken(req.session.passport.user.id);
   axios.get('https://api.fitbit.com/1/user/-/activities.json', {
     headers: {
-      Authorization: `Bearer ${globalAccessToken}`, // TODO: replace this with db call
+      Authorization: `Bearer ${token}`, // TODO: replace this with db call
     },
   })
     .then((data) => {
@@ -110,9 +113,11 @@ app.get('/fitbit/lifetime', (req, res) => {
 
 app.get('/fitbit/dailySummary', (req, res) => {
   const { date } = req.query; // must be in YYYY-MM-DD format string
+  const token = db.getUserToken(req.session.passport.user.id);
+
   axios.get(`https://api.fitbit.com/1/user/-/activities/date/${date}.json`, {
     headers: {
-      Authorization: `Bearer ${globalAccessToken}`, // TODO: replace this with db call based on req.session.passport.user.id
+      Authorization: `Bearer ${token}`, // TODO: replace this with db call based on req.session.passport.user.id
     },
   })
     .then((data) => {
