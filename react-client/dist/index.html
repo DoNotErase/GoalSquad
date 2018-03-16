@@ -3,10 +3,56 @@
 <head>
   <title>Goal Squad</title>
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.12/semantic.min.css"></link>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="manifest" href="manifest.json">
 </head>
 <body>
-<div id="app"></div>
-<script type="text/javascript" src="bundle.js"></script>
+	<div id="app"></div>
+
+	<!-- FIREBASE SCRIPT TAG - DON'T PASTE SCRIPTS ABOVE THIS -->
+<script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+<script>
+// Initialize Firebase
+var config = {
+	apiKey: "AIzaSyDbOhdxctAyUdSrr0xbDxSazzQfu1wYeNY",
+	authDomain: "goalsquad-f12a7.firebaseapp.com",
+	databaseURL: "https://goalsquad-f12a7.firebaseio.com",
+	projectId: "goalsquad-f12a7",
+	storageBucket: "",
+	messagingSenderId: "177647825623"
+};
+firebase.initializeApp(config);
+</script>
+	<!-- END OF FIREBASE SCRIPT -->
+	
+	<script type="text/javascript" src="/bundle.js"></script>
+	<script>
+	  if ('serviceWorker' in navigator) {
+	    navigator.serviceWorker.register('/sw.js')
+	      .then(function () {
+	      	console.log('Service Worker Registered');
+	    });
+	  }
+	</script>
+	<script>
+	  const messaging = firebase.messaging();
+	  messaging.requestPermission()
+	  .then(function() {
+	    console.log('Notification permission granted.');
+	    return messaging.getToken();
+	  })
+	  .then(function(token) {
+	    console.log(token);
+	  })
+	  .catch(function(err) {
+	    console.log('Unable to get permission to notify.', err);
+	  });
+	</script>
+
+	<!-- noscript tag used to satisfy Lighthouse test that wants a display page/notification when there is no JS -->
+	<noscript>Javascript is needed to run the site. Please enable JavaScript.</noscript>
 </body>
 </html>
+
