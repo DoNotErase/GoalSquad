@@ -25,20 +25,6 @@ app.use(passport.session({
   saveUninitialized: true,
 }));
 
-/** *******************REDIRECT ROUTES**************************** */
-
-// app.get('/landing', (req, res) => {
-//   res.redirect('/');
-// });
-
-// app.get('/goals', (req, res) => {
-//   res.redirect('/');
-// });
-
-// app.get('/homePage', (req, res) => {
-//   res.redirect('/');
-// });
-
 /** **************OAUTH**************** */
 
 passport.use(new FitbitStrategy(
