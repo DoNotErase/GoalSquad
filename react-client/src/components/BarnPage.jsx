@@ -1,18 +1,21 @@
 import React from 'react';
-import { Header, Image, Link, Container } from 'semantic-ui-react';
+import { Image, Link, Container, Grid } from 'semantic-ui-react';
 
 const BarnPage = () => (
   <div className="barnpage">
-    <Header as="h2">Hi</Header>
-    <Container>
-      <Image
-        src="./assets/icons/eggTEST.png"
-        as={Link}
-        href="/"
-        verticalAlign="bottom"
-        floated="right"
-      />
-    </Container>
+    <Grid>
+      <Grid.Column color="blue">
+        <Container>
+          <Image
+            src="./assets/icons/eggTEST.png"
+            as={Link}
+            href="/"
+            verticalAlign="bottom"
+            floated="right"
+          />
+        </Container>
+      </Grid.Column>
+    </Grid>
   </div>
 );
 
