@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, Grid } from 'semantic-ui-react';
+import { Header, Grid, Button } from 'semantic-ui-react';
 
 const HomePage = () => (
   <div className="homepage">
@@ -14,14 +14,15 @@ const HomePage = () => (
     <Grid
       textAlign="center"
       verticalAlign="middle"
-      style={{ height: '80%' }}
+      style={{ height: '100%' }}
     >
-      <Grid.Row>
-        <Grid.Column width={10}>
-          <Header as="h1" textAlign="center" content="GOAL" />
-          <Header as="h1" textAlign="center" content="SQUAD" />
-        </Grid.Column>
-      </Grid.Row>
+      <Grid.Column width={10} style={{ maxWidth: 450 }}>
+        <Header as="h1" textAlign="center" content="GOAL" />
+        <Header as="h1" textAlign="center" content="SQUAD" />
+        <a href="/auth/fitbit">
+          <Button color="violet" fluid size="large" style={{ marginTop: 250 }}>Connect</Button>
+        </a>
+      </Grid.Column>
     </Grid>
   </div>
 );
