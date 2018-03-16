@@ -17,8 +17,8 @@ const HomePage = () => (
       style={{ height: '100%' }}
     >
       <Grid.Column width={10} style={{ maxWidth: 450 }}>
-        <Header as="h1" textAlign="center" content="GOAL" />
-        <Header as="h1" textAlign="center" content="SQUAD" />
+        <Header as="h1" textAlign="center" className="white" content="GOAL" />
+        <Header as="h1" textAlign="center" className="white" content="SQUAD" />
         <a href="/auth/fitbit">
           <Button color="violet" fluid size="large" style={{ marginTop: 250 }}>Connect</Button>
         </a>
