@@ -38,12 +38,13 @@ let globalRefreshToken;
 
 // var FitbitStrategy = require('passport-fitbit-oauth2').FitbitOAuth2Strategy;;
 
-passport.use(new FitbitStrategy({
-  clientID: config.fitbit.id,
-  clientSecret: config.fitbit.secret,
-  scope: ['activity', 'profile', 'sleep', 'social'],
-  callbackURL: 'http://localhost:8080/callback',
-},
+passport.use(new FitbitStrategy(
+  {
+    clientID: config.fitbit.id,
+    clientSecret: config.fitbit.secret,
+    scope: ['activity', 'profile', 'sleep', 'social'],
+    callbackURL: 'http://localhost:8080/callback',
+  },
   ((accessToken, refreshToken, profile, done) => {
   // User.findOrCreate({
   //   fitbitId: profile.id
