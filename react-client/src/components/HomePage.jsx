@@ -8,16 +8,17 @@ class HomePage extends React.Component {
   constructor(props) {
     super(props);
   }
-  
-  componentWillMount() {
-    this.props.actions.attemptLogin();
-  }
 
-  componentDidMount() {
-    if (this.state.authenticated) {
-      this.history.push('/landingPage');
+  componentWillMount() {
+    console.log('mounting', this.props.state);
+    if (this.props.state.user) {
+      this.props.history.push('/landingPage');
+      console.log(this.props.history.location);
+    } else {
+      this.props.actions.attemptLogin();
     }
   }
+
   render() {
     return (
       <div className="homepage">
@@ -48,6 +49,6 @@ class HomePage extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({ actions: bindActionCreators(actions, dispatch) });
-const mapStateToProps = state => ({ ...state });
+const mapStateToProps = state => ({ state: state.main });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

@@ -1,4 +1,11 @@
-const mainReducer = (state = {}, action) => {
+const defaultState = {
+  user: {
+    id: '',
+    username: '',
+  },
+};
+
+const mainReducer = (state = defaultState, action) => {
   switch (action.type) {
     case 'TEST': {
       return {
@@ -16,11 +23,15 @@ const mainReducer = (state = {}, action) => {
     case 'USER_LOGIN': {
       return {
         ...state,
-        userID: action.payload.id,
-        username: action.username.username,
+        user: {
+          id: action.payload.user_id,
+          username: action.payload.user_username,
+        },
       };
     }
-    default: return state;
+    default: {
+      return state;
+    }
   }
 };
 

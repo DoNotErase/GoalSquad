@@ -80,11 +80,12 @@ app.get('/auth/fitbit/failure', (req, res) => {
 
 /** *********************************************** */
 
-app.get('/user', (req, res) => {
+app.get('/login', async (req, res) => {
   if (req.session.passport) {
-    res.json({ user: req.session.passport.user.displayName });
+    const user = await db.getUserByID(req.session.passport.user.id);
+    res.json({ ...user });
   } else {
-    res.json({ user: 'please connect your account' });
+    res.json();
   }
 });
 

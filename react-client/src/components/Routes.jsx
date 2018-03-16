@@ -9,10 +9,10 @@ const Routes = () => (
   <Router history={browserHistory}>
     <Switch>
       <Route exact path="/" component={HomePage} />
-      <Route path="/landing" component={LandingPage} />
-      {/* <Router path='/futurpage' component={ nameOfCOmponent } /> */}
+      <Route path="/landingPage" component={LandingPage} />
     </Switch>
   </Router>
 );
+/* <Router path='/futurpage' component={ nameOfCOmponent } /> */
 
 export default Routes;
