@@ -21,7 +21,6 @@ const mainReducer = (state = defaultState, action) => {
       };
     }
     case 'USER_LOGIN': {
-      console.log('setting user');
       return {
         ...state,
         user: {
