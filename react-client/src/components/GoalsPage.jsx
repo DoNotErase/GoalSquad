@@ -1,12 +1,25 @@
 import React from 'react';
-import { Grid } from 'semantic-ui-react';
+import GoalItemsPage from './GoalItemsPage.jsx'
+import { Divider, Grid, Header } from 'semantic-ui-react';
 
 class GoalsPage extends React.Component {
 	constructor(props) {
 		super(props)
 	}
 
+	componentWillMount() {
+		
+	}
+
 	render() {
+		const styles = {
+			goalContainer: {
+				border: '1px solid black',
+				minHeight: '500px',
+				padding: '10px'
+			}
+		}
+
 		return (
 			<div className="goals-page">
 			<style>{`
@@ -23,10 +36,11 @@ class GoalsPage extends React.Component {
 				  style={{ height: '100%' }}
 				>
 				<Grid.Column width={10} style={{ maxWidth: 450 }}>
-	        <Header as="h1" textAlign="left" className="white" content="Your Goals" />
-	        <a href="/auth/fitbit">
-	          <Button color="violet" fluid size="large" style={{ marginTop: 250 }}>Connect</Button>
-	        </a>
+					<div style={ styles.goalContainer }>
+		        <Header size="large" textAlign="left">Your Goals</Header>
+		        <Divider fitted />
+		        <GoalItemsPage />
+	        </div>
 				</Grid.Column>
 				</Grid>
 			</div>
