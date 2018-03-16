@@ -13,6 +13,7 @@ class Routes extends React.Component {
             <Router history={ browserHistory }>
                 <Switch>
                     <Route exact path='/' component={ HomePage } />
+                    <Route path='/landing' component= { LandingPage } />
                     {/* <Router path='/futurpage' component={ nameOfCOmponent } /> */}
                 </Switch>
             </Router>
