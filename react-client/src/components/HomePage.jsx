@@ -14,7 +14,7 @@ class HomePage extends React.Component {
 
   componentDidUpdate() {
     if (this.props.state.user.id) {
-      this.props.history.push('/goals');
+      this.props.history.push('/landing');
     }
   }
 

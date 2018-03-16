@@ -13,7 +13,6 @@ const db = mysql.createConnection({
   database: 'goalsquad',
 });
 
-// test function for example
 module.exports.getUserByID = async (fitbitID) => {
   try {
     return await db.queryAsync(`SELECT * FROM user WHERE user_id = '${fitbitID}'`);
@@ -64,5 +63,19 @@ module.exports.getAccessToken = async (fitbitID) => {
     return data[0].user_accesstoken;
   } catch (e) {
     return e;
+  }
+};
+
+module.exports.getUserGoals = async (fitbitID) => {
+  try {
+    const query = 'SELECT user_goal.user_goal_start_value, user_goal.user_goal_target, ' +
+      'user_goal.user_goal_start_date, user_goal.user_goal_end_date, user_goal.user_goal_achieved, ' +
+      'goal.goal_activity, goal.goal_amount, goal.goal_difficulty ' +
+      'FROM user_goal INNER JOIN goal ON goal.goal_id = user_goal.goal_id ' +
+      `WHERE user_goal.user_id = '${fitbitID}';`;
+
+    return await db.queryAsync(query);
+  } catch (err) {
+    return err;
   }
 };
