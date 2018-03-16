@@ -1,5 +1,8 @@
 import React from 'react';
 import { Header, Grid, Button } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as actions from '../actions/homePageActions';
 
 const HomePage = () => (
   <div className="homepage">
