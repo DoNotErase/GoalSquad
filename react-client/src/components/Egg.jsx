@@ -1,12 +1,32 @@
 import React from 'react';
+import { Progress } from 'semantic-ui-react';
 
-const Egg = props => (
-  <div className="ui indicating progress" data-percent="50" id="example5">
-    <div className="bar">
-      <div className="progress"></div>
-    </div>
-    <div className="label">Waiting for you to press button</div>
-  </div>
-);
+class Egg extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      percent: 20, // this.props.eggPercent
+      eggPercent: 40,
+    };
+  }
+  componentDidMount() {
+    console.log('component did mount');
+    for (let i = 0; i < this.state.eggPercent; i += 1) {
+      // if (this.state.percent < this.state.eggPercent) {
+      console.log('percent', this.state.percent);
+      console.log('eggpercent', this.state.eggPercent);
+      this.tick(this.state.percent);
+    }
+  }
+  tick() {
+    console.log('inside tick');
+    this.setState((prevState, props) => ({ percent: prevState.percent + 1 }));
+  }
+  render() {
+    return (
+      <Progress value={this.state.eggPercent} total="100" progress="percent" indicating />
+    );
+  }
+}
 
 export default Egg;

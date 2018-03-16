@@ -2,9 +2,9 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch, withRouter, browserHistory } from 'react-router-dom';
 
 //  VIEW TO RENDER
-import HomePage from './HomePage.jsx';
-import LandingPage from './LandingPage.jsx';
-import GoalsPage from './GoalsPage.jsx'
+import HomePage from './HomePage';
+import LandingPage from './LandingPage';
+import GoalsPage from './GoalsPage';
 import EggPage from './Egg';
 
 const Routes = () => (
