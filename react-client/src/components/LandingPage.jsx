@@ -26,9 +26,9 @@ const LandingPage = (props) => {
 
       <button onClick={props.actions.getLifetimeData}> getLifeTimeData </button>
 
-      <p>Lifetime Steps: {props.state.activity.lifetimeSteps}</p>
-      <p>Lifetime Floors: {props.state.activity.lifetimeFloors}</p>
-      <p>Lifetime Distance: {props.state.activity.lifetimeDistance}</p>
+      <p>Lifetime Steps: {props.state.lifetimeSteps}</p>
+      <p>Lifetime Floors: {props.state.lifetimeFloors}</p>
+      <p>Lifetime Distance: {props.state.lifetimeDistance}</p>
 
       <button onClick={() => submitUserGoal(3, null, 75)}> Test create goal </button>
     </div>
@@ -37,15 +37,11 @@ const LandingPage = (props) => {
 
 LandingPage.propTypes = {
   state: PropTypes.shape({
-    user: PropTypes.shape({
-      id: PropTypes.string,
-      username: PropTypes.string,
-    }),
-    activity: PropTypes.shape({
-      lifetimeSteps: PropTypes.number,
-      lifetimeFloors: PropTypes.number,
-      lifetimeDistance: PropTypes.number,
-    }),
+    id: PropTypes.string,
+    username: PropTypes.string,
+    lifetimeSteps: PropTypes.number,
+    lifetimeFloors: PropTypes.number,
+    lifetimeDistance: PropTypes.number,
   }).isRequired,
   actions: PropTypes.objectOf(PropTypes.func).isRequired,
 };
