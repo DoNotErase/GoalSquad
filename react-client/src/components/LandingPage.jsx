@@ -30,7 +30,7 @@ const LandingPage = (props) => {
       <p>Lifetime Floors: {props.state.activity.lifetimeFloors}</p>
       <p>Lifetime Distance: {props.state.activity.lifetimeDistance}</p>
 
-      <button onClick={() => submitUserGoal(3, { day: 1, hour: 5 }, 75)}> Test create goal </button>
+      <button onClick={() => submitUserGoal(3, null, 75)}> Test create goal </button>
     </div>
   );
 };
