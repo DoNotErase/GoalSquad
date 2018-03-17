@@ -1,10 +1,12 @@
 import axios from 'axios';
 
+const setDefault = goals => ({ type: 'SET_DEFAULT_GOALS', payload: goals });
+
 export const getDefaultGoals = () => (
   dispatch => (
     axios.get('/defaultGoals')
-      .then(() => {
-        dispatch('SET_DEFAULT_GOALS');
+      .then((res) => {
+        dispatch(setDefault(res.data));
       })
       .catch((err) => {
         console.log(err);

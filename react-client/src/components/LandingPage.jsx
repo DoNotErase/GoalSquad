@@ -22,7 +22,7 @@ const LandingPage = (props) => {
 
   return (
     <div>
-      <p> hello {props.state.user.username} </p>
+      <p> hello {props.state.username} </p>
 
       <button onClick={props.actions.getLifetimeData}> getLifeTimeData </button>
 
