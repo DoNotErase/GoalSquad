@@ -14,7 +14,8 @@ class IncubatorPage extends React.Component {
   }
 
   componentDidMount() {
-
+  	console.log('state', this.props.state)
+  	console.log('incubator state', this.props.incubatorState)
   }
 
   render() {
