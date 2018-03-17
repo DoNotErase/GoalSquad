@@ -6,21 +6,14 @@ import PropTypes from 'prop-types';
 import * as actions from '../actions/homePageActions';
 
 class HomePage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      percent: 20, // this.props.eggPercent
-      eggPercent: 40,
-    };
-  }
   componentWillMount() {
-    if (!this.props.state.user.id) {
+    if (!this.props.state.id) {
       this.props.actions.attemptLogin();
     }
   }
 
   componentDidUpdate() {
-    if (this.props.state.user.id) {
+    if (this.props.state.id) {
       this.props.history.push('/landing');
     }
   }
@@ -51,10 +44,8 @@ class HomePage extends React.Component {
 
 HomePage.propTypes = {
   state: PropTypes.shape({
-    user: PropTypes.shape({
-      id: PropTypes.string,
-      username: PropTypes.string,
-    }),
+    id: PropTypes.string,
+    username: PropTypes.string,
   }).isRequired,
   actions: PropTypes.objectOf(PropTypes.func).isRequired,
   history: PropTypes.shape({

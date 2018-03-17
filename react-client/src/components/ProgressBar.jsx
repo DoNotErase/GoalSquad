@@ -11,7 +11,7 @@ class Egg extends React.Component {
   }
   render() {
     return (
-      <Progress value={this.props.percent} total="100" progress="percent" indicating />
+      <Progress value={this.state.percent} total="100" progress="percent" indicating />
     );
   }
 }

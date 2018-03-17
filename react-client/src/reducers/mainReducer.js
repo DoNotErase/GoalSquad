@@ -1,34 +1,30 @@
-const defaultState = {
-  user: {
-    id: '',
-    username: '',
-    level: 0,
-    XP: 0,
-  },
-  activity: {},
+const mainState = {
+  id: '',
+  username: '',
+  level: 0,
+  XP: 0,
+  lifetimeSteps: 0,
+  lifetimeFloors: 0,
+  lifetimeDistance: 0,
 };
 
-const mainReducer = (state = defaultState, action) => {
+const mainReducer = (state = mainState, action) => {
   switch (action.type) {
     case 'USER_LIFETIME_ACTIVITY': {
       return {
         ...state,
-        activity: {
-          lifetimeSteps: action.payload.lifetimeSteps,
-          lifetimeFloors: action.payload.lifetimeFloors,
-          lifetimeDistance: action.payload.lifetimeDistance,
-        },
+        lifetimeSteps: action.payload.lifetimeSteps,
+        lifetimeFloors: action.payload.lifetimeFloors,
+        lifetimeDistance: action.payload.lifetimeDistance,
       };
     }
     case 'USER_LOGIN': {
       return {
         ...state,
-        user: {
-          id: action.payload.user_id,
-          username: action.payload.user_username,
-          level: action.payload.user_level,
-          XP: action.payload.user_current_xp,
-        },
+        id: action.payload.user_id,
+        username: action.payload.user_username,
+        level: action.payload.user_level,
+        XP: action.payload.user_current_xp,
       };
     }
     default: {
