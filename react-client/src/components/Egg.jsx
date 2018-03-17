@@ -10,21 +10,24 @@ class Egg extends React.Component {
     };
   }
   componentDidMount() {
-    console.log('component did mount');
-    for (let i = 0; i < this.state.eggPercent; i += 1) {
-      // if (this.state.percent < this.state.eggPercent) {
-      console.log('percent', this.state.percent);
-      console.log('eggpercent', this.state.eggPercent);
-      this.tick(this.state.percent);
+    console.log('component did mount', this.props.name);
+    for (let i = 0; i < 10; i += 1) {
+      this.props.tick();
     }
+    // for (let i = 0; i < this.state.eggPercent; i += 1) {
+    //   // if (this.state.percent < this.state.eggPercent) {
+    //   console.log('percent', this.state.percent);
+    //   console.log('eggpercent', this.state.eggPercent);
+    //   this.tick(this.state.percent);
+    // }
   }
-  tick() {
-    console.log('inside tick');
-    this.setState((prevState, props) => ({ percent: prevState.percent + 1 }));
-  }
+  // tick() {
+  //   console.log('inside tick');
+  //   this.setState((prevState, props) => ({ percent: prevState.percent + 1 }));
+  // }
   render() {
     return (
-      <Progress value={this.state.eggPercent} total="100" progress="percent" indicating />
+      <Progress value={this.props.percent} total="100" progress="percent" indicating />
     );
   }
 }
