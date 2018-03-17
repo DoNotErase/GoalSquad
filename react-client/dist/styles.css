@@ -45,6 +45,22 @@ body {
     background: #B5D8B9;
 }
 
+.progress-bar-container {
+    background: #D7EAD9;
+    height: 100%;
+    width: 100%;
+}
+
+.progress-bar {
+    padding-top: 20px;
+    padding-left: 60px;
+    padding-right: 10px;
+}
+
+/*.progress-bar-egg {
+    top: 20px;
+    left: 10px;
+}*/
 
 /* GOAL ITEMS PAGE */
 .goal-item {

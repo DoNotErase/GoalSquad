@@ -14,7 +14,7 @@ const BarnPage = () => (
 
         <Image
           className="barnegg"
-          src="./assets/icons/eggTEST.png"
+          src="./assets/icons/egg.png"
           as={Link}
           href="/"
           verticalAlign="bottom"

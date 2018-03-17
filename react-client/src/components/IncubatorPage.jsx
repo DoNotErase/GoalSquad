@@ -1,7 +1,7 @@
 import React from 'react';
 import { Divider, Grid, Header } from 'semantic-ui-react';
 import GoalItemsPage from './GoalItemsPage.jsx';
-
+import ProgressBar from './ProgressBarPage.jsx';
 class IncubatorPage extends React.Component {
   // constructor(props) {
   //   super(props);
@@ -35,6 +35,12 @@ class IncubatorPage extends React.Component {
         >
           <Grid.Column width={16}>
             <div className="goal-container">
+	            <div className="progress-bar-container">
+		            <Grid columns={2}>
+		            	<Grid.Column width={3}><img  src="./assets/icons/egg.png"/></Grid.Column>
+		            	<Grid.Column width={13} className="progress-bar"><ProgressBar /></Grid.Column>
+			          </Grid>
+		          </div>
               <Grid style={styles.incubatorNav} columns={2} verticalAlign="middle">
                 <Grid.Column width={12}>
                   <Header size="large" textAlign="left">Your Goals</Header>
