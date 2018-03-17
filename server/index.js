@@ -6,7 +6,7 @@ const FitbitStrategy = require('passport-fitbit-oauth2').FitbitOAuth2Strategy;
 const passport = require('passport');
 const config = require('../config.js');
 const axios = require('axios');
-const path = require('path')
+const path = require('path');
 
 const app = express();
 const db = require('../database-mysql/index.js');
@@ -39,9 +39,6 @@ app.get('/homePage', (req, res) => {
   res.redirect('/');
 });
 
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../react-client/dist', '/index.html'));
-});
 
 /** **************OAUTH**************** */
 
@@ -135,8 +132,20 @@ app.get('/fitbit/dailySummary', async (req, res) => {
   }
 });
 
+
+/** *******CLIENT SIDE FETCHES ************** */
+app.get('/eggData/:eggID', async (req, res) => {
+  const data = await db.getEggInfo(req.params.eggID);
+  res.status(200).send(data);
+});
+
 app.get('/test', async (req, res) => {
   res.json(await db.findUserId());
+});
+
+app.get('/*', (req, res) => {
+  console.log('inside catch all');
+  res.sendFile(path.join(__dirname, '../react-client/dist', '/index.html'));
 });
 
 app.listen(8080, () => {

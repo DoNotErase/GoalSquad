@@ -66,3 +66,12 @@ module.exports.getAccessToken = async (fitbitID) => {
     return e;
   }
 };
+
+module.exports.getEggInfo = async (userEggID) => {
+  try {
+    const data = await db.queryAsync(`SELECT * FROM user_egg WHERE user_egg_id=${userEggID};`);
+    return data.pop(); // removes array and returns only object
+  } catch (e) {
+    return e;
+  }
+};
