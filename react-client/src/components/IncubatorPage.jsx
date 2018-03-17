@@ -23,7 +23,7 @@ class IncubatorPage extends React.Component {
 				  style={{ height: '100%' }}
 				>
 				<Grid.Column width={10} style={{ maxWidth: 450 }}>
-					<div> Goals Page </div>
+					<div> Incubator Page </div>
 				</Grid.Column>
 				</Grid>
 			</div>

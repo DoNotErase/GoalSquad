@@ -28,9 +28,8 @@ class GoalsPage extends React.Component {
            Distance
         </Accordion.Title>
         <Accordion.Content active={activeIndex === 0}>
-          <Segment.Group raised>
-            <Goal />
-          </Segment.Group>
+          <Goal />
+          <Goal />
         </Accordion.Content>
 
         <Accordion.Title active={activeIndex === 1} index={1} onClick={this.handleClick}>
@@ -38,9 +37,7 @@ class GoalsPage extends React.Component {
            Steps
         </Accordion.Title>
         <Accordion.Content active={activeIndex === 1}>
-          <Segment.Group raised>
-            <Goal />
-          </Segment.Group>
+          <Goal />
         </Accordion.Content>
 
         <Accordion.Title active={activeIndex === 2} index={2} onClick={this.handleClick}>
@@ -48,9 +45,7 @@ class GoalsPage extends React.Component {
            Stairs
         </Accordion.Title>
         <Accordion.Content active={activeIndex === 2}>
-          <Segment.Group raised>
-            <Goal />
-          </Segment.Group>
+          <Goal />
         </Accordion.Content>
       </Accordion>
     );
