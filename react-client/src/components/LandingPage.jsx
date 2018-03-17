@@ -16,11 +16,15 @@ const LandingPage = props => (
     <p>Lifetime Floors: {props.state.lifetimeFloors}</p>
     <p>Lifetime Distance: {props.state.lifetimeDistance}</p>
 
-    <button onClick={() => props.goalActions.submitUserGoal(3, null, 75)}> Test create goal </button>
+    <button onClick={() => props.goalActions.submitUserGoal(3, null, 75)}>
+      Test create goal
+    </button>
+    <br />
     <button onClick={() => props.goalActions.getDefaultGoals()}> Test fetch default goals </button>
     <div>
       {props.goalsState.standardGoals.map(goal => (<div> {goal.goal_name} </div>))}
     </div>
+    <br />
     <button onClick={() => props.incubatorActions.getUserGoals()}> Test fetch userGoals </button>
     <div>
       {props.incubatorState.userGoals.map(goal => (<div> {goal.goal_name} </div>))}
@@ -37,8 +41,11 @@ LandingPage.propTypes = {
     lifetimeFloors: PropTypes.number,
     lifetimeDistance: PropTypes.number,
   }).isRequired,
+  goalsState: PropTypes.objectOf(PropTypes.array).isRequired,
+  incubatorState: PropTypes.objectOf(PropTypes.array).isRequired,
   actions: PropTypes.objectOf(PropTypes.func).isRequired,
   goalActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  incubatorActions: PropTypes.objectOf(PropTypes.func).isRequired,
 };
 
 const mapDispatchToProps = dispatch => (

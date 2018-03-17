@@ -54,7 +54,7 @@ CREATE TABLE user_egg (
   user_id varchar(255) NOT NULL,
   egg_id int NOT NULL,
   egg_xp int NOT NULL DEFAULT 0,
-
+  egg_hatched bool NOT NULL DEFAULT 0,
   PRIMARY KEY (user_egg_id),
   FOREIGN KEY (user_id) REFERENCES user (user_id),
   FOREIGN KEY (egg_id) REFERENCES egg (egg_id)
