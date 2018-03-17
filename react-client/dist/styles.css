@@ -22,7 +22,7 @@
     position: fixed !important;
 }
 
-.barnpage {
+.barnpage, .goalspage {
     position: fixed;
     top: 0;
     left: 0;

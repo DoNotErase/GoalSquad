@@ -1,5 +1,5 @@
 import React from 'react';
-import { Accordion, Icon, Segment } from 'semantic-ui-react';
+import { Accordion, Icon, Segment, Grid } from 'semantic-ui-react';
 import Goal from './Goal';
 
 class GoalsPage extends React.Component {
@@ -22,32 +22,44 @@ class GoalsPage extends React.Component {
   render() {
     const { activeIndex } = this.state;
     return (
-      <Accordion styled>
-        <Accordion.Title active={activeIndex === 0} index={0} onClick={this.handleClick}>
-          <Icon name="dropdown" />
-           Distance
-        </Accordion.Title>
-        <Accordion.Content active={activeIndex === 0}>
-          <Goal />
-          <Goal />
-        </Accordion.Content>
+      <div className="goalspage">
+        <Grid>
+          <Grid.Column>
+            <Accordion styled>
+              <Accordion.Title active={activeIndex === 0} index={0} onClick={this.handleClick}>
+                <Icon name="dropdown" />
+                Distance
+              </Accordion.Title>
+              <Accordion.Content active={activeIndex === 0}>
+                <Segment.Group raised>
+                  <Goal />
+                  <Goal />
+                </Segment.Group>
+              </Accordion.Content>
 
-        <Accordion.Title active={activeIndex === 1} index={1} onClick={this.handleClick}>
-          <Icon name="dropdown" />
-           Steps
-        </Accordion.Title>
-        <Accordion.Content active={activeIndex === 1}>
-          <Goal />
-        </Accordion.Content>
+              <Accordion.Title active={activeIndex === 1} index={1} onClick={this.handleClick}>
+                <Icon name="dropdown" />
+                Steps
+              </Accordion.Title>
+              <Accordion.Content active={activeIndex === 1}>
+                <Segment.Group raised>
+                  <Goal />
+                </Segment.Group>
+              </Accordion.Content>
 
-        <Accordion.Title active={activeIndex === 2} index={2} onClick={this.handleClick}>
-          <Icon name="dropdown" />
-           Stairs
-        </Accordion.Title>
-        <Accordion.Content active={activeIndex === 2}>
-          <Goal />
-        </Accordion.Content>
-      </Accordion>
+              <Accordion.Title active={activeIndex === 2} index={2} onClick={this.handleClick}>
+                <Icon name="dropdown" />
+                Stairs
+              </Accordion.Title>
+              <Accordion.Content active={activeIndex === 2}>
+                <Segment.Group raised>
+                  <Goal />
+                </Segment.Group>
+              </Accordion.Content>
+            </Accordion>
+          </Grid.Column>
+        </Grid>
+      </div>
     );
   }
 }
