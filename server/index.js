@@ -35,9 +35,9 @@ app.get('/landing', (req, res) => {
   res.redirect('/');
 });
 
-app.get('/goals', (req, res) => {
-  res.redirect('/');
-});
+// app.get('/goals', (req, res) => {
+//   res.redirect('/');
+// });
 
 app.get('/homePage', (req, res) => {
   res.redirect('/');
@@ -148,7 +148,6 @@ app.get('/test', async (req, res) => {
 });
 
 app.get('/*', (req, res) => {
-  console.log('inside catch all');
   res.sendFile(path.join(__dirname, '../react-client/dist', '/index.html'));
 });
 

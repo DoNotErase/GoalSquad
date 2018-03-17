@@ -31,6 +31,7 @@
     "cookie-parser": "^1.4.3",
     "express": "^4.15.0",
     "express-session": "^1.15.6",
+    "file-loader": "^1.1.11",
     "history": "^4.7.2",
     "jquery": "^3.1.1",
     "mysql": "^2.13.0",
