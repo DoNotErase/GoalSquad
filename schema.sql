@@ -127,12 +127,12 @@ VALUES
   ('steps', 20000, 'easy', 'long', 200, 24),
   ('steps', 50000, 'med', 'long', 500, 24),
   ('steps', 100000, 'hard', 'long', 1000, 24),
-  ('stairs', 3, 'easy', 'short', 10, 2),
-  ('stairs', 5, 'med', 'short', 25, 2),
-  ('stairs', 20, 'hard', 'short', 100, 2),
-  ('stairs', 40, 'easy', 'long', 200, 24),
-  ('stairs', 100, 'med', 'long', 500, 24),
-  ('stairs', 200, 'hard', 'long', 1000, 24);
+  ('floors', 3, 'easy', 'short', 10, 2),
+  ('floors', 5, 'med', 'short', 25, 2),
+  ('floors', 20, 'hard', 'short', 100, 2),
+  ('floors', 40, 'easy', 'long', 200, 24),
+  ('floors', 100, 'med', 'long', 500, 24),
+  ('floors', 200, 'hard', 'long', 1000, 24);
 
 insert into user_egg
   (user_id, egg_id)

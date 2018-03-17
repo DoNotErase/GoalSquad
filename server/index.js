@@ -117,6 +117,42 @@ app.get('/fitbit/dailySummary', async (req, res) => {
   }
 });
 
+/** *******************GOAL STUFF**************************** */
+
+app.post('/createUserGoal', async (req, res) => {
+  // req.body needs: goal_id, deadline existance(deadline(length)), goal points
+  const newGoal = {
+    userID: '',
+    goalID: req.body.goalID,
+    startValue: 0,
+    targetValue: 0,
+    goalLength: req.body.deadline,
+    points: req.body.points,
+  };
+  try {
+    if (req.session.passport) {
+      newGoal.userID = req.session.passport.user.id;
+      const token = db.getAccessToken(req.session.passport.user.id);
+      const currentLifeTime = await axios.get('https://api.fitbit.com/1/user/-/activities.json', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const goalDetails = await db.getGoalInfo(newGoal.goalID);
+      newGoal.startValue = currentLifeTime.lifetime.total[goalDetails.goal_activity];
+      newGoal.targetValue = newGoal.startValue + goalDetails.goal_amount;
+      await db.createUserGoal(newGoal);
+      res.end();
+    } else {
+      res.status(401).json({ error: 'user not authenticated' });
+    }
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
+/** ********************************************************* */
+
 app.get('/test', async (req, res) => {
   res.json(await db.findUserId());
 });

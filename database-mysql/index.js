@@ -79,3 +79,13 @@ module.exports.getUserGoals = async (fitbitID) => {
     return err;
   }
 };
+
+module.exports.getGoalInfo = async (goalID) => {
+  try {
+    const query = `SELECT * FROM goal WHERE goal_id = ${goalID}`;
+
+    return await db.queryAsync(query)[0];
+  } catch (err) {
+    return err;
+  }
+}
