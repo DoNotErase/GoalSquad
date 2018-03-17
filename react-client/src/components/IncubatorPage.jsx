@@ -28,6 +28,7 @@ class IncubatorPage extends React.Component {
 				`}
         </style>
         <Grid
+	        container
           textAlign="center"
           verticalAlign="middle"
           style={{ height: '100%' }}
@@ -36,12 +37,12 @@ class IncubatorPage extends React.Component {
           <Grid.Column width={16}>
             <div className="goal-container">
 	            <div className="progress-bar-container">
-		            <Grid columns={2}>
+		            <Grid container columns={2}>
 		            	<Grid.Column width={3}><img  src="./assets/icons/egg.png"/></Grid.Column>
 		            	<Grid.Column width={13} className="progress-bar"><ProgressBar /></Grid.Column>
 			          </Grid>
 		          </div>
-              <Grid style={styles.incubatorNav} columns={2} verticalAlign="middle">
+              <Grid container style={styles.incubatorNav} columns={2} verticalAlign="middle">
                 <Grid.Column width={12}>
                   <Header size="large" textAlign="left">Your Goals</Header>
                 </Grid.Column>

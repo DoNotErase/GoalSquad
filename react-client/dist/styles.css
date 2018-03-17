@@ -42,6 +42,14 @@ body {
 }
 
 .incubator-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    min-width:100%;
+    min-height:100%;
     background: #B5D8B9;
 }
 
@@ -49,6 +57,8 @@ body {
     background: #D7EAD9;
     height: 100%;
     width: 100%;
+    margin-top: 15px;
+    border-radius: 5px
 }
 
 .progress-bar {
@@ -57,11 +67,6 @@ body {
     padding-right: 10px;
 }
 
-/*.progress-bar-egg {
-    top: 20px;
-    left: 10px;
-}*/
-
 /* GOAL ITEMS PAGE */
 .goal-item {
     background: white;
@@ -69,9 +74,9 @@ body {
 }
 
 .activity-icon {
-    max-height: 50px;
+    max-height: 30px;
     min-height: 10px;
-    max-width: 50px;
+    max-width: 30px;
     min-width: 10px;
 }
 

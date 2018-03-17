@@ -26,6 +26,7 @@ class GoalItemsPage extends React.Component {
 				`}
 				</style>
 				<Grid
+					container
 				  style={{ height: '100%' }}
 				  verticalAlign="middle"
 				  columns={3}
@@ -45,8 +46,8 @@ class GoalItemsPage extends React.Component {
 					<Grid.Column width={3}>
 						<a href="#"><List.Icon name="chevron right"></List.Icon></a> {/*go to goals detail page*/} 
 					</Grid.Column>
-							<Grid.Column width={3}>
-		        	<img className="activity-icon" src={ activityIcons['biking']} alt="person biking"/>
+					<Grid.Column width={3}>
+		        <img className="activity-icon" src={ activityIcons['biking']} alt="person biking"/>
 					</Grid.Column>
 					<Grid.Column textAlign="left" width={10}>
 						<List>
