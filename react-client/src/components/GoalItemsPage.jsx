@@ -1,5 +1,5 @@
 import React from 'react';
-import  { Grid, Header, Item, List } from 'semantic-ui-react';
+import  { Divider, Grid, Header, Item, List, Segment } from 'semantic-ui-react';
 
 class GoalItemsPage extends React.Component {
 	constructor(props) {
@@ -36,7 +36,7 @@ class GoalItemsPage extends React.Component {
 					<Grid.Column textAlign="left" width={10}>
 						<List>
 			        <List.Content>
-			        	<List.Header>Goal Name (Should be bold)</List.Header>
+			        	<List.Header><strong>Goal Name</strong></List.Header>
 			        	<List.Description>goal description</List.Description>
 			        </List.Content>
 			      </List>
@@ -50,7 +50,7 @@ class GoalItemsPage extends React.Component {
 					<Grid.Column textAlign="left" width={10}>
 						<List>
 			        <List.Content>
-			        	<List.Header>Goal Name (Should be bold)</List.Header>
+			        	<List.Header><strong>Goal Name</strong></List.Header>
 			        	<List.Description>goal description</List.Description>
 			        </List.Content>
 			      </List>
