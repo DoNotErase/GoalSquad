@@ -32,9 +32,6 @@ class HomePage extends React.Component {
             <a href="/auth/fitbit">
               <Button color="violet" fluid size="large" style={{ marginTop: 250 }}>Connect</Button>
             </a>
-            <a href="/egg">
-              <Button color="violet" fluid size="large" style={{ marginTop: 250 }}>Egg</Button>
-            </a>
           </Grid.Column>
         </Grid>
       </div>

@@ -95,7 +95,7 @@ body {
     background-image: linear-gradient(#845EC2, #008F7A);
 }
 
-.barnpage {
+.barnpage, .goalspage {
     position: fixed;
     top: 0;
     left: 0;
