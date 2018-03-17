@@ -28,7 +28,7 @@ class GoalsPage extends React.Component {
     const { activeIndex } = this.state;
     return (
       <div className="goalspage">
-        <Grid style={{ height: '100%' }} centered>
+        <Grid centered>
           <Grid.Column computer={8} mobile={14}>
             <Accordion styled fluid>
               <Accordion.Title active={activeIndex === 0} index={0} onClick={this.handleClick}>
