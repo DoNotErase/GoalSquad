@@ -9,6 +9,10 @@ const axios = require('axios');
 const path = require('path');
 
 const app = express();
+// http for streaming and .server for event listeners
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+
 const db = require('../database-mysql/index.js');
 
 app.use(express.static(`${__dirname}/../react-client/dist`));
