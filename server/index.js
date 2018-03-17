@@ -118,6 +118,14 @@ app.get('/fitbit/dailySummary', async (req, res) => {
 });
 
 /** *******************GOAL STUFF**************************** */
+app.get('/defaultGoals', async (req, res) => {
+  try {
+    const goals = await db.getDefaultGoals();
+    res.json(goals);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
 
 app.post('/createUserGoal', async (req, res) => {
   // req.body needs: goal_id, deadline existance(deadline(length)), goal points
