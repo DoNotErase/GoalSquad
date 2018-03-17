@@ -82,9 +82,11 @@ CREATE TABLE user_goal (
   user_goal_start_value int,
   user_goal_current int,
   user_goal_target int,
-  user_goal_start_date date,
-  user_goal_end_date date,
-  user_goal_achieved bool default 0,
+  user_goal_start_date datetime DEFAULT CURRENT_TIMESTAMP,
+  user_goal_end_date datetime,
+  user_goal_elapsed bool default 0,
+  user_goal_success bool default 0,
+  user_goal_points int,
   PRIMARY KEY (user_goal_id),
   FOREIGN KEY (user_id) REFERENCES user (user_id),
   FOREIGN KEY (goal_id) REFERENCES goal (goal_id)
@@ -146,14 +148,14 @@ VALUES
   ('3XP8GJ', 2);
 
 insert into user_goal
-  (user_id, goal_id, user_goal_start_value, user_goal_current, user_goal_start_date, user_goal_end_date)
+  (user_id, goal_id, user_goal_start_value, user_goal_current, user_goal_end_date)
 VALUES
-  ('3XP8GJ', 1, 0, 2, 2018-03-15, 2018-03-20),
-  ('3XP8GJ', 2, 0, 2, 2018-03-15, 2018-03-20),
-  ('3XP8GJ', 3, 0, 2, 2018-03-15, 2018-03-20),
-  ('3XP8GJ', 4, 0, 2, 2018-03-15, 2018-03-20),
-  ('3XP8GJ', 5, 0, 2, 2018-03-15, 2018-03-20),
-  ('3XP8GJ', 6, 0, 2, 2018-03-15, 2018-03-20);
+  ('3XP8GJ', 1, 0, 2, '2018-03-20'),
+  ('3XP8GJ', 2, 0, 2, '2018-03-20'),
+  ('3XP8GJ', 3, 0, 2, '2018-03-20'),
+  ('3XP8GJ', 4, 0, 2, '2018-03-20'),
+  ('3XP8GJ', 5, 0, 2, '2018-03-20'),
+  ('3XP8GJ', 6, 0, 2, '2018-03-20');
 
 
 /*  Execute this file from the command line by typing:

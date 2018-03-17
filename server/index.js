@@ -25,24 +25,6 @@ app.use(passport.session({
   saveUninitialized: true,
 }));
 
-/** *******************REDIRECT ROUTES**************************** */
-
-app.get('/landing', (req, res) => {
-  res.redirect('/');
-});
-
-// app.get('/goals', (req, res) => {
-//   res.redirect('/');
-// });
-
-app.get('/homePage', (req, res) => {
-  res.redirect('/');
-});
-
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../react-client/dist', '/index.html'));
-});
-
 /** **************OAUTH**************** */
 
 passport.use(new FitbitStrategy(
@@ -134,6 +116,53 @@ app.get('/fitbit/dailySummary', async (req, res) => {
     res.status(401).send(err);
   }
 });
+
+/** *******************GOAL STUFF**************************** */
+app.get('/defaultGoals', async (req, res) => {
+  try {
+    const goals = await db.getDefaultGoals();
+    res.json(goals);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
+app.post('/createUserGoal', async (req, res) => {
+  // req.body needs: goal_id, deadline existance(deadline(length)), goal points
+  const newGoal = {
+    userID: '',
+    goalID: req.body.goalID,
+    startValue: 0,
+    targetValue: 0,
+    goalLength: req.body.goalLength,
+    points: req.body.points,
+  };
+  try {
+    if (req.session.passport) {
+      newGoal.userID = req.session.passport.user.id;
+      const token = await db.getAccessToken(req.session.passport.user.id);
+      let currentLifeTime = await axios.get('https://api.fitbit.com/1/user/-/activities.json', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      currentLifeTime = currentLifeTime.data;
+      const goalDetails = await db.getGoalInfo(newGoal.goalID);
+      newGoal.startValue = currentLifeTime.lifetime.total[goalDetails.goal_activity];
+      newGoal.targetValue = newGoal.startValue + goalDetails.goal_amount;
+      await db.createUserGoal(newGoal);
+      res.end();
+    } else {
+      console.log('bad passport');
+      res.status(401).json({ error: 'user not authenticated' });
+    }
+  } catch (err) {
+    console.log('server err');
+    res.status(500).end();
+  }
+});
+
+/** ********************************************************* */
 
 app.get('/test', async (req, res) => {
   res.json(await db.findUserId());
