@@ -24,7 +24,7 @@ class GoalsPage extends React.Component {
       <Accordion styled>
         <Accordion.Title active={activeIndex === 0} index={0} onClick={this.handleClick}>
           <Icon name="dropdown" />
-           Steps
+           Distance
         </Accordion.Title>
         <Accordion.Content active={activeIndex === 0}>
           <Segment.Group raised>
@@ -42,10 +42,38 @@ class GoalsPage extends React.Component {
 
         <Accordion.Title active={activeIndex === 1} index={1} onClick={this.handleClick}>
           <Icon name="dropdown" />
-           Stairs
+           Steps
         </Accordion.Title>
         <Accordion.Content active={activeIndex === 1}>
-        Goals goes here!
+            <Segment.Group raised>
+                <Segment padded color="green">
+                Goal 1
+                </Segment>
+                <Segment padded color="yellow">
+                Goal 2
+                </Segment>
+                <Segment padded color="red">
+                Goal 3
+                </Segment>
+            </Segment.Group>
+        </Accordion.Content>
+
+        <Accordion.Title active={activeIndex === 2} index={2} onClick={this.handleClick}>
+          <Icon name="dropdown" />
+           Stairs
+        </Accordion.Title>
+        <Accordion.Content active={activeIndex === 2}>
+            <Segment.Group raised>
+                <Segment padded color="green">
+                Goal 1
+                </Segment>
+                <Segment padded color="yellow">
+                Goal 2
+                </Segment>
+                <Segment padded color="red">
+                Goal 3
+                </Segment>
+            </Segment.Group>
         </Accordion.Content>
       </Accordion>
     );
