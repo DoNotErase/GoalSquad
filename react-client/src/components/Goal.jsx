@@ -9,7 +9,7 @@ const Goal = () => (
           <Header as="h3">goal_name</Header>
         </Grid.Column>
         <Grid.Column>
-          <Statistic color="green" floated="right" size="small">
+          <Statistic color="green" floated="right" size="tiny">
             <Statistic.Value>50</Statistic.Value>
             <Statistic.Label>points</Statistic.Label>
           </Statistic>
