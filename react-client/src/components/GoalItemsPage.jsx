@@ -11,19 +11,7 @@ class GoalItemsPage extends React.Component {
 	}
 
 	render() {
-		const styles = {
-			goalDiv: {
-				border: '1px solid black',
-				borderRadius: '5px'
-			},
-			icon: {
-				minHeight: '10px',
-				maxHeight: '50px',
-				minWidth: '10px',
-				maxHeight: '50px'
-			}
-		}
-		const icons = {
+		const activityIcons = {
 			running: './assets/icons/running-512x512.png',
 			biking: './assets/icons/biking-512x512.png'
 		}
@@ -44,7 +32,7 @@ class GoalItemsPage extends React.Component {
 				  className="goal-item"
 				>
 					<Grid.Column width={3}>
-		        	<img style={ styles.icon } src={ icons['running']} alt="running person"/>
+		        	<img className="activity-icon" src={ activityIcons['running']} alt="person running"/>
 					</Grid.Column>
 					<Grid.Column textAlign="left" width={10}>
 						<List>
@@ -58,7 +46,7 @@ class GoalItemsPage extends React.Component {
 						<a href="#"><List.Icon name="chevron right"></List.Icon></a> {/*go to goals detail page*/} 
 					</Grid.Column>
 							<Grid.Column width={3}>
-		        	<img style={ styles.icon } src={ icons['biking']} alt="running person"/>
+		        	<img className="activity-icon" src={ activityIcons['biking']} alt="person biking"/>
 					</Grid.Column>
 					<Grid.Column textAlign="left" width={10}>
 						<List>
