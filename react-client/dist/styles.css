@@ -43,16 +43,8 @@ body {
 
 .incubator-container {
     background: #B5D8B9;
-    position: fixed;
-    top: 0;
-    left: 0;
-    padding: 0;
-    margin: 0;
-    height: 100vh;
-    min-width:100%;
-    min-height:100%;
-    padding: 20px;
 }
+
 
 /* GOAL ITEMS PAGE */
 .goal-item {
@@ -65,4 +57,25 @@ body {
     min-height: 10px;
     max-width: 50px;
     min-width: 10px;
+}
+
+/* BARN PAGE */
+.barnegg {
+    bottom: 20px;
+    right: 20px;
+    position: fixed !important;
+    background-color: #845EC2;
+    background-image: linear-gradient(#845EC2, #008F7A);
+}
+
+.barnpage {
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    min-width:100%;
+    min-height:100%;
+    padding: 20px;
 }

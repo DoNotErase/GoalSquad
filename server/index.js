@@ -6,7 +6,7 @@ const FitbitStrategy = require('passport-fitbit-oauth2').FitbitOAuth2Strategy;
 const passport = require('passport');
 const config = require('../config.js');
 const axios = require('axios');
-const path = require('path')
+const path = require('path');
 
 const app = express();
 const db = require('../database-mysql/index.js');
@@ -31,12 +31,16 @@ app.get('/landing', (req, res) => {
   res.redirect('/');
 });
 
-app.get('/goals', (req, res) => {
-  res.redirect('/');
-});
+// app.get('/goals', (req, res) => {
+//   res.redirect('/');
+// });
 
 app.get('/homePage', (req, res) => {
   res.redirect('/');
+});
+
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../react-client/dist', '/index.html'));
 });
 
 /** **************OAUTH**************** */
@@ -137,7 +141,7 @@ app.get('/test', async (req, res) => {
 
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '../react-client/dist', '/index.html'));
-})
+});
 
 app.listen(8080, () => {
   console.log('listening on port 8080!');

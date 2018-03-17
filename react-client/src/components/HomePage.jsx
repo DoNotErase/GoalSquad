@@ -6,6 +6,13 @@ import PropTypes from 'prop-types';
 import * as actions from '../actions/homePageActions';
 
 class HomePage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      percent: 20, // this.props.eggPercent
+      eggPercent: 40,
+    };
+  }
   componentWillMount() {
     if (!this.props.state.user.id) {
       this.props.actions.attemptLogin();
@@ -21,14 +28,6 @@ class HomePage extends React.Component {
   render() {
     return (
       <div className="homepage">
-        <style>{`
-            body > div,
-            body > div > div,
-            body > div > div > div.homepage {
-                height: 100%;
-            }
-        `}
-        </style>
         <Grid
           textAlign="center"
           verticalAlign="middle"
@@ -39,6 +38,9 @@ class HomePage extends React.Component {
             <Header as="h1" textAlign="center" className="white" content="SQUAD" />
             <a href="/auth/fitbit">
               <Button color="violet" fluid size="large" style={{ marginTop: 250 }}>Connect</Button>
+            </a>
+            <a href="/egg">
+              <Button color="violet" fluid size="large" style={{ marginTop: 250 }}>Egg</Button>
             </a>
           </Grid.Column>
         </Grid>
