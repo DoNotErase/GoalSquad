@@ -16,19 +16,6 @@ class Routes extends React.Component {
       percent: 20,
     };
   }
-import HomePage from './HomePage';
-import LandingPage from './LandingPage';
-import GoalsPage from './GoalsPage';
-import ProgressBar from './ProgressBar';
-
-class Routes extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      percent: 20,
-    };
-  }
-
   tick() {
     console.log('inside tick', this);
     this.setState((prevState, props) => ({ percent: prevState.percent + 1 }));
