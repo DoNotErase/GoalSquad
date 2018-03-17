@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import * as actions from '../actions/actions';
 import * as createGoalActions from '../actions/createGoalActions';
+import * as incubatorActions from '../actions/incubatorActions';
 
 const LandingPage = props => (
   <div>
@@ -17,6 +18,13 @@ const LandingPage = props => (
 
     <button onClick={() => props.goalActions.submitUserGoal(3, null, 75)}> Test create goal </button>
     <button onClick={() => props.goalActions.getDefaultGoals()}> Test fetch default goals </button>
+    <div>
+      {props.goalsState.standardGoals.map(goal => (<div> {goal.goal_name} </div>))}
+    </div>
+    <button onClick={() => props.incubatorActions.getUserGoals()}> Test fetch userGoals </button>
+    <div>
+      {props.incubatorState.userGoals.map(goal => (<div> {goal.goal_name} </div>))}
+    </div>
 
   </div>
 );
@@ -37,8 +45,16 @@ const mapDispatchToProps = dispatch => (
   {
     actions: bindActionCreators(actions, dispatch),
     goalActions: bindActionCreators(createGoalActions, dispatch),
-  });
+    incubatorActions: bindActionCreators(incubatorActions, dispatch),
+  }
+);
 
-const mapStateToProps = state => ({ state: state.main });
+const mapStateToProps = state => (
+  {
+    state: state.main,
+    goalsState: state.goals,
+    incubatorState: state.incubator,
+  }
+);
 
 export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);
