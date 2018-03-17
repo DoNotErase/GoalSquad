@@ -1,5 +1,10 @@
 import React from 'react';
 import { Accordion, Icon, Segment } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
+import * as actions from '../actions/actions';
+import * as goalsActions from '../actions/createGoalActions';
 import Goal from './Goal';
 
 class GoalsPage extends React.Component {
@@ -57,5 +62,28 @@ class GoalsPage extends React.Component {
   }
 }
 
+GoalsPage.propTypes = {
+  state: PropTypes.shape({
+    id: PropTypes.string,
+    username: PropTypes.string,
+  }).isRequired,
+  actions: PropTypes.objectOf(PropTypes.func).isRequired,
+  goalsState: PropTypes.objectOf(PropTypes.string).isRequired,
+  goalsActions: PropTypes.objectOf(PropTypes.func).isRequired,
+};
 
-export default GoalsPage;
+const mapDispatchToProps = dispatch => (
+  {
+    actions: bindActionCreators(actions, dispatch),
+    goalsActions: bindActionCreators(goalsActions, dispatch),
+  }
+);
+
+const mapStateToProps = state => (
+  {
+    state: state.main,
+    goalsState: state.goals,
+  }
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(GoalsPage);

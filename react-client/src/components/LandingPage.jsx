@@ -21,7 +21,6 @@ const LandingPage = props => (
   </div>
 );
 
-
 LandingPage.propTypes = {
   state: PropTypes.shape({
     id: PropTypes.string,
@@ -31,6 +30,7 @@ LandingPage.propTypes = {
     lifetimeDistance: PropTypes.number,
   }).isRequired,
   actions: PropTypes.objectOf(PropTypes.func).isRequired,
+  goalActions: PropTypes.objectOf(PropTypes.func).isRequired,
 };
 
 const mapDispatchToProps = dispatch => (

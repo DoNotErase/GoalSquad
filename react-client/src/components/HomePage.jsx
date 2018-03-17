@@ -6,13 +6,6 @@ import PropTypes from 'prop-types';
 import * as actions from '../actions/homePageActions';
 
 class HomePage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      percent: 20, // this.props.eggPercent
-      eggPercent: 40,
-    };
-  }
   componentWillMount() {
     if (!this.props.state.id) {
       this.props.actions.attemptLogin();
