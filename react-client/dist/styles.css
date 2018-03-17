@@ -54,7 +54,10 @@ body {
     background: #B5D8B9;
 }
 
-.logout-button {
+.logout-button a {
+    /*margin: 20px;*/
+    text-decoration: none;
+    color: black;
     margin: 20px;
 }
 

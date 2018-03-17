@@ -42,7 +42,7 @@ class GoalItemsPage extends React.Component {
 			      </List>
 					</Grid.Column>
 					<Grid.Column width={3}>
-						<a href="#"><List.Icon name="chevron right"></List.Icon></a> {/*go to goals detail page*/} 
+						<a href="#"><List.Icon name="chevron right"></List.Icon></a> {/*goes to specific goal's detail page*/} 
 					</Grid.Column>
 					<Grid.Column width={3}>
 		        <img className="activity-icon" src={ activityIcons['biking']} alt="person biking"/>
