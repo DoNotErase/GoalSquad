@@ -65,7 +65,7 @@ class GoalsPage extends React.Component {
           </Grid.Column>
         </Grid>
 
-        <div>
+        {/* <div>
           <Button onClick={this.show('blurring')}>Blurring</Button>
           <Modal dimmer={dimmer} open={open} onClose={this.close}>
             <Modal.Header>Select a Photo</Modal.Header>
@@ -84,7 +84,7 @@ class GoalsPage extends React.Component {
               <Button positive icon="checkmark" labelPosition="right" content="Yep, that's me" onClick={this.close} />
             </Modal.Actions>
           </Modal>
-        </div>
+        </div> */}
       </div>
     );
   }
