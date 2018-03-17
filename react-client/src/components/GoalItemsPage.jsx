@@ -15,7 +15,16 @@ class GoalItemsPage extends React.Component {
 			goalDiv: {
 				border: '1px solid black',
 				borderRadius: '5px'
+			},
+			icon: {
+				minHeight: '50px',
+				maxHeight: '50px',
+				minWidth: '50px',
+				maxHeight: '50px'
 			}
+		}
+		const icons = {
+			running: './assets/icons/running-512x512.png'
 		}
 		return (
 			<div className="goal-items-page">
@@ -34,7 +43,7 @@ class GoalItemsPage extends React.Component {
 				  className="goal-item"
 				>
 					<Grid.Column width={2}>
-		        	<img src="../../dist/assets/icons/running-512x512.png" alt="running person"/>
+		        	<img style={ styles.icon } src={ icons['running']} alt="running person"/>
 					</Grid.Column>
 					<Grid.Column textAlign="left" width={12}>
 						<List>
@@ -45,7 +54,21 @@ class GoalItemsPage extends React.Component {
 			      </List>
 					</Grid.Column>
 					<Grid.Column width={2}>
-						<List.Icon name="chevron right"></List.Icon>
+						<a href="#"><List.Icon name="chevron right"></List.Icon></a> {/*go to goals detail page*/} 
+					</Grid.Column>
+							<Grid.Column width={2}>
+		        	<img style={ styles.icon } src={ icons['running']} alt="running person"/>
+					</Grid.Column>
+					<Grid.Column textAlign="left" width={12}>
+						<List>
+			        <List.Content>
+			        	<List.Header>Goal Name (Should be bold)</List.Header>
+			        	<List.Description>goal description</List.Description>
+			        </List.Content>
+			      </List>
+					</Grid.Column>
+					<Grid.Column width={2}>
+						<a href="#"><List.Icon name="chevron right"></List.Icon></a> {/*go to goals detail page*/} 
 					</Grid.Column>
 				</Grid>
 			</div>
