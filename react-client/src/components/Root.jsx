@@ -1,11 +1,10 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { Router, Route } from 'react-router-dom';
-import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
+import { syncHistoryWithStore } from 'react-router-redux';
 import { createBrowserHistory } from 'history';
 import Routes from './Routes';
 import store from '../store/index';
-import mainReducer from '../reducers/mainReducer.js';
 
 // gives URL history to redux
 const history = syncHistoryWithStore(createBrowserHistory(), store);
