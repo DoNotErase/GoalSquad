@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Route, Switch, withRouter, browserHistory } fr
 import HomePage from './HomePage';
 import LandingPage from './LandingPage';
 import GoalsPage from './GoalsPage';
-import EggPage from './Egg';
+import ProgressBar from './ProgressBar';
 
 class Routes extends React.Component {
   constructor(props) {
@@ -27,7 +27,7 @@ class Routes extends React.Component {
           <Route exact path="/" component={HomePage} />
           <Route path="/landing" component={LandingPage} />
           <Route path="/goals" component={GoalsPage} />
-          <Route path="/egg" render={() => <EggPage percent={this.state.percent} tick={() => { this.tick(); }} />} />
+          <Route path="/egg" render={() => <ProgressBar percent={this.state.percent} tick={() => { this.tick(); }} />} />
           {/* <Router path='/futurpage' component={ nameOfCOmponent } /> */}
         </Switch>
       </Router>
