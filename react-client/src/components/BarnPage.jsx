@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Link, Container, Grid } from 'semantic-ui-react';
+import { Image, Link, Grid } from 'semantic-ui-react';
 
 const BarnPage = () => (
   <div className="barnpage">
