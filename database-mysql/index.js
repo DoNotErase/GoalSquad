@@ -85,7 +85,6 @@ module.exports.getGoalInfo = async (goalID) => {
     const query = `SELECT * FROM goal WHERE goal_id = '${goalID}';`;
 
     const goal = await db.queryAsync(query);
-    console.log(goal);
     return goal[0];
   } catch (err) {
     return err;
@@ -109,6 +108,17 @@ module.exports.createUserGoal = async (goalObj) => {
       await db.queryAsync(setEndDate);
     }
     return '';
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
+};
+
+module.exports.getDefaultGoals = async () => {
+  try {
+    const query = 'SELECT * FROM goal';
+
+    return await db.queryAsync(query);
   } catch (err) {
     console.log(err);
     return err;
