@@ -2,6 +2,7 @@ body {
     background-color: #ffffff;
     color: black;
 }
+
 .homepage {
     position: fixed;
     top: 0;
@@ -19,42 +20,49 @@ body {
     color: white !important;
 }
 
-.incubator-page {
-    margin: 5px;
-    margin-top: 45px;
-    padding: 20px;
-    background-color: #EFF7F0;
-}
-
-.goal-item {
-    background: white;
-    border: 1px solid black;
-}
-
-.goal-container {
-    border: 1px solid black;
-    border-radius: 5px;
-    min-height: 100vh;
+/* INCUBATOR PAGE */
+.add-goal-icon {
+    max-height: 30px;
+    min-height: 10px;
+    max-width: 30px;
+    min-width: 10px;
 }
 
 .goals-list {
     margin: 25px;
 }
 
-.add-goal-icon {
-    min-height: 10px;
-    max-height: 30px;
-    min-width: 10px;
-    max-height: 30px;
+.goal-container {
+    background-color: #EFF7F0;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 15px;
+    margin-top: 100px;
+    min-height: 100vh;
 }
 
-.incubator-nav {
+.incubator-container {
+    background: #B5D8B9;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    min-width:100%;
+    min-height:100%;
     padding: 20px;
 }
 
+/* GOAL ITEMS PAGE */
+.goal-item {
+    background: white;
+    border: 1px solid black;
+}
+
 .activity-icon {
-    min-height: 10px;
     max-height: 50px;
-    min-width: 10px;
+    min-height: 10px;
     max-width: 50px;
+    min-width: 10px;
 }

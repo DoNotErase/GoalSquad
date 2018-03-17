@@ -18,26 +18,26 @@ class IncubatorPage extends React.Component {
 			}
 		}
 		return (
-			<div className="incubator-page">
-			<style>{`
-			    body > div,
-			    body > div > div,
-			    body > div > div > div.incubator-page {
-			        height: 100%;
-			    }
-			`}
-			</style>
+			<div className="incubator-container">
+				<style>{`
+				    body > div,
+				    body > div > div,
+				    body > div > div > div.incubator-container {
+				        height: 100%;
+				    }
+				`}
+				</style>
 				<Grid
 				  textAlign="center"
 				  verticalAlign="middle"
 				  style={{ height: '100%' }}
 				  columns={2}
 				>
-					<Grid.Column width={16} className="incubator-page">
+					<Grid.Column width={16}>
 						<div className="goal-container">
 							<Grid style={ styles.incubatorNav } columns={2} verticalAlign="middle">
 								<Grid.Column width={12}>
-					        <Header width={12} size="large" textAlign="left">Your Goals</Header>
+					        <Header size="large" textAlign="left">Your Goals</Header>
 			        	</Grid.Column>
 			        	<Grid.Column width={4}>
 					        <a href="/goals"><img className="add-goal-icon" alt="add a goal" src="./assets/icons/plus-button.png"/></a>
