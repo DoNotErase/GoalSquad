@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider, Grid, Header } from 'semantic-ui-react';
+import { Divider, Grid, Header, Icon } from 'semantic-ui-react';
 import GoalItemsPage from './GoalItemsPage.jsx';
 import ProgressBar from './ProgressBarPage.jsx';
 class IncubatorPage extends React.Component {
@@ -30,16 +30,15 @@ class IncubatorPage extends React.Component {
         <Grid
 	        container
           textAlign="center"
-          verticalAlign="middle"
           style={{ height: '100%' }}
           columns={2}
         >
           <Grid.Column width={16}>
             <div className="goal-container">
 	            <div className="progress-bar-container">
-		            <Grid container columns={2}>
+		            <Grid verticalAlign="middle" container columns={2}>
 		            	<Grid.Column width={3}><img  src="./assets/icons/egg.png"/></Grid.Column>
-		            	<Grid.Column width={13} className="progress-bar"><ProgressBar /></Grid.Column>
+		            	<Grid.Column width={13}><div className="progress-bar"><ProgressBar /></div></Grid.Column>
 			          </Grid>
 		          </div>
               <Grid container style={styles.incubatorNav} columns={2} verticalAlign="middle">
@@ -55,6 +54,7 @@ class IncubatorPage extends React.Component {
                 <GoalItemsPage />
               </div>
             </div>
+            <a className="logout-button" href="/logout"><Icon size="large" name="log out"/></a>
           </Grid.Column>
         </Grid>
       </div>

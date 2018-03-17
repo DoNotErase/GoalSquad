@@ -27,8 +27,6 @@ class GoalItemsPage extends React.Component {
 				</style>
 				<Grid
 					container
-				  style={{ height: '100%' }}
-				  verticalAlign="middle"
 				  columns={3}
 				  className="goal-item"
 				>
