@@ -13,7 +13,6 @@ const db = mysql.createConnection({
   database: 'goalsquad',
 });
 
-// test function for example
 module.exports.getUserByID = async (fitbitID) => {
   try {
     return await db.queryAsync(`SELECT * FROM user WHERE user_id = '${fitbitID}'`);
@@ -64,6 +63,65 @@ module.exports.getAccessToken = async (fitbitID) => {
     return data[0].user_accesstoken;
   } catch (e) {
     return e;
+  }
+};
+
+module.exports.getUserGoals = async (fitbitID) => {
+  try {
+    const query = 'SELECT user_goal.user_goal_start_value, user_goal.user_goal_target, ' +
+      'user_goal.user_goal_start_date, user_goal.user_goal_end_date, user_goal.user_goal_achieved, ' +
+      'goal.goal_activity, goal.goal_amount, goal.goal_difficulty ' +
+      'FROM user_goal INNER JOIN goal ON goal.goal_id = user_goal.goal_id ' +
+      `WHERE user_goal.user_id = '${fitbitID}';`;
+
+    return await db.queryAsync(query);
+  } catch (err) {
+    return err;
+  }
+};
+
+module.exports.getGoalInfo = async (goalID) => {
+  try {
+    const query = `SELECT * FROM goal WHERE goal_id = '${goalID}';`;
+
+    const goal = await db.queryAsync(query);
+    return goal[0];
+  } catch (err) {
+    return err;
+  }
+};
+
+module.exports.createUserGoal = async (goalObj) => {
+  try {
+    const query = 'INSERT INTO user_goal (user_id, goal_id, user_goal_start_value, user_goal_current, ' +
+      'user_goal_target, user_goal_points) VALUES ' +
+      `('${goalObj.userID}', ${goalObj.goalID}, ${goalObj.startValue}, ${goalObj.startValue}, ${goalObj.targetValue}, ${goalObj.points});`;
+
+    await db.queryAsync(query);
+    if (goalObj.goalLength) {
+      const setEndDate = 'UPDATE user_goal SET user_goal_end_date = ' +
+        '(SELECT DATE_ADD((SELECT DATE_ADD((SELECT MAX(user_goal_start_date)), ' +
+        `INTERVAL ${goalObj.goalLength.day} DAY)), ` +
+        `INTERVAL ${goalObj.goalLength.hour} HOUR)) ` +
+        'WHERE user_goal_id = (SELECT MAX(user_goal_id));';
+
+      await db.queryAsync(setEndDate);
+    }
+    return '';
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
+};
+
+module.exports.getDefaultGoals = async () => {
+  try {
+    const query = 'SELECT * FROM goal';
+
+    return await db.queryAsync(query);
+  } catch (err) {
+    console.log(err);
+    return err;
   }
 };
 
