@@ -35,9 +35,11 @@ class IncubatorPage extends React.Component {
 				<Grid.Column width={16} className="goal-page">
 					<div style={ styles.goalContainer }>
 						<Grid celled="internally">
-							<Grid.Column width={16}>
+							<Grid.Column width={12}>
 				        <Header width={12} size="large" textAlign="left">Your Goals</Header>
-				        <div><img src="../../dist/assets/icons/plus-button.png"/></div>
+		        	</Grid.Column>
+		        	<Grid.Column width={4}>
+				        <img src="../../dist/assets/icons/plus-button.png"/>
 		        	</Grid.Column>
 		        </Grid>
 		        <Divider fitted />
