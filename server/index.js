@@ -118,6 +118,34 @@ app.get('/fitbit/dailySummary', async (req, res) => {
 });
 
 /** *******************GOAL STUFF**************************** */
+app.get('/userGoals', async (req, res) => {
+  if (req.session.passport) {
+    if (!req.query.type) {
+      try {
+        const userGoals = await db.getUserGoals(req.session.passport.user.id);
+        res.json(userGoals);
+      } catch (err) {
+        console.log(err);
+        res.status(500).end();
+      }
+    } else if (req.query.type === 'active') {
+      try {
+        const userGoals = await db.getActiveUserGoals(req.session.passport.user.id);
+        res.json(userGoals);
+      } catch (err) {
+        console.log(err);
+        res.status(500).end();
+      }
+    } else {
+      console.log('type of goal not yet recognized!');
+      res.end();
+    }
+  } else {
+    console.log('bad passport');
+    res.status(401).end();
+  }
+});
+
 app.get('/defaultGoals', async (req, res) => {
   try {
     const goals = await db.getDefaultGoals();
@@ -160,6 +188,12 @@ app.post('/createUserGoal', async (req, res) => {
     console.log('server err');
     res.status(500).end();
   }
+});
+
+app.patch('/completeGoal', async (req, res) => {
+  const userGoalID = req.body.goalID;
+  await db.completeGoal(userGoalID);
+  res.end();
 });
 
 /** ********************************************************* */
