@@ -2,12 +2,18 @@ import React from 'react';
 import { Divider, Grid, Header, Icon } from 'semantic-ui-react';
 import GoalItemsPage from './GoalItemsPage.jsx';
 import ProgressBar from './ProgressBarPage.jsx';
-class IncubatorPage extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  // }
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
+import * as actions from '../actions/actions';
+import * as incubatorActions from '../actions/incubatorActions';
 
-  componentWillMount() {
+class IncubatorPage extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() {
 
   }
 
@@ -62,4 +68,29 @@ class IncubatorPage extends React.Component {
   }
 }
 
-export default IncubatorPage;
+IncubatorPage.propTypes = {
+  state: PropTypes.shape({
+    id: PropTypes.string,
+    username: PropTypes.string,
+  }).isRequired,
+  actions: PropTypes.objectOf(PropTypes.func).isRequired,
+  incubatorState: PropTypes.objectOf(PropTypes.string).isRequired,
+  incubatorActions: PropTypes.objectOf(PropTypes.func).isRequired,
+};
+
+const mapDispatchToProps = dispatch => (
+  {
+    actions: bindActionCreators(actions, dispatch),
+    incubatorActions: bindActionCreators(incubatorActions, dispatch),
+  }
+);
+
+const mapStateToProps = state => (
+  {
+    state: state.main,
+    incubatorState: state.incubator,
+  }
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(IncubatorPage);
+
