@@ -4,16 +4,24 @@ import { Image, Link, Container, Grid } from 'semantic-ui-react';
 const BarnPage = () => (
   <div className="barnpage">
     <Grid>
-      <Grid.Column color="blue">
-        <Container>
-          <Image
-            src="./assets/icons/eggTEST.png"
-            as={Link}
-            href="/"
-            verticalAlign="bottom"
-            floated="right"
-          />
-        </Container>
+      <Grid.Column
+        textAlign="right"
+        stretched
+        floated="right"
+        width={5}
+        verticalAlign="bottom"
+      >
+
+        <Image
+          className="barnegg"
+          src="./assets/icons/eggTEST.png"
+          as={Link}
+          href="/"
+          verticalAlign="bottom"
+          floated="right"
+          size="massive"
+        />
+
       </Grid.Column>
     </Grid>
   </div>
