@@ -71,6 +71,6 @@ HomePage.propTypes = {
 };
 
 const mapDispatchToProps = dispatch => ({ actions: bindActionCreators(actions, dispatch) });
-const mapStateToProps = state => ({ state: state.main });
+const mapStateToProps = state => ({ state: state });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
