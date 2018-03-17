@@ -8,7 +8,7 @@ class AddGoalModal extends React.Component {
       open: false,
     };
     this.show = this.show.bind(this);
-    this.clode = this.close.bind(this);
+    this.close = this.close.bind(this);
   }
 
   show(dimmer) { this.setState({ dimmer, open: true }); }
