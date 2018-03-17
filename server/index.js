@@ -39,6 +39,10 @@ app.get('/homePage', (req, res) => {
   res.redirect('/');
 });
 
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../react-client/dist', '/index.html'));
+});
+
 /** **************OAUTH**************** */
 
 passport.use(new FitbitStrategy(

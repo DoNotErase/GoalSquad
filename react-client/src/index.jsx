@@ -5,5 +5,5 @@ import store from './store/index';
 
 render(
   <Root store={store} />,
-  document.getElementById('app')
+  document.getElementById('app'),
 );
