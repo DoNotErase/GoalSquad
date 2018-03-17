@@ -82,9 +82,11 @@ module.exports.getUserGoals = async (fitbitID) => {
 
 module.exports.getGoalInfo = async (goalID) => {
   try {
-    const query = `SELECT * FROM goal WHERE goal_id = ${goalID}`;
+    const query = `SELECT * FROM goal WHERE goal_id = '${goalID}';`;
 
-    return await db.queryAsync(query)[0];
+    const goal = await db.queryAsync(query);
+    console.log(goal);
+    return goal[0];
   } catch (err) {
     return err;
   }
@@ -94,10 +96,9 @@ module.exports.createUserGoal = async (goalObj) => {
   try {
     const query = 'INSERT INTO user_goal (user_id, goal_id, user_goal_start_value, user_goal_current, ' +
       'user_goal_target, user_goal_points) VALUES ' +
-      `(${goalObj.userID}, ${goalObj.goalID}, ${goalObj.startValue}, ${goalObj.targetValue}, ${goalObj.points}`;
+      `('${goalObj.userID}', ${goalObj.goalID}, ${goalObj.startValue}, ${goalObj.startValue}, ${goalObj.targetValue}, ${goalObj.points});`;
 
     await db.queryAsync(query);
-
     if (goalObj.goalLength) {
       const setEndDate = 'UPDATE user_goal SET user_goal_end_date = ' +
         '(SELECT DATE_ADD((SELECT DATE_ADD((SELECT MAX(user_goal_start_date)), ' +
@@ -105,10 +106,11 @@ module.exports.createUserGoal = async (goalObj) => {
         `INTERVAL ${goalObj.goalLength.hour} HOUR)) ` +
         'WHERE user_goal_id = (SELECT MAX(user_goal_id));';
 
-      return await db.queryAsync(setEndDate);
+      await db.queryAsync(setEndDate);
     }
     return '';
   } catch (err) {
+    console.log(err);
     return err;
   }
 };

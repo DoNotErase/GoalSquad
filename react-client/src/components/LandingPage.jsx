@@ -2,19 +2,38 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import * as actions from '../actions/actions';
 
-const LandingPage = props => (
-  <div>
-    <p> hello {props.state.user.username} </p>
+const LandingPage = (props) => {
+  const submitUserGoal = (goalID, deadline, points) => {
+    axios.post('/createUserGoal', {
+      goalID,
+      goalLength: deadline, // of form {day: (num), hour: ()} or null
+      points,
+    })
+      .then(() => {
+        console.log('goal created');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-    <button onClick={props.actions.getLifetimeData}> getLifeTimeData </button>
+  return (
+    <div>
+      <p> hello {props.state.user.username} </p>
 
-    <p>Lifetime Steps: {props.state.activity.lifetimeSteps}</p>
-    <p>Lifetime Floors: {props.state.activity.lifetimeFloors}</p>
-    <p>Lifetime Distance: {props.state.activity.lifetimeDistance}</p>
-  </div>
-);
+      <button onClick={props.actions.getLifetimeData}> getLifeTimeData </button>
+
+      <p>Lifetime Steps: {props.state.activity.lifetimeSteps}</p>
+      <p>Lifetime Floors: {props.state.activity.lifetimeFloors}</p>
+      <p>Lifetime Distance: {props.state.activity.lifetimeDistance}</p>
+
+      <button onClick={() => submitUserGoal(3, { day: 1, hour: 5 }, 75)}> Test create goal </button>
+    </div>
+  );
+};
 
 LandingPage.propTypes = {
   state: PropTypes.shape({

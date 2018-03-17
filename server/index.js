@@ -134,28 +134,31 @@ app.post('/createUserGoal', async (req, res) => {
     goalID: req.body.goalID,
     startValue: 0,
     targetValue: 0,
-    goalLength: req.body.deadline,
+    goalLength: req.body.goalLength,
     points: req.body.points,
   };
   try {
     if (req.session.passport) {
       newGoal.userID = req.session.passport.user.id;
-      const token = db.getAccessToken(req.session.passport.user.id);
-      const currentLifeTime = await axios.get('https://api.fitbit.com/1/user/-/activities.json', {
+      const token = await db.getAccessToken(req.session.passport.user.id);
+      let currentLifeTime = await axios.get('https://api.fitbit.com/1/user/-/activities.json', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+      currentLifeTime = currentLifeTime.data;
       const goalDetails = await db.getGoalInfo(newGoal.goalID);
       newGoal.startValue = currentLifeTime.lifetime.total[goalDetails.goal_activity];
       newGoal.targetValue = newGoal.startValue + goalDetails.goal_amount;
       await db.createUserGoal(newGoal);
       res.end();
     } else {
+      console.log('bad passport');
       res.status(401).json({ error: 'user not authenticated' });
     }
   } catch (err) {
-    res.status(500).send(err);
+    console.log('server err');
+    res.status(500).end();
   }
 });
 
