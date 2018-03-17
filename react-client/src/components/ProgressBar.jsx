@@ -11,13 +11,13 @@ class Egg extends React.Component {
   }
 
   // fix this once we know what is in store
-  // componentDidMount() {
-  //   axios.get('/eggData', {
-  //     params: {
-  //       eggID:
-  //     }
-  //   })
-  // }
+  componentDidMount() {
+    axios.get('/eggData', {
+      params: {
+        userID: this.props
+      }
+    })
+  }
   render() {
     return (
       <Progress value={this.props.percent} total="100" progress="percent" indicating />

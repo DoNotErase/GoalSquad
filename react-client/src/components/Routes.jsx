@@ -30,7 +30,7 @@ class Routes extends React.Component {
           <Route path="/incubator" component={IncubatorPage} />
           <Route path="/barn" component={BarnPage} />
           <Route path="/goals" component={GoalsPage} />
-          <Route path="/egg" render={() => <ProgressBar percent={this.state.percent} tick={() => { this.tick(); }} />} />
+          <Route path="/egg" render={() => <ProgressBar user={this.state.percent} tick={() => { this.tick(); }} />} />
         </Switch>
       </Router>
     );
