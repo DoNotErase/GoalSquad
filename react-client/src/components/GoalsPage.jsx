@@ -1,34 +1,61 @@
 import React from 'react';
-import { Grid } from 'semantic-ui-react';
+import { Accordion, Icon, Segment } from 'semantic-ui-react';
+import Goal from './Goal';
 
 class GoalsPage extends React.Component {
-	constructor(props) {
-		super(props)
-	}
+  constructor() {
+    super();
+    this.state = {
+      activeIndex: -1,
+    };
+    this.handleClick = this.handleClick.bind(this);
+  }
 
-	render() {
-		return (
-			<div className="goals-page">
-			<style>{`
-			    body > div,
-			    body > div > div,
-			    body > div > div > div.goals-page {
-			        height: 100%;
-			    }
-			`}
-			</style>
-				<Grid
-				  textAlign="center"
-				  verticalAlign="middle"
-				  style={{ height: '100%' }}
-				>
-				<Grid.Column width={10} style={{ maxWidth: 450 }}>
-					<div> Goals Page </div>
-				</Grid.Column>
-				</Grid>
-			</div>
-		)
-	}
+  handleClick(e, titleProps) {
+    const { index } = titleProps;
+    const { activeIndex } = this.state;
+    const newIndex = activeIndex === index ? -1 : index;
+
+    this.setState({ activeIndex: newIndex });
+  }
+
+  render() {
+    const { activeIndex } = this.state;
+    return (
+      <Accordion styled>
+        <Accordion.Title active={activeIndex === 0} index={0} onClick={this.handleClick}>
+          <Icon name="dropdown" />
+           Distance
+        </Accordion.Title>
+        <Accordion.Content active={activeIndex === 0}>
+          <Segment.Group raised>
+            <Goal />
+          </Segment.Group>
+        </Accordion.Content>
+
+        <Accordion.Title active={activeIndex === 1} index={1} onClick={this.handleClick}>
+          <Icon name="dropdown" />
+           Steps
+        </Accordion.Title>
+        <Accordion.Content active={activeIndex === 1}>
+          <Segment.Group raised>
+            <Goal />
+          </Segment.Group>
+        </Accordion.Content>
+
+        <Accordion.Title active={activeIndex === 2} index={2} onClick={this.handleClick}>
+          <Icon name="dropdown" />
+           Stairs
+        </Accordion.Title>
+        <Accordion.Content active={activeIndex === 2}>
+          <Segment.Group raised>
+            <Goal />
+          </Segment.Group>
+        </Accordion.Content>
+      </Accordion>
+    );
+  }
 }
+
 
 export default GoalsPage;

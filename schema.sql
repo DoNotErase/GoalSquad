@@ -19,11 +19,13 @@ CREATE TABLE user (
   user_refreshtoken varchar(255),
   user_level int NOT NULL DEFAULT 1,
   user_current_xp int NOT NULL DEFAULT 0,
+  user_total_points int NOT NULL DEFAULT 0,
   PRIMARY KEY (user_id)
 );
 
 CREATE TABLE goal (
   goal_id int NOT NULL AUTO_INCREMENT,
+  goal_name varchar(255) NOT NULL,
   goal_activity varchar(50) NOT NULL,
   goal_amount int NOT NULL,
   goal_difficulty varchar(50) NOT NULL,
@@ -114,8 +116,9 @@ VALUES
   ('BeardGuy_egg');
 
 insert into goal 
-  (goal_activity, goal_amount, goal_difficulty, goal_class, goal_points, goal_timedivisor)
+  (goal_name, goal_activity, goal_amount, goal_difficulty, goal_class, goal_points, goal_timedivisor)
 VALUES
+<<<<<<< HEAD
   ('distance', 1, 'easy', 'short', 10, 2),
   ('distance', 2, 'med', 'short', 25, 2),
   ('distance', 5, 'hard', 'short', 100, 2),
@@ -134,6 +137,26 @@ VALUES
   ('floors', 40, 'easy', 'long', 200, 24),
   ('floors', 100, 'med', 'long', 500, 24),
   ('floors', 200, 'hard', 'long', 1000, 24);
+=======
+  ('Run 1 mile', 'distance', 1, 'easy', 'short', 10, 2),
+  ('Run 2 miles','distance', 2, 'med', 'short', 25, 2),
+  ('Run 5 miles','distance', 5, 'hard', 'short', 100, 2),
+  ('Run 10 miles','distance', 10, 'easy', 'long', 200, 24),
+  ('Run 25 miles','distance', 25, 'med', 'long', 500, 24),
+  ('Run 50 miles','distance', 50, 'hard', 'long', 1000, 24),
+  ('Walk 2000 steps', 'steps', 2000, 'easy', 'short', 10, 2),
+  ('Walk 4000 steps', 'steps', 4000, 'med', 'short', 25, 2),
+  ('Walk 10000 steps', 'steps', 10000, 'hard', 'short', 100, 2),
+  ('Walk 20000 steps', 'steps', 20000, 'easy', 'long', 200, 24),
+  ('Walk 50000 steps', 'steps', 50000, 'med', 'long', 500, 24),
+  ('Walk 100000 steps', 'steps', 100000, 'hard', 'long', 1000, 24),
+  ('Climb 3 stairs', 'stairs', 3, 'easy', 'short', 10, 2),
+  ('Climb 5 stairs', 'stairs', 5, 'med', 'short', 25, 2),
+  ('Climb 20 stairs', 'stairs', 20, 'hard', 'short', 100, 2),
+  ('Climb 40 stairs', 'stairs', 40, 'easy', 'long', 200, 24),
+  ('Climb 100 stairs', 'stairs', 100, 'med', 'long', 500, 24),
+  ('Climb 200 stairs', 'stairs', 200, 'hard', 'long', 1000, 24);
+>>>>>>> 7180cacc014bc9ac19a9bb19d28ed58dc7d9b3d6
 
 insert into user_egg
   (user_id, egg_id)

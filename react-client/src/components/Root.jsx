@@ -1,23 +1,22 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import{ Router, Route } from 'react-router-dom';
-import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
+import { Router, Route } from 'react-router-dom';
+import { syncHistoryWithStore } from 'react-router-redux';
 import { createBrowserHistory } from 'history';
-import Routes from './Routes.jsx';
-import store from '../store/index.js';
-import mainReducer from '../reducers/mainReducer.js'
+import Routes from './Routes';
+import store from '../store/index';
 
-//gives URL history to redux
+// gives URL history to redux
 const history = syncHistoryWithStore(createBrowserHistory(), store);
 
-//Root component can only have one child component
-//Route component handles route redirection based on filtered path option below
+// Root component can only have one child component
+// Route component handles route redirection based on filtered path option below
 const Root = ({ store }) => (
-    <Provider store={ store }>
-        <Router history={ history }>
-            <Route path='/:filter?' component={ Routes } />
-        </Router>
-    </Provider>
-)
+  <Provider store={store}>
+    <Router history={history}>
+      <Route path="/:filter?" component={Routes} />
+    </Router>
+  </Provider>
+);
 
 export default Root;
