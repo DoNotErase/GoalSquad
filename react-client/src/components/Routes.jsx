@@ -7,7 +7,7 @@ import LandingPage from './LandingPage';
 import IncubatorPage from './IncubatorPage';
 import BarnPage from './BarnPage';
 import GoalsPage from './GoalsPage';
-import ProgressBar from './ProgressBar';
+import ProgressBar from './ProgressBarPage';
 
 class Routes extends React.Component {
   constructor(props) {

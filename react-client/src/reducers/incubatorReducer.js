@@ -1,12 +1,13 @@
 const incubatorState = {
-
+  userGoals: [],
 };
 
 const incubatorReducer = (state = incubatorState, action) => {
   switch (action.type) {
-    case 'TEST': {
+    case 'SET_USER_GOALS': {
       return {
         ...state,
+        userGoals: action.payload,
       };
     }
     default: {

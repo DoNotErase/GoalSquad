@@ -23,7 +23,7 @@ export const submitUserGoal = (goalID, deadline, points) => (
     })
       .then(() => {
         console.log('goal created');
-        dispatch(''); // not sure if this actually needs to dispatch anything
+        // not sure if this actually needs to dispatch anything
       })
       .catch((err) => {
         console.log(err);
