@@ -4,9 +4,9 @@ import axios from 'axios';
 export const setUserData = userData => ({
   type: 'USER_LIFETIME_ACTIVITY',
   payload: {
-    lifetimeSteps: userData.lifetime.total.steps,
-    lifetimeFloors: userData.lifetime.total.floors,
-    lifetimeDistance: userData.lifetime.total.distance,
+    steps: userData.lifetime.total.steps,
+    floors: userData.lifetime.total.floors,
+    distance: userData.lifetime.total.distance,
   },
 });
 
