@@ -3,22 +3,24 @@ const mainState = {
   username: '',
   level: 0,
   XP: 0,
-  lifetimeSteps: 0,
-  lifetimeFloors: 0,
-  lifetimeDistance: 0,
+  steps: 0,
+  stairs: 0,
+  distance: 0,
 };
 
 const mainReducer = (state = mainState, action) => {
   switch (action.type) {
     case 'USER_LIFETIME_ACTIVITY': {
+      console.log(action.payload);
       return {
         ...state,
-        lifetimeSteps: action.payload.lifetimeSteps,
-        lifetimeFloors: action.payload.lifetimeFloors,
-        lifetimeDistance: action.payload.lifetimeDistance,
+        steps: action.payload.steps,
+        stairs: action.payload.floors,
+        distance: action.payload.distance,
       };
     }
     case 'USER_LOGIN': {
+      console.log(action.payload);
       return {
         ...state,
         id: action.payload.user_id,

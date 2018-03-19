@@ -150,12 +150,12 @@ VALUES
 insert into user_goal
   (user_id, goal_id, user_goal_start_value, user_goal_current, user_goal_end_date)
 VALUES
-  ('3XP8GJ', 1, 0, 2, '2018-03-20'),
-  ('3XP8GJ', 2, 0, 2, '2018-03-20'),
-  ('3XP8GJ', 3, 0, 2, '2018-03-20'),
-  ('3XP8GJ', 4, 0, 2, '2018-03-20'),
-  ('3XP8GJ', 5, 0, 2, '2018-03-20'),
-  ('3XP8GJ', 6, 0, 2, '2018-03-20');
+  ('3XP8GJ', 2, 2, 2, '2018-03-20'),
+  ('3XP8GJ', 14, 14, 2, '2018-03-20'),
+  ('3XP8GJ', 9, 9, 2, '2018-03-20'),
+  ('3XP8GJ', 3, 3, 2, '2018-03-20'),
+  ('3XP8GJ', 5, 5, 2, '2018-03-20'),
+  ('3XP8GJ', 12, 12, 2, '2018-03-20');
 
 
 /*  Execute this file from the command line by typing:
