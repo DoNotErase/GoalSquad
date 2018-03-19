@@ -1,5 +1,5 @@
 import React from 'react';
-import { Accordion, Icon, Segment, Grid, Modal, Button, Image, Header } from 'semantic-ui-react';
+import { Accordion, Icon, Segment, Grid, Header, Divider } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
@@ -29,8 +29,10 @@ class GoalsPage extends React.Component {
     const { activeIndex } = this.state;
     return (
       <div className="goalspage">
+        <Header as="h2">Add A Goal</Header>
+        <Divider />
         <Grid centered>
-          <Grid.Column computer={8} mobile={14}>
+          <Grid.Column computer={8} mobile={16}>
             <Accordion styled fluid>
               <Accordion.Title active={activeIndex === 0} index={0} onClick={this.handleClick}>
                 <Icon name="dropdown" />
