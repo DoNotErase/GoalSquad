@@ -7,7 +7,7 @@ import * as incubatorActions from '../actions/incubatorActions';
 
 const GoalItemsPage = (props) => {
   const statusIndicator = (goal) => {
-    if (goal.user_goal.concluded && !goal.user_goal_finalized) {
+    if (goal.user_goal_concluded && !goal.user_goal_finalized) {
       if (goal.user_goal_success) {
         return (
           <button onClick={() => { props.incubatorActions.markGoalSuccess(goal.user_goal_id); }}>

@@ -68,9 +68,7 @@ module.exports.getAccessToken = async (fitbitID) => {
 
 module.exports.getUserGoals = async (fitbitID) => {
   try {
-    const query = 'SELECT user_goal.user_goal_id, user_goal.user_goal_start_value, user_goal.user_goal_target, ' +
-      'user_goal.user_goal_start_date, user_goal.user_goal_end_date, user_goal.user_goal_elapsed, ' +
-      'user_goal.user_goal_success, goal.goal_name, goal.goal_activity, goal.goal_amount, goal.goal_difficulty ' +
+    const query = 'SELECT user_goal.*, goal.goal_name, goal.goal_activity, goal.goal_amount, goal.goal_difficulty ' +
       'FROM user_goal INNER JOIN goal ON goal.goal_id = user_goal.goal_id ' +
       `WHERE user_goal.user_id = '${fitbitID}';`;
 
