@@ -26,6 +26,7 @@ const MainMenu = () => (
             href="/barn"
           >
             <Icon name="home" size="big" />
+            Barn
           </Button>
           <Button
             icon
@@ -35,6 +36,7 @@ const MainMenu = () => (
             href="/incubator"
           >
             <Icon name="circle outline" size="big" />
+            Incubator
           </Button>
         </Grid.Row>
         <Grid.Row>
@@ -46,6 +48,7 @@ const MainMenu = () => (
             href="/goals"
           >
             <Icon name="road" size="big" />
+            Goals
           </Button>
           <Button
             icon
@@ -55,6 +58,7 @@ const MainMenu = () => (
             href="/logout"
           >
             <Icon name="external" size="big" />
+            Logout
           </Button>
         </Grid.Row>
       </Grid>

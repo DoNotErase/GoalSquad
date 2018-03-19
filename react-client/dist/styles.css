@@ -86,15 +86,6 @@ body {
     min-width: 10px;
 }
 
-/* BARN PAGE */
-/* .barnegg {
-    bottom: 20px;
-    right: 20px;
-    position: fixed !important;
-    background-color: #845EC2;
-    background-image: linear-gradient(#845EC2, #008F7A);
-} */
-
 .goalspage {
     position: fixed;
     top: 0;
@@ -111,4 +102,8 @@ body {
     top: 15px;
     left: 15px;
     position: fixed !important;
+}
+
+.menuicons {
+    padding: 20px;
 }

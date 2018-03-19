@@ -62,9 +62,9 @@ class GoalsPage extends React.Component {
         <Grid centered>
           <Grid.Column computer={8} mobile={16}>
             {listItems}
+            <MainMenu />
           </Grid.Column>
         </Grid>
-        <MainMenu />
       </div>
     );
   }
