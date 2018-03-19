@@ -3,7 +3,7 @@ body {
     color: black;
 }
 
-.homepage, .barnpage {
+.homepage, .barnpage, .goalspage {
     position: fixed;
     top: 0;
     left: 0;
@@ -87,13 +87,13 @@ body {
 }
 
 /* BARN PAGE */
-.barnegg {
+/* .barnegg {
     bottom: 20px;
     right: 20px;
     position: fixed !important;
     background-color: #845EC2;
     background-image: linear-gradient(#845EC2, #008F7A);
-}
+} */
 
 .goalspage {
     position: fixed;
