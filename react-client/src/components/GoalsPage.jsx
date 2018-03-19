@@ -60,41 +60,6 @@ class GoalsPage extends React.Component {
         <Grid centered>
           <Grid.Column computer={8} mobile={14}>
             {listItems}
-
-            {/*/!*start here*!/*/}
-            {/*<Accordion styled fluid>*/}
-              {/*<Accordion.Title active={activeIndex === 0} index={0} onClick={this.handleClick}>*/}
-                {/*<Icon name="dropdown" />*/}
-                {/*Distance*/}
-              {/*</Accordion.Title>*/}
-              {/*<Accordion.Content active={activeIndex === 0}>*/}
-                {/*<Segment.Group raised>*/}
-                  {/*<Goal />*/}
-                  {/*<Goal />*/}
-                {/*</Segment.Group>*/}
-              {/*</Accordion.Content>*/}
-              {/*/!*end here*!/*/}
-
-              {/*<Accordion.Title active={activeIndex === 1} index={1} onClick={this.handleClick}>*/}
-                {/*<Icon name="dropdown" />*/}
-                {/*Steps*/}
-              {/*</Accordion.Title>*/}
-              {/*<Accordion.Content active={activeIndex === 1}>*/}
-                {/*<Segment.Group raised>*/}
-                  {/*<Goal />*/}
-                {/*</Segment.Group>*/}
-              {/*</Accordion.Content>*/}
-
-              {/*<Accordion.Title active={activeIndex === 2} index={2} onClick={this.handleClick}>*/}
-                {/*<Icon name="dropdown" />*/}
-                {/*Stairs*/}
-              {/*</Accordion.Title>*/}
-              {/*<Accordion.Content active={activeIndex === 2}>*/}
-                {/*<Segment.Group raised>*/}
-                  {/*<Goal />*/}
-                {/*</Segment.Group>*/}
-              {/*</Accordion.Content>*/}
-            {/*</Accordion>*/}
           </Grid.Column>
         </Grid>
       </div>
