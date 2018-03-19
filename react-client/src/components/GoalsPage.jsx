@@ -7,6 +7,7 @@ import * as actions from '../actions/actions';
 import * as goalsActions from '../actions/createGoalActions';
 import Goal from './Goal';
 import MainMenu from './MainMenu';
+import * as incubatorActions from "../actions/incubatorActions";
 
 class GoalsPage extends React.Component {
   constructor() {
@@ -15,6 +16,13 @@ class GoalsPage extends React.Component {
       activeIndex: -1,
     };
     this.handleClick = this.handleClick.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.goalsActions.getDefaultGoals();
+    this.props.actions.getLifetimeData();
+    this.props.incubatorActions.getUserGoals();
+
   }
 
   handleClick(e, titleProps) {
@@ -28,44 +36,33 @@ class GoalsPage extends React.Component {
 
   render() {
     const { activeIndex } = this.state;
+    let goalsList = this.props.goalsState.standardGoals;
+    let listItems = Object.keys(goalsList).map((category, categoryIndex) => (
+      <Accordion styled fluid>
+        <Accordion.Title
+          active={activeIndex === categoryIndex}
+          index={categoryIndex}
+          onClick={this.handleClick}
+        >
+          <Icon name="dropdown" />
+          {category}
+        </Accordion.Title>
+        <Accordion.Content active={activeIndex === categoryIndex}>
+          <Segment.Group raised>
+            {goalsList[category].map(singleGoal => (
+              <Goal goal={singleGoal} />
+            ))}
+          </Segment.Group>
+        </Accordion.Content>
+      </Accordion>
+    ));
     return (
       <div className="goalspage">
         <Header as="h2">Add A Goal</Header>
         <Divider />
         <Grid centered>
-          <Grid.Column computer={8} mobile={16}>
-            <Accordion styled fluid>
-              <Accordion.Title active={activeIndex === 0} index={0} onClick={this.handleClick}>
-                <Icon name="dropdown" />
-                Distance
-              </Accordion.Title>
-              <Accordion.Content active={activeIndex === 0}>
-                <Segment.Group raised>
-                  <Goal />
-                  <Goal />
-                </Segment.Group>
-              </Accordion.Content>
-
-              <Accordion.Title active={activeIndex === 1} index={1} onClick={this.handleClick}>
-                <Icon name="dropdown" />
-                Steps
-              </Accordion.Title>
-              <Accordion.Content active={activeIndex === 1}>
-                <Segment.Group raised>
-                  <Goal />
-                </Segment.Group>
-              </Accordion.Content>
-
-              <Accordion.Title active={activeIndex === 2} index={2} onClick={this.handleClick}>
-                <Icon name="dropdown" />
-                Stairs
-              </Accordion.Title>
-              <Accordion.Content active={activeIndex === 2}>
-                <Segment.Group raised>
-                  <Goal />
-                </Segment.Group>
-              </Accordion.Content>
-            </Accordion>
+          <Grid.Column computer={8} mobile={14}>
+            {listItems}
           </Grid.Column>
         </Grid>
         <MainMenu />
@@ -74,20 +71,21 @@ class GoalsPage extends React.Component {
   }
 }
 
-GoalsPage.propTypes = {
-  state: PropTypes.shape({
-    id: PropTypes.string,
-    username: PropTypes.string,
-  }).isRequired,
-  actions: PropTypes.objectOf(PropTypes.func).isRequired,
-  // goalsState: PropTypes.objectOf(PropTypes.string).isRequired,
-  goalsActions: PropTypes.objectOf(PropTypes.func).isRequired,
-};
+// GoalsPage.propTypes = {
+//   state: PropTypes.shape({
+//     id: PropTypes.string,
+//     username: PropTypes.string,
+//   }).isRequired,
+//   actions: PropTypes.objectOf(PropTypes.func).isRequired,
+//   goalsState: PropTypes.objectOf(PropTypes.string).isRequired,
+//   goalsActions: PropTypes.objectOf(PropTypes.func).isRequired,
+// };
 
 const mapDispatchToProps = dispatch => (
   {
     actions: bindActionCreators(actions, dispatch),
     goalsActions: bindActionCreators(goalsActions, dispatch),
+    incubatorActions: bindActionCreators(incubatorActions, dispatch),
   }
 );
 
@@ -95,6 +93,7 @@ const mapStateToProps = state => (
   {
     state: state.main,
     goalsState: state.goals,
+    incubatorState: state.incubator,
   }
 );
 

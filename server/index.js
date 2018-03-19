@@ -9,6 +9,10 @@ const axios = require('axios');
 const path = require('path');
 
 const app = express();
+// http for streaming and .server for event listeners
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+
 const db = require('../database-mysql/index.js');
 
 app.use(express.static(`${__dirname}/../react-client/dist`));
@@ -115,6 +119,13 @@ app.get('/fitbit/dailySummary', async (req, res) => {
   } catch (err) {
     res.status(401).send(err);
   }
+});
+
+
+/** *******CLIENT SIDE FETCHES ************** */
+app.get('/eggData/:eggID', async (req, res) => {
+  const data = await db.getEggInfo(req.params.eggID);
+  res.status(200).send(data);
 });
 
 /** *******************GOAL STUFF**************************** */
