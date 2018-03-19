@@ -192,12 +192,25 @@ app.post('/createUserGoal', async (req, res) => {
 
 app.patch('/completeGoal', async (req, res) => {
   const userGoalID = req.body.goalID;
-  await db.completeGoal(userGoalID);
+  await db.completeGoalSuccess(userGoalID);
   res.end();
 });
 
-/** ********************************************************* */
+app.patch('/failGoal', async (req, res) => {
+  const userGoalID = req.body.goalID;
+  await db.completeGoalFailure(userGoalID);
+  res.end();
+});
 
+/** ********************** EGGS / SQUADDIES ******************************** */
+
+app.post('/hatchEgg', async (req, res) => {
+  const userEggID = req.body.eggID;
+  const newSquaddie = db.hatchEgg(userEggID);
+  res.json(newSquaddie);
+});
+
+/** ********************************************************* */
 app.get('/test', async (req, res) => {
   res.json(await db.findUserId());
 });

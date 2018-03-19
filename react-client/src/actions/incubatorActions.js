@@ -60,7 +60,7 @@ export const markGoalSuccess = userGoalID => (
 export const markGoalFailure = userGoalID => (
   dispatch => (
     axios.patch('/failGoal', { goalID: userGoalID })
-      .then((res) => {
+      .then(() => {
         console.log('goalFailed!');
         dispatch(userGoalFinalize(userGoalID));
       })
