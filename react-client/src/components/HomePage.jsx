@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, Grid, Button } from 'semantic-ui-react';
+import { Header, Grid, Button, Image } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
@@ -27,11 +27,16 @@ class HomePage extends React.Component {
           style={{ height: '100%' }}
         >
           <Grid.Column width={10} style={{ maxWidth: 450 }}>
-            <Header as="h1" textAlign="center" className="white" content="GOAL" />
-            <Header as="h1" textAlign="center" className="white" content="SQUAD" />
-            <a href="/auth/fitbit">
-              <Button color="violet" fluid size="large" style={{ marginTop: 250 }}>Connect</Button>
-            </a>
+            <Image src="./assets/misc/logo.png" />
+            <Button
+              as="a"
+              href="/auth/fitbit"
+              fluid
+              color="violet"
+              size="large"
+              style={{ marginTop: 250 }}
+            >Connect
+            </Button>
           </Grid.Column>
         </Grid>
       </div>

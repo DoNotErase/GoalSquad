@@ -4,7 +4,6 @@ import { Segment, Header, Statistic, Grid, Button, Modal, Input, Divider, Checkb
 class Goal extends React.Component {
   constructor(props) {
     super(props);
-    console.log('this.props', this.props);
     this.state = {
       open: false,
       goalID: this.props.goal.goal_id,
