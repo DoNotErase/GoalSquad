@@ -1,11 +1,12 @@
 import React from 'react';
-import { Accordion, Icon, Segment, Grid, Modal, Button, Image, Header } from 'semantic-ui-react';
+import { Accordion, Icon, Segment, Grid, Header, Divider } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import * as actions from '../actions/actions';
 import * as goalsActions from '../actions/createGoalActions';
 import Goal from './Goal';
+import MainMenu from './MainMenu';
 import * as incubatorActions from "../actions/incubatorActions";
 
 class GoalsPage extends React.Component {
@@ -57,11 +58,14 @@ class GoalsPage extends React.Component {
     ));
     return (
       <div className="goalspage">
+        <Header as="h2">Add A Goal</Header>
+        <Divider />
         <Grid centered>
           <Grid.Column computer={8} mobile={14}>
             {listItems}
           </Grid.Column>
         </Grid>
+        <MainMenu />
       </div>
     );
   }
