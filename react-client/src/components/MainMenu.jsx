@@ -11,7 +11,7 @@ class MainMenu extends React.Component {
 
   render() {
     return (
-      <Modal trigger={<Button icon basic circular size="huge" color="purple"><Icon name="tasks" /></Button>} size="tiny" style={{ width: '50%' }}>
+      <Modal trigger={<Button icon circular size="huge" color="purple" className="menubutton"><Icon name="tasks" /></Button>} size="tiny" style={{ width: '50%' }}>
         <Modal.Content>
           <Grid padded stretched textAlign="center">
             <Grid.Row>
