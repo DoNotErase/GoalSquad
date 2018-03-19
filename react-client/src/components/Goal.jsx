@@ -1,5 +1,5 @@
 import React from 'react';
-import { Segment, Header, Statistic, Grid, Button, Modal } from 'semantic-ui-react';
+import { Segment, Header, Statistic, Grid, Button, Modal, Input, Divider, Checkbox } from 'semantic-ui-react';
 
 class Goal extends React.Component {
   constructor() {
@@ -45,6 +45,8 @@ class Goal extends React.Component {
           </Grid>
         </Segment>
 
+        {/* ADD GOAL MODAL */}
+
         <Modal
           size={size}
           dimmer={dimmer}
@@ -54,9 +56,47 @@ class Goal extends React.Component {
           <Modal.Header>Select a Deadline</Modal.Header>
           <Modal.Content >
             <Modal.Description>
-              <Header>Something</Header>
-              <p>Something something hello this is something</p>
-              <p>Something else butts weiner lol.</p>
+              <p>I want to complete this goal in:</p>
+              <Grid centered>
+                <Grid.Row centered columns={3}>
+                  <Grid.Column>
+                    <Input
+                      style={{ width: 50 }}
+                      label={{ basic: true, content: 'day(s)' }}
+                      labelPosition="right"
+                      type="number"
+                    />
+                  </Grid.Column>
+                  <Grid.Column width={2}>
+                  and
+                  </Grid.Column>
+                  <Grid.Column>
+                    <Input
+                      style={{ width: 50 }}
+                      label={{ basic: true, content: 'hour(s)' }}
+                      labelPosition="right"
+                      type="number"
+                    />
+                  </Grid.Column>
+                </Grid.Row>
+                <Grid.Row centered columns={1}>
+                  <Grid.Column>
+                    <Divider
+                      as="h4"
+                      className="header"
+                      horizontal
+                      style={{ textTransform: 'uppercase' }}
+                    >
+                    OR
+                    </Divider>
+                  </Grid.Column>
+                </Grid.Row>
+                <Grid.Row centered columns={1}>
+                  <Grid.Column>
+                    <Checkbox label="I don't want a deadline." />
+                  </Grid.Column>
+                </Grid.Row>
+              </Grid>
             </Modal.Description>
           </Modal.Content>
           <Modal.Actions>
