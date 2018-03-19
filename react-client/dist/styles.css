@@ -3,7 +3,7 @@ body {
     color: black;
 }
 
-.homepage {
+.homepage, .barnpage {
     position: fixed;
     top: 0;
     left: 0;
@@ -95,7 +95,7 @@ body {
     background-image: linear-gradient(#845EC2, #008F7A);
 }
 
-.barnpage, .goalspage {
+.goalspage {
     position: fixed;
     top: 0;
     left: 0;

@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import * as actions from '../actions/actions';
 import * as goalsActions from '../actions/createGoalActions';
 import Goal from './Goal';
+import MainMenu from './MainMenu';
 
 class GoalsPage extends React.Component {
   constructor() {
@@ -67,6 +68,7 @@ class GoalsPage extends React.Component {
             </Accordion>
           </Grid.Column>
         </Grid>
+        <MainMenu />
       </div>
     );
   }
@@ -78,7 +80,7 @@ GoalsPage.propTypes = {
     username: PropTypes.string,
   }).isRequired,
   actions: PropTypes.objectOf(PropTypes.func).isRequired,
-  goalsState: PropTypes.objectOf(PropTypes.string).isRequired,
+  // goalsState: PropTypes.objectOf(PropTypes.string).isRequired,
   goalsActions: PropTypes.objectOf(PropTypes.func).isRequired,
 };
 

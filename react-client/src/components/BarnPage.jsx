@@ -17,7 +17,7 @@ const BarnPage = () => (
         verticalAlign="bottom"
       >
 
-        <Image
+        {/* <Image
           className="barnegg"
           src="./assets/icons/egg.png"
           as={Link}
@@ -25,7 +25,7 @@ const BarnPage = () => (
           verticalAlign="bottom"
           floated="right"
           size="massive"
-        />
+        /> */}
 
       </Grid.Column>
     </Grid>
