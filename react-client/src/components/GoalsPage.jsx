@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import * as actions from '../actions/actions';
 import * as goalsActions from '../actions/createGoalActions';
 import Goal from './Goal';
+import * as incubatorActions from "../actions/incubatorActions";
 
 class GoalsPage extends React.Component {
   constructor() {
@@ -108,6 +109,7 @@ const mapDispatchToProps = dispatch => (
   {
     actions: bindActionCreators(actions, dispatch),
     goalsActions: bindActionCreators(goalsActions, dispatch),
+    incubatorActions: bindActionCreators(incubatorActions, dispatch),
   }
 );
 
@@ -115,6 +117,7 @@ const mapStateToProps = state => (
   {
     state: state.main,
     goalsState: state.goals,
+    incubatorState: state.incubator,
   }
 );
 

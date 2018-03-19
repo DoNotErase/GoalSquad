@@ -130,7 +130,15 @@ module.exports.getDefaultGoals = async () => {
   try {
     const query = 'SELECT * FROM goal';
 
-    return await db.queryAsync(query);
+    const allDefaultGoals = await db.queryAsync(query);
+    const organizedDefaultGoals = {};
+    allDefaultGoals.forEach((goal) => {
+      if (!organizedDefaultGoals[goal.goal_activity]) {
+        organizedDefaultGoals[goal.goal_activity] = [];
+      }
+      organizedDefaultGoals[goal.goal_activity].push(goal);
+    });
+    return organizedDefaultGoals;
   } catch (err) {
     console.log(err);
     return err;

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Button } from 'semantic-ui-react'; // delete later
-
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
@@ -17,7 +17,32 @@ class LandingPage extends React.Component {
     this.props.actions.getLifetimeData();
     this.props.incubatorActions.getUserGoals();
   }
+
+
+
   render() {
+    let goalsList = this.props.goalsState.standardGoals;
+    // const showGoalsName = Object.keys(this.props.goalsState.standardGoals).map((key) => {
+    //   return (
+    //     <div key={key}>{key}</div>
+    //       return this.props.goalsState.standardGoals.map( (goal) => {
+    //
+    //     })
+    //   );
+    // });
+    //
+    // console.log('showGoalsName', showGoalsName);
+    //
+    let complete = Object.keys(goalsList).map( (keyName) => (
+      <ul key={keyName}>{keyName}
+      goalsList[keyName].map( (singlGoal) => {
+      }
+        }
+
+      </ul>
+    ));
+
+    console.log('this.props', this.props);
     return (
       <div>
         <p> hello {this.props.state.username} </p>
@@ -37,8 +62,13 @@ class LandingPage extends React.Component {
         > Test fetch default goals
         </button>
         <div>
-          {this.props.goalsState.standardGoals.map(goal => (<div> {goal.goal_name} </div>))}
-        </div>
+        {Object.keys(goalsList).map((keyName, keyIndex) => {
+            <div id={keyName}>{keyName}</div>
+          {goalsList[keyName].map((singleGoal) => {
+            <div id={singleGoal.goal_id}>{singleGoal.goal_name}</div>
+          })}
+        })}
+        <div>
         <br />
         <button
           onClick={() => this.props.incubatorActions.getUserGoals()}
@@ -49,31 +79,28 @@ class LandingPage extends React.Component {
             <div key={goal.goalID}> {goal.goal_name} </div>
           ))}
         </div>
-        <div>
-          <a href="/goals">
-            <Button color="violet" fluid size="large" style={{ marginTop: 250 }}>goals page</Button>
-          </a>
-        </div>
-
+        <Link to="/goals">
+          <Button color="violet" fluid size="large" style={{ marginTop: 250 }}>goals page</Button>
+        </Link>
       </div>
     );
   }
 }
 
-LandingPage.propTypes = {
-  state: PropTypes.shape({
-    id: PropTypes.string,
-    username: PropTypes.string,
-    lifetimeSteps: PropTypes.number,
-    lifetimeFloors: PropTypes.number,
-    lifetimeDistance: PropTypes.number,
-  }).isRequired,
-  goalsState: PropTypes.objectOf(PropTypes.array).isRequired,
-  incubatorState: PropTypes.objectOf(PropTypes.array).isRequired,
-  actions: PropTypes.objectOf(PropTypes.func).isRequired,
-  goalActions: PropTypes.objectOf(PropTypes.func).isRequired,
-  incubatorActions: PropTypes.objectOf(PropTypes.func).isRequired,
-};
+// LandingPage.propTypes = {
+//   state: PropTypes.shape({
+//     id: PropTypes.string,
+//     username: PropTypes.string,
+//     lifetimeSteps: PropTypes.number,
+//     lifetimeFloors: PropTypes.number,
+//     lifetimeDistance: PropTypes.number,
+//   }).isRequired,
+//   goalsState: PropTypes.objectOf(PropTypes.array).isRequired,
+//   incubatorState: PropTypes.objectOf(PropTypes.array).isRequired,
+//   actions: PropTypes.objectOf(PropTypes.func).isRequired,
+//   goalActions: PropTypes.objectOf(PropTypes.func).isRequired,
+//   incubatorActions: PropTypes.objectOf(PropTypes.func).isRequired,
+// };
 
 const mapDispatchToProps = dispatch => (
   {
