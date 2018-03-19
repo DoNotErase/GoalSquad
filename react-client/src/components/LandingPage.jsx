@@ -33,14 +33,12 @@ class LandingPage extends React.Component {
     //
     // console.log('showGoalsName', showGoalsName);
     //
-    let complete = Object.keys(goalsList).map( (keyName) => (
-      <ul key={keyName}>{keyName}
-      goalsList[keyName].map( (singlGoal) => {
-      }
-        }
-
-      </ul>
-    ));
+    // let complete = Object.keys(goalsList).map( (keyName) => (
+    //   <ul key={keyName}>{keyName}
+    //   goalsList[keyName].map( (singlGoal) => {}
+    //
+    //   </ul>
+    // ));
 
     console.log('this.props', this.props);
     return (
@@ -61,14 +59,14 @@ class LandingPage extends React.Component {
           onClick={() => this.props.goalActions.getDefaultGoals()}
         > Test fetch default goals
         </button>
-        <div>
-        {Object.keys(goalsList).map((keyName, keyIndex) => {
-            <div id={keyName}>{keyName}</div>
-          {goalsList[keyName].map((singleGoal) => {
-            <div id={singleGoal.goal_id}>{singleGoal.goal_name}</div>
-          })}
-        })}
-        <div>
+        {/*<div>*/}
+        {/*{Object.keys(goalsList).map((keyName, keyIndex) => {*/}
+            {/*<div id={keyName}>{keyName}</div>*/}
+          {/*{goalsList[keyName].map((singleGoal) => {*/}
+            {/*<div id={singleGoal.goal_id}>{singleGoal.goal_name}</div>*/}
+          {/*})}*/}
+        {/*})}*/}
+        {/*<div>*/}
         <br />
         <button
           onClick={() => this.props.incubatorActions.getUserGoals()}

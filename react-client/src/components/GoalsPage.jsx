@@ -18,6 +18,9 @@ class GoalsPage extends React.Component {
   }
 
   componentDidMount() {
+    this.props.goalsActions.getDefaultGoals();
+    this.props.actions.getLifetimeData();
+    this.props.incubatorActions.getUserGoals();
 
   }
 
@@ -32,42 +35,66 @@ class GoalsPage extends React.Component {
 
   render() {
     const { activeIndex } = this.state;
+    let goalsList = this.props.goalsState.standardGoals;
+    let listItems = Object.keys(goalsList).map((category, categoryIndex) => (
+      <Accordion styled fluid>
+        <Accordion.Title
+          active={activeIndex === categoryIndex}
+          index={categoryIndex}
+          onClick={this.handleClick}
+        >
+          <Icon name="dropdown" />
+          {category}
+        </Accordion.Title>
+        <Accordion.Content active={activeIndex === categoryIndex}>
+          <Segment.Group raised>
+            {goalsList[category].map(singleGoal => (
+              <Goal goal={singleGoal} />
+            ))}
+          </Segment.Group>
+        </Accordion.Content>
+      </Accordion>
+    ));
     return (
       <div className="goalspage">
         <Grid centered>
           <Grid.Column computer={8} mobile={14}>
-            <Accordion styled fluid>
-              <Accordion.Title active={activeIndex === 0} index={0} onClick={this.handleClick}>
-                <Icon name="dropdown" />
-                Distance
-              </Accordion.Title>
-              <Accordion.Content active={activeIndex === 0}>
-                <Segment.Group raised>
-                  <Goal />
-                  <Goal />
-                </Segment.Group>
-              </Accordion.Content>
+            {listItems}
 
-              <Accordion.Title active={activeIndex === 1} index={1} onClick={this.handleClick}>
-                <Icon name="dropdown" />
-                Steps
-              </Accordion.Title>
-              <Accordion.Content active={activeIndex === 1}>
-                <Segment.Group raised>
-                  <Goal />
-                </Segment.Group>
-              </Accordion.Content>
+            {/*/!*start here*!/*/}
+            {/*<Accordion styled fluid>*/}
+              {/*<Accordion.Title active={activeIndex === 0} index={0} onClick={this.handleClick}>*/}
+                {/*<Icon name="dropdown" />*/}
+                {/*Distance*/}
+              {/*</Accordion.Title>*/}
+              {/*<Accordion.Content active={activeIndex === 0}>*/}
+                {/*<Segment.Group raised>*/}
+                  {/*<Goal />*/}
+                  {/*<Goal />*/}
+                {/*</Segment.Group>*/}
+              {/*</Accordion.Content>*/}
+              {/*/!*end here*!/*/}
 
-              <Accordion.Title active={activeIndex === 2} index={2} onClick={this.handleClick}>
-                <Icon name="dropdown" />
-                Stairs
-              </Accordion.Title>
-              <Accordion.Content active={activeIndex === 2}>
-                <Segment.Group raised>
-                  <Goal />
-                </Segment.Group>
-              </Accordion.Content>
-            </Accordion>
+              {/*<Accordion.Title active={activeIndex === 1} index={1} onClick={this.handleClick}>*/}
+                {/*<Icon name="dropdown" />*/}
+                {/*Steps*/}
+              {/*</Accordion.Title>*/}
+              {/*<Accordion.Content active={activeIndex === 1}>*/}
+                {/*<Segment.Group raised>*/}
+                  {/*<Goal />*/}
+                {/*</Segment.Group>*/}
+              {/*</Accordion.Content>*/}
+
+              {/*<Accordion.Title active={activeIndex === 2} index={2} onClick={this.handleClick}>*/}
+                {/*<Icon name="dropdown" />*/}
+                {/*Stairs*/}
+              {/*</Accordion.Title>*/}
+              {/*<Accordion.Content active={activeIndex === 2}>*/}
+                {/*<Segment.Group raised>*/}
+                  {/*<Goal />*/}
+                {/*</Segment.Group>*/}
+              {/*</Accordion.Content>*/}
+            {/*</Accordion>*/}
           </Grid.Column>
         </Grid>
       </div>
@@ -75,15 +102,15 @@ class GoalsPage extends React.Component {
   }
 }
 
-GoalsPage.propTypes = {
-  state: PropTypes.shape({
-    id: PropTypes.string,
-    username: PropTypes.string,
-  }).isRequired,
-  actions: PropTypes.objectOf(PropTypes.func).isRequired,
-  goalsState: PropTypes.objectOf(PropTypes.string).isRequired,
-  goalsActions: PropTypes.objectOf(PropTypes.func).isRequired,
-};
+// GoalsPage.propTypes = {
+//   state: PropTypes.shape({
+//     id: PropTypes.string,
+//     username: PropTypes.string,
+//   }).isRequired,
+//   actions: PropTypes.objectOf(PropTypes.func).isRequired,
+//   goalsState: PropTypes.objectOf(PropTypes.string).isRequired,
+//   goalsActions: PropTypes.objectOf(PropTypes.func).isRequired,
+// };
 
 const mapDispatchToProps = dispatch => (
   {
