@@ -1,5 +1,5 @@
 const incubatorState = {
-  userGoals: [],
+  userGoals: {},
 };
 
 const incubatorReducer = (state = incubatorState, action) => {

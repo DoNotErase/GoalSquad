@@ -25,3 +25,31 @@ export const getUserGoals = () => (
       })
   )
 );
+
+const setEggStatus = eggData => ({ type: 'EGG_DATA', payload: eggData });
+
+export const fetchEggStatus = () => (
+  dispatch => (
+    axios.get('/eggStatus')
+      .then((res) => {
+        console.log('goalCompleted!');
+        dispatch(setEggStatus(res.data));
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  )
+);
+
+export const markGoalComplete = userGoalID => (
+  dispatch => (
+    axios.patch('/completeGoal', { goalID: userGoalID })
+      .then((res) => {
+        console.log('goalCompleted!');
+        dispatch(fetchEggStatus(res.data));
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  )
+);

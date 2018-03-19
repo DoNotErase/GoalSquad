@@ -11,7 +11,6 @@ const mainState = {
 const mainReducer = (state = mainState, action) => {
   switch (action.type) {
     case 'USER_LIFETIME_ACTIVITY': {
-      console.log(action.payload);
       return {
         ...state,
         steps: action.payload.steps,
@@ -20,7 +19,6 @@ const mainReducer = (state = mainState, action) => {
       };
     }
     case 'USER_LOGIN': {
-      console.log(action.payload);
       return {
         ...state,
         id: action.payload.user_id,

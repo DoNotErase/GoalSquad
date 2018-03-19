@@ -71,8 +71,8 @@ IncubatorPage.propTypes = {
   //   id: PropTypes.string,
   //   username: PropTypes.string,
   // }).isRequired,
-  actions: PropTypes.objectOf(PropTypes.func).isRequired,
-  incubatorState: PropTypes.objectOf(PropTypes.array).isRequired,
+  // actions: PropTypes.objectOf(PropTypes.func).isRequired,
+  incubatorState: PropTypes.objectOf(PropTypes.object).isRequired,
   incubatorActions: PropTypes.objectOf({
     getUserGoals: PropTypes.func,
   }).isRequired,
