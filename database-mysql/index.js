@@ -146,8 +146,11 @@ module.exports.completeGoal = async (userGoalID) => {
       `(SELECT user_id FROM user_goal WHERE user_goal_id = ${userGoalID})`;
     await db.queryAsync(updateEgg);
     return 'success';
+    // want to turn this into one call
+    // want to add check for egg hatching?
   } catch (err) {
     console.log(err);
     return err;
   }
-}
+};
+
