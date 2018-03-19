@@ -41,12 +41,28 @@ export const fetchEggStatus = () => (
   )
 );
 
-export const markGoalComplete = userGoalID => (
+const userGoalFinalize = userGoalID => ({ type: 'FINALIZE_GOAL', payload: userGoalID });
+
+export const markGoalSuccess = userGoalID => (
   dispatch => (
     axios.patch('/completeGoal', { goalID: userGoalID })
       .then((res) => {
         console.log('goalCompleted!');
+        dispatch(userGoalFinalize(userGoalID));
         dispatch(fetchEggStatus(res.data));
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  )
+);
+
+export const markGoalFailure = userGoalID => (
+  dispatch => (
+    axios.patch('/failGoal', { goalID: userGoalID })
+      .then((res) => {
+        console.log('goalFailed!');
+        dispatch(userGoalFinalize(userGoalID));
       })
       .catch((err) => {
         console.log(err);

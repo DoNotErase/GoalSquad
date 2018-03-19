@@ -1,33 +1,42 @@
 import React from 'react';
-import { Divider, Grid, Header, Item, List, Segment } from 'semantic-ui-react';
+import { Grid, List } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import * as incubatorActions from '../actions/incubatorActions';
 
 const GoalItemsPage = (props) => {
-  const completeGoal = (goal) => {
-    props.incubatorActions.markGoalComplete(goal.user_goal_id);
-  };
-
   const statusIndicator = (goal) => {
-    if (goal.user_goal_success === 1) {
-      return (<div> You completed this goal! </div>);
-    }
-    // if (goal.user_goal_success === 0) {
-    //   return <div> You failed this goal :( </div>;
-    // }
-    // put in cases for time elapsed and failed button to close goal
-    if (goal.user_goal_start_value - props.state[props.activityType] > 0) {
-      return <div> {goal.user_goal_start_value - props.state[props.activityType]} </div>;
-    }
-    if (goal.user_goal_start_value - props.state[props.activityType] < 0) {
+    if (goal.user_goal.concluded && !goal.user_goal_finalized) {
+      if (goal.user_goal_success) {
+        return (
+          <button onClick={() => { props.incubatorActions.markGoalSuccess(goal.user_goal_id); }}>
+            NEW GOAL COMPLETE
+          </button>);
+      }
       return (
-        <button onClick={() => completeGoal(goal)}>
-          Success!
+        <button onClick={() => { props.incubatorActions.markGoalFailure(goal.user_goal_id); }}>
+          NEW GOAL FAILURE
         </button>);
     }
-    return (<div />);
+    if (goal.user_goal_finalized) {
+      if (goal.user_goal_success) {
+        return <div> OLD GOAL SUCCESS </div>;
+      }
+      return <div> OLD GOAL FAILURE </div>;
+    }
+    if (goal.user_goal_end_date) {
+      return (
+        <div>
+          <p> {goal.user_goal_target - goal.user_goal_current} {goal.activity} to go! </p>
+          <p> Deadline : {goal.user_goal_end_date} </p>
+        </div>);
+    }
+    return (
+      <div>
+        <p> {goal.user_goal_target - goal.user_goal_current} {goal.activity} to go! </p>
+      </div>
+    );
   };
 
   if (props.goals) {
@@ -85,6 +94,7 @@ GoalItemsPage.propTypes = {
   goals: PropTypes.arrayOf(PropTypes.object).isRequired,
   activityType: PropTypes.string.isRequired,
   iconKey: PropTypes.string.isRequired,
+  incubatorActions: PropTypes.objectOf(PropTypes.func).isRequired,
 };
 
 const mapStateToProps = state => (
