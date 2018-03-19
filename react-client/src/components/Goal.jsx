@@ -19,6 +19,10 @@ class Goal extends React.Component {
     this.close = this.close.bind(this);
     // this.difficult = this.difficult.bind(this);
   }
+  componentDidMount() {
+    this.colorDifficult(this.state.goalDifficulty);
+  }
+
   colorDifficult(goalDifficulty) {
     if (goalDifficulty === 'easy') {
       this.setState({ difficultyColor: 'green' });
@@ -27,9 +31,6 @@ class Goal extends React.Component {
     } else {
       this.setState({ difficultyColor: 'red' });
     }
-  }
-  componentDidMount() {
-    this.colorDifficult(this.state.goalDifficulty);
   }
   show(dimmer, size) { this.setState({ dimmer, size, open: true }); }
   close() { this.setState({ open: false }); }
