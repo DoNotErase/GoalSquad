@@ -17,8 +17,8 @@ class Goal extends React.Component {
 
     this.show = this.show.bind(this);
     this.close = this.close.bind(this);
-    // this.difficult = this.difficult.bind(this);
   }
+
   componentDidMount() {
     this.colorDifficult(this.state.goalDifficulty);
   }
@@ -35,31 +35,31 @@ class Goal extends React.Component {
   show(dimmer, size) { this.setState({ dimmer, size, open: true }); }
   close() { this.setState({ open: false }); }
 
-
   render() {
-    const { open, dimmer, size } = this.state;
+    const {
+      open, dimmer, size, difficultyColor, goalName, goalPoints,
+    } = this.state;
 
     return (
       <div>
         <Segment
           compact
           clearing
-          color={this.state.difficultyColor}
-          // color="green"
+          color={difficultyColor}
           onClick={() => this.show('blurring', 'mini')}
         >
           <Grid>
             <Grid.Row columns={2}>
               <Grid.Column>
-                <Header as="h4">{this.state.goalName}</Header>
+                <Header as="h4">{goalName}</Header>
               </Grid.Column>
               <Grid.Column>
                 <Statistic
-                  color="green"
+                  color={difficultyColor}
                   floated="right"
                   size="mini"
                 >
-                  <Statistic.Value>{this.state.goalPoints}</Statistic.Value>
+                  <Statistic.Value>{goalPoints}</Statistic.Value>
                   <Statistic.Label>points</Statistic.Label>
                 </Statistic>
               </Grid.Column>
