@@ -61,7 +61,7 @@ class GoalsPage extends React.Component {
         <Header as="h2">Add A Goal</Header>
         <Divider />
         <Grid centered>
-          <Grid.Column computer={8} mobile={14}>
+          <Grid.Column computer={8} mobile={16}>
             {listItems}
           </Grid.Column>
         </Grid>
