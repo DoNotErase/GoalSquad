@@ -216,9 +216,15 @@ app.patch('/failGoal', async (req, res) => {
 /** ********************** EGGS / SQUADDIES ******************************** */
 
 app.post('/hatchEgg', async (req, res) => {
+  let userID;
+  if (req.session.passport) {
+    userID = req.session.passport.user.id;
+  } else {
+    res.status(401).end();
+  }
   const userEggID = req.body.eggID;
-  const newSquaddie = db.hatchEgg(userEggID);
-  res.json(newSquaddie);
+  const newSquaddie = db.hatchEgg(userEggID, userID);
+  res.json(newSquaddie[0]);
 });
 
 /** ********************************************************* */
