@@ -9,11 +9,9 @@ import * as actions from '../actions/actions';
 import * as incubatorActions from '../actions/incubatorActions';
 
 class IncubatorPage extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   componentDidMount() {
+    this.props.incubatorActions.getUserGoals();
   	console.log('state', this.props.state)
   	console.log('incubator state', this.props.incubatorState)
   }
@@ -27,11 +25,11 @@ class IncubatorPage extends React.Component {
     return (
       <div className="incubator-container">
         <style>{`
-				    body > div,
-				    body > div > div,
-				    body > div > div > div.incubator-container {
-				        height: 100%;
-				    }
+          body > div,
+          body > div > div,
+          body > div > div > div.incubator-container {
+              height: 100%;
+          }
 				`}
         </style>
         <Grid
@@ -76,7 +74,9 @@ IncubatorPage.propTypes = {
   }).isRequired,
   actions: PropTypes.objectOf(PropTypes.func).isRequired,
   incubatorState: PropTypes.objectOf(PropTypes.string).isRequired,
-  incubatorActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  incubatorActions: PropTypes.objectOf({
+    getUserGoals: PropTypes.func,
+  }).isRequired,
 };
 
 const mapDispatchToProps = dispatch => (
