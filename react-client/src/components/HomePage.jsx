@@ -3,19 +3,24 @@ import { Grid, Button, Image } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import * as actions from '../actions/homePageActions';
+import * as homePageActions from '../actions/homePageActions';
+import * as actions from '../actions/actions';
 
 class HomePage extends React.Component {
   componentWillMount() {
     if (!this.props.state.id) {
-      this.props.actions.attemptLogin();
+      this.props.homePageActions.attemptLogin();
     }
   }
 
   componentDidUpdate() {
     if (this.props.state.id) {
-      this.props.history.push('/landing');
+      this.props.history.push('/incubator');
     }
+  }
+
+  componentWillUnmount() {
+    this.props.actions.getLifetimeData();
   }
 
   render() {
@@ -50,6 +55,7 @@ HomePage.propTypes = {
     username: PropTypes.string,
   }).isRequired,
   actions: PropTypes.objectOf(PropTypes.func).isRequired,
+  homePageActions: PropTypes.objectOf(PropTypes.func).isRequired,
   history: PropTypes.shape({
     action: PropTypes.string,
     block: PropTypes.func,
@@ -65,7 +71,10 @@ HomePage.propTypes = {
   }).isRequired,
 };
 
-const mapDispatchToProps = dispatch => ({ actions: bindActionCreators(actions, dispatch) });
+const mapDispatchToProps = dispatch => ({
+  homePageActions: bindActionCreators(homePageActions, dispatch),
+  actions: bindActionCreators(actions, dispatch),
+});
 const mapStateToProps = state => ({ state: state.main });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

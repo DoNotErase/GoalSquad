@@ -5,7 +5,7 @@ class ProgressBarPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      percent: 70, // this.props.eggPercent
+      percent: 70, // this.state.eggPercent
       eggPercent: 40,
     };
   }

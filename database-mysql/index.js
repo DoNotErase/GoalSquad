@@ -68,9 +68,7 @@ module.exports.getAccessToken = async (fitbitID) => {
 
 module.exports.getUserGoals = async (fitbitID) => {
   try {
-    const query = 'SELECT user_goal.user_goal_id, user_goal.user_goal_start_value, user_goal.user_goal_target, ' +
-      'user_goal.user_goal_start_date, user_goal.user_goal_end_date, user_goal.user_goal_elapsed, ' +
-      'user_goal.user_goal_success, goal.goal_name, goal.goal_activity, goal.goal_amount, goal.goal_difficulty ' +
+    const query = 'SELECT user_goal.*, goal.goal_name, goal.goal_activity, goal.goal_amount, goal.goal_difficulty ' +
       'FROM user_goal INNER JOIN goal ON goal.goal_id = user_goal.goal_id ' +
       `WHERE user_goal.user_id = '${fitbitID}';`;
 
@@ -86,7 +84,7 @@ module.exports.getActiveUserGoals = async (fitbitID) => {
       'user_goal.user_goal_start_date, user_goal.user_goal_end_date, user_goal.user_goal_elapsed, ' +
       'user_goal.user_goal_success, goal.goal_name, goal.goal_activity, goal.goal_amount, goal.goal_difficulty ' +
       'FROM user_goal INNER JOIN goal ON goal.goal_id = user_goal.goal_id ' +
-      `WHERE user_goal.user_id = '${fitbitID} AND user_goal.user_goal_elapsed = 0';`;
+      `WHERE user_goal.user_id = '${fitbitID} AND user_goal.user_goal_concluded = 0';`;
 
     return await db.queryAsync(query);
   } catch (err) {
@@ -145,18 +143,40 @@ module.exports.getDefaultGoals = async () => {
   }
 };
 
-module.exports.completeGoal = async (userGoalID) => {
+module.exports.completeGoalSuccess = async (userGoalID) => {
   try {
-    const updateGoal = `UPDATE user_goal SET user_goal_success = 1 WHERE user_goal_id = ${userGoalID}`;
+    const updateGoal = `UPDATE user_goal SET user_goal_finalized = 1 WHERE user_goal_id = ${userGoalID}`;
     await db.queryAsync(updateGoal);
     const updateEgg = 'UPDATE user_egg SET egg_xp = (egg_xp + (SELECT user_goal_points FROM user_goal ' +
       `WHERE user_goal_id = ${userGoalID})) WHERE egg_hatched = 0 AND user_id = ` +
       `(SELECT user_id FROM user_goal WHERE user_goal_id = ${userGoalID})`;
     await db.queryAsync(updateEgg);
     return 'success';
+    // want to turn this into one call
+    // want to add check for egg hatching?
   } catch (err) {
     console.log(err);
     return err;
+  }
+};
+
+module.exports.completeGoalFailure = async (userGoalID) => {
+  try {
+    const updateGoal = `UPDATE user_goal SET user_goal_finalized = 1 WHERE user_goal_id = ${userGoalID}`;
+    return await db.queryAsync(updateGoal);
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
+};
+
+module.exports.hatchEgg = async (userEggID) => {
+  try {
+    const hatchEgg = `UPDATE user_egg SET egg_hatched = 1 WHERE user_egg_id = ${userEggID}`;
+    await db.queryAsync(hatchEgg);
+  } catch (err) {
+    console.log(err);
+    return (err);
   }
 }
 
