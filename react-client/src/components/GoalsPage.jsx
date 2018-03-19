@@ -16,6 +16,10 @@ class GoalsPage extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
+  componentDidMount() {
+
+  }
+
   handleClick(e, titleProps) {
     const { index } = titleProps;
     const { activeIndex } = this.state;

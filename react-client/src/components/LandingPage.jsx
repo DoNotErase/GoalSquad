@@ -1,4 +1,7 @@
 import React from 'react';
+
+import { Button } from 'semantic-ui-react'; // delete later
+
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
@@ -6,32 +9,56 @@ import * as actions from '../actions/actions';
 import * as createGoalActions from '../actions/createGoalActions';
 import * as incubatorActions from '../actions/incubatorActions';
 
-const LandingPage = props => (
-  <div>
-    <p> hello {props.state.username} </p>
+class LandingPage extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  componentDidMount() {
+    this.props.actions.getLifetimeData();
+    this.props.incubatorActions.getUserGoals();
+  }
+  render() {
+    return (
+      <div>
+        <p> hello {this.props.state.username} </p>
 
-    <button onClick={props.actions.getLifetimeData}> getLifeTimeData </button>
+        <button onClick={this.props.actions.getLifetimeData}> getLifeTimeData</button>
 
-    <p>Lifetime Steps: {props.state.lifetimeSteps}</p>
-    <p>Lifetime Floors: {props.state.lifetimeFloors}</p>
-    <p>Lifetime Distance: {props.state.lifetimeDistance}</p>
+        <p>Lifetime Steps: {this.props.state.lifetimeSteps}</p>
+        <p>Lifetime Floors: {this.props.state.lifetimeFloors}</p>
+        <p>Lifetime Distance: {this.props.state.lifetimeDistance}</p>
 
-    <button onClick={() => props.goalActions.submitUserGoal(3, null, 75)}>
-      Test create goal
-    </button>
-    <br />
-    <button onClick={() => props.goalActions.getDefaultGoals()}> Test fetch default goals </button>
-    <div>
-      {props.goalsState.standardGoals.map(goal => (<div> {goal.goal_name} </div>))}
-    </div>
-    <br />
-    <button onClick={() => props.incubatorActions.getUserGoals()}> Test fetch userGoals </button>
-    <div>
-      {props.incubatorState.userGoals.map(goal => (<div> {goal.goal_name} </div>))}
-    </div>
+        <button onClick={() => this.props.goalActions.submitUserGoal(3, null, 75)}>
+          Test create goal
+        </button>
+        <br />
+        <button
+          onClick={() => this.props.goalActions.getDefaultGoals()}
+        > Test fetch default goals
+        </button>
+        <div>
+          {this.props.goalsState.standardGoals.map(goal => (<div> {goal.goal_name} </div>))}
+        </div>
+        <br />
+        <button
+          onClick={() => this.props.incubatorActions.getUserGoals()}
+        > Test fetch userGoals
+        </button>
+        <div>
+          {this.props.incubatorState.userGoals.map(goal => (
+            <div key={goal.goalID}> {goal.goal_name} </div>
+          ))}
+        </div>
+        <div>
+          <a href="/goals">
+            <Button color="violet" fluid size="large" style={{ marginTop: 250 }}>goals page</Button>
+          </a>
+        </div>
 
-  </div>
-);
+      </div>
+    );
+  }
+}
 
 LandingPage.propTypes = {
   state: PropTypes.shape({
