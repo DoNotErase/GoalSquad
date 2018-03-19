@@ -1,10 +1,11 @@
 import React from 'react';
-import { Image, Link, Grid } from 'semantic-ui-react';
+import { Grid } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import * as actions from '../actions/actions';
 import * as barnActions from '../actions/barnActions';
+import MainMenu from './MainMenu';
 
 const BarnPage = () => (
   <div className="barnpage">
@@ -15,20 +16,9 @@ const BarnPage = () => (
         floated="right"
         width={5}
         verticalAlign="bottom"
-      >
-
-        <Image
-          className="barnegg"
-          src="./assets/icons/egg.png"
-          as={Link}
-          href="/"
-          verticalAlign="bottom"
-          floated="right"
-          size="massive"
-        />
-
-      </Grid.Column>
+      />
     </Grid>
+    <MainMenu />
   </div>
 );
 

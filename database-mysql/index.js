@@ -130,7 +130,15 @@ module.exports.getDefaultGoals = async () => {
   try {
     const query = 'SELECT * FROM goal';
 
-    return await db.queryAsync(query);
+    const allDefaultGoals = await db.queryAsync(query);
+    const organizedDefaultGoals = {};
+    allDefaultGoals.forEach((goal) => {
+      if (!organizedDefaultGoals[goal.goal_activity]) {
+        organizedDefaultGoals[goal.goal_activity] = [];
+      }
+      organizedDefaultGoals[goal.goal_activity].push(goal);
+    });
+    return organizedDefaultGoals;
   } catch (err) {
     console.log(err);
     return err;
@@ -173,3 +181,12 @@ module.exports.hatchEgg = async (userEggID) => {
     return (err);
   }
 }
+
+module.exports.getEggInfo = async (userEggID) => {
+  try {
+    const data = await db.queryAsync(`SELECT * FROM user_egg WHERE user_egg_id=${userEggID};`);
+    return data.pop(); // removes array and returns only object
+  } catch (e) {
+    return e;
+  }
+};
