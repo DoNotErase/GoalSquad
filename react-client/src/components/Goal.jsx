@@ -2,34 +2,56 @@ import React from 'react';
 import { Segment, Header, Statistic, Grid, Button, Modal, Input, Divider, Checkbox } from 'semantic-ui-react';
 
 class Goal extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    console.log('this.props', this.props);
     this.state = {
       open: false,
+      goalID: this.props.goal.goal_id,
+      goalName: this.props.goal.goal_name,
+      goalAmount: this.props.goal.goal_amount,
+      goalDifficulty: this.props.goal.goal_difficulty,
+      goalPoints: this.props.goal.goal_points,
+      difficultyColor: null,
     };
 
     this.show = this.show.bind(this);
     this.close = this.close.bind(this);
+    // this.difficult = this.difficult.bind(this);
+  }
+  componentDidMount() {
+    this.colorDifficult(this.state.goalDifficulty);
   }
 
+  colorDifficult(goalDifficulty) {
+    if (goalDifficulty === 'easy') {
+      this.setState({ difficultyColor: 'green' });
+    } else if (goalDifficulty === 'med') {
+      this.setState({ difficultyColor: 'yellow' });
+    } else {
+      this.setState({ difficultyColor: 'red' });
+    }
+  }
   show(dimmer, size) { this.setState({ dimmer, size, open: true }); }
   close() { this.setState({ open: false }); }
 
 
   render() {
     const { open, dimmer, size } = this.state;
+
     return (
       <div>
         <Segment
           compact
           clearing
-          color="green"
+          color={this.state.difficultyColor}
+          // color="green"
           onClick={() => this.show('blurring', 'mini')}
         >
           <Grid>
             <Grid.Row columns={2}>
               <Grid.Column>
-                <Header as="h4">goal_name</Header>
+                <Header as="h4">{this.state.goalName}</Header>
               </Grid.Column>
               <Grid.Column>
                 <Statistic
@@ -37,7 +59,7 @@ class Goal extends React.Component {
                   floated="right"
                   size="mini"
                 >
-                  <Statistic.Value>50</Statistic.Value>
+                  <Statistic.Value>{this.state.goalPoints}</Statistic.Value>
                   <Statistic.Label>points</Statistic.Label>
                 </Statistic>
               </Grid.Column>
