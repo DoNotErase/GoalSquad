@@ -6,21 +6,30 @@ import PropTypes from 'prop-types';
 import * as actions from '../actions/actions';
 import * as barnActions from '../actions/barnActions';
 import MainMenu from './MainMenu';
+import HorizontalScroll from 'react-scroll-horizontal';
 
-const BarnPage = () => (
-  <div className="barnpage">
-    <Grid>
-      <Grid.Column
-        textAlign="right"
-        stretched
-        floated="right"
-        width={5}
-        verticalAlign="bottom"
-      />
-    </Grid>
-    <MainMenu />
-  </div>
-);
+class BarnPage extends React.Component {
+  render() {
+    const child = { width: '700px', height: '100%', backgroundColor: 'white' };
+    return (
+      <div className="barnpage">
+      <HorizontalScroll>
+        <Grid style={child}>
+          <Grid.Column
+            textAlign="right"
+            stretched
+            floated="right"
+            width={5}
+            verticalAlign="bottom"
+          />
+        </Grid>
+        </HorizontalScroll>
+        <MainMenu />
+      </div>
+
+    );
+  }
+}
 
 BarnPage.propTypes = {
   state: PropTypes.shape({

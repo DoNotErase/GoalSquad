@@ -28,7 +28,7 @@ class Egg extends React.Component {
   render() {
     return (
       <div>
-        <Progress size="small" value={this.state.percent} total="100" progress="percent" indicating />
+        <Progress size="medium" value={this.state.percent} total="100" progress="percent" indicating />
         {this.hatchButton()}
       </div>
     );
