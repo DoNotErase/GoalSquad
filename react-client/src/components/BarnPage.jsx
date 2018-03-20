@@ -23,8 +23,8 @@ class BarnPage extends React.Component {
             verticalAlign="bottom"
           />
         </Grid>
-        <MainMenu />
         </HorizontalScroll>
+        <MainMenu />
       </div>
 
     );
