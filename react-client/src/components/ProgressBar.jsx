@@ -1,28 +1,18 @@
 import React from 'react';
 import { Progress } from 'semantic-ui-react';
 
-class Egg extends React.Component {
+class ProgressBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      percent: 20, // this.props.eggPercent
-      eggPercent: 40,
+      percent: 70, // this.state.eggPercent
     };
-  }
-
-  // fix this once we know what is in store
-  componentDidMount() {
-    axios.get('/eggData', {
-      params: {
-        userID: this.props
-      }
-    })
   }
   render() {
     return (
-      <Progress value={this.state.percent} total="100" progress="percent" indicating />
+      <Progress size="medium" value={this.state.percent} total="100" progress indicating />
     );
   }
 }
 
-export default Egg;
+export default ProgressBar;

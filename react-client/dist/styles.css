@@ -1,9 +1,9 @@
 body {
-    background-color: #ffffff;
+    background-color: #008F7A;
     color: black;
 }
 
-.homepage, .barnpage {
+.homepage, .barnpage, .goalspage, .incubatorpage {
     position: fixed;
     top: 0;
     left: 0;
@@ -12,16 +12,46 @@ body {
     height: 100vh;
     min-width:100%;
     min-height:100%;
-    background-color: #845EC2;
+    padding: 20px;
+    background-color: #008F7A;
     background-image: linear-gradient(#845EC2, #008F7A);
+}
+
+.goalspage, .incubatorpage {
+    overflow-y: scroll;
+}
+
+@media (min-width: 600px) and (max-width: 1024px){
+    .homepage {
+        background-image: url('./assets/backgrounds/background-tablet.png') !important;
+        background-size: cover !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .homepage {
+        background-image: url('./assets/backgrounds/background-mobile.png') !important;
+        background-size: cover !important;
+    }
 }
 
 .white {
     color: white !important;
 }
 
+/* Menu Modal */
+.menubutton {
+    top: 15px;
+    left: 15px;
+    position: fixed !important;
+}
+
+.menuicons {
+    padding: 20px;
+}
+
 /* INCUBATOR PAGE */
-.add-goal-icon {
+/* .add-goal-icon {
     max-height: 30px;
     min-height: 10px;
     max-width: 30px;
@@ -55,7 +85,6 @@ body {
 }
 
 .logout-button a {
-    /*margin: 20px;*/
     text-decoration: none;
     color: black;
     margin: 20px;
@@ -71,10 +100,10 @@ body {
 
 .progress-bar {
     padding-top: 20px;
-}
+} */
 
 /* GOAL ITEMS PAGE */
-.goal-item {
+/* .goal-item {
     background: white;
     border: 1px solid black;
 }
@@ -84,15 +113,6 @@ body {
     min-height: 10px;
     max-width: 30px;
     min-width: 10px;
-}
-
-/* BARN PAGE */
-.barnegg {
-    bottom: 20px;
-    right: 20px;
-    position: fixed !important;
-    background-color: #845EC2;
-    background-image: linear-gradient(#845EC2, #008F7A);
 }
 
 .goalspage {
@@ -105,10 +125,4 @@ body {
     min-width:100%;
     min-height:100%;
     padding: 20px;
-}
-
-.menubutton {
-    bottom: 20px;
-    right: 20px;
-    position: fixed !important;
-}
+} 
