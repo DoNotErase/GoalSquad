@@ -18,8 +18,6 @@ class LandingPage extends React.Component {
     this.props.incubatorActions.getUserGoals();
   }
 
-
-
   render() {
     let goalsList = this.props.goalsState.standardGoals;
     // const showGoalsName = Object.keys(this.props.goalsState.standardGoals).map((key) => {
@@ -80,6 +78,7 @@ class LandingPage extends React.Component {
         <Link to="/goals">
           <Button color="violet" fluid size="large" style={{ marginTop: 250 }}>goals page</Button>
         </Link>
+
       </div>
     );
   }

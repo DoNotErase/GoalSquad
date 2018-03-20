@@ -74,7 +74,7 @@ app.get('/callback', passport.authenticate('fitbit', {
 }));
 
 app.get('/auth/fitbit/success', (req, res) => {
-  res.redirect('/');
+  res.redirect('/incubator');
 });
 
 app.get('/auth/fitbit/failure', (req, res) => {
