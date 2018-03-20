@@ -1,5 +1,5 @@
 body {
-    background-color: #ffffff;
+    background-color: #008F7A;
     color: black;
 }
 
@@ -13,8 +13,22 @@ body {
     min-width:100%;
     min-height:100%;
     padding: 20px;
-    background-color: #845EC2;
+    background-color: #008F7A;
     background-image: linear-gradient(#845EC2, #008F7A);
+}
+
+@media (min-width: 600px) and (max-width: 1024px){
+    .homepage {
+        background-image: url('./assets/backgrounds/background-tablet.png') !important;
+        background-size: cover !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .homepage {
+        background-image: url('./assets/backgrounds/background-mobile.png') !important;
+        background-size: cover !important;
+    }
 }
 
 .white {
