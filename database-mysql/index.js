@@ -177,6 +177,9 @@ module.exports.hatchEgg = async (userEggID, userID) => {
     const newSquaddie = 'INSERT INTO user_monster (user_id, monster_id) VALUES ' +
       `('${userID}', FLOOR(RAND() * (SELECT COUNT(*) FROM monster) + 1));`;
     await db.queryAsync(newSquaddie);
+    const makeNewEgg = 'INSERT INTO user_egg (user_id, egg_id) VALUES ' +
+      `('${userID}', FLOOR(RAND() * (SELECT COUNT (*) FROM egg) + 1));`;
+    await db.queryAsync(makeNewEgg);
     const returnSquaddie = 'SELECT user_monster.*, monster.* FROM user_monster INNER JOIN monster ' +
       'ON user_monster.monster_id = monster.monster_id WHERE user_monster.user_monster_id = (SELECT MAX(user_monster_id) FROM user_monster);';
     return await db.queryAsync(returnSquaddie);

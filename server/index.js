@@ -74,11 +74,29 @@ app.get('/callback', passport.authenticate('fitbit', {
 }));
 
 app.get('/auth/fitbit/success', (req, res) => {
-  res.redirect('/incubator');
+  res.redirect('/landing');
 });
 
 app.get('/auth/fitbit/failure', (req, res) => {
   res.status(401).json({ err: 'failure!' });
+});
+
+app.post('/fitbit/deauthorize', async (req, res) => {
+  try {
+    await axios.post('https://api.fitbit.com/oauth2/revoke', {
+      headers: {
+        Authorization: `Basic  ${new Buffer(`${config.fitbit.id}:${config.fitbit.secret}`).toString('base64')}`,
+      },
+      data: {
+        token: req.session.passport.user.id,
+      },
+    });
+
+    res.end();
+  } catch (err) {
+    console.log(err);
+    res.status(500).end();
+  }
 });
 
 app.get('/logout', (req, res) => {
@@ -213,7 +231,7 @@ app.post('/createUserGoal', async (req, res) => {
       res.status(401).json({ error: 'user not authenticated' });
     }
   } catch (err) {
-    console.log('server err');
+    console.log('server err', err);
     res.status(500).end();
   }
 });
