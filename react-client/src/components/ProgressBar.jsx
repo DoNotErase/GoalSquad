@@ -2,6 +2,7 @@ import React from 'react';
 import { Progress } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
 import * as incubatorActions from '../actions/incubatorActions';
 
 class Egg extends React.Component {
@@ -34,6 +35,15 @@ class Egg extends React.Component {
     );
   }
 }
+
+Egg.propTypes = {
+  incubatorState: PropTypes.shape({
+    egg: PropTypes.shape({
+      egg_xp: PropTypes.number,
+    }),
+  }).isRequired,
+  incubatorActions: PropTypes.objectOf(PropTypes.func).isRequired,
+};
 
 const mapStateToProps = state => ({
   incubatorState: state.incubator,

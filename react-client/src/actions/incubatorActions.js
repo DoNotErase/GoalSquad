@@ -39,14 +39,21 @@ export const fetchEggStatus = () => (
   )
 );
 
-const userGoalFinalize = userGoalID => ({ type: 'FINALIZE_GOAL', payload: userGoalID });
+const newSquaddie = squaddie => ({ type: 'NEW_MONSTER', payload: squaddie });
 
 export const hatchEgg = () => (
   dispatch => (
-    console.log('hatch egg')
+    axios.post('/hatchEgg')
+      .then((res) => {
+        dispatch(newSquaddie(res.data));
+      })
+      .catch((err) => {
+        console.log(err);
+      })
   )
-
 );
+
+const userGoalFinalize = userGoalID => ({ type: 'FINALIZE_GOAL', payload: userGoalID });
 
 export const markGoalSuccess = userGoalID => (
   dispatch => (

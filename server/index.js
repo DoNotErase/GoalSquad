@@ -90,7 +90,7 @@ app.post('/fitbit/deauthorize/', async (req, res) => {
       {
         headers:
         {
-          'Authorization': 'Basic ' + new Buffer(config.fitbit.id + ':' + config.fitbit.secret).toString('base64'),
+          Authorization: `Basic ${(Buffer.from(`${config.fitbit.id}:${config.fitbit.secret}`)).toString('base64')};`,
           'Content-Type': 'application/x-www-form-urlencoded',
         },
       },
