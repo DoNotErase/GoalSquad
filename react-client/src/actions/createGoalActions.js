@@ -15,7 +15,7 @@ export const getDefaultGoals = () => (
 );
 
 export const submitUserGoal = (goalID, deadline, points) => (
-  dispatch => (
+  () => (
     axios.post('/createUserGoal', {
       goalID,
       goalLength: deadline, // of form {day: (num), hour: ()} or null

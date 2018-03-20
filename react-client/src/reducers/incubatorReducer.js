@@ -1,5 +1,5 @@
 const incubatorState = {
-  userGoals: [],
+  userGoals: {},
 };
 
 const incubatorReducer = (state = incubatorState, action) => {
@@ -8,6 +8,13 @@ const incubatorReducer = (state = incubatorState, action) => {
       return {
         ...state,
         userGoals: action.payload,
+      };
+    }
+    case 'GOAL_FINALIZE': {
+      return {
+        ...state,
+        // local update for speed improvements
+        // somehow update usergoal with user_goal_id = action.payload to finalized = true;
       };
     }
     default: {
