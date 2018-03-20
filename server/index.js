@@ -83,14 +83,14 @@ app.get('/auth/fitbit/failure', (req, res) => {
 
 app.post('/fitbit/deauthorize', async (req, res) => {
   try {
-    await axios.post('https://api.fitbit.com/oauth2/revoke', {
-      headers: {
+    await axios.post(
+      'https://api.fitbit.com/oauth2/revoke', {
         Authorization: `Basic  ${new Buffer(`${config.fitbit.id}:${config.fitbit.secret}`).toString('base64')}`,
       },
-      data: {
+      {
         token: req.session.passport.user.id,
       },
-    });
+    );
 
     res.end();
   } catch (err) {

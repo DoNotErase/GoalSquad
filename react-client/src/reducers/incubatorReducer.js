@@ -21,7 +21,6 @@ const incubatorReducer = (state = incubatorState, action) => {
       };
     }
     case 'EGG_DATA': {
-      console.log(action.payload);
       return {
         ...state,
         egg: action.payload,
