@@ -10,7 +10,7 @@ const MainMenu = () => (
         icon
         circular
         size="huge"
-        color="teal"
+        color="orange"
         className="menubutton"
       ><Icon name="tasks" />
       </Button>}
