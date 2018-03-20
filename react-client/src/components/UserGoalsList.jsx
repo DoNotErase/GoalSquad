@@ -29,7 +29,7 @@ const UserGoalsList = (props) => {
       return (
    
           <Grid.Row columns={2}>
-          <Grid.Column color="red">
+          <Grid.Column>
             <Statistic
               floated="right"
               size="mini"
@@ -42,7 +42,7 @@ const UserGoalsList = (props) => {
               </Statistic.Label>
             </Statistic>
           </Grid.Column>
-          <Grid.Column color="yellow">
+          <Grid.Column>
           Deadline : {goal.user_goal_end_date}
           </Grid.Column>
           </Grid.Row>
@@ -67,7 +67,7 @@ const UserGoalsList = (props) => {
           >
             <Grid>
               <Grid.Row columns={1}>
-                <Grid.Column color="green">
+                <Grid.Column>
                   <Header as="h4">{goal.goal_name}</Header>
                 </Grid.Column>
               </Grid.Row>
