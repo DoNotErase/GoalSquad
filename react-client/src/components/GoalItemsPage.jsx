@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, List } from 'semantic-ui-react';
+import { Grid, List, Segment } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
@@ -41,39 +41,31 @@ const GoalItemsPage = (props) => {
 
   if (props.goals) {
     return (
-      <div className="goal-items-page">
-        <Grid
-          container
-          columns={3}
-          className="goal-item"
-        >
-          <List>
-            {props.goals.map(goal => (
-              <List.Content key={goal.user_goal_id}>
-                <Grid.Column width={3}>
-                  <img className="activity-icon" src={props.iconKey} alt="person running" />
-                </Grid.Column>
-                <Grid.Column textAlign="left" width={10}>
-                  <List.Header><strong>{goal.goal_name}</strong></List.Header>
-                  <List.Description>
-                    {goal.user_goal_end_date}
-                    <br />
-                    {statusIndicator(goal)}
-                    {}
-                  </List.Description>
-                </Grid.Column>
-                <Grid.Column width={3}>
-                  <a href="#"><List.Icon name="chevron right" /></a> {/* goes to specific goal's detail page */}
-                </Grid.Column>
-              </List.Content>))
+
+      <Segment
+        compact
+        clearing
+      >
+        {props.goals.map(goal => (
+          <List.Content key={goal.user_goal_id}>
+
+            <Grid.Column textAlign="left" width={10}>
+              <List.Header><strong>{goal.goal_name}</strong></List.Header>
+              <List.Description>
+                {goal.user_goal_end_date}
+                <br />
+                {statusIndicator(goal)}
+                {}
+              </List.Description>
+            </Grid.Column>
+          </List.Content>))
             }
-          </List>
-        </Grid>
-      </div>
+      </Segment>
+
     );
   }
   return (
-    <div />
+    <span>You have no goals!</span>
   );
 };
 
@@ -83,7 +75,7 @@ GoalItemsPage.propTypes = {
     distance: PropTypes.number,
     stairs: PropTypes.number,
   }).isRequired,
-  // goals: PropTypes.arrayOf(PropTypes.object).isRequired,
+  goals: PropTypes.arrayOf(PropTypes.object).isRequired,
   activityType: PropTypes.string.isRequired,
   // iconKey: PropTypes.string.isRequired,
   incubatorActions: PropTypes.objectOf(PropTypes.func).isRequired,

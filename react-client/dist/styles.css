@@ -13,7 +13,6 @@ body {
     min-width:100%;
     min-height:100%;
     padding: 20px;
-    overflow-y: scroll;
     background-color: #008F7A;
     background-image: linear-gradient(#845EC2, #008F7A);
 }
