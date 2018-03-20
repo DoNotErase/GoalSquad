@@ -39,6 +39,7 @@ passport.use(new FitbitStrategy(
     callbackURL: 'http://localhost:8080/callback',
   },
   async (accessToken, refreshToken, profile, done) => {
+    console.log(accessToken);
     try {
       if (await db.userExists(profile.id)) {
         await db.updateTokens(profile.id, accessToken, refreshToken);
@@ -81,20 +82,25 @@ app.get('/auth/fitbit/failure', (req, res) => {
   res.status(401).json({ err: 'failure!' });
 });
 
-app.post('/fitbit/deauthorize', async (req, res) => {
+app.post('/fitbit/deauthorize/', async (req, res) => {
+  console.log(req.session.passport);
   try {
+    const token = await db.getAccessToken(req.session.passport.user.id);
+    console.log(token);
     await axios.post(
-      'https://api.fitbit.com/oauth2/revoke', {
-        Authorization: `Basic  ${new Buffer(`${config.fitbit.id}:${config.fitbit.secret}`).toString('base64')}`,
-      },
+      `https://api.fitbit.com/oauth2/revoke?token=${token}`,
+      null,
       {
-        token: req.session.passport.user.id,
+        headers:
+        {
+          'Authorization': 'Basic ' + new Buffer(config.fitbit.id + ':' + config.fitbit.secret).toString('base64'),
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
       },
     );
-
-    res.end();
   } catch (err) {
     console.log(err);
+    console.log(err.response.data);
     res.status(500).end();
   }
 });
