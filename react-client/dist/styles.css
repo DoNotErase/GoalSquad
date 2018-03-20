@@ -40,6 +40,11 @@ body {
     }
 }
 
+.barnbackground {
+    background-image: url('./assets/backgrounds/background-tablet.png') !important;
+    background-size: cover !important;
+}
+
 .white {
     color: white !important;
 }
