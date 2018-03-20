@@ -186,9 +186,9 @@ module.exports.hatchEgg = async (userEggID, userID) => {
   }
 };
 
-module.exports.getEggInfo = async (userEggID) => {
+module.exports.getEggInfo = async (userID) => {
   try {
-    const data = await db.queryAsync(`SELECT * FROM user_egg WHERE user_egg_id=${userEggID};`);
+    const data = await db.queryAsync(`SELECT * FROM user_egg WHERE user_id='${userID}' AND egg_hatched = 0;`);
     return data.pop(); // removes array and returns only object
   } catch (e) {
     return e;

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import GoalItemsPage from './GoalItemsPage';
-import ProgressBar from './ProgressBarPage';
+import Egg from './ProgressBar';
 import * as actions from '../actions/actions';
 import * as incubatorActions from '../actions/incubatorActions';
 
@@ -40,7 +40,7 @@ class IncubatorPage extends React.Component {
               <div className="progress-bar-container">
                 <Grid verticalAlign="middle" container columns={2}>
                   <Grid.Column width={3}><img src="./assets/icons/egg.png" /></Grid.Column>
-                  <Grid.Column width={13}><div className="progress-bar"><ProgressBar /></div></Grid.Column>
+                  <Grid.Column width={13}><div className="progress-bar"><Egg /></div></Grid.Column>
                 </Grid>
               </div>
               <Grid container style={styles.incubatorNav} columns={2} verticalAlign="middle">

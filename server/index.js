@@ -127,8 +127,16 @@ app.post('/fitbit-notifications', async (req, res) => {
 });
 
 /** *******CLIENT SIDE FETCHES ************** */
-app.get('/eggData/:eggID', async (req, res) => {
-  const data = await db.getEggInfo(req.params.eggID);
+app.get('/eggStatus', async (req, res) => {
+  let userID;
+  if (req.session.passport) {
+    if (req.session.passport) {
+      userID = req.session.passport.user.id;
+    } else {
+      res.status(401).end();
+    }
+  }
+  const data = await db.getEggInfo(userID);
   res.status(200).send(data);
 });
 
