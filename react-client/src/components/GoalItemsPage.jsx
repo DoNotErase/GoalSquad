@@ -42,14 +42,6 @@ const GoalItemsPage = (props) => {
   if (props.goals) {
     return (
       <div className="goal-items-page">
-        <style>{`
-            body > div,
-            body > div > div,
-            body > div > div > div.goal-items-page {
-                height: 100%;
-            }
-        `}
-        </style>
         <Grid
           container
           columns={3}
@@ -91,9 +83,9 @@ GoalItemsPage.propTypes = {
     distance: PropTypes.number,
     stairs: PropTypes.number,
   }).isRequired,
-  goals: PropTypes.arrayOf(PropTypes.object).isRequired,
+  // goals: PropTypes.arrayOf(PropTypes.object).isRequired,
   activityType: PropTypes.string.isRequired,
-  iconKey: PropTypes.string.isRequired,
+  // iconKey: PropTypes.string.isRequired,
   incubatorActions: PropTypes.objectOf(PropTypes.func).isRequired,
 };
 
