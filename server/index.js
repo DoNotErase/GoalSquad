@@ -81,6 +81,11 @@ app.get('/auth/fitbit/failure', (req, res) => {
   res.status(401).json({ err: 'failure!' });
 });
 
+app.get('/logout', (req, res) => {
+  req.session.destroy();
+  res.redirect('/');
+});
+
 /** *******************FITBIT FETCHES**************************** */
 
 app.get('/login', async (req, res) => {
