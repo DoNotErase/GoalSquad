@@ -27,7 +27,7 @@ class IncubatorPage extends React.Component {
           </Grid.Column>
           <Grid.Row columns={2} className="progressbar">
             <Grid.Column width={3} floated="left">
-              <Image src="./assets/icons/egg.png" centered/>
+              <Image src="./assets/icons/egg.png" centered />
             </Grid.Column>
             <Grid.Column width={13} floated="right">
               <ProgressBar />

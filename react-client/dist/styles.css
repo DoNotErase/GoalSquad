@@ -21,6 +21,11 @@ body {
     overflow-y: scroll;
 }
 
+.incubatorpage {
+    height: 90vh !important;
+    min-height:90%;
+}
+
 @media (min-width: 600px) and (max-width: 1024px){
     .homepage {
         background-image: url('./assets/backgrounds/background-tablet.png') !important;
@@ -56,6 +61,7 @@ body {
 .progressbar {
     position: fixed !important;
     bottom: 0;
+    padding: 1px !important;
 }
 
 /* INCUBATOR PAGE */
