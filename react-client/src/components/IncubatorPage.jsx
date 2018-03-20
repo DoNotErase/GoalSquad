@@ -21,15 +21,9 @@ class IncubatorPage extends React.Component {
         <Divider hidden />
         <Grid centered>
           <Grid.Column computer={8} mobile={16}>
-            <Segment.Group raised>
-              <GoalItemsPage activityType="distance" goals={this.props.incubatorState.userGoals.distance} />
-            </Segment.Group>
-            <Segment.Group raised>
-              <GoalItemsPage activityType="steps" goals={this.props.incubatorState.userGoals.steps} />
-            </Segment.Group>
-            <Segment.Group raised>
-              <GoalItemsPage activityType="stairs" goals={this.props.incubatorState.userGoals.stairs} />
-            </Segment.Group>
+            <GoalItemsPage activityType="distance" goals={this.props.incubatorState.userGoals.distance} />
+            <GoalItemsPage activityType="steps" goals={this.props.incubatorState.userGoals.steps} />
+            <GoalItemsPage activityType="stairs" goals={this.props.incubatorState.userGoals.stairs} />
           </Grid.Column>
         </Grid>
         <ProgressBar />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, List, Segment } from 'semantic-ui-react';
+import { Grid, Segment, Header, Statistic } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
@@ -28,13 +28,28 @@ const GoalItemsPage = (props) => {
     if (goal.user_goal_end_date) {
       return (
         <div>
-          <p> {goal.user_goal_target - goal.user_goal_current} {goal.activity} to go! </p>
-          <p> Deadline : {goal.user_goal_end_date} </p>
-        </div>);
+          <Grid.Column>
+          <Statistic
+            floated="right"
+            size="mini"
+          >
+            <Statistic.Value>
+              {goal.user_goal_target - goal.user_goal_current} {goal.activity}
+            </Statistic.Value>
+            <Statistic.Label>
+           to go!
+            </Statistic.Label>
+          </Statistic>
+          </Grid.Column>
+          <Grid.Column>
+          Deadline : {goal.user_goal_end_date}
+          </Grid.Column>
+          </div>
+        );
     }
     return (
       <div>
-        <p> {goal.user_goal_target - goal.user_goal_current} {goal.activity} to go! </p>
+        {goal.user_goal_target - goal.user_goal_current} {goal.activity} to go!
       </div>
     );
   };
@@ -42,25 +57,26 @@ const GoalItemsPage = (props) => {
   if (props.goals) {
     return (
 
-      <Segment
-        compact
-        clearing
-      >
+      <Segment.Group raised>
         {props.goals.map(goal => (
-          <List.Content key={goal.user_goal_id}>
-
-            <Grid.Column textAlign="left" width={10}>
-              <List.Header><strong>{goal.goal_name}</strong></List.Header>
-              <List.Description>
-                {goal.user_goal_end_date}
-                <br />
-                {statusIndicator(goal)}
-                {}
-              </List.Description>
-            </Grid.Column>
-          </List.Content>))
+          <Segment
+            key={goal.user_goal_id}
+            compact
+            clearing
+          >
+            <Grid>
+              <Grid.Row columns={2}>
+                <Grid.Column>
+                  <Header as="h4">{goal.goal_name}</Header>
+                </Grid.Column>
+                
+                  {statusIndicator(goal)}
+                
+              </Grid.Row>
+            </Grid>
+          </Segment>))
             }
-      </Segment>
+      </Segment.Group>
 
     );
   }
