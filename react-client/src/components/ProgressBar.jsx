@@ -10,7 +10,14 @@ class ProgressBar extends React.Component {
   }
   render() {
     return (
-      <Progress size="medium" value={this.state.percent} total="100" progress indicating />
+      <Progress
+        style={{ marginTop: 8 }}
+        value={this.state.percent}
+        size="medium"
+        total="100"
+        progress
+        indicating
+      />
     );
   }
 }

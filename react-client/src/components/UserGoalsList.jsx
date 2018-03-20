@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import * as incubatorActions from '../actions/incubatorActions';
 
-const GoalItemsPage = (props) => {
+const UserGoalsList = (props) => {
   const statusIndicator = (goal) => {
     if (goal.user_goal_concluded && !goal.user_goal_finalized) {
       if (goal.user_goal_success) {
@@ -29,23 +29,23 @@ const GoalItemsPage = (props) => {
       return (
         <div>
           <Grid.Column>
-          <Statistic
-            floated="right"
-            size="mini"
-          >
-            <Statistic.Value>
-              {goal.user_goal_target - goal.user_goal_current} {goal.activity}
-            </Statistic.Value>
-            <Statistic.Label>
+            <Statistic
+              floated="right"
+              size="mini"
+            >
+              <Statistic.Value>
+                {goal.user_goal_target - goal.user_goal_current} {goal.activity}
+              </Statistic.Value>
+              <Statistic.Label>
            to go!
-            </Statistic.Label>
-          </Statistic>
+              </Statistic.Label>
+            </Statistic>
           </Grid.Column>
           <Grid.Column>
           Deadline : {goal.user_goal_end_date}
           </Grid.Column>
-          </div>
-        );
+        </div>
+      );
     }
     return (
       <div>
@@ -56,7 +56,6 @@ const GoalItemsPage = (props) => {
 
   if (props.goals) {
     return (
-
       <Segment.Group raised>
         {props.goals.map(goal => (
           <Segment
@@ -69,9 +68,7 @@ const GoalItemsPage = (props) => {
                 <Grid.Column>
                   <Header as="h4">{goal.goal_name}</Header>
                 </Grid.Column>
-                
-                  {statusIndicator(goal)}
-                
+                {statusIndicator(goal)}
               </Grid.Row>
             </Grid>
           </Segment>))
@@ -85,13 +82,13 @@ const GoalItemsPage = (props) => {
   );
 };
 
-GoalItemsPage.propTypes = {
+UserGoalsList.propTypes = {
   state: PropTypes.shape({
     steps: PropTypes.number,
     distance: PropTypes.number,
     stairs: PropTypes.number,
   }).isRequired,
-  goals: PropTypes.arrayOf(PropTypes.object).isRequired,
+  // goals: PropTypes.arrayOf(PropTypes.object).isRequired,
   activityType: PropTypes.string.isRequired,
   // iconKey: PropTypes.string.isRequired,
   incubatorActions: PropTypes.objectOf(PropTypes.func).isRequired,
@@ -108,4 +105,4 @@ const mapDispatchToProps = dispatch => (
     incubatorActions: bindActionCreators(incubatorActions, dispatch),
   }
 );
-export default connect(mapStateToProps, mapDispatchToProps)(GoalItemsPage);
+export default connect(mapStateToProps, mapDispatchToProps)(UserGoalsList);
