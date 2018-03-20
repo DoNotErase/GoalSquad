@@ -33,15 +33,17 @@ class HomePage extends React.Component {
         >
           <Grid.Column width={10} style={{ maxWidth: 450 }}>
             <Image src="./assets/misc/logo.png" />
-            <Button
-              as="a"
-              href="/auth/fitbit"
-              fluid
-              color="violet"
-              size="large"
-              style={{ marginTop: 250 }}
-            >Connect
-            </Button>
+            <a href="/auth/fitbit">
+              <Button
+              // as="a"
+              // href="/auth/fitbit"
+                fluid
+                color="violet"
+                size="large"
+                style={{ marginTop: 250 }}
+              >Connect
+              </Button>
+            </a>
           </Grid.Column>
         </Grid>
       </div>

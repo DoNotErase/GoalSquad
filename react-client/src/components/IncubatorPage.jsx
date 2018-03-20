@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Header, Divider } from 'semantic-ui-react';
+import { Grid, Header, Divider, Icon } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
@@ -21,8 +21,7 @@ class IncubatorPage extends React.Component {
         <Divider hidden />
         <Grid centered>
           <Grid.Column computer={8} mobile={16}>
-            <Grid.Column width={3} />
-            <Grid.Column width={13}>
+            <Grid.Column width={5}>
               <ProgressBar />
             </Grid.Column>
             <GoalItemsPage activityType="distance" goals={this.props.incubatorState.userGoals.distance} />
