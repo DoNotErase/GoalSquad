@@ -11,7 +11,7 @@ class Goal extends React.Component {
       open: false,
       goalID: this.props.goal.goal_id,
       goalName: this.props.goal.goal_name,
-      goalAmount: this.props.goal.goal_amount,
+      // goalAmount: this.props.goal.goal_amount,
       goalDifficulty: this.props.goal.goal_difficulty,
       goalPoints: this.props.goal.goal_points,
       difficultyColor: null,
@@ -69,7 +69,7 @@ class Goal extends React.Component {
   }
 
   close() {
-    this.setState({ open: false, errorMessage: ''});
+    this.setState({ open: false, errorMessage: '' });
   }
 
   submit() {
@@ -77,7 +77,7 @@ class Goal extends React.Component {
     if (deadline && deadline.hours === 0 && deadline.days === 0) {
       this.setState({ errorMessage: 'please mark no deadline or set a deadline!' });
     } else {
-      this.setState({ open: false, errorMessage: ''});
+      this.setState({ open: false, errorMessage: '' });
       let points = parseInt(this.state.goalPoints, 10);
       if (deadline) {
         const hours = (deadline.days * 24) + deadline.hours;
@@ -199,6 +199,6 @@ const mapDispatchToProps = dispatch => (
   {
     goalsActions: bindActionCreators(goalsActions, dispatch),
   }
-)
+);
 
 export default connect(null, mapDispatchToProps)(Goal);
