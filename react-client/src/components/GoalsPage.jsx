@@ -7,7 +7,7 @@ import * as actions from '../actions/actions';
 import * as goalsActions from '../actions/createGoalActions';
 import Goal from './Goal';
 import MainMenu from './MainMenu';
-import * as incubatorActions from "../actions/incubatorActions";
+import * as incubatorActions from '../actions/incubatorActions';
 
 class GoalsPage extends React.Component {
   constructor() {
@@ -22,7 +22,6 @@ class GoalsPage extends React.Component {
     this.props.goalsActions.getDefaultGoals();
     this.props.actions.getLifetimeData();
     this.props.incubatorActions.getUserGoals();
-
   }
 
   handleClick(e, titleProps) {
@@ -36,8 +35,8 @@ class GoalsPage extends React.Component {
 
   render() {
     const { activeIndex } = this.state;
-    let goalsList = this.props.goalsState.standardGoals;
-    let listItems = Object.keys(goalsList).map((category, categoryIndex) => (
+    const goalsList = this.props.goalsState.standardGoals;
+    const listItems = Object.keys(goalsList).map((category, categoryIndex) => (
       <Accordion styled fluid>
         <Accordion.Title
           active={activeIndex === categoryIndex}
@@ -58,14 +57,14 @@ class GoalsPage extends React.Component {
     ));
     return (
       <div className="goalspage">
-        <Header as="h2">Add A Goal</Header>
-        <Divider />
+        <Header as="h1" className="white" textAlign="right">Add A Goal</Header>
+        <Divider hidden />
         <Grid centered>
-          <Grid.Column computer={8} mobile={14}>
+          <Grid.Column computer={8} mobile={16}>
             {listItems}
           </Grid.Column>
+          <MainMenu />
         </Grid>
-        <MainMenu />
       </div>
     );
   }

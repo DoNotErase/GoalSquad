@@ -1,10 +1,11 @@
 import React from 'react';
-import { Divider, Grid, Header, Icon } from 'semantic-ui-react';
+import { Grid, Header, Divider, Segment } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import GoalItemsPage from './GoalItemsPage';
-import ProgressBar from './ProgressBarPage';
+import ProgressBar from './ProgressBar';
+import MainMenu from './MainMenu';
 import * as actions from '../actions/actions';
 import * as incubatorActions from '../actions/incubatorActions';
 
@@ -14,53 +15,19 @@ class IncubatorPage extends React.Component {
   }
 
   render() {
-    const styles = {
-      incubatorNav: {
-        padding: '20px',
-      },
-    };
     return (
-      <div className="incubator-container">
-        <style>{`
-          body > div,
-          body > div > div,
-          body > div > div > div.incubator-container {
-              height: 100%;
-          }
-        `}
-        </style>
-        <Grid
-          container
-          textAlign="center"
-          style={{ height: '100%' }}
-          columns={2}
-        >
-          <Grid.Column width={16}>
-            <div className="goal-container">
-              <div className="progress-bar-container">
-                <Grid verticalAlign="middle" container columns={2}>
-                  <Grid.Column width={3}><img src="./assets/icons/egg.png" /></Grid.Column>
-                  <Grid.Column width={13}><div className="progress-bar"><ProgressBar /></div></Grid.Column>
-                </Grid>
-              </div>
-              <Grid container style={styles.incubatorNav} columns={2} verticalAlign="middle">
-                <Grid.Column width={12}>
-                  <Header size="large" textAlign="left">Your Goals</Header>
-                </Grid.Column>
-                <Grid.Column width={4}>
-                  <a href="/goals"><img className="add-goal-icon" alt="add a goal" src="./assets/icons/plus-button.png" /></a>
-                </Grid.Column>
-              </Grid>
-              <Divider fitted />
-              <div className="goals-list">
-                <GoalItemsPage iconKey="./assets/icons/running-512x512.png" activityType="distance" goals={this.props.incubatorState.userGoals.distance} />
-                <GoalItemsPage iconKey="./assets/icons/biking-512x512.png" activityType="steps" goals={this.props.incubatorState.userGoals.steps} />
-                <GoalItemsPage iconKey="./assets/icons/biking-512x512.png" activityType="stairs" goals={this.props.incubatorState.userGoals.stairs} />
-              </div>
-            </div>
-            <a className="logout-button" href="/logout"><Icon size="large" name="log out" /></a>
+      <div className="incubatorpage">
+        <Header as="h1" className="white" textAlign="right">Your Goals</Header>
+        <Divider hidden />
+        <Grid centered>
+          <Grid.Column computer={8} mobile={16}>
+            <GoalItemsPage activityType="distance" goals={this.props.incubatorState.userGoals.distance} />
+            <GoalItemsPage activityType="steps" goals={this.props.incubatorState.userGoals.steps} />
+            <GoalItemsPage activityType="stairs" goals={this.props.incubatorState.userGoals.stairs} />
           </Grid.Column>
         </Grid>
+        <ProgressBar />
+        <MainMenu />
       </div>
     );
   }
