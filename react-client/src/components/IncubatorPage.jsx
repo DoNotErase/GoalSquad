@@ -47,9 +47,9 @@ IncubatorPage.propTypes = {
   // }).isRequired,
   // actions: PropTypes.objectOf(PropTypes.func).isRequired,
   incubatorState: PropTypes.objectOf(PropTypes.object).isRequired,
-  incubatorActions: PropTypes.objectOf({
-    getUserGoals: PropTypes.func,
-  }).isRequired,
+  // incubatorActions: PropTypes.objectOf({
+  //   getUserGoals: PropTypes.func,
+  // }).isRequired,
 };
 
 const mapDispatchToProps = dispatch => (

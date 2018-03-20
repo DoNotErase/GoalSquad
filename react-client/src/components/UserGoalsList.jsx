@@ -27,8 +27,9 @@ const UserGoalsList = (props) => {
     }
     if (goal.user_goal_end_date) {
       return (
-        <div>
-          <Grid.Column>
+   
+          <Grid.Row columns={2}>
+          <Grid.Column color="red">
             <Statistic
               floated="right"
               size="mini"
@@ -41,10 +42,11 @@ const UserGoalsList = (props) => {
               </Statistic.Label>
             </Statistic>
           </Grid.Column>
-          <Grid.Column>
+          <Grid.Column color="yellow">
           Deadline : {goal.user_goal_end_date}
           </Grid.Column>
-        </div>
+          </Grid.Row>
+   
       );
     }
     return (
@@ -64,12 +66,13 @@ const UserGoalsList = (props) => {
             clearing
           >
             <Grid>
-              <Grid.Row columns={2}>
-                <Grid.Column>
+              <Grid.Row columns={1}>
+                <Grid.Column color="green">
                   <Header as="h4">{goal.goal_name}</Header>
                 </Grid.Column>
-                {statusIndicator(goal)}
               </Grid.Row>
+              {statusIndicator(goal)}
+
             </Grid>
           </Segment>))
             }
