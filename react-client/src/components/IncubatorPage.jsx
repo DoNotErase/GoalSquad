@@ -25,7 +25,7 @@ class IncubatorPage extends React.Component {
             <UserGoalsList activityType="steps" goals={this.props.incubatorState.userGoals.steps} />
             <UserGoalsList activityType="stairs" goals={this.props.incubatorState.userGoals.stairs} />
           </Grid.Column>
-          <Grid.Row columns={2}>
+          <Grid.Row columns={2} className="progressbar">
             <Grid.Column width={3} floated="left">
               <Image src="./assets/icons/egg.png" centered/>
             </Grid.Column>

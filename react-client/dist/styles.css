@@ -40,6 +40,7 @@ body {
 }
 
 /* Menu Modal */
+
 .menubutton {
     top: 15px;
     left: 15px;
@@ -48,6 +49,13 @@ body {
 
 .menuicons {
     padding: 20px;
+}
+
+/* Progress Bar */
+
+.progressbar {
+    position: fixed !important;
+    bottom: 0;
 }
 
 /* INCUBATOR PAGE */
