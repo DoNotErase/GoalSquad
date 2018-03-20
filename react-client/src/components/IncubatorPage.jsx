@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Header, Divider, Segment } from 'semantic-ui-react';
+import { Grid, Header, Divider } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
