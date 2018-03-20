@@ -121,6 +121,10 @@ app.get('/fitbit/dailySummary', async (req, res) => {
   }
 });
 
+/** *******************FITBIT SUBSCRIPTION*************************** */
+app.post('/fitbit-notifications', async (req, res) => {
+  res.status(204).end();
+});
 
 /** *******CLIENT SIDE FETCHES ************** */
 app.get('/eggData/:eggID', async (req, res) => {
