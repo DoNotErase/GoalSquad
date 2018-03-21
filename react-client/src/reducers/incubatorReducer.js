@@ -1,4 +1,5 @@
 const incubatorState = {
+  userGoals: {},
   egg: {
     egg_xp: 0,
   },

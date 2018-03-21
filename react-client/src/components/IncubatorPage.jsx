@@ -9,6 +9,7 @@ import MainMenu from './MainMenu';
 import * as actions from '../actions/actions';
 import * as incubatorActions from '../actions/incubatorActions';
 
+
 class IncubatorPage extends React.Component {
   componentDidMount() {
     this.props.incubatorActions.getUserGoals();
@@ -23,7 +24,7 @@ class IncubatorPage extends React.Component {
           <Grid.Column computer={8} mobile={16}>
             <UserGoalsList activityType="distance" goals={this.props.incubatorState.userGoals.distance} />
             <UserGoalsList activityType="steps" goals={this.props.incubatorState.userGoals.steps} />
-            <UserGoalsList activityType="stairs" goals={this.props.incubatorState.userGoals.stairs} />
+            <UserGoalsList activityType="stairs" goals={this.props.incubatorState.userGoals.floors} />
           </Grid.Column>
           <Grid.Row columns={2} className="progressbar">
             <Grid.Column width={3} floated="left">

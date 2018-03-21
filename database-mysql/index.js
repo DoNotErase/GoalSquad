@@ -201,7 +201,7 @@ module.exports.getEggInfo = async (userID) => {
 module.exports.newUserLifetimeDistance = async (userID, distance) => {
   try {
     const updateGoals = `UPDATE user_goal SET user_goal_current = ${distance} ` +
-      `WHERE user_id = ${userID} AND goal_id > 0 AND goal_id < 7 AND user_goal_concluded = 0`;
+      `WHERE user_id = '${userID}' AND goal_id > 0 AND goal_id < 7 AND user_goal_concluded = 0`;
     return await db.queryAsync(updateGoals);
   } catch (err) {
     console.log(err);
@@ -212,7 +212,7 @@ module.exports.newUserLifetimeDistance = async (userID, distance) => {
 module.exports.newUserLifetimeSteps = async (userID, steps) => {
   try {
     const updateGoals = `UPDATE user_goal SET user_goal_current = ${steps} ` +
-      `WHERE user_id = ${userID} AND goal_id > 6 AND goal_id < 13 AND user_goal_concluded = 0`;
+      `WHERE user_id = '${userID}' AND goal_id > 6 AND goal_id < 13 AND user_goal_concluded = 0`;
     return await db.queryAsync(updateGoals);
   } catch (err) {
     console.log(err);
@@ -220,10 +220,10 @@ module.exports.newUserLifetimeSteps = async (userID, steps) => {
   }
 };
 
-module.exports.newUserLifetimeDistance = async (userID, floors) => {
+module.exports.newUserLifetimeFloors = async (userID, floors) => {
   try {
     const updateGoals = `UPDATE user_goal SET user_goal_current = ${floors} ` +
-      `WHERE user_id = ${userID} AND goal_id > 12 AND goal_id < 19 AND user_goal_concluded = 0`;
+      `WHERE user_id = '${userID}' AND goal_id > 12 AND goal_id < 19 AND user_goal_concluded = 0`;
     return await db.queryAsync(updateGoals);
   } catch (err) {
     console.log(err);
@@ -232,10 +232,14 @@ module.exports.newUserLifetimeDistance = async (userID, floors) => {
 };
 
 module.exports.updateGoalStatuses = async () => {
-  const markDoneGoals = 'UPDATE user_goal SET user_goal_success = 1, user_goal_concluded = 1' +
+  const markDoneGoals = 'UPDATE user_goal SET user_goal_success = 1, user_goal_concluded = 1 ' +
     'WHERE user_goal_target <= user_goal_current';
-  await db.queryAsync(markDoneGoals);
   const markExpiredGoals = 'UPDATE user_goal SET user_goal_concluded = 1 ' +
     'WHERE user_goal_end_date < CURRENT_TIMESTAMP;';
-  await db.queryAsync(markExpiredGoals);
+  (async function updateGoals() {
+    await Promise.all([
+      db.queryAsync(markDoneGoals),
+      db.queryAsync(markExpiredGoals),
+    ]);
+  }());
 };

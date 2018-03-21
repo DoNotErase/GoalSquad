@@ -131,12 +131,12 @@ VALUES
   ('Walk 20000 steps', 'steps', 20000, 'easy', 'long', 200, 24),
   ('Walk 50000 steps', 'steps', 50000, 'med', 'long', 500, 24),
   ('Walk 100000 steps', 'steps', 100000, 'hard', 'long', 1000, 24),
-  ('Climb 3 stairs', 'stairs', 3, 'easy', 'short', 10, 2),
-  ('Climb 5 stairs', 'stairs', 5, 'med', 'short', 25, 2),
-  ('Climb 20 stairs', 'stairs', 20, 'hard', 'short', 100, 2),
-  ('Climb 40 stairs', 'stairs', 40, 'easy', 'long', 200, 24),
-  ('Climb 100 stairs', 'stairs', 100, 'med', 'long', 500, 24),
-  ('Climb 200 stairs', 'stairs', 200, 'hard', 'long', 1000, 24);
+  ('Climb 3 stairs', 'floors', 3, 'easy', 'short', 10, 2),
+  ('Climb 5 stairs', 'floors', 5, 'med', 'short', 25, 2),
+  ('Climb 20 stairs', 'floors', 20, 'hard', 'short', 100, 2),
+  ('Climb 40 stairs', 'floors', 40, 'easy', 'long', 200, 24),
+  ('Climb 100 stairs', 'floors', 100, 'med', 'long', 500, 24),
+  ('Climb 200 stairs', 'floors', 200, 'hard', 'long', 1000, 24);
 
 insert into user_egg
   (user_id, egg_id)
@@ -149,14 +149,14 @@ VALUES
   ('3XP8GJ', 2);
 
 insert into user_goal
-  (user_id, goal_id, user_goal_start_value, user_goal_current, user_goal_end_date)
+  (user_id, goal_id, user_goal_target, user_goal_end_date, user_goal_points)
 VALUES
-  ('3XP8GJ', 2, 2, 2, '2018-03-20'),
-  ('3XP8GJ', 14, 14, 2, '2018-03-20'),
-  ('3XP8GJ', 9, 9, 2, '2018-03-20'),
-  ('3XP8GJ', 3, 3, 2, '2018-03-20'),
-  ('3XP8GJ', 5, 5, 2, '2018-03-20'),
-  ('3XP8GJ', 12, 12, 2, '2018-03-20');
+  ('3XP8GJ', 2, 20, '2018-03-20', 20),
+  ('3XP8GJ', 14, 6000, '2018-03-21', 25),
+  ('3XP8GJ', 9, 30000, '2018-03-22', 30),
+  ('3XP8GJ', 3, 2000, '2018-03-23', 5),
+  ('3XP8GJ', 5, 5000, '2018-03-24', 40),
+  ('3XP8GJ', 12, 376800, '2018-03-25', 60);
 
 
 /*  Execute this file from the command line by typing:

@@ -73,8 +73,26 @@ app.get('/callback', passport.authenticate('fitbit', {
   failureRedirect: '/auth/fitbit/failure',
 }));
 
-app.get('/auth/fitbit/success', (req, res) => {
-  res.redirect('/incubator');
+app.get('/auth/fitbit/success', async (req, res) => {
+  try {
+    const token = await db.getAccessToken(req.session.passport.user.id);
+    const activities = await axios.get('https://api.fitbit.com/1/user/-/activities.json', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const userID = req.session.passport.user.id;
+    await Promise.all([
+      db.newUserLifetimeDistance(userID, activities.data.lifetime.total.distance),
+      db.newUserLifetimeSteps(userID, activities.data.lifetime.total.steps),
+      db.newUserLifetimeFloors(userID, activities.data.lifetime.total.floors),
+    ]);
+    await db.updateGoalStatuses();
+    res.redirect('/incubator');
+  } catch (err) {
+    console.log(err);
+    res.redirect('/');
+  }
 });
 
 app.get('/auth/fitbit/failure', (req, res) => {
@@ -124,6 +142,7 @@ app.get('/fitbit/lifetime', async (req, res) => {
         Authorization: `Bearer ${token}`,
       },
     });
+    console.log(activities.data);
     res.json(activities.data); // TODO: replace this with db storage?
   } catch (err) {
     res.status(401).send(err);

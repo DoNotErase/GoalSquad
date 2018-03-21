@@ -3,9 +3,29 @@ import { Grid, Segment, Header, Statistic } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import * as incubatorActions from '../actions/incubatorActions';
 
 const UserGoalsList = (props) => {
+  const makeDeadLineMessage = (goal) => {
+    const now = moment();
+    const deadline = moment(goal.user_goal_end_date);
+    return deadline.diff(now, 'hours');
+  };
+
+  const actvitiyName = (goalActivity) => {
+    switch (goalActivity) {
+      case 'distance':
+        return 'Miles';
+      case 'floors':
+        return 'Flights';
+      case 'steps':
+        return 'steps';
+      default:
+        return 'activity not recognized';
+    }
+  };
+
   const statusIndicator = (goal) => {
     if (goal.user_goal_concluded && !goal.user_goal_finalized) {
       if (goal.user_goal_success) {
@@ -27,15 +47,14 @@ const UserGoalsList = (props) => {
     }
     if (goal.user_goal_end_date) {
       return (
-   
-          <Grid.Row columns={2}>
+        <Grid.Row columns={2}>
           <Grid.Column>
             <Statistic
               floated="right"
               size="mini"
             >
               <Statistic.Value>
-                {goal.user_goal_target - goal.user_goal_current} {goal.activity}
+                {goal.user_goal_target - goal.user_goal_current} {actvitiyName(goal.goal_activity)}
               </Statistic.Value>
               <Statistic.Label>
            to go!
@@ -43,15 +62,24 @@ const UserGoalsList = (props) => {
             </Statistic>
           </Grid.Column>
           <Grid.Column>
-          Deadline : {goal.user_goal_end_date}
+            {makeDeadLineMessage(goal)} hours left!
           </Grid.Column>
-          </Grid.Row>
-   
+        </Grid.Row>
       );
     }
     return (
       <div>
-        {goal.user_goal_target - goal.user_goal_current} {goal.activity} to go!
+        <Statistic
+          floated="right"
+          size="mini"
+        >
+          <Statistic.Value>
+            {goal.user_goal_target - goal.user_goal_current}
+          </Statistic.Value>
+          <Statistic.Label>
+            {actvitiyName(goal.goal_activity)} to go!
+          </Statistic.Label>
+        </Statistic>
       </div>
     );
   };
@@ -86,13 +114,12 @@ const UserGoalsList = (props) => {
 };
 
 UserGoalsList.propTypes = {
-  state: PropTypes.shape({
-    steps: PropTypes.number,
-    distance: PropTypes.number,
-    stairs: PropTypes.number,
-  }).isRequired,
-  // goals: PropTypes.arrayOf(PropTypes.object).isRequired,
-  activityType: PropTypes.string.isRequired,
+  // state: PropTypes.shape({
+  //   steps: PropTypes.number,
+  //   distance: PropTypes.number,
+  //   stairs: PropTypes.number,
+  // }).isRequired,
+  goals: PropTypes.arrayOf(PropTypes.object).isRequired,
   // iconKey: PropTypes.string.isRequired,
   incubatorActions: PropTypes.objectOf(PropTypes.func).isRequired,
 };

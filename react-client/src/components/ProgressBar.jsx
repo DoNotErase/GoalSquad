@@ -6,19 +6,12 @@ import PropTypes from 'prop-types';
 import * as incubatorActions from '../actions/incubatorActions';
 
 class ProgressBar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      percent: props.incubatorState.egg.egg_xp, // this.props.eggPercent
-    };
-  }
-
   componentDidMount() {
     this.props.incubatorActions.fetchEggStatus();
   }
 
   hatchButton() {
-    if (this.state.percent >= 100) {
+    if (this.props.incubatorState.egg.egg_xp >= 100) {
       return (
         <button onClick={this.props.incubatorActions.hatchEgg}> Hatch Me! </button>
       );
@@ -30,7 +23,7 @@ class ProgressBar extends React.Component {
     return (
       <Progress
         style={{ marginTop: 8 }}
-        value={this.state.percent}
+        value={this.props.incubatorState.egg.egg_xp}
         size="medium"
         total="100"
         progress
