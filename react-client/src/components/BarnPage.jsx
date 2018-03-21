@@ -8,7 +8,7 @@ import * as actions from '../actions/actions';
 import * as barnActions from '../actions/barnActions';
 import MainMenu from './MainMenu';
 
-const child = { width: '750px', height: '100%' };
+const child = { width: '75em', height: '100%' };
 const BarnPage = () => (
 
   <div className="barnpage">
