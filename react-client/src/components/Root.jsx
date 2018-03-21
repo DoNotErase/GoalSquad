@@ -11,7 +11,7 @@ const history = syncHistoryWithStore(createBrowserHistory(), store);
 
 // Root component can only have one child component
 // Route component handles route redirection based on filtered path option below
-const Root = ({ store }) => (
+const Root = () => (
   <Provider store={store}>
     <Router history={history}>
       <Route path="/:filter?" component={Routes} />

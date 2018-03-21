@@ -12,11 +12,11 @@ class ProgressBar extends React.Component {
   }
 
   hatchButton() {
-    if (/* this.props.incubatorState.egg.egg_xp >= 100 */ true) {
+    if (this.props.incubatorState.egg.egg_xp >= 100) {
       return (
         <button
           onClick={() => {
-            this.props.incubatorActions.hatchEgg();
+            this.props.incubatorActions.hatchEgg(this.props.incubatorState.egg.egg_xp - 100);
             this.props.history.push('/barn');
           }}
         >
@@ -51,6 +51,19 @@ ProgressBar.propTypes = {
     }),
   }).isRequired,
   incubatorActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  history: PropTypes.shape({
+    action: PropTypes.string,
+    block: PropTypes.func,
+    createHref: PropTypes.func,
+    go: PropTypes.func,
+    goBack: PropTypes.func,
+    goForward: PropTypes.func,
+    length: PropTypes.number,
+    listen: PropTypes.func,
+    location: PropTypes.object,
+    push: PropTypes.func,
+    replace: PropTypes.func,
+  }).isRequired,
 };
 
 const mapStateToProps = state => ({

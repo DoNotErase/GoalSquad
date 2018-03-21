@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Segment, Header, Statistic } from 'semantic-ui-react';
+import { Grid, Segment, Header, Statistic, Button } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
@@ -8,9 +8,20 @@ import * as incubatorActions from '../actions/incubatorActions';
 
 const UserGoalsList = (props) => {
   const makeDeadLineMessage = (goal) => {
+    const nowUTC = moment.utc();
     const now = moment();
-    const deadline = moment(goal.user_goal_end_date);
-    return deadline.diff(now, 'hours');
+    console.log(nowUTC);
+    console.log(now);
+    const deadline = moment.utc(goal.user_goal_end_date);
+    const days = deadline.diff(now, 'days');
+    if (days >= 1) {
+      return `${(days + 1)} days`;
+    }
+    const hours = deadline.diff(now, 'hours');
+    if (hours >= 1) {
+      return `${(hours + 1)} hours`;
+    }
+    return `${deadline.diff(now, 'minutes') + 1} minutes`;
   };
 
   const actvitiyName = (goalActivity) => {
@@ -30,20 +41,20 @@ const UserGoalsList = (props) => {
     if (goal.user_goal_concluded && !goal.user_goal_finalized) {
       if (goal.user_goal_success) {
         return (
-          <button onClick={() => { props.incubatorActions.markGoalSuccess(goal.user_goal_id); }}>
-            NEW GOAL COMPLETE
-          </button>);
+          <Button onClick={() => { props.incubatorActions.markGoalSuccess(goal.user_goal_id); }}>
+            Goal Success!
+          </Button>);
       }
       return (
-        <button onClick={() => { props.incubatorActions.markGoalFailure(goal.user_goal_id); }}>
-          NEW GOAL FAILURE
-        </button>);
+        <Button onClick={() => { props.incubatorActions.markGoalFailure(goal.user_goal_id); }}>
+          Goal Failed :(
+        </Button>);
     }
     if (goal.user_goal_finalized) {
       if (goal.user_goal_success) {
-        return <div> OLD GOAL SUCCESS </div>;
+        return <div> You failed this goal :( </div>;
       }
-      return <div> OLD GOAL FAILURE </div>;
+      return <div> You passed this goal! </div>;
     }
     if (goal.user_goal_end_date) {
       return (
@@ -62,7 +73,7 @@ const UserGoalsList = (props) => {
             </Statistic>
           </Grid.Column>
           <Grid.Column>
-            {makeDeadLineMessage(goal)} hours left!
+            {makeDeadLineMessage(goal)} left!
           </Grid.Column>
         </Grid.Row>
       );
@@ -120,8 +131,10 @@ UserGoalsList.propTypes = {
   //   stairs: PropTypes.number,
   // }).isRequired,
   goals: PropTypes.arrayOf(PropTypes.object).isRequired,
-  // iconKey: PropTypes.string.isRequired,
-  incubatorActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  incubatorActions: PropTypes.shape({
+    markGoalSuccess: PropTypes.func,
+    markGoalFailure: PropTypes.func,
+  }).isRequired,
 };
 
 const mapStateToProps = state => (
