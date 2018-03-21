@@ -102,17 +102,19 @@ module.exports.getGoalInfo = async (goalID) => {
 };
 
 module.exports.createUserGoal = async (goalObj) => {
+  console.log(goalObj.start);
+
   try {
     const query = 'INSERT INTO user_goal (user_id, goal_id, user_goal_start_value, user_goal_current, ' +
-      'user_goal_target, user_goal_points) VALUES ' +
-      `('${goalObj.userID}', ${goalObj.goalID}, ${goalObj.startValue}, ${goalObj.startValue}, ${goalObj.targetValue}, ${goalObj.points});`;
+      'user_goal_target, user_goal_points, user_goal_start_date) VALUES ' +
+      `('${goalObj.userID}', ${goalObj.goalID}, ${goalObj.startValue}, ${goalObj.startValue}, ${goalObj.targetValue}, ${goalObj.points}, (utc_timestamp()));`;
 
     await db.queryAsync(query);
     if (goalObj.goalLength) {
       const setEndDate = 'UPDATE user_goal SET user_goal_end_date = ' +
         '(SELECT DATE_ADD((SELECT DATE_ADD((SELECT MAX(user_goal_start_date)), ' +
-        `INTERVAL ${goalObj.goalLength.day} DAY)), ` +
-        `INTERVAL ${goalObj.goalLength.hour} HOUR)) ` +
+        `INTERVAL ${goalObj.goalLength.days} DAY)), ` +
+        `INTERVAL ${goalObj.goalLength.hours} HOUR)) ` +
         'WHERE user_goal_id = (SELECT MAX(user_goal_id));';
 
       await db.queryAsync(setEndDate);
@@ -170,18 +172,25 @@ module.exports.completeGoalFailure = async (userGoalID) => {
   }
 };
 
-module.exports.hatchEgg = async (userEggID, userID) => {
+module.exports.hatchEgg = async (userEggID, userID, nextXP) => {
   try {
-    const hatchEgg = `UPDATE user_egg SET egg_hatched = 1 WHERE user_egg_id = ${userEggID}`;
-    await db.queryAsync(hatchEgg);
+    const hatchEgg = `UPDATE user_egg SET egg_hatched = 1 WHERE user_egg_id = '${userEggID}';`;
+
     const newSquaddie = 'INSERT INTO user_monster (user_id, monster_id) VALUES ' +
       `('${userID}', FLOOR(RAND() * (SELECT COUNT(*) FROM monster) + 1));`;
-    await db.queryAsync(newSquaddie);
-    const makeNewEgg = 'INSERT INTO user_egg (user_id, egg_id) VALUES ' +
-      `('${userID}', FLOOR(RAND() * (SELECT COUNT (*) FROM egg) + 1));`;
-    await db.queryAsync(makeNewEgg);
+
+    const makeNewEgg = 'INSERT INTO user_egg (user_id, egg_id, egg_xp) VALUES ' +
+      `('${userID}', FLOOR(RAND() * (SELECT COUNT (*) FROM egg) + 1), ${nextXP});`;
+
     const returnSquaddie = 'SELECT user_monster.*, monster.* FROM user_monster INNER JOIN monster ' +
       'ON user_monster.monster_id = monster.monster_id WHERE user_monster.user_monster_id = (SELECT MAX(user_monster_id) FROM user_monster);';
+
+    await Promise.all([
+      db.queryAsync(hatchEgg),
+      db.queryAsync(newSquaddie),
+      db.queryAsync(makeNewEgg),
+    ]);
+
     return await db.queryAsync(returnSquaddie);
   } catch (err) {
     console.log(err);
@@ -234,8 +243,8 @@ module.exports.newUserLifetimeFloors = async (userID, floors) => {
 module.exports.updateGoalStatuses = async () => {
   const markDoneGoals = 'UPDATE user_goal SET user_goal_success = 1, user_goal_concluded = 1 ' +
     'WHERE user_goal_target <= user_goal_current';
-  const markExpiredGoals = 'UPDATE user_goal SET user_goal_concluded = 1 ' +
-    'WHERE user_goal_end_date < CURRENT_TIMESTAMP;';
+  const markExpiredGoals = 'UPDATE user_goal SET user_goal_concluded = 1 WHERE user_goal_end_date < (utc_timestamp()));';
+  console.log(markExpiredGoals);
   (async function updateGoals() {
     await Promise.all([
       db.queryAsync(markDoneGoals),

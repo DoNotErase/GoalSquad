@@ -7,13 +7,21 @@ import * as incubatorActions from '../actions/incubatorActions';
 
 class ProgressBar extends React.Component {
   componentDidMount() {
+    console.log(this.props);
     this.props.incubatorActions.fetchEggStatus();
   }
 
   hatchButton() {
     if (this.props.incubatorState.egg.egg_xp >= 100) {
       return (
-        <button onClick={this.props.incubatorActions.hatchEgg}> Hatch Me! </button>
+        <button
+          onClick={() => {
+            this.props.incubatorActions.hatchEgg(this.props.incubatorState.egg.egg_xp - 100);
+            this.props.history.push('/barn');
+          }}
+        >
+        Hatch Me!
+        </button>
       );
     }
     return (<div />);
@@ -21,14 +29,17 @@ class ProgressBar extends React.Component {
 
   render() {
     return (
-      <Progress
-        style={{ marginTop: 8 }}
-        value={this.props.incubatorState.egg.egg_xp}
-        size="medium"
-        total="100"
-        progress
-        indicating
-      />
+      <div>
+        <Progress
+          style={{ marginTop: 8 }}
+          value={this.props.incubatorState.egg.egg_xp}
+          size="medium"
+          total="100"
+          progress
+          indicating
+        />
+        {this.hatchButton()}
+      </div>
     );
   }
 }
@@ -40,6 +51,19 @@ ProgressBar.propTypes = {
     }),
   }).isRequired,
   incubatorActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  history: PropTypes.shape({
+    action: PropTypes.string,
+    block: PropTypes.func,
+    createHref: PropTypes.func,
+    go: PropTypes.func,
+    goBack: PropTypes.func,
+    goForward: PropTypes.func,
+    length: PropTypes.number,
+    listen: PropTypes.func,
+    location: PropTypes.object,
+    push: PropTypes.func,
+    replace: PropTypes.func,
+  }).isRequired,
 };
 
 const mapStateToProps = state => ({

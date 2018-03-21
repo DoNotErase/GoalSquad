@@ -40,11 +40,11 @@ export const fetchEggStatus = () => (
   )
 );
 
-const newSquaddie = squaddie => ({ type: 'NEW_MONSTER', payload: squaddie });
+const newSquaddie = squaddie => ({ type: 'NEW_SQUADDIE', payload: squaddie });
 
-export const hatchEgg = () => (
+export const hatchEgg = extraXP => (
   dispatch => (
-    axios.post('/hatchEgg')
+    axios.post('/hatchEgg', { xp: extraXP })
       .then((res) => {
         dispatch(newSquaddie(res.data));
       })
