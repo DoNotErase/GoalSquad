@@ -61,7 +61,7 @@ const UserGoalsList = (props) => {
         <Grid.Row columns={2}>
           <Grid.Column >
             <Header as="h4">{goal.goal_name}</Header>
-            {makeDeadLineMessage(goal)} hours left!
+            {makeDeadLineMessage(goal)} left!
           </Grid.Column>
           <Grid.Column >
             <Statistic
@@ -75,9 +75,6 @@ const UserGoalsList = (props) => {
                 to go!
               </Statistic.Label>
             </Statistic>
-          </Grid.Column>
-          <Grid.Column>
-            {makeDeadLineMessage(goal)} left!
           </Grid.Column>
         </Grid.Row>
       );
