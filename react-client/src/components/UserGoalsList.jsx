@@ -24,7 +24,7 @@ const UserGoalsList = (props) => {
     return `${deadline.diff(now, 'minutes') + 1} minutes`;
   };
 
-  const actvitiyName = (goalActivity) => {
+  const activityName = (goalActivity) => {
     switch (goalActivity) {
       case 'distance':
         return 'Miles';
@@ -59,16 +59,20 @@ const UserGoalsList = (props) => {
     if (goal.user_goal_end_date) {
       return (
         <Grid.Row columns={2}>
-          <Grid.Column>
+          <Grid.Column >
+            <Header as="h4">{goal.goal_name}</Header>
+            {makeDeadLineMessage(goal)} hours left!
+          </Grid.Column>
+          <Grid.Column >
             <Statistic
               floated="right"
               size="mini"
             >
               <Statistic.Value>
-                {goal.user_goal_target - goal.user_goal_current} {actvitiyName(goal.goal_activity)}
+                {goal.user_goal_target - goal.user_goal_current} {activityName(goal.goal_activity)}
               </Statistic.Value>
               <Statistic.Label>
-           to go!
+                to go!
               </Statistic.Label>
             </Statistic>
           </Grid.Column>
@@ -79,19 +83,24 @@ const UserGoalsList = (props) => {
       );
     }
     return (
-      <div>
-        <Statistic
-          floated="right"
-          size="mini"
-        >
-          <Statistic.Value>
-            {goal.user_goal_target - goal.user_goal_current}
-          </Statistic.Value>
-          <Statistic.Label>
-            {actvitiyName(goal.goal_activity)} to go!
-          </Statistic.Label>
-        </Statistic>
-      </div>
+      <Grid.Row columns={2}>
+        <Grid.Column >
+          <Header as="h4">{goal.goal_name}</Header>
+        </Grid.Column>
+        <Grid.Column >
+          <Statistic
+            floated="right"
+            size="mini"
+          >
+            <Statistic.Value>
+              {goal.user_goal_target - goal.user_goal_current} {activityName(goal.goal_activity)}
+            </Statistic.Value>
+            <Statistic.Label>
+              to go!
+            </Statistic.Label>
+          </Statistic>
+        </Grid.Column>
+      </Grid.Row>
     );
   };
 
@@ -105,11 +114,7 @@ const UserGoalsList = (props) => {
             clearing
           >
             <Grid>
-              <Grid.Row columns={1}>
-                <Grid.Column>
-                  <Header as="h4">{goal.goal_name}</Header>
-                </Grid.Column>
-              </Grid.Row>
+              {/* <Header as="h4">{goal.goal_name}</Header> */}
               {statusIndicator(goal)}
 
             </Grid>

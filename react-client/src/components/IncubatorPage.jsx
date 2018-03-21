@@ -20,7 +20,7 @@ class IncubatorPage extends React.Component {
       <div className="incubatorpage">
         <Header as="h1" className="white" textAlign="right">Your Goals</Header>
         <Divider hidden />
-        <Grid centered>
+        <Grid>
           <Grid.Column computer={8} mobile={16}>
             <UserGoalsList activityType="distance" goals={this.props.incubatorState.userGoals.distance} />
             <UserGoalsList activityType="steps" goals={this.props.incubatorState.userGoals.steps} />
