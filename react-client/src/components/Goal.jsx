@@ -132,8 +132,8 @@ class Goal extends React.Component {
           <Modal.Content >
             <Modal.Description>
               <p>I want to complete this goal in:</p>
-              <Grid centered>
-                <Grid.Row centered columns={3}>
+              <Grid relaxed>
+                <Grid.Row columns={3}>
                   <Grid.Column>
                     <Input
                       value={this.state.deadline.days}
@@ -144,7 +144,7 @@ class Goal extends React.Component {
                       type="text"
                     />
                   </Grid.Column>
-                  <Grid.Column width={2}>
+                  <Grid.Column width={1} verticalAlign="middle">
                   and
                   </Grid.Column>
                   <Grid.Column>

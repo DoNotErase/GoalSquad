@@ -4,7 +4,7 @@ import { Button, Modal, Icon, Grid, Link } from 'semantic-ui-react';
 const MainMenu = () => (
   <Modal
     size="tiny"
-    style={{ width: '50%' }}
+    // style={{ width: '60%' }}
     trigger={
       <Button
         icon
@@ -16,8 +16,9 @@ const MainMenu = () => (
       </Button>}
   >
     <Modal.Content>
-      <Grid padded stretched textAlign="center">
-        <Grid.Row>
+      <Grid centered>
+      
+       <Grid.Row>
           <Button
             icon
             inverted
@@ -28,6 +29,7 @@ const MainMenu = () => (
             <Icon name="home" size="big" />
             Barn
           </Button>
+
           <Button
             icon
             inverted
@@ -38,8 +40,11 @@ const MainMenu = () => (
             <Icon name="circle outline" size="big" />
             Incubator
           </Button>
-        </Grid.Row>
-        <Grid.Row>
+          </Grid.Row>
+         
+          
+          <Grid.Row>
+     
           <Button
             icon
             inverted
@@ -50,6 +55,7 @@ const MainMenu = () => (
             <Icon name="road" size="big" />
             Goals
           </Button>
+
           <Button
             icon
             inverted
@@ -60,7 +66,8 @@ const MainMenu = () => (
             <Icon name="external" size="big" />
             Logout
           </Button>
-        </Grid.Row>
+          </Grid.Row>
+        
       </Grid>
     </Modal.Content>
   </Modal>

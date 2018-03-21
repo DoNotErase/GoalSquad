@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import * as incubatorActions from '../actions/incubatorActions';
 
-class Egg extends React.Component {
+class ProgressBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -28,15 +28,19 @@ class Egg extends React.Component {
 
   render() {
     return (
-      <div>
-        <Progress size="medium" value={this.state.percent} total="100" progress="percent" indicating />
-        {this.hatchButton()}
-      </div>
+      <Progress
+        style={{ marginTop: 8 }}
+        value={this.state.percent}
+        size="medium"
+        total="100"
+        progress
+        indicating
+      />
     );
   }
 }
 
-Egg.propTypes = {
+ProgressBar.propTypes = {
   incubatorState: PropTypes.shape({
     egg: PropTypes.shape({
       egg_xp: PropTypes.number,
@@ -53,4 +57,4 @@ const mapDispatchToProps = dispatch => ({
   incubatorActions: bindActionCreators(incubatorActions, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Egg);
+export default connect(mapStateToProps, mapDispatchToProps)(ProgressBar);

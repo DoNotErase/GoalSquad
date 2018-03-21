@@ -74,20 +74,20 @@ module.exports.getUserGoals = async (fitbitID) => {
 
     return await db.queryAsync(query);
   } catch (err) {
+    console.log(err);
     return err;
   }
 };
 
 module.exports.getActiveUserGoals = async (fitbitID) => {
   try {
-    const query = 'SELECT user_goal.user_goal_id, user_goal.user_goal_start_value, user_goal.user_goal_target, ' +
-      'user_goal.user_goal_start_date, user_goal.user_goal_end_date, user_goal.user_goal_elapsed, ' +
-      'user_goal.user_goal_success, goal.goal_name, goal.goal_activity, goal.goal_amount, goal.goal_difficulty ' +
+    const query = 'SELECT user_goal.*, goal.goal_name, goal.goal_activity, goal.goal_amount, goal.goal_difficulty ' +
       'FROM user_goal INNER JOIN goal ON goal.goal_id = user_goal.goal_id ' +
-      `WHERE user_goal.user_id = '${fitbitID} AND user_goal.user_goal_concluded = 0';`;
+      `WHERE user_goal.user_id = '${fitbitID}' AND user_goal.user_goal_finalized = 0;`;
 
     return await db.queryAsync(query);
   } catch (err) {
+    console.log(err);
     return err;
   }
 };
@@ -196,4 +196,46 @@ module.exports.getEggInfo = async (userID) => {
   } catch (e) {
     return e;
   }
+};
+
+module.exports.newUserLifetimeDistance = async (userID, distance) => {
+  try {
+    const updateGoals = `UPDATE user_goal SET user_goal_current = ${distance} ` +
+      `WHERE user_id = ${userID} AND goal_id > 0 AND goal_id < 7 AND user_goal_concluded = 0`;
+    return await db.queryAsync(updateGoals);
+  } catch (err) {
+    console.log(err);
+    return (err);
+  }
+};
+
+module.exports.newUserLifetimeSteps = async (userID, steps) => {
+  try {
+    const updateGoals = `UPDATE user_goal SET user_goal_current = ${steps} ` +
+      `WHERE user_id = ${userID} AND goal_id > 6 AND goal_id < 13 AND user_goal_concluded = 0`;
+    return await db.queryAsync(updateGoals);
+  } catch (err) {
+    console.log(err);
+    return (err);
+  }
+};
+
+module.exports.newUserLifetimeDistance = async (userID, floors) => {
+  try {
+    const updateGoals = `UPDATE user_goal SET user_goal_current = ${floors} ` +
+      `WHERE user_id = ${userID} AND goal_id > 12 AND goal_id < 19 AND user_goal_concluded = 0`;
+    return await db.queryAsync(updateGoals);
+  } catch (err) {
+    console.log(err);
+    return (err);
+  }
+};
+
+module.exports.updateGoalStatuses = async () => {
+  const markDoneGoals = 'UPDATE user_goal SET user_goal_success = 1, user_goal_concluded = 1' +
+    'WHERE user_goal_target <= user_goal_current';
+  await db.queryAsync(markDoneGoals);
+  const markExpiredGoals = 'UPDATE user_goal SET user_goal_concluded = 1 ' +
+    'WHERE user_goal_end_date < CURRENT_TIMESTAMP;';
+  await db.queryAsync(markExpiredGoals);
 };

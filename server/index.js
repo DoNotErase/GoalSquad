@@ -169,15 +169,15 @@ app.get('/userGoals', async (req, res) => {
   if (req.session.passport) {
     if (!req.query.type) {
       try {
-        const userGoals = await db.getUserGoals(req.session.passport.user.id);
+        const userGoals = await db.getActiveUserGoals(req.session.passport.user.id);
         res.json(userGoals);
       } catch (err) {
         console.log(err);
         res.status(500).end();
       }
-    } else if (req.query.type === 'active') {
+    } else if (req.query.type === 'all') {
       try {
-        const userGoals = await db.getActiveUserGoals(req.session.passport.user.id);
+        const userGoals = await db.getUserGoals(req.session.passport.user.id);
         res.json(userGoals);
       } catch (err) {
         console.log(err);

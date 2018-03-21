@@ -1,5 +1,4 @@
 const incubatorState = {
-  userGoals: {},
   egg: {
     egg_xp: 0,
   },
@@ -11,13 +10,6 @@ const incubatorReducer = (state = incubatorState, action) => {
       return {
         ...state,
         userGoals: action.payload,
-      };
-    }
-    case 'GOAL_FINALIZE': {
-      return {
-        ...state,
-        // local update for speed improvements
-        // somehow update usergoal with user_goal_id = action.payload to finalized = true;
       };
     }
     case 'EGG_DATA': {
