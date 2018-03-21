@@ -3,7 +3,7 @@ body {
     color: black;
 }
 
-.homepage, .barnpage, .goalspage, .incubatorpage {
+.homepage, .goalspage, .incubatorpage {
     position: fixed;
     top: 0;
     left: 0;
@@ -21,6 +21,11 @@ body {
     overflow-y: scroll;
 }
 
+.incubatorpage {
+    height: 90vh !important;
+    min-height:90%;
+}
+
 @media (min-width: 600px) and (max-width: 1024px){
     .homepage {
         background-image: url('./assets/backgrounds/background-tablet.png') !important;
@@ -35,11 +40,29 @@ body {
     }
 }
 
+.barnpage {
+    top: 0;
+    left: 0;
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    min-width:100%;
+    min-height:100%;
+    background-color: #008F7A;
+    background-image: linear-gradient(#845EC2, #008F7A);
+}
+
+.barnbackground {
+    background-image: url('./assets/backgrounds/background-tablet.png') !important;
+    background-size: cover !important;
+}
+
 .white {
     color: white !important;
 }
 
 /* Menu Modal */
+
 .menubutton {
     top: 15px;
     left: 15px;
@@ -48,6 +71,14 @@ body {
 
 .menuicons {
     padding: 20px;
+}
+
+/* Progress Bar */
+
+.progressbar {
+    position: fixed !important;
+    bottom: 0;
+    padding: 1px !important;
 }
 
 /* INCUBATOR PAGE */

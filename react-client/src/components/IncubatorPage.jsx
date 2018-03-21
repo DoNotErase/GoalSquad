@@ -1,9 +1,9 @@
 import React from 'react';
-import { Grid, Header, Divider, Segment } from 'semantic-ui-react';
+import { Grid, Header, Divider, Image } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import GoalItemsPage from './GoalItemsPage';
+import UserGoalsList from './UserGoalsList';
 import ProgressBar from './ProgressBar';
 import MainMenu from './MainMenu';
 import * as actions from '../actions/actions';
@@ -21,12 +21,19 @@ class IncubatorPage extends React.Component {
         <Divider hidden />
         <Grid centered>
           <Grid.Column computer={8} mobile={16}>
-            <GoalItemsPage activityType="distance" goals={this.props.incubatorState.userGoals.distance} />
-            <GoalItemsPage activityType="steps" goals={this.props.incubatorState.userGoals.steps} />
-            <GoalItemsPage activityType="stairs" goals={this.props.incubatorState.userGoals.stairs} />
+            <UserGoalsList activityType="distance" goals={this.props.incubatorState.userGoals.distance} />
+            <UserGoalsList activityType="steps" goals={this.props.incubatorState.userGoals.steps} />
+            <UserGoalsList activityType="stairs" goals={this.props.incubatorState.userGoals.stairs} />
           </Grid.Column>
+          <Grid.Row columns={2} className="progressbar">
+            <Grid.Column width={3} floated="left">
+              <Image src="./assets/icons/egg.png" centered />
+            </Grid.Column>
+            <Grid.Column width={13} floated="right">
+              <ProgressBar />
+            </Grid.Column>
+          </Grid.Row>
         </Grid>
-        <ProgressBar />
         <MainMenu />
       </div>
     );
@@ -40,9 +47,9 @@ IncubatorPage.propTypes = {
   // }).isRequired,
   // actions: PropTypes.objectOf(PropTypes.func).isRequired,
   incubatorState: PropTypes.objectOf(PropTypes.object).isRequired,
-  incubatorActions: PropTypes.objectOf({
-    getUserGoals: PropTypes.func,
-  }).isRequired,
+  // incubatorActions: PropTypes.objectOf({
+  //   getUserGoals: PropTypes.func,
+  // }).isRequired,
 };
 
 const mapDispatchToProps = dispatch => (

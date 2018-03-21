@@ -1,35 +1,23 @@
 import React from 'react';
-import { Grid } from 'semantic-ui-react';
+// import { Grid } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import HorizontalScroll from 'react-scroll-horizontal';
 import PropTypes from 'prop-types';
 import * as actions from '../actions/actions';
 import * as barnActions from '../actions/barnActions';
 import MainMenu from './MainMenu';
-import HorizontalScroll from 'react-scroll-horizontal';
 
-class BarnPage extends React.Component {
-  render() {
-    const child = { width: '700px', height: '100%', backgroundColor: 'white' };
-    return (
-      <div className="barnpage">
-      <HorizontalScroll>
-        <Grid style={child}>
-          <Grid.Column
-            textAlign="right"
-            stretched
-            floated="right"
-            width={5}
-            verticalAlign="bottom"
-          />
-        </Grid>
-        </HorizontalScroll>
-        <MainMenu />
-      </div>
+const child = { width: '75em', height: '100%' };
+const BarnPage = () => (
 
-    );
-  }
-}
+  <div className="barnpage">
+    <HorizontalScroll>
+      <div style={child} className="barnbackground" />
+    </HorizontalScroll>
+    <MainMenu />
+  </div>
+);
 
 BarnPage.propTypes = {
   state: PropTypes.shape({
