@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Segment, Header, Statistic, Button } from 'semantic-ui-react';
+import { Grid, Segment, Header, Statistic, Button, Message } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
@@ -10,8 +10,6 @@ const UserGoalsList = (props) => {
   const makeDeadLineMessage = (goal) => {
     const nowUTC = moment.utc();
     const now = moment();
-    console.log(nowUTC);
-    console.log(now);
     const deadline = moment.utc(goal.user_goal_end_date);
     const days = deadline.diff(now, 'days');
     if (days >= 1) {
@@ -52,9 +50,9 @@ const UserGoalsList = (props) => {
     }
     if (goal.user_goal_finalized) {
       if (goal.user_goal_success) {
-        return <div> You failed this goal :( </div>;
+        return <Message negative> You failed this goal :( </Message>;
       }
-      return <div> You passed this goal! </div>;
+      return <Message success> You passed this goal! </Message>;
     }
     if (goal.user_goal_end_date) {
       return (
@@ -111,9 +109,7 @@ const UserGoalsList = (props) => {
             clearing
           >
             <Grid>
-              {/* <Header as="h4">{goal.goal_name}</Header> */}
               {statusIndicator(goal)}
-
             </Grid>
           </Segment>))
             }
@@ -122,7 +118,7 @@ const UserGoalsList = (props) => {
     );
   }
   return (
-    <span>You have no goals!</span>
+    <Message>You have no goals!</Message>
   );
 };
 
