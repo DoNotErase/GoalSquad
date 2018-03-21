@@ -230,6 +230,7 @@ app.post('/createUserGoal', async (req, res) => {
     targetValue: 0,
     goalLength: req.body.goalLength,
     points: req.body.points,
+    start: req.body.startDate,
   };
   try {
     if (req.session.passport) {
@@ -278,7 +279,7 @@ app.post('/hatchEgg', async (req, res) => {
     res.status(401).end();
   }
   const userEggID = req.body.eggID;
-  const newSquaddie = db.hatchEgg(userEggID, userID);
+  const newSquaddie = db.hatchEgg(userEggID, userID, req.body.xp);
   res.json(newSquaddie[0]);
 });
 

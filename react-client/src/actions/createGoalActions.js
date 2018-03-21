@@ -1,4 +1,5 @@
 import axios from 'axios';
+import moment from 'moment';
 
 const setDefault = goals => ({ type: 'SET_DEFAULT_GOALS', payload: goals });
 
@@ -20,6 +21,7 @@ export const submitUserGoal = (goalID, deadline, points) => (
       goalID,
       goalLength: deadline, // of form {day: (num), hour: ()} or null
       points,
+      startDate: moment().format('YYYY-MM-DD HH:mm:ss'),
     })
       .then(() => {
         console.log('goal created');
