@@ -7,13 +7,21 @@ import * as incubatorActions from '../actions/incubatorActions';
 
 class ProgressBar extends React.Component {
   componentDidMount() {
+    console.log(this.props);
     this.props.incubatorActions.fetchEggStatus();
   }
 
   hatchButton() {
     if (this.props.incubatorState.egg.egg_xp >= 100) {
       return (
-        <button onClick={this.props.incubatorActions.hatchEgg}> Hatch Me! </button>
+        <button
+          onClick={() => {
+            this.props.incubatorActions.hatchEgg();
+            this.props.history.push('/barn');
+          }}
+        >
+        Hatch Me!
+        </button>
       );
     }
     return (<div />);
@@ -21,14 +29,17 @@ class ProgressBar extends React.Component {
 
   render() {
     return (
-      <Progress
-        style={{ marginTop: 8 }}
-        value={this.props.incubatorState.egg.egg_xp}
-        size="medium"
-        total="100"
-        progress
-        indicating
-      />
+      <div>
+        <Progress
+          style={{ marginTop: 8 }}
+          value={this.props.incubatorState.egg.egg_xp}
+          size="medium"
+          total="100"
+          progress
+          indicating
+        />
+        {this.hatchButton()}
+      </div>
     );
   }
 }

@@ -172,16 +172,23 @@ module.exports.completeGoalFailure = async (userGoalID) => {
 
 module.exports.hatchEgg = async (userEggID, userID) => {
   try {
-    const hatchEgg = `UPDATE user_egg SET egg_hatched = 1 WHERE user_egg_id = ${userEggID}`;
-    await db.queryAsync(hatchEgg);
+    const hatchEgg = `UPDATE user_egg SET egg_hatched = 1 WHERE user_egg_id = '${userEggID}';`;
+
     const newSquaddie = 'INSERT INTO user_monster (user_id, monster_id) VALUES ' +
       `('${userID}', FLOOR(RAND() * (SELECT COUNT(*) FROM monster) + 1));`;
-    await db.queryAsync(newSquaddie);
+
     const makeNewEgg = 'INSERT INTO user_egg (user_id, egg_id) VALUES ' +
       `('${userID}', FLOOR(RAND() * (SELECT COUNT (*) FROM egg) + 1));`;
-    await db.queryAsync(makeNewEgg);
+
     const returnSquaddie = 'SELECT user_monster.*, monster.* FROM user_monster INNER JOIN monster ' +
       'ON user_monster.monster_id = monster.monster_id WHERE user_monster.user_monster_id = (SELECT MAX(user_monster_id) FROM user_monster);';
+
+    await Promise.all([
+      db.queryAsync(hatchEgg),
+      db.queryAsync(newSquaddie),
+      db.queryAsync(makeNewEgg),
+    ]);
+
     return await db.queryAsync(returnSquaddie);
   } catch (err) {
     console.log(err);
