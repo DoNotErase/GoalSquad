@@ -6,7 +6,6 @@ const src = './assets/misc/testcardimage.png';
 const MainMenu = () => (
   <Modal
     size="tiny"
-    // style={{ width: '60%' }}
     trigger={
       <Button
         icon
