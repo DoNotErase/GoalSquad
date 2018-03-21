@@ -1,5 +1,6 @@
 const barnState = {
-
+  newSquaddie: null,
+  userSquaddies: [],
 };
 
 const barnReducer = (state = barnState, action) => {
@@ -7,6 +8,24 @@ const barnReducer = (state = barnState, action) => {
     case 'TEST': {
       return {
         ...state,
+      };
+    }
+    case 'NEW_SQUADDIE': {
+      return {
+        ...state,
+        newSquaddie: action.payload,
+      };
+    }
+    case 'SET_SQUADDIES': {
+      return {
+        ...state,
+        userSquaddies: [],
+      };
+    }
+    case 'RESET_NEW_SQUADDIE': {
+      return {
+        ...state,
+        newSquaddie: null,
       };
     }
     default: {

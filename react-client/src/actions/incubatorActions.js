@@ -40,7 +40,7 @@ export const fetchEggStatus = () => (
   )
 );
 
-const newSquaddie = squaddie => ({ type: 'NEW_MONSTER', payload: squaddie });
+const newSquaddie = squaddie => ({ type: 'NEW_SQUADDIE', payload: squaddie });
 
 export const hatchEgg = () => (
   dispatch => (

@@ -12,7 +12,7 @@ class ProgressBar extends React.Component {
   }
 
   hatchButton() {
-    if (this.props.incubatorState.egg.egg_xp >= 100) {
+    if (/* this.props.incubatorState.egg.egg_xp >= 100 */ true) {
       return (
         <button
           onClick={() => {

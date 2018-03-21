@@ -9,15 +9,31 @@ import * as barnActions from '../actions/barnActions';
 import MainMenu from './MainMenu';
 
 const child = { width: '75em', height: '100%' };
-const BarnPage = () => (
+class BarnPage extends React.Component {
+  componentDidMount() {
+    this.props.barnActions.fetchSquaddies();
+  }
 
-  <div className="barnpage">
-    <HorizontalScroll>
-      <div style={child} className="barnbackground" />
-    </HorizontalScroll>
-    <MainMenu />
-  </div>
-);
+  render() {
+    /*
+    if (this.props.barnState.newSquaddie) {
+      have a modal showing that new squaddie
+      on close: barnActions.squaddieAcknowledged()
+        to set newSquaddie back to null
+      newSquaddie should already be present in the main squaddie array
+    }
+    */
+
+    return (
+      <div className="barnpage">
+        <HorizontalScroll>
+          <div style={child} className="barnbackground" />
+        </HorizontalScroll>
+        <MainMenu />
+      </div>
+    );
+  }
+}
 
 BarnPage.propTypes = {
   // state: PropTypes.shape({

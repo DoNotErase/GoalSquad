@@ -31,7 +31,7 @@ class IncubatorPage extends React.Component {
               <Image src="./assets/icons/egg.png" centered />
             </Grid.Column>
             <Grid.Column width={13} floated="right">
-              <ProgressBar />
+              <ProgressBar history={this.props.history} />
             </Grid.Column>
           </Grid.Row>
         </Grid>
