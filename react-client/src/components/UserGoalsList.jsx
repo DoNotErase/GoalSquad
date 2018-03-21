@@ -13,7 +13,7 @@ const UserGoalsList = (props) => {
     return deadline.diff(now, 'hours');
   };
 
-  const actvitiyName = (goalActivity) => {
+  const activityName = (goalActivity) => {
     switch (goalActivity) {
       case 'distance':
         return 'Miles';
@@ -54,7 +54,7 @@ const UserGoalsList = (props) => {
               size="mini"
             >
               <Statistic.Value>
-                {goal.user_goal_target - goal.user_goal_current} {actvitiyName(goal.goal_activity)}
+                {goal.user_goal_target - goal.user_goal_current} {activityName(goal.goal_activity)}
               </Statistic.Value>
               <Statistic.Label>
            to go!
@@ -77,7 +77,7 @@ const UserGoalsList = (props) => {
             {goal.user_goal_target - goal.user_goal_current}
           </Statistic.Value>
           <Statistic.Label>
-            {actvitiyName(goal.goal_activity)} to go!
+            {activityName(goal.goal_activity)} to go!
           </Statistic.Label>
         </Statistic>
       </div>
