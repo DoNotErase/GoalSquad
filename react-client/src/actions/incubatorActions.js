@@ -4,7 +4,7 @@ export const setUserGoals = (userGoals) => {
   const sortedGoals = {
     distance: [],
     steps: [],
-    stairs: [],
+    floors: [],
   };
 
   userGoals.forEach((goal) => {
