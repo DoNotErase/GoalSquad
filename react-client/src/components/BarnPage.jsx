@@ -20,13 +20,13 @@ const BarnPage = () => (
 );
 
 BarnPage.propTypes = {
-  state: PropTypes.shape({
-    id: PropTypes.string,
-    username: PropTypes.string,
-  }).isRequired,
-  actions: PropTypes.objectOf(PropTypes.func).isRequired,
-  barnState: PropTypes.objectOf(PropTypes.string).isRequired,
-  barnActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  // state: PropTypes.shape({
+  //   id: PropTypes.string,
+  //   username: PropTypes.string,
+  // }).isRequired,
+  // actions: PropTypes.objectOf(PropTypes.func).isRequired,
+  // barnState: PropTypes.objectOf(PropTypes.string).isRequired,
+  // barnActions: PropTypes.objectOf(PropTypes.func).isRequired,
 };
 
 const mapDispatchToProps = dispatch => (

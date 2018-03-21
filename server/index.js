@@ -73,12 +73,54 @@ app.get('/callback', passport.authenticate('fitbit', {
   failureRedirect: '/auth/fitbit/failure',
 }));
 
-app.get('/auth/fitbit/success', (req, res) => {
-  res.redirect('/');
+app.get('/auth/fitbit/success', async (req, res) => {
+  try {
+    const token = await db.getAccessToken(req.session.passport.user.id);
+    const activities = await axios.get('https://api.fitbit.com/1/user/-/activities.json', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const userID = req.session.passport.user.id;
+    await Promise.all([
+      db.newUserLifetimeDistance(userID, activities.data.lifetime.total.distance),
+      db.newUserLifetimeSteps(userID, activities.data.lifetime.total.steps),
+      db.newUserLifetimeFloors(userID, activities.data.lifetime.total.floors),
+    ]);
+    await db.updateGoalStatuses();
+    res.redirect('/incubator');
+  } catch (err) {
+    console.log(err);
+    res.redirect('/');
+  }
 });
 
 app.get('/auth/fitbit/failure', (req, res) => {
   res.status(401).json({ err: 'failure!' });
+});
+
+app.post('/fitbit/deauthorize/', async (req, res) => {
+  try {
+    const token = await db.getAccessToken(req.session.passport.user.id);
+    await axios.post(
+      `https://api.fitbit.com/oauth2/revoke?token=${token}`,
+      null,
+      {
+        headers:
+        {
+          Authorization: `Basic ${(Buffer.from(`${config.fitbit.id}:${config.fitbit.secret}`)).toString('base64')};`,
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      },
+    );
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
+app.get('/logout', (req, res) => {
+  req.session.destroy();
+  res.redirect('/');
 });
 
 /** *******************FITBIT FETCHES**************************** */
@@ -100,6 +142,7 @@ app.get('/fitbit/lifetime', async (req, res) => {
         Authorization: `Bearer ${token}`,
       },
     });
+    console.log(activities.data);
     res.json(activities.data); // TODO: replace this with db storage?
   } catch (err) {
     res.status(401).send(err);
@@ -127,8 +170,16 @@ app.post('/fitbit-notifications', async (req, res) => {
 });
 
 /** *******CLIENT SIDE FETCHES ************** */
-app.get('/eggData/:eggID', async (req, res) => {
-  const data = await db.getEggInfo(req.params.eggID);
+app.get('/eggStatus', async (req, res) => {
+  let userID;
+  if (req.session.passport) {
+    if (req.session.passport) {
+      userID = req.session.passport.user.id;
+    } else {
+      res.status(401).end();
+    }
+  }
+  const data = await db.getEggInfo(userID);
   res.status(200).send(data);
 });
 
@@ -137,15 +188,15 @@ app.get('/userGoals', async (req, res) => {
   if (req.session.passport) {
     if (!req.query.type) {
       try {
-        const userGoals = await db.getUserGoals(req.session.passport.user.id);
+        const userGoals = await db.getActiveUserGoals(req.session.passport.user.id);
         res.json(userGoals);
       } catch (err) {
         console.log(err);
         res.status(500).end();
       }
-    } else if (req.query.type === 'active') {
+    } else if (req.query.type === 'all') {
       try {
-        const userGoals = await db.getActiveUserGoals(req.session.passport.user.id);
+        const userGoals = await db.getUserGoals(req.session.passport.user.id);
         res.json(userGoals);
       } catch (err) {
         console.log(err);
@@ -200,7 +251,7 @@ app.post('/createUserGoal', async (req, res) => {
       res.status(401).json({ error: 'user not authenticated' });
     }
   } catch (err) {
-    console.log('server err');
+    console.log('server err', err);
     res.status(500).end();
   }
 });

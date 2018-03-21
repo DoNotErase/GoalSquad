@@ -4,7 +4,7 @@ export const setUserGoals = (userGoals) => {
   const sortedGoals = {
     distance: [],
     steps: [],
-    stairs: [],
+    floors: [],
   };
 
   userGoals.forEach((goal) => {
@@ -32,7 +32,6 @@ export const fetchEggStatus = () => (
   dispatch => (
     axios.get('/eggStatus')
       .then((res) => {
-        console.log('goalCompleted!');
         dispatch(setEggStatus(res.data));
       })
       .catch((err) => {
@@ -41,14 +40,27 @@ export const fetchEggStatus = () => (
   )
 );
 
-const userGoalFinalize = userGoalID => ({ type: 'FINALIZE_GOAL', payload: userGoalID });
+const newSquaddie = squaddie => ({ type: 'NEW_MONSTER', payload: squaddie });
+
+export const hatchEgg = () => (
+  dispatch => (
+    axios.post('/hatchEgg')
+      .then((res) => {
+        dispatch(newSquaddie(res.data));
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  )
+);
+
+// const userGoalFinalize = userGoalID => ({ type: 'FINALIZE_GOAL', payload: userGoalID });
 
 export const markGoalSuccess = userGoalID => (
   dispatch => (
     axios.patch('/completeGoal', { goalID: userGoalID })
       .then((res) => {
-        console.log('goalCompleted!');
-        dispatch(userGoalFinalize(userGoalID));
+        dispatch(getUserGoals(userGoalID));
         dispatch(fetchEggStatus(res.data));
       })
       .catch((err) => {
@@ -61,8 +73,7 @@ export const markGoalFailure = userGoalID => (
   dispatch => (
     axios.patch('/failGoal', { goalID: userGoalID })
       .then(() => {
-        console.log('goalFailed!');
-        dispatch(userGoalFinalize(userGoalID));
+        dispatch(getUserGoals(userGoalID));
       })
       .catch((err) => {
         console.log(err);
