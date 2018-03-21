@@ -91,12 +91,12 @@ app.get('/auth/fitbit/success', async (req, res) => {
     res.redirect('/incubator');
   } catch (err) {
     console.log(err);
-    res.redirect('/');
+    res.redirect('/auth/fitbit/failure');
   }
 });
 
 app.get('/auth/fitbit/failure', (req, res) => {
-  res.status(401).json({ err: 'failure!' });
+  res.status(401).send('authentication failure!');
 });
 
 app.post('/fitbit/deauthorize/', async (req, res) => {
@@ -176,11 +176,15 @@ app.get('/eggStatus', async (req, res) => {
     if (req.session.passport) {
       userID = req.session.passport.user.id;
     } else {
-      res.status(401).end();
+      res.status(401).send('bad passport');
     }
   }
-  const data = await db.getEggInfo(userID);
-  res.status(200).send(data);
+  try {
+    const data = await db.getEggInfo(userID);
+    res.status(200).json(data);
+  } catch (err) {
+    res.status(500).send('err in get Egg info');
+  }
 });
 
 /** *******************GOAL STUFF**************************** */
@@ -191,24 +195,20 @@ app.get('/userGoals', async (req, res) => {
         const userGoals = await db.getActiveUserGoals(req.session.passport.user.id);
         res.json(userGoals);
       } catch (err) {
-        console.log(err);
-        res.status(500).end();
+        res.status(500).send('err in getActiveUserGoals');
       }
     } else if (req.query.type === 'all') {
       try {
         const userGoals = await db.getUserGoals(req.session.passport.user.id);
         res.json(userGoals);
       } catch (err) {
-        console.log(err);
-        res.status(500).end();
+        res.status(500).send('err in get userGoals');
       }
     } else {
-      console.log('type of goal not yet recognized!');
-      res.end();
+      res.status(500).send('type of goal not yet recognized!');
     }
   } else {
-    console.log('bad passport');
-    res.status(401).end();
+    res.status(401).send('bad passport');
   }
 });
 
@@ -253,40 +253,44 @@ app.post('/createUserGoal', async (req, res) => {
     }
   } catch (err) {
     console.log('server err', err);
-    res.status(500).end();
+    res.status(500).send();
   }
 });
 
 app.patch('/completeGoal', async (req, res) => {
-  const userGoalID = req.body.goalID;
-  await db.completeGoalSuccess(userGoalID);
-  res.end();
+  try {
+    const userGoalID = req.body.goalID;
+    await db.completeGoalSuccess(userGoalID);
+    res.end();
+  } catch (err) {
+    res.status(500).send(err);
+  }
 });
 
 app.patch('/failGoal', async (req, res) => {
-  const userGoalID = req.body.goalID;
-  await db.completeGoalFailure(userGoalID);
-  res.end();
+  try {
+    const userGoalID = req.body.goalID;
+    await db.completeGoalFailure(userGoalID);
+    res.end();
+  } catch (err) {
+    res.status(500).send(err);
+  }
 });
 
 /** ********************** EGGS / SQUADDIES ******************************** */
 
 app.post('/hatchEgg', async (req, res) => {
-  let userID;
-  if (req.session.passport) {
-    userID = req.session.passport.user.id;
-  } else {
-    res.status(401).end();
+  try {
+    const userID = req.session.passport.user.id;
+    const userEggID = req.body.eggID;
+    const newSquaddie = db.hatchEgg(userEggID, userID, req.body.xp);
+    res.json(newSquaddie[0]);
+  } catch (err) {
+    res.status(500).send(err);
   }
-  const userEggID = req.body.eggID;
-  const newSquaddie = db.hatchEgg(userEggID, userID, req.body.xp);
-  res.json(newSquaddie[0]);
 });
 
 /** ********************************************************* */
-app.get('/test', async (req, res) => {
-  res.json(await db.findUserId());
-});
 
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '../react-client/dist', '/index.html'));

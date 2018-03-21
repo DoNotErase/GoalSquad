@@ -8,17 +8,21 @@ import * as incubatorActions from '../actions/incubatorActions';
 
 const UserGoalsList = (props) => {
   const makeDeadLineMessage = (goal) => {
-    const nowUTC = moment();
-    const deadline = moment(goal.user_goal_end_date).subtract(5, 'hours');
-    const days = deadline.diff(nowUTC, 'days');
-    if (days >= 1) {
-      return `${(days + 1)} days`;
+    if (goal.user_goal_end_date && !goal.user_goal_concluded) {
+      const nowUTC = moment();
+      const deadline = moment(goal.user_goal_end_date).subtract(5, 'hours');
+      const days = deadline.diff(nowUTC, 'days');
+      if (days >= 1) {
+        return `${(days + 1)} days`;
+      }
+      const hours = deadline.diff(nowUTC, 'hours');
+      if (hours >= 1) {
+        return `${(hours + 1)} hours`;
+      }
+      return `${deadline.diff(nowUTC, 'minutes') + 1} minutes`;
     }
-    const hours = deadline.diff(nowUTC, 'hours');
-    if (hours >= 1) {
-      return `${(hours + 1)} hours`;
-    }
-    return `${deadline.diff(nowUTC, 'minutes') + 1} minutes`;
+
+    return '';
   };
 
   const activityName = (goalActivity) => {
@@ -34,65 +38,47 @@ const UserGoalsList = (props) => {
     }
   };
 
-  const statusIndicator = (goal) => {
-    if (goal.user_goal_concluded && !goal.user_goal_finalized) {
-      if (goal.user_goal_success) {
+  const produceGoal = (goal) => {
+    const goalStatus = () => {
+      if (goal.user_goal_concluded) {
+        if (goal.user_goal_success) {
+          return (
+            <Button onClick={() => { props.incubatorActions.markGoalSuccess(goal.user_goal_id); }}>
+              Goal Success!
+            </Button>);
+        }
         return (
-          <Button onClick={() => { props.incubatorActions.markGoalSuccess(goal.user_goal_id); }}>
-            Goal Success!
+          <Button onClick={() => { props.incubatorActions.markGoalFailure(goal.user_goal_id); }}>
+            Goal Failed :(
           </Button>);
       }
+
       return (
-        <Button onClick={() => { props.incubatorActions.markGoalFailure(goal.user_goal_id); }}>
-          Goal Failed :(
-        </Button>);
-    }
-    if (goal.user_goal_finalized) {
-      if (goal.user_goal_success) {
-        return <div> You failed this goal :( </div>;
-      }
-      return <div> You passed this goal! </div>;
-    }
-    if (goal.user_goal_end_date) {
-      return (
-        <Grid.Row columns={2}>
-          <Grid.Column >
-            <Header as="h4">{goal.goal_name}</Header>
-            {makeDeadLineMessage(goal)} left!
-          </Grid.Column>
-          <Grid.Column >
-            <Statistic
-              floated="right"
-              size="mini"
-            >
-              <Statistic.Value>
-                {goal.user_goal_target - goal.user_goal_current} {activityName(goal.goal_activity)}
-              </Statistic.Value>
-              <Statistic.Label>
-                to go!
-              </Statistic.Label>
-            </Statistic>
-          </Grid.Column>
-        </Grid.Row>
+        <Statistic
+          floated="right"
+          size="mini"
+        >
+          <Statistic.Value>
+            {goal.user_goal_target - goal.user_goal_current}
+            <br />
+            {activityName(goal.goal_activity)}
+          </Statistic.Value>
+          <Statistic.Label>
+            to go!
+          </Statistic.Label>
+        </Statistic>
       );
-    }
+    };
+
+
     return (
       <Grid.Row columns={2}>
         <Grid.Column >
           <Header as="h4">{goal.goal_name}</Header>
+          {makeDeadLineMessage(goal)}
         </Grid.Column>
         <Grid.Column >
-          <Statistic
-            floated="right"
-            size="mini"
-          >
-            <Statistic.Value>
-              {goal.user_goal_target - goal.user_goal_current} {activityName(goal.goal_activity)}
-            </Statistic.Value>
-            <Statistic.Label>
-              to go!
-            </Statistic.Label>
-          </Statistic>
+          {goalStatus()}
         </Grid.Column>
       </Grid.Row>
     );
@@ -109,7 +95,7 @@ const UserGoalsList = (props) => {
           >
             <Grid>
               {/* <Header as="h4">{goal.goal_name}</Header> */}
-              {statusIndicator(goal)}
+              {produceGoal(goal)}
 
             </Grid>
           </Segment>))

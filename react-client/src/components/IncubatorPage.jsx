@@ -22,9 +22,13 @@ class IncubatorPage extends React.Component {
         <Divider hidden />
         <Grid>
           <Grid.Column computer={8} mobile={16}>
-            <UserGoalsList activityType="distance" goals={this.props.incubatorState.userGoals.distance} />
-            <UserGoalsList activityType="steps" goals={this.props.incubatorState.userGoals.steps} />
-            <UserGoalsList activityType="stairs" goals={this.props.incubatorState.userGoals.floors} />
+            {Object.keys(this.props.incubatorState.userGoals).map((activity, index) => (
+              <UserGoalsList
+                key={index}
+                activityType={activity}
+                goals={this.props.incubatorState.userGoals[activity]}
+              />
+            ))}
           </Grid.Column>
           <Grid.Row columns={2} className="progressbar">
             <Grid.Column width={3} floated="left">

@@ -2,13 +2,14 @@ import axios from 'axios';
 
 export const setUserGoals = (userGoals) => {
   const sortedGoals = {
-    distance: [],
-    steps: [],
-    floors: [],
   };
 
   userGoals.forEach((goal) => {
-    sortedGoals[goal.goal_activity].push(goal);
+    if (sortedGoals[goal.goal_activity]) {
+      sortedGoals[goal.goal_activity].push(goal);
+    } else {
+      sortedGoals[goal.goal_activity] = [goal];
+    }
   });
   return { type: 'SET_USER_GOALS', payload: sortedGoals };
 };
