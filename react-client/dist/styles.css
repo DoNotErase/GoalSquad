@@ -17,14 +17,10 @@ body {
     background-image: linear-gradient(#845EC2, #008F7A);
 }
 
-.goalspage, .incubatorpage {
-    overflow-y: scroll;
-}
-
-.incubatorpage {
+/* .incubatorpage {
     height: 90vh !important;
     min-height:90%;
-}
+} */
 
 @media (min-width: 600px) and (max-width: 1024px){
     .homepage {
