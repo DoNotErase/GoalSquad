@@ -3,11 +3,11 @@ import { Accordion, Icon, Segment, Grid, Header, Divider } from 'semantic-ui-rea
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import * as actions from '../actions/actions';
+// import * as actions from '../actions/actions';
 import * as goalsActions from '../actions/createGoalActions';
 import Goal from './Goal';
 import MainMenu from './MainMenu';
-import * as incubatorActions from '../actions/incubatorActions';
+// import * as incubatorActions from '../actions/incubatorActions';
 
 class GoalsPage extends React.Component {
   constructor() {
@@ -20,8 +20,6 @@ class GoalsPage extends React.Component {
 
   componentDidMount() {
     this.props.goalsActions.getDefaultGoals();
-    this.props.actions.getLifetimeData();
-    this.props.incubatorActions.getUserGoals();
   }
 
   handleClick(e, titleProps) {
@@ -70,21 +68,21 @@ class GoalsPage extends React.Component {
   }
 }
 
-// GoalsPage.propTypes = {
-//   state: PropTypes.shape({
-//     id: PropTypes.string,
-//     username: PropTypes.string,
-//   }).isRequired,
-//   actions: PropTypes.objectOf(PropTypes.func).isRequired,
-//   goalsState: PropTypes.objectOf(PropTypes.string).isRequired,
-//   goalsActions: PropTypes.objectOf(PropTypes.func).isRequired,
-// };
+GoalsPage.propTypes = {
+  // state: PropTypes.shape({
+  //   id: PropTypes.string,
+  //   username: PropTypes.string,
+  // }).isRequired,
+  // actions: PropTypes.objectOf(PropTypes.func).isRequired,
+  goalsState: PropTypes.objectOf(PropTypes.string).isRequired,
+  goalsActions: PropTypes.objectOf(PropTypes.func).isRequired,
+};
 
 const mapDispatchToProps = dispatch => (
   {
-    actions: bindActionCreators(actions, dispatch),
+    // actions: bindActionCreators(actions, dispatch),
     goalsActions: bindActionCreators(goalsActions, dispatch),
-    incubatorActions: bindActionCreators(incubatorActions, dispatch),
+    // incubatorActions: bindActionCreators(incubatorActions, dispatch),
   }
 );
 
