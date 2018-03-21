@@ -1,5 +1,7 @@
 import React from 'react';
-import { Button, Modal, Icon, Grid, Link } from 'semantic-ui-react';
+import { Button, Modal, Icon, Link, Card } from 'semantic-ui-react';
+
+const src = './assets/misc/testcardimage.png';
 
 const MainMenu = () => (
   <Modal
@@ -16,59 +18,12 @@ const MainMenu = () => (
       </Button>}
   >
     <Modal.Content>
-      <Grid centered>
-      
-       <Grid.Row>
-          <Button
-            icon
-            inverted
-            color="green"
-            as={Link}
-            href="/barn"
-          >
-            <Icon name="home" size="big" />
-            Barn
-          </Button>
-
-          <Button
-            icon
-            inverted
-            color="green"
-            as={Link}
-            href="/incubator"
-          >
-            <Icon name="circle outline" size="big" />
-            Incubator
-          </Button>
-          </Grid.Row>
-         
-          
-          <Grid.Row>
-     
-          <Button
-            icon
-            inverted
-            color="green"
-            as={Link}
-            href="/goals"
-          >
-            <Icon name="road" size="big" />
-            Goals
-          </Button>
-
-          <Button
-            icon
-            inverted
-            color="green"
-            as={Link}
-            href="/logout"
-          >
-            <Icon name="external" size="big" />
-            Logout
-          </Button>
-          </Grid.Row>
-        
-      </Grid>
+      <Card.Group itemsPerRow={2}>
+        <Card raised image={src} as={Link} href="/barn" header="barn" />
+        <Card raised image={src} as={Link} href="/incubator" header="incubator" />
+        <Card raised image={src} as={Link} href="/goals" header="goals" />
+        <Card raised image={src} as={Link} href="/logout" header="logout" />
+      </Card.Group>
     </Modal.Content>
   </Modal>
 );
