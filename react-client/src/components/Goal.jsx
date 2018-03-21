@@ -99,7 +99,7 @@ class Goal extends React.Component {
           compact
           clearing
           color={difficultyColor}
-          onClick={() => this.show('blurring', 'mini')}
+          onClick={() => this.show(true, 'mini')}
         >
           <Grid>
             <Grid.Row columns={2}>
