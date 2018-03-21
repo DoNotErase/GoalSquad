@@ -42,7 +42,7 @@ BarnPage.propTypes = {
   // }).isRequired,
   // actions: PropTypes.objectOf(PropTypes.func).isRequired,
   // barnState: PropTypes.objectOf(PropTypes.string).isRequired,
-  // barnActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  barnActions: PropTypes.objectOf(PropTypes.func).isRequired,
 };
 
 const mapDispatchToProps = dispatch => (

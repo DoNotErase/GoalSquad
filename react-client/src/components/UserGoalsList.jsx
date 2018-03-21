@@ -32,57 +32,56 @@ const UserGoalsList = (props) => {
       case 'floors':
         return 'Flights';
       case 'steps':
-        return 'steps';
+        return 'Steps';
       default:
         return 'activity not recognized';
     }
   };
 
-  const produceGoal = (goal) => {
-    const goalStatus = () => {
-      if (goal.user_goal_concluded) {
-        if (goal.user_goal_success) {
-          return (
-            <Button onClick={() => { props.incubatorActions.markGoalSuccess(goal.user_goal_id); }}>
-              Goal Success!
-            </Button>);
-        }
+  const goalStatus = (goal) => {
+    if (goal.user_goal_concluded) {
+      if (goal.user_goal_success) {
         return (
-          <Button onClick={() => { props.incubatorActions.markGoalFailure(goal.user_goal_id); }}>
-            Goal Failed :(
-          </Button>);
+          <Button onClick={() => { props.incubatorActions.markGoalSuccess(goal.user_goal_id); }}>
+            Goal Success!
+          </Button>
+        );
       }
-
       return (
-        <Statistic
-          floated="right"
-          size="mini"
-        >
-          <Statistic.Value>
-            {goal.user_goal_target - goal.user_goal_current}
-            <br />
-            {activityName(goal.goal_activity)}
-          </Statistic.Value>
-          <Statistic.Label>
-            to go!
-          </Statistic.Label>
-        </Statistic>
-      );
-    };
-
+        <Button onClick={() => { props.incubatorActions.markGoalFailure(goal.user_goal_id); }}>
+          Goal Failed :(
+        </Button>);
+    }
 
     return (
-      <Grid.Row columns={2}>
-        <Grid.Column >
-          <Header as="h4">{goal.goal_name}</Header>
-          {makeDeadLineMessage(goal)}
-        </Grid.Column>
-        <Grid.Column >
-          {goalStatus()}
-        </Grid.Column>
-      </Grid.Row>
+      <Statistic
+        floated="right"
+        size="mini"
+      >
+        <Statistic.Value>
+          {goal.user_goal_target - goal.user_goal_current}
+          <br />
+          {activityName(goal.goal_activity)}
+        </Statistic.Value>
+        <Statistic.Label>
+          to go!
+        </Statistic.Label>
+      </Statistic>
     );
   };
+
+  const produceGoal = goal => (
+    <Grid.Row columns={2}>
+      <Grid.Column >
+        <Header as="h4">{goal.goal_name}</Header>
+        {makeDeadLineMessage(goal)}
+      </Grid.Column>
+      <Grid.Column >
+        {goalStatus(goal)}
+      </Grid.Column>
+    </Grid.Row>
+  );
+
 
   if (props.goals) {
     return (
@@ -94,16 +93,14 @@ const UserGoalsList = (props) => {
             clearing
           >
             <Grid>
-              {/* <Header as="h4">{goal.goal_name}</Header> */}
               {produceGoal(goal)}
-
             </Grid>
           </Segment>))
             }
       </Segment.Group>
-
     );
   }
+
   return (
     <span>You have no goals!</span>
   );
