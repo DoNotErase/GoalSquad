@@ -8,20 +8,17 @@ import * as incubatorActions from '../actions/incubatorActions';
 
 const UserGoalsList = (props) => {
   const makeDeadLineMessage = (goal) => {
-    const nowUTC = moment.utc();
-    const now = moment();
-    console.log(nowUTC);
-    console.log(now);
-    const deadline = moment.utc(goal.user_goal_end_date);
-    const days = deadline.diff(now, 'days');
+    const nowUTC = moment();
+    const deadline = moment(goal.user_goal_end_date).subtract(5, 'hours');
+    const days = deadline.diff(nowUTC, 'days');
     if (days >= 1) {
       return `${(days + 1)} days`;
     }
-    const hours = deadline.diff(now, 'hours');
+    const hours = deadline.diff(nowUTC, 'hours');
     if (hours >= 1) {
       return `${(hours + 1)} hours`;
     }
-    return `${deadline.diff(now, 'minutes') + 1} minutes`;
+    return `${deadline.diff(nowUTC, 'minutes') + 1} minutes`;
   };
 
   const activityName = (goalActivity) => {
@@ -61,7 +58,7 @@ const UserGoalsList = (props) => {
         <Grid.Row columns={2}>
           <Grid.Column >
             <Header as="h4">{goal.goal_name}</Header>
-            {makeDeadLineMessage(goal)} hours left!
+            {makeDeadLineMessage(goal)} left!
           </Grid.Column>
           <Grid.Column >
             <Statistic
@@ -75,9 +72,6 @@ const UserGoalsList = (props) => {
                 to go!
               </Statistic.Label>
             </Statistic>
-          </Grid.Column>
-          <Grid.Column>
-            {makeDeadLineMessage(goal)} left!
           </Grid.Column>
         </Grid.Row>
       );
