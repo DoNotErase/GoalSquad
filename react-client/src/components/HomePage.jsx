@@ -19,10 +19,6 @@ class HomePage extends React.Component {
     }
   }
 
-  componentWillUnmount() {
-    this.props.actions.getLifetimeData();
-  }
-
   render() {
     return (
       <div className="homepage">

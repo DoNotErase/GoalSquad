@@ -41,9 +41,11 @@ passport.use(new FitbitStrategy(
   async (accessToken, refreshToken, profile, done) => {
     try {
       if (await db.userExists(profile.id)) {
+        console.log('user exists', accessToken);
         await db.updateTokens(profile.id, accessToken, refreshToken);
         return done(null, profile);
       }
+      console.log('creating user', accessToken);
       await db.createUser(profile.id, profile.displayName, accessToken, refreshToken);
       return done(null, profile);
     } catch (e) {
@@ -76,20 +78,28 @@ app.get('/callback', passport.authenticate('fitbit', {
 app.get('/auth/fitbit/success', async (req, res) => {
   try {
     const token = await db.getAccessToken(req.session.passport.user.id);
-    const activities = await axios.get('https://api.fitbit.com/1/user/-/activities.json', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const userID = req.session.passport.user.id;
-    await Promise.all([
-      db.newUserLifetimeDistance(userID, activities.data.lifetime.total.distance),
-      db.newUserLifetimeSteps(userID, activities.data.lifetime.total.steps),
-      db.newUserLifetimeFloors(userID, activities.data.lifetime.total.floors),
-    ]);
-    await db.updateGoalStatuses();
-    res.redirect('/incubator');
+    console.log('token', token);
+    try {
+      const activities = await axios.get('https://api.fitbit.com/1/user/-/activities.json', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log('activityes', activities);
+      const userID = req.session.passport.user.id;
+      await Promise.all([
+        db.newUserLifetimeDistance(userID, activities.data.lifetime.total.distance),
+        db.newUserLifetimeSteps(userID, activities.data.lifetime.total.steps),
+        db.newUserLifetimeFloors(userID, activities.data.lifetime.total.floors),
+      ]);
+      await db.updateGoalStatuses();
+      res.redirect('/incubator');
+    } catch (err) {
+      console.log('probably a new user', token);
+      res.redirect('/auth/fitbit/failure');
+    }
   } catch (err) {
+    console.log('hello was in success then failed', err.response.data);
     res.redirect('/auth/fitbit/failure');
   }
 });
@@ -143,21 +153,6 @@ app.get('/fitbit/lifetime', async (req, res) => {
       },
     });
     res.json(activities.data); // TODO: replace this with db storage?
-  } catch (err) {
-    res.status(401).send(err);
-  }
-});
-
-app.get('/fitbit/dailySummary', async (req, res) => {
-  const { date } = req.query; // must be in YYYY-MM-DD format string
-  const token = db.getAccessToken(req.session.passport.user.id);
-  try {
-    const summary = await axios.get(`https://api.fitbit.com/1/user/-/activities/date/${date}.json`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    res.json(summary.data);
   } catch (err) {
     res.status(401).send(err);
   }
@@ -251,8 +246,10 @@ app.post('/createUserGoal', async (req, res) => {
       res.status(401).json({ error: 'user not authenticated' });
     }
   } catch (err) {
-    res.status(500).send(err);
+    console.log(err.response.data);
+    res.status(500).send('could not create goal');
   }
+
 });
 
 app.patch('/completeGoal', async (req, res) => {

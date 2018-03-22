@@ -91,7 +91,7 @@ class Goal extends React.Component {
       deadline.days = 0;
     }
 
-    if (!(parseInt(deadline.hours, 10) > 0) || !(parseInt(deadline.days, 10) > 0)) {
+    if (!(parseInt(deadline.hours, 10) < 0) || !(parseInt(deadline.days, 10) < 0)) {
       this.setState({ errorMessage: 'please put only positive numbers as a deadline!' });
     } else if (!deadline.hours && !deadline.days) {
       this.setState({ errorMessage: 'please mark no deadline or set a deadline!' });
