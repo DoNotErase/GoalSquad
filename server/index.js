@@ -154,7 +154,7 @@ app.get('/fitbit/dailySummary', async (req, res) => {
   try {
     const summary = await axios.get(`https://api.fitbit.com/1/user/-/activities/date/${date}.json`, {
       headers: {
-        Authorization: `Bearer ${token}`, // TODO: replace this with db call based on req.session.passport.user.id
+        Authorization: `Bearer ${token}`,
       },
     });
     res.json(summary.data);
