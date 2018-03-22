@@ -41,6 +41,7 @@ export const fetchEggStatus = () => (
   )
 );
 
+// caught in barnReducer
 const newSquaddie = squaddie => ({ type: 'NEW_SQUADDIE', payload: squaddie });
 
 export const hatchEgg = extraXP => (
@@ -55,14 +56,12 @@ export const hatchEgg = extraXP => (
   )
 );
 
-// const userGoalFinalize = userGoalID => ({ type: 'FINALIZE_GOAL', payload: userGoalID });
-
 export const markGoalSuccess = userGoalID => (
   dispatch => (
     axios.patch('/completeGoal', { goalID: userGoalID })
       .then((res) => {
         dispatch(getUserGoals(userGoalID));
-        dispatch(fetchEggStatus(res.data));
+        dispatch(fetchEggStatus(res.data)); // because xp was added
       })
       .catch((err) => {
         console.log(err);

@@ -13,7 +13,7 @@ const UserGoalsList = (props) => {
       const deadline = moment(goal.user_goal_end_date).subtract(5, 'hours');
       const days = deadline.diff(nowUTC, 'days');
       if (days >= 1) {
-        return `${(days + 1)} days`;
+        return `${(days + 1)} days`; // plus 1 because diff uses 'floor'
       }
       const hours = deadline.diff(nowUTC, 'hours');
       if (hours >= 1) {
@@ -34,7 +34,7 @@ const UserGoalsList = (props) => {
       case 'steps':
         return 'Steps';
       default:
-        return 'activity not recognized';
+        return goalActivity;
     }
   };
 
@@ -53,7 +53,7 @@ const UserGoalsList = (props) => {
         </Button>);
     }
 
-    return (
+    return ( // goal has neither been completed nor expired
       <Statistic
         floated="right"
         size="mini"
@@ -74,35 +74,28 @@ const UserGoalsList = (props) => {
     <Grid.Row columns={2}>
       <Grid.Column >
         <Header as="h4">{goal.goal_name}</Header>
-        {makeDeadLineMessage(goal)}
+        {makeDeadLineMessage(goal)} {/* generate time until expiration or '' if no deadline */}
       </Grid.Column>
       <Grid.Column >
-        {goalStatus(goal)}
+        {goalStatus(goal)} {/* show amount of activity left or button to close out old goal */}
       </Grid.Column>
     </Grid.Row>
   );
 
-
-  if (props.goals) {
-    return (
-      <Segment.Group raised>
-        {props.goals.map(goal => (
-          <Segment
-            key={goal.user_goal_id}
-            compact
-            clearing
-          >
-            <Grid>
-              {produceGoal(goal)}
-            </Grid>
-          </Segment>))
-            }
-      </Segment.Group>
-    );
-  }
-
   return (
-    <span>You have no goals!</span>
+    <Segment.Group raised>
+      {props.goals.map(goal => (
+        <Segment
+          key={goal.user_goal_id}
+          compact
+          clearing
+        >
+          <Grid>
+            {produceGoal(goal)}
+          </Grid>
+        </Segment>
+      ))}
+    </Segment.Group>
   );
 };
 
