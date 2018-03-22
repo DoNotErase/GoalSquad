@@ -3,21 +3,11 @@ const mainState = {
   username: '',
   level: 0,
   XP: 0,
-  steps: 0,
-  stairs: 0,
-  distance: 0,
+  deets: {},
 };
 
 const mainReducer = (state = mainState, action) => {
   switch (action.type) {
-    case 'USER_LIFETIME_ACTIVITY': {
-      return {
-        ...state,
-        steps: action.payload.steps,
-        stairs: action.payload.floors,
-        distance: action.payload.distance,
-      };
-    }
     case 'USER_LOGIN': {
       return {
         ...state,
@@ -25,6 +15,12 @@ const mainReducer = (state = mainState, action) => {
         username: action.payload.user_username,
         level: action.payload.user_level,
         XP: action.payload.user_current_xp,
+      };
+    }
+    case 'SET_DEETS': {
+      return {
+        ...state,
+        deets: { ...action.payload },
       };
     }
     default: {

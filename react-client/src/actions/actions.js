@@ -9,14 +9,11 @@ export const setUserData = userData => ({
   },
 });
 
-export const getLifetimeData = () => (
-  dispatch => (
-    axios.get('fitbit/lifetime')
+export const deauthorizeFitbit = () => (
+  () => (
+    axios.post('fitbit/deauthorize')
       .then((res) => {
-        if (res.data) {
-          console.log(res.data);
-          dispatch(setUserData(res.data));
-        }
+        console.log(res);
       })
       .catch((err) => {
         console.log(err);
@@ -24,11 +21,13 @@ export const getLifetimeData = () => (
   )
 );
 
-export const deauthorizeFitbit = () => (
-  () => (
-    axios.post('fitbit/deauthorize')
+const setStats = deets => ({ type: 'SET_DEETS', payload: deets });
+
+export const fetchStats = () => (
+  dispatch => (
+    axios.get('userDeets')
       .then((res) => {
-        console.log(res);
+        dispatch(setStats(res.data));
       })
       .catch((err) => {
         console.log(err);
