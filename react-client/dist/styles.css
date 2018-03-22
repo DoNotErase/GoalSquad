@@ -3,7 +3,7 @@ body {
     color: black;
 }
 
-.homepage, .goalspage, .incubatorpage {
+.homepage, .goalspage, .incubatorpage, .deetspage {
     position: fixed;
     top: 0;
     left: 0;

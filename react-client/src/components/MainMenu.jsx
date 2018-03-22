@@ -21,8 +21,8 @@ const MainMenu = () => (
         <Card raised image={src} as={Link} href="/yard" header="yard" />
         <Card raised image={src} as={Link} href="/incubator" header="incubator" />
         <Card raised image={src} as={Link} href="/goals" header="goals" />
-        <Card raised image={src} as={Link} href="/goals" header="deets" />
-        <Card raised image={src} as={Link} href="/goals" header="squad" />
+        <Card raised image={src} as={Link} href="/deets" header="deets" />
+        <Card raised image={src} as={Link} href="/squad" header="squad" />
         <Card raised image={src} as={Link} href="/logout" header="logout" />
       </Card.Group>
     </Modal.Content>
