@@ -106,12 +106,15 @@ module.exports.createUserGoal = async (goalObj) => {
       `('${goalObj.userID}', ${goalObj.goalID}, ${goalObj.startValue}, ${goalObj.startValue}, ${goalObj.targetValue}, ${goalObj.points}, (utc_timestamp()));`;
 
     await db.queryAsync(query);
+    const findGoalID = 'SELECT MAX(user_goal_id) as "goal_id" FROM user_goal';
+    const goalID = await db.queryAsync(findGoalID);
+    console.log(goalID[0].goal_id);
     if (goalObj.goalLength) {
       const setEndDate = 'UPDATE user_goal SET user_goal_end_date = ' +
         '(SELECT DATE_ADD((SELECT DATE_ADD((SELECT MAX(user_goal_start_date)), ' +
         `INTERVAL ${goalObj.goalLength.days} DAY)), ` +
         `INTERVAL ${goalObj.goalLength.hours} HOUR)) ` +
-        'WHERE user_goal_id = (SELECT MAX(user_goal_id));';
+        `WHERE user_goal_id = ${goalID[0].goal_id};`;
 
       await db.queryAsync(setEndDate);
     }
