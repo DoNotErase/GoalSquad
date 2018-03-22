@@ -188,6 +188,7 @@ app.get('/eggStatus', async (req, res) => {
 });
 
 /** *******************GOAL STUFF**************************** */
+
 app.get('/userGoals', async (req, res) => {
   if (req.session.passport) {
     if (!req.query.type) {
@@ -286,6 +287,19 @@ app.post('/hatchEgg', async (req, res) => {
     const newSquaddie = db.hatchEgg(userEggID, userID, req.body.xp);
     res.json(newSquaddie[0]);
   } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
+/** ********************** USER DEETS *********************************** */
+
+app.get('/userDeets', async (req, res) => {
+  try {
+    const details = await db.getUserDeets('3XP8GJ');
+    console.log(details);
+    res.json(details);
+  } catch (err) {
+    console.log(err);
     res.status(500).send(err);
   }
 });

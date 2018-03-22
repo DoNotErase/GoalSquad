@@ -243,3 +243,59 @@ module.exports.updateGoalStatuses = async () => {
     ]);
   }());
 };
+
+module.exports.getUserDeets = async (userID) => {
+  const summarizeGoals = (goals) => {
+    const goalStats = {
+      total: {
+        attempted: 0,
+        success: 0,
+        fail: 0,
+        pending: 0,
+      },
+    };
+    goals.forEach((goal) => {
+      goalStats.total.attempted += 1;
+      if (!goalStats[goal.goal_activity]) {
+        goalStats[goal.goal_activity] = {
+          attempted: 1,
+          success: 0,
+          fail: 0,
+          pending: 0,
+          amountStart: goal.user_goal_start_value,
+          amountComplete: goal.user_goal_current,
+        };
+      } else {
+        goalStats[goal.goal_activity].attempted += 1;
+        goalStats[goal.goal_activity].amountStart += goal.user_goal_start_value;
+        goalStats[goal.goal_activity].amountComplete += goal.user_goal_current;
+      }
+
+      if (!goal.user_goal_concluded) {
+        goalStats.total.pending += 1;
+        goalStats[goal.goal_activity].pending += 1;
+      } else if (goal.user_goal_success) {
+        goalStats.total.success += 1;
+        goalStats[goal.goal_activity].success += 1;
+      } else {
+        goalStats.total.fail += 1;
+        goalStats[goal.goal_activity].fail += 1;
+      }
+    });
+
+    return goalStats;
+  };
+
+  try {
+    const getUserGoals = `SELECT user_goal.*, goal.* FROM user_goal INNER JOIN goal ON goal.goal_id = user_goal.goal_id WHERE user_id = '${userID}'`;
+    const userGoals = await db.queryAsync(getUserGoals);
+
+    const getAllGoals = 'SELECT user_goal.*, goal.* FROM user_goal INNER JOIN goal ON goal.goal_id = user_goal.goal_id';
+    const allGoals = await db.queryAsync(getAllGoals);
+
+    return { user: summarizeGoals(userGoals), global: summarizeGoals(allGoals) };
+  } catch (err) {
+    throw new Error('get user deets error');
+  }
+};
+
