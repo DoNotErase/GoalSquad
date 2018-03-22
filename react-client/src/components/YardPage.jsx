@@ -9,7 +9,8 @@ import * as barnActions from '../actions/barnActions';
 import MainMenu from './MainMenu';
 
 const child = { width: 800, height: '100%' };
-class BarnPage extends React.Component {
+
+class YardPage extends React.Component {
   componentDidMount() {
     this.props.barnActions.fetchSquaddies();
   }
@@ -25,9 +26,9 @@ class BarnPage extends React.Component {
     */
 
     return (
-      <div className="barnpage">
+      <div className="yardpage">
         <HorizontalScroll>
-          <div style={child} className="barnbackground" />
+          <div style={child} className="byardbackground" />
         </HorizontalScroll>
         <MainMenu />
       </div>
@@ -35,7 +36,7 @@ class BarnPage extends React.Component {
   }
 }
 
-BarnPage.propTypes = {
+YardPage.propTypes = {
   // state: PropTypes.shape({
   //   id: PropTypes.string,
   //   username: PropTypes.string,
@@ -59,4 +60,4 @@ const mapStateToProps = state => (
   }
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(BarnPage);
+export default connect(mapStateToProps, mapDispatchToProps)(YardPage);

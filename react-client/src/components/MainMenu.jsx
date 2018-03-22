@@ -18,7 +18,7 @@ const MainMenu = () => (
   >
     <Modal.Content>
       <Card.Group itemsPerRow={2}>
-        <Card raised image={src} as={Link} href="/barn" header="barn" />
+        <Card raised image={src} as={Link} href="/yard" header="yard" />
         <Card raised image={src} as={Link} href="/incubator" header="incubator" />
         <Card raised image={src} as={Link} href="/goals" header="goals" />
         <Card raised image={src} as={Link} href="/logout" header="logout" />
