@@ -20,8 +20,7 @@ class IncubatorPage extends React.Component {
       <div className="incubatorpage">
         <Header as="h1" className="white" textAlign="right">Your Goals</Header>
         <Divider hidden />
-        <Grid>
-
+        <Grid centered>
           <Grid.Column computer={8} mobile={16}>
             {Object.keys(this.props.incubatorState.userGoals).map((activity, index) => (
               <UserGoalsList
@@ -31,12 +30,11 @@ class IncubatorPage extends React.Component {
               />
             ))} {/* renders list of goals for each activity type */}
           </Grid.Column>
-
-          <Grid.Row columns={2} className="progressbar">
-            <Grid.Column width={3} floated="left">
+          <Grid.Row columns={2} style={{ position: 'fixed', bottom: 0, padding: 1 }}>
+            <Grid.Column width={3}>
               <Image src="./assets/icons/egg.png" centered />
             </Grid.Column>
-            <Grid.Column width={13} floated="right">
+            <Grid.Column width={13}>
               <ProgressBar history={this.props.history} />
             </Grid.Column>
           </Grid.Row>

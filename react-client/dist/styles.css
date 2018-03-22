@@ -3,7 +3,7 @@ body {
     color: black;
 }
 
-.homepage, .goalspage, .incubatorpage {
+.homepage, .goalspage, .incubatorpage, .deetspage {
     position: fixed;
     top: 0;
     left: 0;
@@ -17,13 +17,10 @@ body {
     background-image: linear-gradient(#845EC2, #008F7A);
 }
 
-.goalspage, .incubatorpage {
-    overflow-y: scroll;
-}
-
 .incubatorpage {
     height: 90vh !important;
     min-height:90%;
+    overflow-y:auto;
 }
 
 @media (min-width: 600px) and (max-width: 1024px){
@@ -40,7 +37,11 @@ body {
     }
 }
 
-.barnpage {
+::-webkit-scrollbar {
+    display: none !important;
+}
+
+.yardpage {
     top: 0;
     left: 0;
     padding: 0;
@@ -52,7 +53,7 @@ body {
     background-image: linear-gradient(#845EC2, #008F7A);
 }
 
-.barnbackground {
+.yardbackground {
     background-image: url('./assets/backgrounds/background-tablet.png') !important;
     background-size: cover !important;
 }

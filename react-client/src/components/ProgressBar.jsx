@@ -17,7 +17,7 @@ class ProgressBar extends React.Component {
         <button
           onClick={() => {
             this.props.incubatorActions.hatchEgg(this.props.incubatorState.egg.egg_xp - 100);
-            this.props.history.push('/barn');
+            this.props.history.push('/yard');
           }}
         >
         Hatch Me!

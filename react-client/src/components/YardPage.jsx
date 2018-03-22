@@ -5,29 +5,30 @@ import { bindActionCreators } from 'redux';
 import HorizontalScroll from 'react-scroll-horizontal';
 import PropTypes from 'prop-types';
 import * as actions from '../actions/actions';
-import * as barnActions from '../actions/barnActions';
+import * as yardActions from '../actions/yardActions';
 import MainMenu from './MainMenu';
 
-const child = { width: '75em', height: '100%' };
-class BarnPage extends React.Component {
+const child = { width: 800, height: '100%' };
+
+class YardPage extends React.Component {
   componentDidMount() {
-    this.props.barnActions.fetchSquaddies();
+    this.props.yardActions.fetchSquaddies();
   }
 
   render() {
     /*
-    if (this.props.barnState.newSquaddie) {
+    if (this.props.yardState.newSquaddie) {
       have a modal showing that new squaddie
-      on close: barnActions.squaddieAcknowledged()
+      on close: yardActions.squaddieAcknowledged()
         to set newSquaddie back to null
       newSquaddie should already be present in the main squaddie array
     }
     */
 
     return (
-      <div className="barnpage">
+      <div className="yardpage">
         <HorizontalScroll>
-          <div style={child} className="barnbackground" />
+          <div style={child} className="byardbackground" />
         </HorizontalScroll>
         <MainMenu />
       </div>
@@ -35,28 +36,28 @@ class BarnPage extends React.Component {
   }
 }
 
-BarnPage.propTypes = {
+YardPage.propTypes = {
   // state: PropTypes.shape({
   //   id: PropTypes.string,
   //   username: PropTypes.string,
   // }).isRequired,
   // actions: PropTypes.objectOf(PropTypes.func).isRequired,
-  // barnState: PropTypes.objectOf(PropTypes.string).isRequired,
-  barnActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  // yardState: PropTypes.objectOf(PropTypes.string).isRequired,
+  // yardActions: PropTypes.objectOf(PropTypes.func).isRequired,
 };
 
 const mapDispatchToProps = dispatch => (
   {
     actions: bindActionCreators(actions, dispatch),
-    barnActions: bindActionCreators(barnActions, dispatch),
+    yardActions: bindActionCreators(yardActions, dispatch),
   }
 );
 
 const mapStateToProps = state => (
   {
     state: state.main,
-    barnState: state.barn,
+    yardState: state.yard,
   }
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(BarnPage);
+export default connect(mapStateToProps, mapDispatchToProps)(YardPage);
