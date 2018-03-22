@@ -31,15 +31,15 @@ class HomePage extends React.Component {
           verticalAlign="middle"
           style={{ height: '100%' }}
         >
-          <Grid.Column width={10} style={{ maxWidth: 450 }}>
-            <Image src="./assets/misc/logo.png" style={{ marginTop: 50 }} />
+          <Grid.Column width={12} style={{ maxWidth: 450 }}>
+            <Image src="./assets/misc/logo.png" style={{ marginTop: 50 }} size="huge" />
             <Button
               as="a"
               href="/auth/fitbit"
               fluid
               color="orange"
               size="large"
-              style={{ marginTop: 175 }}
+              style={{ marginTop: 100 }}
             >Connect
             </Button>
           </Grid.Column>

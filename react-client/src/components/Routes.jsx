@@ -5,8 +5,10 @@ import { BrowserRouter as Router, Route, Switch, browserHistory } from 'react-ro
 import HomePage from './HomePage';
 import LandingPage from './LandingPage';
 import IncubatorPage from './IncubatorPage';
-import BarnPage from './BarnPage';
+import YardPage from './YardPage';
 import GoalsPage from './GoalsPage';
+import DeetsPage from './DeetsPage';
+import SquadPage from './SquadPage';
 
 const Routes = () => (
   <Router history={browserHistory}>
@@ -14,7 +16,9 @@ const Routes = () => (
       <Route exact path="/" component={HomePage} />
       <Route path="/landing" component={LandingPage} />
       <Route path="/incubator" component={IncubatorPage} />
-      <Route path="/barn" component={BarnPage} />
+      <Route path="/deets" component={DeetsPage} />
+      <Route path="/squad" component={SquadPage} />
+      <Route path="/yard" component={YardPage} />
       <Route path="/goals" component={GoalsPage} />
     </Switch>
   </Router>

@@ -1,9 +1,9 @@
-const barnState = {
+const yardState = {
   newSquaddie: null,
   userSquaddies: [],
 };
 
-const barnReducer = (state = barnState, action) => {
+const yardReducer = (state = yardState, action) => {
   switch (action.type) {
     case 'TEST': {
       return {
@@ -34,4 +34,4 @@ const barnReducer = (state = barnState, action) => {
   }
 };
 
-export default barnReducer;
+export default yardReducer;
