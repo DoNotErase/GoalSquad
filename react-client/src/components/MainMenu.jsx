@@ -17,10 +17,12 @@ const MainMenu = () => (
       </Button>}
   >
     <Modal.Content>
-      <Card.Group itemsPerRow={2}>
+      <Card.Group itemsPerRow={3}>
         <Card raised image={src} as={Link} href="/yard" header="yard" />
         <Card raised image={src} as={Link} href="/incubator" header="incubator" />
         <Card raised image={src} as={Link} href="/goals" header="goals" />
+        <Card raised image={src} as={Link} href="/goals" header="deets" />
+        <Card raised image={src} as={Link} href="/goals" header="squad" />
         <Card raised image={src} as={Link} href="/logout" header="logout" />
       </Card.Group>
     </Modal.Content>
