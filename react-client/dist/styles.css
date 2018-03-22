@@ -31,10 +31,6 @@ body {
     }
 }
 
-::-webkit-scrollbar {
-    display: none !important;
-}
-
 .yardpage {
     top: 0;
     left: 0;

@@ -22,7 +22,7 @@ class SquadPage extends React.Component {
         <Divider hidden />
         <Grid centered>
           <Grid.Column computer={8} mobile={16}>
-            <Scrollbars style={{ height: '85vh' }}>
+            <Scrollbars autoHide style={{ height: '85vh' }}>
               <Segment compact>
                 <Card.Group itemsPerRow={2}>
                   <Card raised image={src} header="monster" />

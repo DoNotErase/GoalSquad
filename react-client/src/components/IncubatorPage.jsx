@@ -23,7 +23,7 @@ class IncubatorPage extends React.Component {
         <Divider hidden />
         <Grid centered>
           <Grid.Column computer={8} mobile={16}>
-            <Scrollbars style={{ height: '75vh' }}>
+            <Scrollbars autoHide style={{ height: '75vh' }}>
               <UserGoalsList activityType="distance" goals={this.props.incubatorState.userGoals.distance} />
               <UserGoalsList activityType="steps" goals={this.props.incubatorState.userGoals.steps} />
               <UserGoalsList activityType="stairs" goals={this.props.incubatorState.userGoals.floors} />
