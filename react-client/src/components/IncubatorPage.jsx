@@ -2,6 +2,7 @@ import React from 'react';
 import { Grid, Header, Divider, Image } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Scrollbars } from 'react-custom-scrollbars';
 import PropTypes from 'prop-types';
 import UserGoalsList from './UserGoalsList';
 import ProgressBar from './ProgressBar';
@@ -22,9 +23,11 @@ class IncubatorPage extends React.Component {
         <Divider hidden />
         <Grid centered>
           <Grid.Column computer={8} mobile={16}>
-            <UserGoalsList activityType="distance" goals={this.props.incubatorState.userGoals.distance} />
-            <UserGoalsList activityType="steps" goals={this.props.incubatorState.userGoals.steps} />
-            <UserGoalsList activityType="stairs" goals={this.props.incubatorState.userGoals.floors} />
+            <Scrollbars style={{ height: '75vh' }}>
+              <UserGoalsList activityType="distance" goals={this.props.incubatorState.userGoals.distance} />
+              <UserGoalsList activityType="steps" goals={this.props.incubatorState.userGoals.steps} />
+              <UserGoalsList activityType="stairs" goals={this.props.incubatorState.userGoals.floors} />
+            </Scrollbars>
           </Grid.Column>
           <Grid.Row columns={2} style={{ position: 'fixed', bottom: 0, padding: 1 }}>
             <Grid.Column width={3}>
