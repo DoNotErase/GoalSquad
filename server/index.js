@@ -90,12 +90,12 @@ app.get('/auth/fitbit/success', async (req, res) => {
     await db.updateGoalStatuses();
     res.redirect('/incubator');
   } catch (err) {
-    console.log(err);
     res.redirect('/auth/fitbit/failure');
   }
 });
 
 app.get('/auth/fitbit/failure', (req, res) => {
+  console.log('authenticaiton failure!');
   res.status(401).send('authentication failure!');
 });
 
@@ -142,7 +142,6 @@ app.get('/fitbit/lifetime', async (req, res) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(activities.data);
     res.json(activities.data); // TODO: replace this with db storage?
   } catch (err) {
     res.status(401).send(err);
@@ -249,12 +248,10 @@ app.post('/createUserGoal', async (req, res) => {
       await db.createUserGoal(newGoal);
       res.end();
     } else {
-      console.log('bad passport');
       res.status(401).json({ error: 'user not authenticated' });
     }
   } catch (err) {
-    console.log('server err', err);
-    res.status(500).send();
+    res.status(500).send(err);
   }
 });
 
@@ -295,11 +292,9 @@ app.post('/hatchEgg', async (req, res) => {
 
 app.get('/userDeets', async (req, res) => {
   try {
-    const details = await db.getUserDeets('3XP8GJ');
-    console.log(details);
+    const details = await db.getUserDeets(req.session.passport.user.id);
     res.json(details);
   } catch (err) {
-    console.log(err);
     res.status(500).send(err);
   }
 });

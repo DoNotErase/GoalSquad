@@ -18,7 +18,6 @@ export const getUserGoals = () => (
   dispatch => (
     axios.get('/userGoals')
       .then((res) => {
-        console.log(res.data);
         dispatch(setUserGoals(res.data));
       })
       .catch((err) => {

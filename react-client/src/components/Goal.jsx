@@ -74,16 +74,32 @@ class Goal extends React.Component {
   }
 
   submit() {
-    const deadline = this.state.noDeadline ? null : this.state.deadline;
-    if (deadline && deadline.hours === 0 && deadline.days === 0) {
+    if (this.state.noDeadline) {
+      const points = parseInt(this.state.goalPoints, 10);
+      this.setState({ open: false, errorMessage: '', noDeadline: false });
+      this.props.goalsActions.submitUserGoal(this.state.goalID, null, points);
+      return;
+    }
+
+    const deadline = this.state.deadline;
+
+    if (deadline.hours === '0' || deadline.hours === '' || deadline.hours === ' ') {
+      deadline.hours = 0;
+    }
+
+    if (deadline.days === '0' || deadline.days === '' || deadline.days === ' ') {
+      deadline.days = 0;
+    }
+
+    if (isNaN(parseInt(deadline.hours, 10)) || isNaN(parseInt(deadline.days, 10))) {
+      this.setState({ errorMessage: 'please put only numbers as a deadline!' });
+    } else if (!deadline.hours && !deadline.days) {
       this.setState({ errorMessage: 'please mark no deadline or set a deadline!' });
     } else {
-      this.setState({ open: false, errorMessage: '' });
+      this.setState({ open: false, errorMessage: '', noDeadline: false });
       let points = parseInt(this.state.goalPoints, 10);
-      if (deadline) {
-        const hours = (deadline.days * 24) + deadline.hours;
-        points += parseInt((points / (hours / this.state.timeDivisor)), 10);
-      }
+      const hours = (deadline.days * 24) + deadline.hours;
+      points += parseInt((points / (hours / this.state.timeDivisor)), 10);
       this.props.goalsActions.submitUserGoal(this.state.goalID, deadline, points);
     }
   }

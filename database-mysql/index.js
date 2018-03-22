@@ -108,7 +108,6 @@ module.exports.createUserGoal = async (goalObj) => {
     await db.queryAsync(query);
     const findGoalID = 'SELECT MAX(user_goal_id) as "goal_id" FROM user_goal';
     const goalID = await db.queryAsync(findGoalID);
-    console.log(goalID[0].goal_id);
     if (goalObj.goalLength) {
       const setEndDate = 'UPDATE user_goal SET user_goal_end_date = ' +
         '(SELECT DATE_ADD((SELECT DATE_ADD((SELECT MAX(user_goal_start_date)), ' +
@@ -235,7 +234,6 @@ module.exports.updateGoalStatuses = async () => {
   const markDoneGoals = 'UPDATE user_goal SET user_goal_success = 1, user_goal_concluded = 1 ' +
     'WHERE user_goal_target <= user_goal_current';
   const markExpiredGoals = 'UPDATE user_goal SET user_goal_concluded = 1 WHERE user_goal_end_date < (utc_timestamp());';
-  console.log(markExpiredGoals);
   (async function updateGoals() {
     await Promise.all([
       db.queryAsync(markDoneGoals),
