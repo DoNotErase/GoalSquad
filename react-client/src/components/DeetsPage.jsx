@@ -65,8 +65,6 @@ const DeetsPage = () => (
 const mapStateToProps = state => (
   {
     state: state.main,
-    goalsState: state.goals,
-    incubatorState: state.incubator,
   }
 );
 
