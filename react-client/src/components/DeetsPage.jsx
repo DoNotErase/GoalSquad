@@ -51,9 +51,9 @@ const DeetsPage = () => (
           </Segment>
         </Segment.Group>
         <Segment.Group raised>
-            <Segment><Statistic horizontal size="tiny" label="Total Stairs" value="2,204" /></Segment>
-            <Segment><Statistic horizontal size="tiny" label="Total Steps" value="100,412" /></Segment>
-            <Segment><Statistic horizontal size="tiny" label="Total Miles" value="157" /></Segment>
+          <Segment><Statistic horizontal size="tiny" label="Total Stairs" value="2,204" /></Segment>
+          <Segment><Statistic horizontal size="tiny" label="Total Steps" value="100,412" /></Segment>
+          <Segment><Statistic horizontal size="tiny" label="Total Miles" value="157" /></Segment>
         </Segment.Group>
       </Grid.Column>
       <MainMenu />
