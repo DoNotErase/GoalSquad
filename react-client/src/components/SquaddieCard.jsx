@@ -16,9 +16,8 @@ class SquaddieCard extends React.Component {
   close() { this.setState({ open: false }); }
 
   render() {
-    const src = './assets/squaddies/squaddie-3-icon.png';
+    const src = './assets/squaddies/scuttlebutt-icon.png';
     const { open, dimmer, size } = this.state;
-    const images = ['./assets/squaddies/squaddie-1.png', './assets/squaddies/squaddie-2.png'];
 
     return (
 
@@ -38,7 +37,7 @@ class SquaddieCard extends React.Component {
       >
         <Modal.Content>
           <Card centered>
-            <Image src="./assets/squaddies/squaddie-1.png" />
+            <Image src="./assets/squaddies/scuttlebutt.png" />
             <Card.Content>
               <Card.Header>
         Matthew
@@ -46,7 +45,7 @@ class SquaddieCard extends React.Component {
               <Card.Meta>
                 <span className="date">
           Joined in 2015
-              </span>
+                </span>
               </Card.Meta>
               <Card.Description>
         Matthew is a musician living in Nashville.

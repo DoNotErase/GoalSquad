@@ -5,37 +5,48 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import MainMenu from './MainMenu';
 import SquaddieCard from './SquaddieCard';
 
-const SquadPage = props => (
-  <div className="squadpage">
-    <Header as="h1" className="white" textAlign="right">Your Squad</Header>
-    <Divider hidden />
-    <Grid centered>
-      <Grid.Column computer={8} mobile={16}>
-        <Scrollbars autoHide style={{ height: '85vh' }}>
-          <Segment compact>
-            <Card.Group itemsPerRow={3} centered>
-              <SquaddieCard />
-              <SquaddieCard />
-              <SquaddieCard />
-              <SquaddieCard />
-              <SquaddieCard />
-              <SquaddieCard />
-              <SquaddieCard />
-              <SquaddieCard />
-              <SquaddieCard />
-              <SquaddieCard />
-              <SquaddieCard />
-              <SquaddieCard />
-              <SquaddieCard />
-              <SquaddieCard />
-            </Card.Group>
-          </Segment>
-        </Scrollbars>
-      </Grid.Column>
-      <MainMenu history={props.history} />
-    </Grid>
-  </div>
-);
+class SquadPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      squaddies: [],
+    };
+  }
+
+  componentDidMount() {
+    
+  }
+
+  render() {
+    return (
+      <div className="squadpage">
+        <Header as="h1" className="white" textAlign="right">Your Squad</Header>
+        <Divider hidden />
+        <Grid centered>
+          <Grid.Column computer={8} mobile={16}>
+            <Scrollbars autoHide style={{ height: '85vh' }}>
+              <Segment compact>
+                <Card.Group itemsPerRow={3} centered>
+                  <SquaddieCard />
+                  <SquaddieCard />
+                  <SquaddieCard />
+                  <SquaddieCard />
+                  <SquaddieCard />
+                  <SquaddieCard />
+                  <SquaddieCard />
+                  <SquaddieCard />
+                  <SquaddieCard />
+                </Card.Group>
+              </Segment>
+            </Scrollbars>
+          </Grid.Column>
+          <MainMenu history={props.history} />
+        </Grid>
+      </div>
+    );
+  }
+}
+
 
 const mapStateToProps = state => (
   {
