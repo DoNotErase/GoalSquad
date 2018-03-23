@@ -9,17 +9,17 @@ import * as incubatorActions from '../actions/incubatorActions';
 const UserGoalsList = (props) => {
   const makeDeadLineMessage = (goal) => {
     if (goal.user_goal_end_date && !goal.user_goal_concluded) {
-      const nowUTC = moment();
+      const now = moment();
       const deadline = moment(goal.user_goal_end_date).subtract(5, 'hours');
-      const days = deadline.diff(nowUTC, 'days');
+      const days = deadline.diff(now, 'days');
       if (days >= 1) {
-        return `${(days + 1)} days`; // plus 1 because diff uses 'floor'
+        return `${(days + 1)} days left!`; // plus 1 because diff uses 'floor'
       }
-      const hours = deadline.diff(nowUTC, 'hours');
+      const hours = deadline.diff(now, 'hours');
       if (hours >= 1) {
-        return `${(hours + 1)} hours`;
+        return `${(hours + 1)} hours left!`;
       }
-      return `${deadline.diff(nowUTC, 'minutes') + 1} minutes`;
+      return `${deadline.diff(now, 'minutes') + 1} minutes left!`;
     }
 
     return '';

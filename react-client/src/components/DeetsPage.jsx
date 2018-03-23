@@ -31,16 +31,16 @@ class DeetsPage extends React.Component {
                       <Statistic.Group size="tiny">
                         <Statistic color="green">
                           <Statistic.Value>
-                            {(deets.user.total.success * 100) /
-                              (deets.user.total.attempted - deets.user.total.pending)}%
+                            {Math.ceil((deets.user.total.success * 100) /
+                              (deets.user.total.attempted - deets.user.total.pending))}%
                           </Statistic.Value>
                           <Statistic.Label>OF GOALS</Statistic.Label>
                           <Statistic.Value>COMPLETE</Statistic.Value>
                         </Statistic>
                         <Statistic color="red">
                           <Statistic.Value>
-                            {(deets.user.total.fail * 100) /
-                              (deets.user.total.attempted - deets.user.total.pending)}%
+                            {Math.floor((deets.user.total.fail * 100) /
+                              (deets.user.total.attempted - deets.user.total.pending))}%
                           </Statistic.Value>
                           <Statistic.Label>OF GOALS</Statistic.Label>
                           <Statistic.Value>FAILED</Statistic.Value>
@@ -57,15 +57,15 @@ class DeetsPage extends React.Component {
                       <Statistic.Group size="mini">
                         <Statistic horizontal>
                           <Statistic.Value>
-                            {(deets.global.total.success * 100) /
-                              (deets.global.total.attempted - deets.global.total.pending)}%
+                            {Math.ceil((deets.global.total.success * 100) /
+                              (deets.global.total.attempted - deets.global.total.pending))}%
                           </Statistic.Value>
                           <Statistic.Label>Global<br />Average</Statistic.Label>
                         </Statistic>
                         <Statistic horizontal>
                           <Statistic.Value>
-                            {(deets.user.total.fail * 100) /
-                              (deets.user.total.attempted - deets.user.total.pending)}%
+                            {Math.floor((deets.user.total.fail * 100) /
+                              (deets.user.total.attempted - deets.user.total.pending))}%
                           </Statistic.Value>
                           <Statistic.Label>Global<br />Average</Statistic.Label>
                         </Statistic>
@@ -102,7 +102,7 @@ class DeetsPage extends React.Component {
               </Segment>
             </Segment.Group>
           </Grid.Column>
-          <MainMenu />
+          <MainMenu history={this.props.history} />
         </Grid>
       </div>
     );

@@ -40,7 +40,7 @@ class IncubatorPage extends React.Component {
           </Grid.Row>
 
         </Grid>
-        <MainMenu />
+        <MainMenu history={this.props.history} />
       </div>
     );
   }

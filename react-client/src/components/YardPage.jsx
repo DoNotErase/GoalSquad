@@ -30,7 +30,7 @@ class YardPage extends React.Component {
         <HorizontalScroll>
           <div style={child} className="byardbackground" />
         </HorizontalScroll>
-        <MainMenu />
+        <MainMenu history={this.props.history} />
       </div>
     );
   }

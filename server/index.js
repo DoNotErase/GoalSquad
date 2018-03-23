@@ -85,7 +85,7 @@ app.get('/auth/fitbit/success', async (req, res) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log('activityes', activities);
+      // console.log('activityes', activities);
       const userID = req.session.passport.user.id;
       await Promise.all([
         db.newUserLifetimeDistance(userID, activities.data.lifetime.total.distance),
@@ -99,7 +99,7 @@ app.get('/auth/fitbit/success', async (req, res) => {
       res.redirect('/auth/fitbit/failure');
     }
   } catch (err) {
-    console.log('hello was in success then failed', err.response.data);
+    console.log('hello was in success then failed');
     res.redirect('/auth/fitbit/failure');
   }
 });
@@ -184,6 +184,7 @@ app.get('/eggStatus', async (req, res) => {
 /** *******************GOAL STUFF**************************** */
 
 app.get('/userGoals', async (req, res) => {
+  console.log('getting goals');
   if (req.session.passport) {
     if (!req.query.type) {
       try {
@@ -249,7 +250,6 @@ app.post('/createUserGoal', async (req, res) => {
     console.log(err.response.data);
     res.status(500).send('could not create goal');
   }
-
 });
 
 app.patch('/completeGoal', async (req, res) => {
