@@ -331,6 +331,16 @@ app.patch('/failGoal', async (req, res) => {
   }
 });
 
+app.patch('/updateCustom', async (req, res) => {
+  try {
+    await db.updateCustomGoalProgress(req.body.goalID, req.body.newCurrent);
+    await db.updateGoalStatuses();
+    res.end();
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
 /** ********************** EGGS / SQUADDIES ******************************** */
 
 app.post('/hatchEgg', async (req, res) => {
