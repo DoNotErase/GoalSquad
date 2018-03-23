@@ -42,13 +42,13 @@ const UserGoalsList = (props) => {
     if (goal.user_goal_concluded) {
       if (goal.user_goal_success) {
         return (
-          <Button onClick={() => { props.incubatorActions.markGoalSuccess(goal.user_goal_id); }}>
+          <Button basic color="green" onClick={() => { props.incubatorActions.markGoalSuccess(goal.user_goal_id); }}>
             Goal Success!
           </Button>
         );
       }
       return (
-        <Button onClick={() => { props.incubatorActions.markGoalFailure(goal.user_goal_id); }}>
+        <Button basic color="red" onClick={() => { props.incubatorActions.markGoalFailure(goal.user_goal_id); }}>
           Goal Failed :(
         </Button>);
     }
