@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Modal, Icon, Image } from 'semantic-ui-react';
+import { Card, Modal, Image } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 
 class SquaddieCard extends React.Component {
