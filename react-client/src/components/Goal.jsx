@@ -3,6 +3,7 @@ import { Segment, Header, Statistic, Grid, Button, Modal, Input, Divider, Checkb
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as goalsActions from '../actions/createGoalActions';
+import * as incubatorActions from '../actions/incubatorActions';
 
 class Goal extends React.Component {
   constructor(props) {
@@ -64,9 +65,7 @@ class Goal extends React.Component {
   }
 
   toggleNoDeadline() {
-    console.log('toggle!');
     this.setState({ noDeadline: !this.state.noDeadline });
-    console.log(this.state.noDeadline);
   }
 
   close() {
@@ -74,17 +73,34 @@ class Goal extends React.Component {
   }
 
   submit() {
-    const deadline = this.state.noDeadline ? null : this.state.deadline;
-    if (deadline && deadline.hours === 0 && deadline.days === 0) {
+    if (this.state.noDeadline) {
+      const points = parseInt(this.state.goalPoints, 10);
+      this.setState({ open: false, errorMessage: '', noDeadline: false });
+      this.props.goalsActions.submitUserGoal(this.state.goalID, null, points);
+      this.props.history.push('/incubator');
+      return;
+    }
+
+    const { deadline } = this.state;
+
+    if (deadline.hours === '0' || deadline.hours === '' || deadline.hours === ' ') {
+      deadline.hours = 0;
+    }
+
+    if (deadline.days === '0' || deadline.days === '' || deadline.days === ' ') {
+      deadline.days = 0;
+    }
+    if (!((parseInt(deadline.hours, 10) >= 0) && (parseInt(deadline.days, 10) >= 0))) {
+      this.setState({ errorMessage: 'please put only positive numbers as a deadline!' });
+    } else if (!deadline.hours && !deadline.days) {
       this.setState({ errorMessage: 'please mark no deadline or set a deadline!' });
     } else {
-      this.setState({ open: false, errorMessage: '' });
+      this.setState({ open: false, errorMessage: '', noDeadline: false });
       let points = parseInt(this.state.goalPoints, 10);
-      if (deadline) {
-        const hours = (deadline.days * 24) + deadline.hours;
-        points += parseInt((points / (hours / this.state.timeDivisor)), 10);
-      }
+      const hours = (deadline.days * 24) + deadline.hours;
+      points += parseInt((points / (hours / this.state.timeDivisor)), 10);
       this.props.goalsActions.submitUserGoal(this.state.goalID, deadline, points);
+      this.props.history.push('/incubator');
     }
   }
 
@@ -200,6 +216,7 @@ class Goal extends React.Component {
 const mapDispatchToProps = dispatch => (
   {
     goalsActions: bindActionCreators(goalsActions, dispatch),
+    incubatorActions: bindActionCreators(incubatorActions, dispatch),
   }
 );
 

@@ -76,27 +76,35 @@ app.get('/callback', passport.authenticate('fitbit', {
 app.get('/auth/fitbit/success', async (req, res) => {
   try {
     const token = await db.getAccessToken(req.session.passport.user.id);
-    const activities = await axios.get('https://api.fitbit.com/1/user/-/activities.json', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const userID = req.session.passport.user.id;
-    await Promise.all([
-      db.newUserLifetimeDistance(userID, activities.data.lifetime.total.distance),
-      db.newUserLifetimeSteps(userID, activities.data.lifetime.total.steps),
-      db.newUserLifetimeFloors(userID, activities.data.lifetime.total.floors),
-    ]);
-    await db.updateGoalStatuses();
-    res.redirect('/incubator');
+    console.log('token', token);
+    try {
+      const activities = await axios.get('https://api.fitbit.com/1/user/-/activities.json', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      // console.log('activityes', activities);
+      const userID = req.session.passport.user.id;
+      await Promise.all([
+        db.newUserLifetimeDistance(userID, activities.data.lifetime.total.distance),
+        db.newUserLifetimeSteps(userID, activities.data.lifetime.total.steps),
+        db.newUserLifetimeFloors(userID, activities.data.lifetime.total.floors),
+      ]);
+      await db.updateGoalStatuses();
+      res.redirect('/incubator');
+    } catch (err) {
+      console.log('probably a new user', token);
+      res.redirect('/auth/fitbit/failure');
+    }
   } catch (err) {
-    console.log(err);
-    res.redirect('/');
+    console.log('hello was in success then failed');
+    res.redirect('/auth/fitbit/failure');
   }
 });
 
 app.get('/auth/fitbit/failure', (req, res) => {
-  res.status(401).json({ err: 'failure!' });
+  console.log('authenticaiton failure!');
+  res.status(401).send('authentication failure!');
 });
 
 app.post('/fitbit/deauthorize/', async (req, res) => {
@@ -142,23 +150,7 @@ app.get('/fitbit/lifetime', async (req, res) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(activities.data);
     res.json(activities.data); // TODO: replace this with db storage?
-  } catch (err) {
-    res.status(401).send(err);
-  }
-});
-
-app.get('/fitbit/dailySummary', async (req, res) => {
-  const { date } = req.query; // must be in YYYY-MM-DD format string
-  const token = db.getAccessToken(req.session.passport.user.id);
-  try {
-    const summary = await axios.get(`https://api.fitbit.com/1/user/-/activities/date/${date}.json`, {
-      headers: {
-        Authorization: `Bearer ${token}`, // TODO: replace this with db call based on req.session.passport.user.id
-      },
-    });
-    res.json(summary.data);
   } catch (err) {
     res.status(401).send(err);
   }
@@ -176,14 +168,19 @@ app.get('/eggStatus', async (req, res) => {
     if (req.session.passport) {
       userID = req.session.passport.user.id;
     } else {
-      res.status(401).end();
+      res.status(401).send('bad passport');
     }
   }
-  const data = await db.getEggInfo(userID);
-  res.status(200).send(data);
+  try {
+    const data = await db.getEggInfo(userID);
+    res.status(200).json(data);
+  } catch (err) {
+    res.status(500).send('err in get Egg info');
+  }
 });
 
 /** *******************GOAL STUFF**************************** */
+
 app.get('/userGoals', async (req, res) => {
   if (req.session.passport) {
     if (!req.query.type) {
@@ -191,24 +188,20 @@ app.get('/userGoals', async (req, res) => {
         const userGoals = await db.getActiveUserGoals(req.session.passport.user.id);
         res.json(userGoals);
       } catch (err) {
-        console.log(err);
-        res.status(500).end();
+        res.status(500).send('err in getActiveUserGoals');
       }
     } else if (req.query.type === 'all') {
       try {
         const userGoals = await db.getUserGoals(req.session.passport.user.id);
         res.json(userGoals);
       } catch (err) {
-        console.log(err);
-        res.status(500).end();
+        res.status(500).send('err in get userGoals');
       }
     } else {
-      console.log('type of goal not yet recognized!');
-      res.end();
+      res.status(500).send('type of goal not yet recognized!');
     }
   } else {
-    console.log('bad passport');
-    res.status(401).end();
+    res.status(401).send('bad passport');
   }
 });
 
@@ -248,45 +241,59 @@ app.post('/createUserGoal', async (req, res) => {
       await db.createUserGoal(newGoal);
       res.end();
     } else {
-      console.log('bad passport');
       res.status(401).json({ error: 'user not authenticated' });
     }
   } catch (err) {
-    console.log('server err', err);
-    res.status(500).end();
+    console.log(err.response.data);
+    res.status(500).send('could not create goal');
   }
 });
 
 app.patch('/completeGoal', async (req, res) => {
-  const userGoalID = req.body.goalID;
-  await db.completeGoalSuccess(userGoalID);
-  res.end();
+  try {
+    const userGoalID = req.body.goalID;
+    await db.completeGoalSuccess(userGoalID);
+    res.end();
+  } catch (err) {
+    res.status(500).send(err);
+  }
 });
 
 app.patch('/failGoal', async (req, res) => {
-  const userGoalID = req.body.goalID;
-  await db.completeGoalFailure(userGoalID);
-  res.end();
+  try {
+    const userGoalID = req.body.goalID;
+    await db.completeGoalFailure(userGoalID);
+    res.end();
+  } catch (err) {
+    res.status(500).send(err);
+  }
 });
 
 /** ********************** EGGS / SQUADDIES ******************************** */
 
 app.post('/hatchEgg', async (req, res) => {
-  let userID;
-  if (req.session.passport) {
-    userID = req.session.passport.user.id;
-  } else {
-    res.status(401).end();
+  try {
+    const userID = req.session.passport.user.id;
+    const userEggID = req.body.eggID;
+    const newSquaddie = db.hatchEgg(userEggID, userID, req.body.xp);
+    res.json(newSquaddie[0]);
+  } catch (err) {
+    res.status(500).send(err);
   }
-  const userEggID = req.body.eggID;
-  const newSquaddie = db.hatchEgg(userEggID, userID, req.body.xp);
-  res.json(newSquaddie[0]);
+});
+
+/** ********************** USER DEETS *********************************** */
+
+app.get('/userDeets', async (req, res) => {
+  try {
+    const details = await db.getUserDeets(req.session.passport.user.id);
+    res.json(details);
+  } catch (err) {
+    res.status(500).send(err);
+  }
 });
 
 /** ********************************************************* */
-app.get('/test', async (req, res) => {
-  res.json(await db.findUserId());
-});
 
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '../react-client/dist', '/index.html'));

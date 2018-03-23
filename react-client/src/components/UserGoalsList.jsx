@@ -8,18 +8,21 @@ import * as incubatorActions from '../actions/incubatorActions';
 
 const UserGoalsList = (props) => {
   const makeDeadLineMessage = (goal) => {
-    const nowUTC = moment.utc();
-    const now = moment();
-    const deadline = moment.utc(goal.user_goal_end_date);
-    const days = deadline.diff(now, 'days');
-    if (days >= 1) {
-      return `${(days + 1)} days`;
+    if (goal.user_goal_end_date && !goal.user_goal_concluded) {
+      const now = moment();
+      const deadline = moment(goal.user_goal_end_date).subtract(5, 'hours');
+      const days = deadline.diff(now, 'days');
+      if (days >= 1) {
+        return `${(days + 1)} days left!`; // plus 1 because diff uses 'floor'
+      }
+      const hours = deadline.diff(now, 'hours');
+      if (hours >= 1) {
+        return `${(hours + 1)} hours left!`;
+      }
+      return `${deadline.diff(now, 'minutes') + 1} minutes left!`;
     }
-    const hours = deadline.diff(now, 'hours');
-    if (hours >= 1) {
-      return `${(hours + 1)} hours`;
-    }
-    return `${deadline.diff(now, 'minutes') + 1} minutes`;
+
+    return '';
   };
 
   const activityName = (goalActivity) => {
@@ -29,96 +32,70 @@ const UserGoalsList = (props) => {
       case 'floors':
         return 'Flights';
       case 'steps':
-        return 'steps';
+        return 'Steps';
       default:
-        return 'activity not recognized';
+        return goalActivity;
     }
   };
 
-  const statusIndicator = (goal) => {
-    if (goal.user_goal_concluded && !goal.user_goal_finalized) {
+  const goalStatus = (goal) => {
+    if (goal.user_goal_concluded) {
       if (goal.user_goal_success) {
         return (
           <Button onClick={() => { props.incubatorActions.markGoalSuccess(goal.user_goal_id); }}>
             Goal Success!
-          </Button>);
+          </Button>
+        );
       }
       return (
         <Button onClick={() => { props.incubatorActions.markGoalFailure(goal.user_goal_id); }}>
           Goal Failed :(
         </Button>);
     }
-    if (goal.user_goal_finalized) {
-      if (goal.user_goal_success) {
-        return <Message negative> You failed this goal :( </Message>;
-      }
-      return <Message success> You passed this goal! </Message>;
-    }
-    if (goal.user_goal_end_date) {
-      return (
-        <Grid.Row columns={2}>
-          <Grid.Column >
-            <Header as="h4">{goal.goal_name}</Header>
-            {makeDeadLineMessage(goal)} left!
-          </Grid.Column>
-          <Grid.Column >
-            <Statistic
-              floated="right"
-              size="mini"
-            >
-              <Statistic.Value>
-                {goal.user_goal_target - goal.user_goal_current} {activityName(goal.goal_activity)}
-              </Statistic.Value>
-              <Statistic.Label>
-                to go!
-              </Statistic.Label>
-            </Statistic>
-          </Grid.Column>
-        </Grid.Row>
-      );
-    }
-    return (
-      <Grid.Row columns={2}>
-        <Grid.Column >
-          <Header as="h4">{goal.goal_name}</Header>
-        </Grid.Column>
-        <Grid.Column >
-          <Statistic
-            floated="right"
-            size="mini"
-          >
-            <Statistic.Value>
-              {goal.user_goal_target - goal.user_goal_current} {activityName(goal.goal_activity)}
-            </Statistic.Value>
-            <Statistic.Label>
-              to go!
-            </Statistic.Label>
-          </Statistic>
-        </Grid.Column>
-      </Grid.Row>
+
+    return ( // goal has neither been completed nor expired
+      <Statistic
+        floated="right"
+        size="mini"
+      >
+        <Statistic.Value>
+          {goal.user_goal_target - goal.user_goal_current}
+          <br />
+          {activityName(goal.goal_activity)}
+        </Statistic.Value>
+        <Statistic.Label>
+          to go!
+        </Statistic.Label>
+      </Statistic>
     );
   };
 
-  if (props.goals) {
-    return (
-      <Segment.Group raised>
-        {props.goals.map(goal => (
-          <Segment
-            key={goal.user_goal_id}
-            compact
-            clearing
-          >
-            <Grid>
-              {statusIndicator(goal)}
-            </Grid>
-          </Segment>))
-            }
-      </Segment.Group>
+  const produceGoal = goal => (
+    <Grid.Row columns={2}>
+      <Grid.Column >
+        <Header as="h4">{goal.goal_name}</Header>
+        {makeDeadLineMessage(goal)} {/* generate time until expiration or '' if no deadline */}
+      </Grid.Column>
+      <Grid.Column >
+        {goalStatus(goal)} {/* show amount of activity left or button to close out old goal */}
+      </Grid.Column>
+    </Grid.Row>
+  );
 
-    );
-  }
   return (
-    <Message>You have no goals!</Message>
+    <Segment.Group raised>
+      {props.goals.map(goal => (
+        <Segment
+          key={goal.user_goal_id}
+          compact
+          clearing
+        >
+          <Grid>
+            {produceGoal(goal)}
+          </Grid>
+        </Segment>
+      ))}
+    </Segment.Group>
   );
 };
 

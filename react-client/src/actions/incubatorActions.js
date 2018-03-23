@@ -2,13 +2,14 @@ import axios from 'axios';
 
 export const setUserGoals = (userGoals) => {
   const sortedGoals = {
-    distance: [],
-    steps: [],
-    floors: [],
   };
 
   userGoals.forEach((goal) => {
-    sortedGoals[goal.goal_activity].push(goal);
+    if (sortedGoals[goal.goal_activity]) {
+      sortedGoals[goal.goal_activity].push(goal);
+    } else {
+      sortedGoals[goal.goal_activity] = [goal];
+    }
   });
   return { type: 'SET_USER_GOALS', payload: sortedGoals };
 };
@@ -17,7 +18,6 @@ export const getUserGoals = () => (
   dispatch => (
     axios.get('/userGoals')
       .then((res) => {
-        console.log(res.data);
         dispatch(setUserGoals(res.data));
       })
       .catch((err) => {
@@ -40,6 +40,7 @@ export const fetchEggStatus = () => (
   )
 );
 
+// caught in barnReducer
 const newSquaddie = squaddie => ({ type: 'NEW_SQUADDIE', payload: squaddie });
 
 export const hatchEgg = extraXP => (
@@ -54,14 +55,12 @@ export const hatchEgg = extraXP => (
   )
 );
 
-// const userGoalFinalize = userGoalID => ({ type: 'FINALIZE_GOAL', payload: userGoalID });
-
 export const markGoalSuccess = userGoalID => (
   dispatch => (
     axios.patch('/completeGoal', { goalID: userGoalID })
       .then((res) => {
         dispatch(getUserGoals(userGoalID));
-        dispatch(fetchEggStatus(res.data));
+        dispatch(fetchEggStatus(res.data)); // because xp was added
       })
       .catch((err) => {
         console.log(err);

@@ -5,7 +5,7 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import MainMenu from './MainMenu';
 import SquaddieCard from './SquaddieCard';
 
-const SquadPage = () => (
+const SquadPage = props => (
   <div className="squadpage">
     <Header as="h1" className="white" textAlign="right">Your Squad</Header>
     <Divider hidden />
@@ -32,7 +32,7 @@ const SquadPage = () => (
           </Segment>
         </Scrollbars>
       </Grid.Column>
-      <MainMenu />
+      <MainMenu history={props.history} />
     </Grid>
   </div>
 );

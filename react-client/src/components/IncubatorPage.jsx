@@ -24,9 +24,13 @@ class IncubatorPage extends React.Component {
         <Grid centered>
           <Grid.Column computer={8} mobile={16}>
             <Scrollbars autoHide style={{ height: '75vh' }}>
-              <UserGoalsList activityType="distance" goals={this.props.incubatorState.userGoals.distance} />
-              <UserGoalsList activityType="steps" goals={this.props.incubatorState.userGoals.steps} />
-              <UserGoalsList activityType="stairs" goals={this.props.incubatorState.userGoals.floors} />
+              {Object.keys(this.props.incubatorState.userGoals).map((activity, index) => (
+                <UserGoalsList
+                  key={index}
+                  activityType={activity}
+                  goals={this.props.incubatorState.userGoals[activity]}
+                />
+              ))} {/* renders list of goals for each activity type */}
             </Scrollbars>
           </Grid.Column>
           <Grid.Row columns={2} style={{ position: 'fixed', bottom: 0, padding: 1 }}>
@@ -37,8 +41,9 @@ class IncubatorPage extends React.Component {
               <ProgressBar history={this.props.history} />
             </Grid.Column>
           </Grid.Row>
+
         </Grid>
-        <MainMenu />
+        <MainMenu history={this.props.history} />
       </div>
     );
   }
@@ -51,9 +56,9 @@ IncubatorPage.propTypes = {
   // }).isRequired,
   // actions: PropTypes.objectOf(PropTypes.func).isRequired,
   incubatorState: PropTypes.objectOf(PropTypes.object).isRequired,
-  // incubatorActions: PropTypes.objectOf({
-  //   getUserGoals: PropTypes.func,
-  // }).isRequired,
+  incubatorActions: PropTypes.objectOf({
+    getUserGoals: PropTypes.func,
+  }).isRequired,
 };
 
 const mapDispatchToProps = dispatch => (
