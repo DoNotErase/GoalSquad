@@ -1,5 +1,5 @@
 import React from 'react';
-import { Segment, Header, Statistic, Grid, Button, Modal, Input, Divider, Checkbox } from 'semantic-ui-react';
+import { Header, Statistic, Grid, Button, Modal, Input } from 'semantic-ui-react';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -12,6 +12,7 @@ class UserGoal extends React.Component {
     this.state = {
       open: false,
       newCurrent: '',
+      errorMessage: '',
     };
     console.log(props.goal);
 
@@ -20,6 +21,8 @@ class UserGoal extends React.Component {
     this.goalStatus = this.goalStatus.bind(this);
     this.updateNewCurrent = this.updateNewCurrent.bind(this);
     this.close = this.close.bind(this);
+    this.makeUpdateButton = this.makeUpdateButton.bind(this);
+    this.submitUpdate = this.submitUpdate.bind(this);
   }
 
   makeDeadLineMessage() {
@@ -59,7 +62,11 @@ class UserGoal extends React.Component {
     if (goal.user_goal_concluded) {
       if (goal.user_goal_success) {
         return (
-          <Button onClick={() => { this.props.incubatorActions.markGoalSuccess(goal.user_goal_id); }}>
+          <Button
+            onClick={() => {
+              this.props.incubatorActions.markGoalSuccess(goal.user_goal_id);
+            }}
+          >
             Goal Success!
           </Button>
         );
@@ -95,15 +102,40 @@ class UserGoal extends React.Component {
     this.setState({ open: false });
   }
 
+  makeUpdateButton() {
+    if (this.props.goal.goal_difficulty === 'custom') {
+      return (
+        <Button onClick={(() => { this.setState({ open: true }); })}> Update Progress </Button>
+      );
+    }
+    return (<div />);
+  }
+
+  submitUpdate() {
+    const validatePositiveNumber = (string) => {
+      if (parseInt(string, 10) >= 0) {
+        return true;
+      }
+      return false;
+    };
+    if (validatePositiveNumber(this.state.newCurrent)) {
+      this.props.incubatorActions.submitProgress(this.props.goal.user_goal_id, this.state.newCurrent);
+      this.setState({ errorMessage: '', open: false, newCurrent: '0' });
+    } else {
+      this.setState({ errorMessage: 'please enter a positive number!' });
+    }
+  }
+
   render() {
     const { open, dimmer, size } = this.state;
     const { goal } = this.props;
     return (
       <div>
-        <Grid.Row columns={2} onClick={() => { this.setState({ open: true }); }} >
+        <Grid.Row columns={2}>
           <Grid.Column >
             <Header as="h4">{goal.goal_name}</Header>
             {this.makeDeadLineMessage()} {/* generate time until expiration or '' if no deadline */}
+            {this.makeUpdateButton()}
           </Grid.Column>
           <Grid.Column >
             {this.goalStatus()} {/* show amount of activity left or button to close out old goal */}
@@ -118,27 +150,29 @@ class UserGoal extends React.Component {
           open={open}
           onClose={this.close}
         >
-          <Modal.Header>Select a Deadline</Modal.Header>
-          <Modal.Content >
+          <Modal.Header>{goal.goal_name}</Modal.Header>
+          <Modal.Content>
             <Modal.Description>
               <Grid relaxed>
-                <Grid.Row columns={3}>
+                <Grid.Row>
                   <Grid.Column>
+                    <Header as="h3">How far have you come?</Header>
                     <Input
                       value={this.state.newCurrent}
                       onChange={this.updateNewCurrent}
                       style={{ width: 50 }}
-                      label={{ basic: true, content: 'hour(s)' }}
+                      label={{ basic: true, content: goal.goal_activity }}
                       labelPosition="right"
                       type="text"
                     />
+                    <Header as="h5">Enter progress since last check-in</Header>
                   </Grid.Column>
                 </Grid.Row>
               </Grid>
             </Modal.Description>
           </Modal.Content>
           <Modal.Actions>
-            {this.state.errorMessage}
+            <Header as="h5">{this.state.errorMessage}</Header>
             <Button color="black" onClick={this.close}>
               Nope
             </Button>
@@ -147,7 +181,7 @@ class UserGoal extends React.Component {
               icon="checkmark"
               labelPosition="right"
               content="Yep, that's me"
-              onClick={this.submit}
+              onClick={this.submitUpdate}
             />
           </Modal.Actions>
         </Modal>

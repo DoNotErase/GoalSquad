@@ -79,3 +79,15 @@ export const markGoalFailure = userGoalID => (
       })
   )
 );
+
+export const submitProgress = (userGoalID, newCurrent) => (
+  dispatch => (
+    axios.patch('/updateCustom', { goalID: userGoalID, newCurrent })
+      .then(() => {
+        dispatch(getUserGoals(userGoalID));
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  )
+);
