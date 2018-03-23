@@ -72,21 +72,7 @@ class GoalsPage extends React.Component {
             <Header as="h4" className="white" textAlign="center">
               To free up categories, complete existing goals!
             </Header>
-            <Accordion styled fluid>
-              <Accordion.Title
-                active="true"
-                index={10}
-                onClick={this.handleClick}
-              >
-                <Icon name="dropdown" />
-                Custom
-              </Accordion.Title>
-              <Accordion.Content active="true">
-                <Segment.Group raised>
-                  <CustomGoal history={this.props.history} />
-                </Segment.Group>
-              </Accordion.Content>
-            </Accordion>
+            <CustomGoal history={this.props.history} />
           </Grid.Column>
           <MainMenu history={this.props.history} />
         </Grid>

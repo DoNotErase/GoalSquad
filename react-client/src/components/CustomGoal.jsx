@@ -1,5 +1,5 @@
 import React from 'react';
-import { Segment, Header, Statistic, Grid, Button, Modal, Input, Divider, Checkbox } from 'semantic-ui-react';
+import { Segment, Header, Statistic, Grid, Button, Modal, Input, Divider, Checkbox, Accordion, Icon } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as goalsActions from '../actions/createGoalActions';
@@ -16,6 +16,7 @@ class Goal extends React.Component {
       deadline: { days: 0, hours: 0 },
       noDeadline: false,
       errorMessage: '',
+      available: true,
     };
 
     this.show = this.show.bind(this);
@@ -29,7 +30,13 @@ class Goal extends React.Component {
     this.updateGoalUnits = this.updateGoalUnits.bind(this);
   }
 
-  show(dimmer, size) { this.setState({ dimmer, size, open: true }); }
+  componentDidMount() {
+
+  }
+
+  show(dimmer, size) {
+    this.setState({ dimmer, size, open: true });
+  }
 
   updateGoalActivity(event) {
     this.setState({
@@ -135,30 +142,44 @@ class Goal extends React.Component {
 
     return (
       <div>
-        <Segment
-          compact
-          clearing
-          color="blue"
-          onClick={() => this.show(true, 'mini')}
-        >
-          <Grid>
-            <Grid.Row columns={2}>
-              <Grid.Column>
-                <Header as="h4">CustomGoal</Header>
-              </Grid.Column>
-              <Grid.Column>
-                <Statistic
-                  color="blue"
-                  floated="right"
-                  size="mini"
-                >
-                  <Statistic.Value>20</Statistic.Value>
-                  <Statistic.Label>points</Statistic.Label>
-                </Statistic>
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
-        </Segment>
+        <Accordion styled fluid>
+          <Accordion.Title
+            active={this.state.available}
+            index={10}
+            onClick={this.handleClick}
+          >
+            <Icon name="dropdown" />
+            Custom
+          </Accordion.Title>
+          <Accordion.Content active="true">
+            <Segment.Group raised>
+              <Segment
+                compact
+                clearing
+                color="blue"
+                onClick={() => this.show(true, 'mini')}
+              >
+                <Grid>
+                  <Grid.Row columns={2}>
+                    <Grid.Column>
+                      <Header as="h4">CustomGoal</Header>
+                    </Grid.Column>
+                    <Grid.Column>
+                      <Statistic
+                        color="blue"
+                        floated="right"
+                        size="mini"
+                      >
+                        <Statistic.Value>20</Statistic.Value>
+                        <Statistic.Label>points</Statistic.Label>
+                      </Statistic>
+                    </Grid.Column>
+                  </Grid.Row>
+                </Grid>
+              </Segment>
+            </Segment.Group>
+          </Accordion.Content>
+        </Accordion>
 
         {/* ADD GOAL MODAL */}
 
@@ -267,6 +288,10 @@ class Goal extends React.Component {
   }
 }
 
+const mapStateToProps = state => (
+  { userState: state.main.user }
+);
+
 const mapDispatchToProps = dispatch => (
   {
     goalsActions: bindActionCreators(goalsActions, dispatch),
@@ -274,4 +299,4 @@ const mapDispatchToProps = dispatch => (
   }
 );
 
-export default connect(null, mapDispatchToProps)(Goal);
+export default connect(mapStateToProps, mapDispatchToProps)(Goal);
