@@ -248,6 +248,31 @@ app.post('/createUserGoal', async (req, res) => {
   }
 });
 
+app.post('/createCustomGoal', async (req, res) => {
+  const customGoal = {
+    userID: '',
+    goalName: req.body.goalName,
+    goalActivity: req.body.goalActivity,
+    goalAmount: req.body.goalAmount,
+    goalLength: req.body.goalLength,
+    points: req.body.points,
+    start: req.body.startDate,
+  };
+  try {
+    if (req.session.passport) {
+      customGoal.userID = req.session.passport.user.id;
+
+      await db.createCustomGoal(customGoal);
+      res.end();
+    } else {
+      res.status(401).json({ error: 'user not authenticated' });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('could not create goal');
+  }
+});
+
 app.patch('/completeGoal', async (req, res) => {
   try {
     const userGoalID = req.body.goalID;
