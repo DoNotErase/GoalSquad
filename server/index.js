@@ -76,7 +76,6 @@ app.get('/callback', passport.authenticate('fitbit', {
 app.get('/auth/fitbit/success', async (req, res) => {
   try {
     const token = await db.getAccessToken(req.session.passport.user.id);
-    console.log('token', token);
     try {
       const activities = await axios.get('https://api.fitbit.com/1/user/-/activities.json', {
         headers: {
@@ -167,12 +166,14 @@ app.get('/eggStatus', async (req, res) => {
   if (req.session.passport) {
     if (req.session.passport) {
       userID = req.session.passport.user.id;
+      console.log(userID);
     } else {
       res.status(401).send('bad passport');
     }
   }
   try {
     const data = await db.getEggInfo(userID);
+    console.log(data);
     res.status(200).json(data);
   } catch (err) {
     res.status(500).send('err in get Egg info');
@@ -191,7 +192,24 @@ app.get('/squaddies', async (req, res) => {
     }
   }
   try {
-    const data = await db.getSquaddies(userID);
+    const data = await db.getAllSquaddies(userID);
+    res.status(200).json(data);
+  } catch (err) {
+    res.status(500).send('Err in getting Squaddies');
+  }
+});
+
+app.get('/userSquaddies', async (req, res) => {
+  let userID;
+  if (req.session.passport) {
+    if (req.session.passport) {
+      userID = req.session.passport.user.id;
+    } else {
+      res.status(401).send('Bad Passport');
+    }
+  }
+  try {
+    const data = await db.getUserSquaddies(userID);
     res.status(200).json(data);
   } catch (err) {
     res.status(500).send('Err in getting Squaddies');
@@ -264,6 +282,31 @@ app.post('/createUserGoal', async (req, res) => {
     }
   } catch (err) {
     console.log(err.response.data);
+    res.status(500).send('could not create goal');
+  }
+});
+
+app.post('/createCustomGoal', async (req, res) => {
+  const customGoal = {
+    userID: '',
+    goalName: req.body.goalName,
+    goalActivity: req.body.goalActivity,
+    goalAmount: req.body.goalAmount,
+    goalLength: req.body.goalLength,
+    points: req.body.points,
+    start: req.body.startDate,
+  };
+  try {
+    if (req.session.passport) {
+      customGoal.userID = req.session.passport.user.id;
+
+      await db.createCustomGoal(customGoal);
+      res.end();
+    } else {
+      res.status(401).json({ error: 'user not authenticated' });
+    }
+  } catch (err) {
+    console.log(err);
     res.status(500).send('could not create goal');
   }
 });

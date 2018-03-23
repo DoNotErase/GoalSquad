@@ -3,20 +3,20 @@ import { Card, Modal, Icon, Image } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 
 class SquaddieCard extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       open: false,
     };
     this.show = this.show.bind(this);
     this.close = this.close.bind(this);
+    console.log(props.squaddie);
   }
 
   show(dimmer, size) { this.setState({ dimmer, size, open: true }); }
   close() { this.setState({ open: false }); }
 
   render() {
-    const src = './assets/squaddies/scuttlebutt-icon.png';
     const { open, dimmer, size } = this.state;
 
     return (
@@ -25,8 +25,8 @@ class SquaddieCard extends React.Component {
         trigger={
           <Card
             raised
-            image={src}
-            description="Squaddie"
+            image={this.props.squaddie.monster_icon}
+            description={this.props.squaddie.monster_name}
             onClick={() => this.show('blurring', 'tiny')}
           />
         }
@@ -37,24 +37,24 @@ class SquaddieCard extends React.Component {
       >
         <Modal.Content>
           <Card centered>
-            <Image src="./assets/squaddies/scuttlebutt.png" />
+            <Image src={this.props.squaddie.monster_pic} />
             <Card.Content>
               <Card.Header>
-        Matthew
+                {this.props.squaddie.monster_name}
               </Card.Header>
               <Card.Meta>
                 <span className="date">
-          Joined in 2015
+                  Joined in 2015
                 </span>
               </Card.Meta>
               <Card.Description>
-        Matthew is a musician living in Nashville.
+                {this.props.squaddie.monster_description}
               </Card.Description>
             </Card.Content>
             <Card.Content extra>
               <a>
                 <Icon name="user" />
-        22 Friends
+                22 Friends
               </a>
             </Card.Content>
           </Card>
