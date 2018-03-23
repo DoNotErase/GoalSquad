@@ -119,24 +119,24 @@ VALUES
 insert into goal 
   (goal_name, goal_activity, goal_amount, goal_difficulty, goal_class, goal_points, goal_timedivisor)
 VALUES
-  ('Run 1 mile', 'distance', 1, 'easy', 'short', 10, 2),
-  ('Run 2 miles','distance', 2, 'med', 'short', 25, 2),
-  ('Run 5 miles','distance', 5, 'hard', 'short', 100, 2),
-  ('Run 10 miles','distance', 10, 'easy', 'long', 200, 24),
-  ('Run 25 miles','distance', 25, 'med', 'long', 500, 24),
-  ('Run 50 miles','distance', 50, 'hard', 'long', 1000, 24),
-  ('Walk 2,000 steps', 'steps', 2000, 'easy', 'short', 10, 2),
-  ('Walk 4,000 steps', 'steps', 4000, 'med', 'short', 25, 2),
-  ('Walk 10,000 steps', 'steps', 10000, 'hard', 'short', 100, 2),
-  ('Walk 20,000 steps', 'steps', 20000, 'easy', 'long', 200, 24),
-  ('Walk 50,000 steps', 'steps', 50000, 'med', 'long', 500, 24),
-  ('Walk 100,000 steps', 'steps', 100000, 'hard', 'long', 1000, 24),
-  ('Climb 3 stairs', 'floors', 3, 'easy', 'short', 10, 2),
-  ('Climb 5 stairs', 'floors', 5, 'med', 'short', 25, 2),
-  ('Climb 20 stairs', 'floors', 20, 'hard', 'short', 100, 2),
-  ('Climb 40 stairs', 'floors', 40, 'easy', 'long', 200, 24),
-  ('Climb 100 stairs', 'floors', 100, 'med', 'long', 500, 24),
-  ('Climb 200 stairs', 'floors', 200, 'hard', 'long', 1000, 24);
+  ('Run 1 mile', 'distance', 1, 'easy', 'short', 5, 2),
+  ('Run 2 miles','distance', 2, 'med', 'short', 10, 2),
+  ('Run 5 miles','distance', 5, 'hard', 'short', 20, 2),
+  ('Run 10 miles','distance', 10, 'easy', 'long', 50, 24),
+  ('Run 25 miles','distance', 25, 'med', 'long', 75, 24),
+  ('Run 50 miles','distance', 50, 'hard', 'long', 100, 24),
+  ('Walk 2,000 steps', 'steps', 2000, 'easy', 'short', 5, 2),
+  ('Walk 4,000 steps', 'steps', 4000, 'med', 'short', 10, 2),
+  ('Walk 10,000 steps', 'steps', 10000, 'hard', 'short', 20, 2),
+  ('Walk 20,000 steps', 'steps', 20000, 'easy', 'long', 50, 24),
+  ('Walk 50,000 steps', 'steps', 50000, 'med', 'long', 75, 24),
+  ('Walk 100,000 steps', 'steps', 100000, 'hard', 'long', 100, 24),
+  ('Climb 3 stairs', 'floors', 3, 'easy', 'short', 5, 2),
+  ('Climb 5 stairs', 'floors', 5, 'med', 'short', 10, 2),
+  ('Climb 20 stairs', 'floors', 20, 'hard', 'short', 20, 2),
+  ('Climb 40 stairs', 'floors', 40, 'easy', 'long', 50, 24),
+  ('Climb 100 stairs', 'floors', 100, 'med', 'long', 75, 24),
+  ('Climb 200 stairs', 'floors', 200, 'hard', 'long', 100, 24);
 
 insert into user_egg
   (user_id, egg_id)

@@ -76,7 +76,6 @@ app.get('/callback', passport.authenticate('fitbit', {
 app.get('/auth/fitbit/success', async (req, res) => {
   try {
     const token = await db.getAccessToken(req.session.passport.user.id);
-    console.log('token', token);
     try {
       const activities = await axios.get('https://api.fitbit.com/1/user/-/activities.json', {
         headers: {

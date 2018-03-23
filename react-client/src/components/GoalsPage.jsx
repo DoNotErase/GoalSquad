@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 // import * as actions from '../actions/actions';
 import * as goalsActions from '../actions/createGoalActions';
 import Goal from './Goal';
+import CustomGoal from './CustomGoal';
 import MainMenu from './MainMenu';
 // import * as incubatorActions from '../actions/incubatorActions';
 
@@ -71,6 +72,21 @@ class GoalsPage extends React.Component {
             <Header as="h4" className="white" textAlign="center">
               To free up categories, complete existing goals!
             </Header>
+            <Accordion styled fluid>
+              <Accordion.Title
+                active={activeIndex === 10}
+                index={10}
+                onClick={this.handleClick}
+              >
+                <Icon name="dropdown" />
+                Custom
+              </Accordion.Title>
+              <Accordion.Content active={activeIndex === 10}>
+                <Segment.Group raised>
+                  <CustomGoal  history={this.props.history} />
+                </Segment.Group>
+              </Accordion.Content>
+            </Accordion>
           </Grid.Column>
           <MainMenu history={this.props.history} />
         </Grid>

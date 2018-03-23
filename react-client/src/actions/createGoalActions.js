@@ -22,15 +22,30 @@ export const submitUserGoal = (goalID, deadline, points) => (
       goalID,
       goalLength: deadline, // of form {day: (num), hour: ()} or null
       points,
-      startDate: moment().format('YYYY-MM-DD HH:mm:ss'),
     })
       .then(() => {
         dispatch(getUserGoals());
-        // not sure if this actually needs to dispatch anything
       })
       .catch((err) => {
         console.log(err);
       })
   )
 );
+
+export const submitCustomGoal = (goalName, goalActivity, deadline, points) => (
+  dispatch => (
+    axios.post('/createCustomGoal', {
+      goalName,
+      goalActivity,
+      goalLength: deadline,
+      points,
+    })
+      .then(() => {
+        dispatch(getUserGoals);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  )
+)
 
