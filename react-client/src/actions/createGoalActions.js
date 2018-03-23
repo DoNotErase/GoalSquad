@@ -8,7 +8,6 @@ export const getDefaultGoals = () => (
   dispatch => (
     axios.get('/defaultGoals')
       .then((res) => {
-        console.log(res.data);
         dispatch(setDefault(res.data));
       })
       .catch((err) => {
@@ -26,7 +25,6 @@ export const submitUserGoal = (goalID, deadline, points) => (
       startDate: moment().format('YYYY-MM-DD HH:mm:ss'),
     })
       .then(() => {
-        console.log('goal created');
         dispatch(getUserGoals());
         // not sure if this actually needs to dispatch anything
       })

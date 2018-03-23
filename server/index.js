@@ -41,11 +41,9 @@ passport.use(new FitbitStrategy(
   async (accessToken, refreshToken, profile, done) => {
     try {
       if (await db.userExists(profile.id)) {
-        console.log('user exists', accessToken);
         await db.updateTokens(profile.id, accessToken, refreshToken);
         return done(null, profile);
       }
-      console.log('creating user', accessToken);
       await db.createUser(profile.id, profile.displayName, accessToken, refreshToken);
       return done(null, profile);
     } catch (e) {
@@ -184,7 +182,6 @@ app.get('/eggStatus', async (req, res) => {
 /** *******************GOAL STUFF**************************** */
 
 app.get('/userGoals', async (req, res) => {
-  console.log('getting goals');
   if (req.session.passport) {
     if (!req.query.type) {
       try {
