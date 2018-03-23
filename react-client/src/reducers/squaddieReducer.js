@@ -6,8 +6,8 @@ const squadReducer = (state = squadState, action) => {
   switch (action.type) {
     case 'GET_SQUADDIES': {
       return {
-        squaddies: action.payload,
         ...state,
+        squaddies: action.payload,
       };
     }
     default: {

@@ -5,10 +5,11 @@ const setSquaddies = squaddieData => ({
   payload: squaddieData,
 });
 
-const getUserSquaddies = () => (
+export const getUserSquaddies = () => (
   dispatch => (
     axios.get('/squaddies')
       .then((res) => {
+        console.log(res.data);
         dispatch(setSquaddies(res.data));
       })
       .catch((err) => {
@@ -16,6 +17,3 @@ const getUserSquaddies = () => (
       })
   )
 );
-
-export default getUserSquaddies;
-
