@@ -200,6 +200,12 @@ module.exports.getEggInfo = async (userID) => {
   }
 };
 
+module.exports.getSquaddies = async (userID) {
+  try {
+    const data = await db.queryAsync(`SELECT * FROM monster WHERE`)
+  }
+}
+
 module.exports.newUserLifetimeDistance = async (userID, distance) => {
   try {
     const updateGoals = `UPDATE user_goal SET user_goal_current = ${distance} ` +

@@ -45,6 +45,8 @@ CREATE TABLE monster (
   monster_id int NOT NULL AUTO_INCREMENT,
   monster_name varchar(255) NOT NULL,
   monster_pic varchar(255),
+  monster_icon varchar(255),
+  monster_description varchar(255),
   monster_sound varchar(255),
   PRIMARY KEY (monster_id)
 );
@@ -99,22 +101,18 @@ VALUES
   ('mickey', '3XP8GJ');
 
 insert into monster
-  (monster_name)
+  (monster_name, monster_pic, monster_icon, monster_description)
 VALUES
-  ('yaboi'),
-  ('GBear'),
-  ('KMoney'),
-  ('Sean'),
-  ('BeardGuy');
+  ('Scuttlebutt', './assets/squaddies/scuttlebutt.png', './assets/squaddies/scuttlebutt-icon.png', 'This is a sample description of Scuttlebutt.'),
+  ('Pruny', './assets/squaddies/pruny.png', './assets/squaddies/pruny-icon.png', 'This is a sample description of Pruny.'),
+  ('Bard', './assets/squaddies/bard.png', './assets/squaddies/bard-icon.png', 'This is a sample description of Bard.');
 
 insert into egg
   (egg_name)
 VALUES
-  ('yaboi_egg'),
-  ('GBear_egg'),
-  ('KMoney_egg'),
-  ('Sean_egg'),
-  ('BeardGuy_egg');
+  ('scuttlebutt_egg'),
+  ('pruny_egg'),
+  ('bard_egg');
 
 insert into goal 
   (goal_name, goal_activity, goal_amount, goal_difficulty, goal_class, goal_points, goal_timedivisor)
