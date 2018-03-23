@@ -30,12 +30,13 @@ class SquaddieCard extends React.Component {
             onClick={() => this.show('blurring', 'tiny')}
           />
         }
+        style={{ background: 'transparent', boxShadow: 'none' }}
         size={size}
         dimmer={dimmer}
         open={open}
         onClose={this.close}
       >
-        <Modal.Content>
+        <Modal.Content style={{ background: 'transparent' }}>
           <Card centered>
             <Image src={this.props.squaddie.monster_pic} />
             <Card.Content>
