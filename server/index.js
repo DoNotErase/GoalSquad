@@ -333,7 +333,9 @@ app.patch('/failGoal', async (req, res) => {
 
 app.patch('/updateCustom', async (req, res) => {
   try {
-    console.log(req.body);
+    await db.updateCustomGoalProgress(req.body.goalID, req.body.newCurrent);
+    await db.updateGoalStatuses();
+    res.end();
   } catch (err) {
     res.status(500).send(err);
   }

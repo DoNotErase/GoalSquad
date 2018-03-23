@@ -285,6 +285,17 @@ module.exports.newUserLifetimeFloors = async (userID, floors) => {
   }
 };
 
+module.exports.updateCustomGoalProgress = async (goalID, newCurrent) => {
+  try {
+    const updateGoal = `UPDATE user_goal SET user_goal_current = ${newCurrent} ` +
+      `WHERE user_goal_id = ${goalID}`;
+    await db.queryAsync(updateGoal);
+    return;
+  } catch (err) {
+    throw (err);
+  }
+};
+
 module.exports.updateGoalStatuses = async () => {
   const markDoneGoals = 'UPDATE user_goal SET user_goal_success = 1, user_goal_concluded = 1 ' +
     'WHERE user_goal_target <= user_goal_current';
