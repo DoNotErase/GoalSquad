@@ -17,7 +17,7 @@ class SquadPage extends React.Component {
     
   }
 
-  render() {
+  render(props) {
     return (
       <div className="squadpage">
         <Header as="h1" className="white" textAlign="right">Your Squad</Header>
@@ -40,7 +40,7 @@ class SquadPage extends React.Component {
               </Segment>
             </Scrollbars>
           </Grid.Column>
-          <MainMenu history={props.history} />
+          <MainMenu history={this.props.history} />
         </Grid>
       </div>
     );
