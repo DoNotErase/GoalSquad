@@ -14,7 +14,6 @@ class UserGoal extends React.Component {
       newCurrent: '',
       errorMessage: '',
     };
-    console.log(props.goal);
 
     this.makeDeadLineMessage = this.makeDeadLineMessage.bind(this);
     this.activityName = this.activityName.bind(this);
