@@ -2,19 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Grid, Card, Header, Divider, Segment } from 'semantic-ui-react';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { bindActionCreators } from 'redux';
 import MainMenu from './MainMenu';
 import SquaddieCard from './SquaddieCard';
+import * as squadActions from '../actions/squaddieActions';
+
 
 class SquadPage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      squaddies: [],
-    };
-  }
-
   componentDidMount() {
-    
+    console.log(this.props);
+    this.props.squadActions.getUserSquaddies();
   }
 
   render() {
@@ -27,20 +24,12 @@ class SquadPage extends React.Component {
             <Scrollbars autoHide style={{ height: '85vh' }}>
               <Segment compact>
                 <Card.Group itemsPerRow={3} centered>
-                  <SquaddieCard />
-                  <SquaddieCard />
-                  <SquaddieCard />
-                  <SquaddieCard />
-                  <SquaddieCard />
-                  <SquaddieCard />
-                  <SquaddieCard />
-                  <SquaddieCard />
-                  <SquaddieCard />
+                  {this.props.squadState.squaddies.map(squaddie => (<SquaddieCard squaddie={squaddie} />))}
                 </Card.Group>
               </Segment>
             </Scrollbars>
           </Grid.Column>
-          <MainMenu history={props.history} />
+          <MainMenu history={this.props.history} />
         </Grid>
       </div>
     );
@@ -51,8 +40,15 @@ class SquadPage extends React.Component {
 const mapStateToProps = state => (
   {
     state: state.main,
+    squadState: state.squad,
   }
 );
 
-export default connect(mapStateToProps)(SquadPage);
+const mapDispatchToProps = dispatch => (
+  {
+    squadActions: bindActionCreators(squadActions, dispatch),
+  }
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(SquadPage);
 

@@ -235,11 +235,25 @@ module.exports.getEggInfo = async (userID) => {
   }
 };
 
-module.exports.getSquaddies = async (userID) {
+module.exports.getUserSquaddies = async (userID) => {
   try {
-    const data = await db.queryAsync(`SELECT * FROM monster WHERE`)
+    const data = await db.queryAsync('SELECT monster.*, user_monster.* FROM monster INNER JOIN ' +
+      'user_monster ON user_monster.monster_id = monster.monster_id WHERE ' +
+      `user_monster.user_id = '${userID}';`);
+    return data;
+  } catch (e) {
+    throw e;
   }
-}
+};
+
+module.exports.getAllSquaddies = async (userID) => {
+  // returns a lsit of all squaddies but with null info for ones a user hasn't yet earned
+  const query = 'SELECT monster.*, user_monster.* FROM monster LEFT JOIN user_monster ON ' +
+    `monster.monster_id = user_monster.monster_id WHERE user_id = '${userID}' OR user_id IS NULL;`;
+
+  const squaddies = db.queryAsync(query);
+  return squaddies;
+};
 
 module.exports.newUserLifetimeDistance = async (userID, distance) => {
   try {
@@ -337,4 +351,3 @@ module.exports.getUserDeets = async (userID) => {
     throw new Error('get user deets error');
   }
 };
-

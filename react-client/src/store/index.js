@@ -7,12 +7,14 @@ import mainReducer from '../reducers/mainReducer';
 import yardReducer from '../reducers/yardReducer';
 import createGoalReducer from '../reducers/createGoalReducer';
 import incubatorReducer from '../reducers/incubatorReducer';
+import squaddieReducer from '../reducers/squaddieReducer';
 
 const reducer = combineReducers({ // combines reducers from reducer folder
   main: mainReducer,
   yard: yardReducer,
   goals: createGoalReducer,
   incubator: incubatorReducer,
+  squad: squaddieReducer,
   routing: routerReducer,
 });
 

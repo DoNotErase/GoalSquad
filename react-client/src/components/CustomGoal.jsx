@@ -1,5 +1,5 @@
 import React from 'react';
-import { Segment, Header, Statistic, Grid, Button, Modal, Input, Divider, Checkbox, Label, Form } from 'semantic-ui-react';
+import { Segment, Header, Statistic, Grid, Button, Modal, Input, Divider, Checkbox } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as goalsActions from '../actions/createGoalActions';
@@ -100,7 +100,7 @@ class Goal extends React.Component {
 
     if (this.state.noDeadline) {
       this.setState({ open: false, errorMessage: '', noDeadline: false });
-      this.props.goalsActions.submitCustomGoal(goalName, this.state.units, this.state.amount,  null, 20);
+      this.props.goalsActions.submitCustomGoal(goalName, this.state.units, this.state.amount, null, 20);
       this.props.history.push('/incubator');
       return;
     }
@@ -130,7 +130,7 @@ class Goal extends React.Component {
 
   render() {
     const {
-      open, dimmer, size, difficultyColor, /* goalName, goalPoints, */
+      open, dimmer, size,
     } = this.state;
 
     return (
@@ -138,7 +138,7 @@ class Goal extends React.Component {
         <Segment
           compact
           clearing
-          color={difficultyColor}
+          color="blue"
           onClick={() => this.show(true, 'mini')}
         >
           <Grid>
@@ -148,7 +148,7 @@ class Goal extends React.Component {
               </Grid.Column>
               <Grid.Column>
                 <Statistic
-                  //color={difficultyColor}
+                  color="blue"
                   floated="right"
                   size="mini"
                 >

@@ -74,16 +74,16 @@ class GoalsPage extends React.Component {
             </Header>
             <Accordion styled fluid>
               <Accordion.Title
-                active={activeIndex === 10}
+                active="true"
                 index={10}
                 onClick={this.handleClick}
               >
                 <Icon name="dropdown" />
                 Custom
               </Accordion.Title>
-              <Accordion.Content active={activeIndex === 10}>
+              <Accordion.Content active="true">
                 <Segment.Group raised>
-                  <CustomGoal  history={this.props.history} />
+                  <CustomGoal history={this.props.history} />
                 </Segment.Group>
               </Accordion.Content>
             </Accordion>

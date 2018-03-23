@@ -32,9 +32,7 @@ export const submitUserGoal = (goalID, deadline, points) => (
   )
 );
 
-export const submitCustomGoal = (goalName, goalActivity, goalAmount, deadline, points) => {
-  console.log(goalAmount);
-  return (
+export const submitCustomGoal = (goalName, goalActivity, goalAmount, deadline, points) => (
   dispatch => (
     axios.post('/createCustomGoal', {
       goalName,
@@ -44,12 +42,11 @@ export const submitCustomGoal = (goalName, goalActivity, goalAmount, deadline, p
       points,
     })
       .then(() => {
-        dispatch(getUserGoals);
+        dispatch(getUserGoals());
       })
       .catch((err) => {
         console.log(err);
       })
   )
-)
-}
+);
 

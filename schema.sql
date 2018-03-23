@@ -139,7 +139,7 @@ VALUES
 insert into user_egg
   (user_id, egg_id)
 VALUES
-  ('3XP8GJ', 5);
+  ('3XP8GJ', 2);
 
 insert into user_monster
   (user_id, monster_id)

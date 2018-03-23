@@ -166,12 +166,14 @@ app.get('/eggStatus', async (req, res) => {
   if (req.session.passport) {
     if (req.session.passport) {
       userID = req.session.passport.user.id;
+      console.log(userID);
     } else {
       res.status(401).send('bad passport');
     }
   }
   try {
     const data = await db.getEggInfo(userID);
+    console.log(data);
     res.status(200).json(data);
   } catch (err) {
     res.status(500).send('err in get Egg info');
@@ -190,7 +192,24 @@ app.get('/squaddies', async (req, res) => {
     }
   }
   try {
-    const data = await db.getSquaddies(userID);
+    const data = await db.getAllSquaddies(userID);
+    res.status(200).json(data);
+  } catch (err) {
+    res.status(500).send('Err in getting Squaddies');
+  }
+});
+
+app.get('/userSquaddies', async (req, res) => {
+  let userID;
+  if (req.session.passport) {
+    if (req.session.passport) {
+      userID = req.session.passport.user.id;
+    } else {
+      res.status(401).send('Bad Passport');
+    }
+  }
+  try {
+    const data = await db.getUserSquaddies(userID);
     res.status(200).json(data);
   } catch (err) {
     res.status(500).send('Err in getting Squaddies');
