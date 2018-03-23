@@ -12,6 +12,7 @@ class UserGoal extends React.Component {
     this.state = {
       open: false,
       newCurrent: '',
+      errorMessage: '',
     };
     console.log(props.goal);
 
@@ -21,6 +22,7 @@ class UserGoal extends React.Component {
     this.updateNewCurrent = this.updateNewCurrent.bind(this);
     this.close = this.close.bind(this);
     this.makeUpdateButton = this.makeUpdateButton.bind(this);
+    this.submitUpdate = this.submitUpdate.bind(this);
   }
 
   makeDeadLineMessage() {
@@ -109,6 +111,21 @@ class UserGoal extends React.Component {
     return (<div />);
   }
 
+  submitUpdate() {
+    const validatePositiveNumber = (string) => {
+      if (parseInt(string, 10) >= 0) {
+        return true;
+      }
+      return false;
+    };
+    if (validatePositiveNumber(this.state.newCurrent)) {
+      this.props.incubatorActions.submitProgress(this.props.goal.user_goal_id, this.state.newCurrent);
+      this.setState({ errorMessage: '', open: false, newCurrent: '0' });
+    } else {
+      this.setState({ errorMessage: 'please enter a positive number!' });
+    }
+  }
+
   render() {
     const { open, dimmer, size } = this.state;
     const { goal } = this.props;
@@ -155,7 +172,7 @@ class UserGoal extends React.Component {
             </Modal.Description>
           </Modal.Content>
           <Modal.Actions>
-            {this.state.errorMessage}
+            <Header as="h5">{this.state.errorMessage}</Header>
             <Button color="black" onClick={this.close}>
               Nope
             </Button>
@@ -164,9 +181,7 @@ class UserGoal extends React.Component {
               icon="checkmark"
               labelPosition="right"
               content="Yep, that's me"
-              onClick={() => {
-                this.props.incubatorActions.submitProgress(goal.user_goal_id, this.state.newCurrent);
-              }}
+              onClick={this.submitUpdate}
             />
           </Modal.Actions>
         </Modal>
