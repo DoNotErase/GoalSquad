@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, Modal, Image } from 'semantic-ui-react';
 import { connect } from 'react-redux';
+import { CSSTransition } from 'react-transition-group';
 
 class SquaddieCard extends React.Component {
   constructor(props) {
@@ -27,9 +28,10 @@ class SquaddieCard extends React.Component {
             raised
             image={this.props.squaddie.monster_icon}
             description={this.props.squaddie.monster_name}
-            onClick={() => this.show('blurring', 'tiny')}
+            onClick={() => this.show(true, 'tiny')}
           />
         }
+        className="animated slideInUp"
         style={{ background: 'transparent', boxShadow: 'none' }}
         size={size}
         dimmer={dimmer}
