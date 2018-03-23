@@ -16,8 +16,9 @@ class SquaddieCard extends React.Component {
   close() { this.setState({ open: false }); }
 
   render() {
-    const src = './assets/misc/testcardimage.png';
+    const src = './assets/squaddies/squaddie-3-icon.png';
     const { open, dimmer, size } = this.state;
+    const images = ['./assets/squaddies/squaddie-1.png', './assets/squaddies/squaddie-2.png'];
 
     return (
 
@@ -36,8 +37,8 @@ class SquaddieCard extends React.Component {
         onClose={this.close}
       >
         <Modal.Content>
-          <Card centered fluid>
-            <Image src="./assets/squaddies/squaddie-2.png" />
+          <Card centered>
+            <Image src="./assets/squaddies/squaddie-1.png" />
             <Card.Content>
               <Card.Header>
         Matthew
