@@ -287,7 +287,7 @@ module.exports.newUserLifetimeFloors = async (userID, floors) => {
 
 module.exports.updateCustomGoalProgress = async (goalID, newCurrent) => {
   try {
-    const updateGoal = `UPDATE user_goal SET user_goal_current = ${newCurrent} ` +
+    const updateGoal = `UPDATE user_goal SET user_goal_current = ${newCurrent} + user_goal_current ` +
       `WHERE user_goal_id = ${goalID}`;
     await db.queryAsync(updateGoal);
     return;
