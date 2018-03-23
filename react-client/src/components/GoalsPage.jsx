@@ -68,6 +68,9 @@ class GoalsPage extends React.Component {
           <Grid.Column computer={8} mobile={16}>
             <Header as="h3" className="white" textAlign="center">Available Categories</Header>
             {listItems}
+            <Header as="h4" className="white" textAlign="center">
+              To free up categories, complete existing goals!
+            </Header>
           </Grid.Column>
           <MainMenu history={this.props.history} />
         </Grid>
