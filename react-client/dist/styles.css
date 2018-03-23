@@ -3,7 +3,7 @@ body {
     color: black;
 }
 
-.homepage, .goalspage, .incubatorpage, .deetspage {
+.homepage, .goalspage, .incubatorpage, .deetspage, .squadpage {
     position: fixed;
     top: 0;
     left: 0;
@@ -15,12 +15,6 @@ body {
     padding: 20px;
     background-color: #008F7A;
     background-image: linear-gradient(#845EC2, #008F7A);
-}
-
-.incubatorpage {
-    height: 90vh !important;
-    min-height:90%;
-    overflow-y:auto;
 }
 
 @media (min-width: 600px) and (max-width: 1024px){
@@ -35,10 +29,6 @@ body {
         background-image: url('./assets/backgrounds/background-mobile.png') !important;
         background-size: cover !important;
     }
-}
-
-::-webkit-scrollbar {
-    display: none !important;
 }
 
 .yardpage {
