@@ -165,7 +165,7 @@ class UserGoal extends React.Component {
               labelPosition="right"
               content="Yep, that's me"
               onClick={() => {
-                this.incubatorActions.submitProgress(goal.user_goal_id, this.state.newCurrent);
+                this.props.incubatorActions.submitProgress(goal.user_goal_id, this.state.newCurrent);
               }}
             />
           </Modal.Actions>

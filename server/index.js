@@ -331,6 +331,14 @@ app.patch('/failGoal', async (req, res) => {
   }
 });
 
+app.patch('/updateCustom', async (req, res) => {
+  try {
+    console.log(req.body);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
 /** ********************** EGGS / SQUADDIES ******************************** */
 
 app.post('/hatchEgg', async (req, res) => {
