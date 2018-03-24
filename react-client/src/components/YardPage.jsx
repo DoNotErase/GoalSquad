@@ -28,7 +28,7 @@ class YardPage extends React.Component {
     return (
       <div className="yardpage">
         <HorizontalScroll>
-          <div style={child} className="byardbackground" />
+          <div style={child} className="yardbackground" />
         </HorizontalScroll>
         <MainMenu history={this.props.history} />
       </div>

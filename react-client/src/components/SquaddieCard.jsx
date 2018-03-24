@@ -3,6 +3,11 @@ import { Card, Modal, Image } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+const styles = {
+  cardBackground: 'linear-gradient(to bottom, #faedc4, #ffebd8, #ffeff1, #fff8ff, #ffffff)',
+
+};
+
 class SquaddieCard extends React.Component {
   constructor(props) {
     super(props);
@@ -40,7 +45,7 @@ class SquaddieCard extends React.Component {
       >
         <Modal.Content style={{ background: 'transparent' }}>
           <Card centered>
-            <Image src={this.props.squaddie.monster_pic} />
+            <Image src={this.props.squaddie.monster_pic} style={{ backgroundImage: styles.cardBackground }} />
             <Card.Content>
               <Card.Header>
                 {this.props.squaddie.monster_name}
