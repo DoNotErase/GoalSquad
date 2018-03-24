@@ -20,9 +20,18 @@ const db = mysql.createConnection({
   database: 'goalsquad',
 });
 
-module.exports.getUserByID = async (fitbitID) => {
+const getRightID = async (id) => {
+  if (typeof id === 'number') {
+    return id;
+  }
+  const userID = await db.queryAsync(`SELECT user_id FROM user WHERE fitbit_id = '${id}'`);
+  return userID[0].user_id;
+};
+
+module.exports.getUserByID = async (id) => {
   try {
-    return await db.queryAsync(`SELECT * FROM user WHERE user_id = '${fitbitID}'`);
+    const userID = await getRightID(id);
+    return await db.queryAsync(`SELECT * FROM user WHERE user_id = '${userID}'`);
   } catch (e) {
     throw e;
   }
@@ -30,7 +39,6 @@ module.exports.getUserByID = async (fitbitID) => {
 
 module.exports.createUserLocal = async (username, password) => {
   const query = `SELECT * FROM user WHERE user_username = '${username}';`;
-  console.log(query);
   try {
     const user = await db.queryAsync(query);
     if (user.length) {
@@ -38,7 +46,10 @@ module.exports.createUserLocal = async (username, password) => {
     }
     const create = 'INSERT INTO user (user_username, user_password) ' +
       `VALUES ('${username}', '${password}')`;
+    const makeNewEgg = 'INSERT INTO user_egg (user_id, egg_id, egg_xp) VALUES ' +
+      '((SELECT MAX(user_id) FROM user), (FLOOR(RAND() * (SELECT COUNT(*) FROM egg) + 1)), 0);';
     await db.queryAsync(create);
+    await db.queryAsync(makeNewEgg);
     return await db.queryAsync(query);
   } catch (err) {
     throw err;
@@ -60,11 +71,12 @@ module.exports.userExists = async (fitbitID) => {
 };
 
 module.exports.findByUsername = async (username) => {
-  console.log(username);
-  const query = `select * from user where user_username = '${username}';`;
+  const query = 'SELECT user_username, user_password as password, user_id as id, custom_goal_timer_1, custom_goal_timer_2 ' +
+    `FROM user WHERE user_username = '${username}';`;
 
   try {
     const user = await db.queryAsync(query);
+    console.log(user);
     if (user.length === 0) {
       return false;
     }
@@ -76,7 +88,7 @@ module.exports.findByUsername = async (username) => {
 
 module.exports.updateTokens = async (fitbitID, accessToken, refreshToken) => {
   const query = `UPDATE user SET user_accesstoken = '${accessToken}', user_refreshtoken = '${refreshToken}' ` +
-    `WHERE fibit_id = '${fitbitID}';`;
+    `WHERE fitbit_id = '${fitbitID}';`;
 
   try {
     return await db.queryAsync(query);
@@ -88,9 +100,11 @@ module.exports.updateTokens = async (fitbitID, accessToken, refreshToken) => {
 module.exports.createUser = async (fitbitID, displayName, accessToken, refreshToken) => {
   const query = 'INSERT INTO user (fibit_id, user_username, user_accesstoken, user_refreshtoken) ' +
     `VALUES ('${fitbitID}', '${displayName}', '${accessToken}', '${refreshToken}');`;
-
+  const makeNewEgg = 'INSERT INTO user_egg (user_id, egg_id, egg_xp) VALUES ' +
+    '((SELECT MAX(user_id) FROM user), FLOOR(RAND() * (SELECT COUNT (*) FROM egg) + 1), 0);';
   try {
-    return await db.queryAsync(query);
+    await db.queryAsync(query);
+    return db.queryAsync(makeNewEgg);
   } catch (e) {
     throw e;
   }
@@ -105,26 +119,30 @@ module.exports.getAccessToken = async (fitbitID) => {
   }
 };
 
-module.exports.getUserGoals = async (fitbitID) => {
+module.exports.getUserGoals = async (id) => {
   try {
+    const userID = await getRightID(id);
     const query = 'SELECT user_goal.*, goal.goal_name, goal.goal_activity, goal.goal_amount, goal.goal_difficulty ' +
       'FROM user_goal INNER JOIN goal ON goal.goal_id = user_goal.goal_id ' +
-      `WHERE user_goal.user_id = '${fitbitID}';`;
+      `WHERE user_goal.user_id = '${userID}';`;
 
-    return await db.queryAsync(query);
+    const goals = await db.queryAsync(query);
+    return goals;
   } catch (err) {
     throw new Error('trouble in getUserGoals');
   }
 };
 
-module.exports.getActiveUserGoals = async (fitbitID) => {
+module.exports.getActiveUserGoals = async (id) => {
   try {
+    const userID = await getRightID(id);
     const query = 'SELECT user_goal.*, goal.goal_name, goal.goal_activity, goal.goal_amount, goal.goal_difficulty ' +
       'FROM user_goal INNER JOIN goal ON goal.goal_id = user_goal.goal_id ' +
-      `WHERE user_goal.user_id = '${fitbitID}' AND user_goal.user_goal_finalized = 0;`;
+      `WHERE user_goal.user_id = '${userID}' AND user_goal.user_goal_finalized = 0;`;
 
     return await db.queryAsync(query);
   } catch (err) {
+    console.log(err);
     throw new Error('trouble in getActiveUserGoals');
   }
 };
@@ -140,6 +158,7 @@ module.exports.getGoalInfo = async (goalID) => {
 
 module.exports.createUserGoal = async (goalObj) => {
   try {
+    goalObj.userID = await getRightID(goalObj.userID);
     const query = 'INSERT INTO user_goal (user_id, goal_id, user_goal_start_value, user_goal_current, ' +
       'user_goal_target, user_goal_points, user_goal_start_date) VALUES ' +
       `('${goalObj.userID}', ${goalObj.goalID}, ${goalObj.startValue}, ${goalObj.startValue}, ${goalObj.targetValue}, ${goalObj.points}, (utc_timestamp()));`;
@@ -183,7 +202,7 @@ module.exports.createCustomGoal = async (goalObj) => {
       db.queryAsync(attachUser),
       db.queryAsync(updateUserCustomTimers),
     ]);
-
+    goalObj.userID = await getRightID(goalObj.userID);
     const findGoalID = 'SELECT MAX(user_goal_id) as "goal_id" FROM user_goal';
     const goalID = await db.queryAsync(findGoalID);
 
@@ -247,8 +266,9 @@ module.exports.completeGoalFailure = async (userGoalID) => {
   }
 };
 
-module.exports.hatchEgg = async (userEggID, userID, nextXP) => {
+module.exports.hatchEgg = async (userEggID, id, nextXP) => {
   try {
+    const userID = await getRightID(id);
     const hatchEgg = `UPDATE user_egg SET egg_hatched = 1 WHERE user_egg_id = '${userEggID}';`;
 
     const newSquaddie = 'INSERT INTO user_monster (user_id, monster_id) VALUES ' +
@@ -272,8 +292,9 @@ module.exports.hatchEgg = async (userEggID, userID, nextXP) => {
   }
 };
 
-module.exports.getEggInfo = async (userID) => {
+module.exports.getEggInfo = async (id) => {
   try {
+    const userID = await getRightID(id);
     const data = await db.queryAsync(`SELECT * FROM user_egg WHERE user_id='${userID}' AND egg_hatched = 0;`);
     return data.pop(); // removes array and returns only object
   } catch (e) {
@@ -281,8 +302,9 @@ module.exports.getEggInfo = async (userID) => {
   }
 };
 
-module.exports.getUserSquaddies = async (userID) => {
+module.exports.getUserSquaddies = async (id) => {
   try {
+    const userID = await getRightID(id);
     const data = await db.queryAsync('SELECT monster.*, user_monster.* FROM monster INNER JOIN ' +
       'user_monster ON user_monster.monster_id = monster.monster_id WHERE ' +
       `user_monster.user_id = '${userID}';`);
@@ -292,7 +314,8 @@ module.exports.getUserSquaddies = async (userID) => {
   }
 };
 
-module.exports.getAllSquaddies = async (userID) => {
+module.exports.getAllSquaddies = async (id) => {
+  const userID = await getRightID(id);
   // returns a lsit of all squaddies but with null info for ones a user hasn't yet earned
   const query = 'SELECT monster.*, user_monster.* FROM monster LEFT JOIN user_monster ON ' +
     `monster.monster_id = user_monster.monster_id WHERE user_id = '${userID}' OR user_id IS NULL;`;
@@ -301,8 +324,9 @@ module.exports.getAllSquaddies = async (userID) => {
   return squaddies;
 };
 
-module.exports.newUserLifetimeDistance = async (userID, distance) => {
+module.exports.newUserLifetimeDistance = async (id, distance) => {
   try {
+    const userID = await getRightID(id);
     const updateGoals = `UPDATE user_goal SET user_goal_current = ${distance} ` +
       `WHERE user_id = '${userID}' AND goal_id > 0 AND goal_id < 7 AND user_goal_concluded = 0`;
     return await db.queryAsync(updateGoals);
@@ -311,8 +335,9 @@ module.exports.newUserLifetimeDistance = async (userID, distance) => {
   }
 };
 
-module.exports.newUserLifetimeSteps = async (userID, steps) => {
+module.exports.newUserLifetimeSteps = async (id, steps) => {
   try {
+    const userID = await getRightID(id);
     const updateGoals = `UPDATE user_goal SET user_goal_current = ${steps} ` +
       `WHERE user_id = '${userID}' AND goal_id > 6 AND goal_id < 13 AND user_goal_concluded = 0`;
     return await db.queryAsync(updateGoals);
@@ -321,8 +346,9 @@ module.exports.newUserLifetimeSteps = async (userID, steps) => {
   }
 };
 
-module.exports.newUserLifetimeFloors = async (userID, floors) => {
+module.exports.newUserLifetimeFloors = async (id, floors) => {
   try {
+    const userID = await getRightID(id);
     const updateGoals = `UPDATE user_goal SET user_goal_current = ${floors} ` +
       `WHERE user_id = '${userID}' AND goal_id > 12 AND goal_id < 19 AND user_goal_concluded = 0`;
     return await db.queryAsync(updateGoals);
@@ -354,7 +380,8 @@ module.exports.updateGoalStatuses = async () => {
   }());
 };
 
-module.exports.getUserDeets = async (userID) => {
+module.exports.getUserDeets = async (id) => {
+  const userID = await getRightID(id);
   const summarizeGoals = (goals) => {
     const goalStats = {
       total: {

@@ -20,12 +20,8 @@ export const localLogin = (username, password) => {
   console.log('login', username, password);
   return dispatch => (
     axios.post('/localLogin', { username, password })
-      .then((res) => {
-        if (res.data) {
-          dispatch(authenticateUser(res.data[0]));
-        } else {
-          console.log('no user!');
-        }
+      .then(() => {
+        dispatch(attemptLogin());
       })
       .catch((err) => {
         console.log(err);
@@ -38,10 +34,9 @@ export const localSignup = (username, password) => {
   return dispatch => (
     axios.post('/localSignup', { username, password })
       .then((res) => {
-        if (res.data) {
-          dispatch(authenticateUser(res.data[0]));
-        } else {
-          console.log('user exists?!');
+        if (!res.data.error) {
+          console.log(res.data);
+          dispatch(localLogin(username, password));
         }
       })
       .catch((err) => {

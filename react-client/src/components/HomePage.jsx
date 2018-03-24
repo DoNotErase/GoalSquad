@@ -26,13 +26,13 @@ class HomePage extends React.Component {
   }
 
   componentWillMount() {
-    if (!this.props.state.id) {
+    if (!this.props.state.user.user_id) {
       this.props.homePageActions.attemptLogin();
     }
   }
 
   componentDidUpdate() {
-    if (this.props.state.id) {
+    if (this.props.state.user.user_id) {
       this.props.history.push('/incubator');
     }
   }
