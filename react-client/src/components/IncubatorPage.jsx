@@ -7,13 +7,14 @@ import PropTypes from 'prop-types';
 import UserGoalsList from './UserGoalsList';
 import ProgressBar from './ProgressBar';
 import MainMenu from './MainMenu';
-import * as actions from '../actions/actions';
+import * as homePageActions from '../actions/homePageActions';
 import * as incubatorActions from '../actions/incubatorActions';
 
 
 class IncubatorPage extends React.Component {
   componentDidMount() {
     this.props.incubatorActions.getUserGoals();
+    this.props.homePageActions.attemptLogin();
   }
 
   render() {
@@ -63,7 +64,7 @@ IncubatorPage.propTypes = {
 
 const mapDispatchToProps = dispatch => (
   {
-    actions: bindActionCreators(actions, dispatch),
+    homePageActions: bindActionCreators(homePageActions, dispatch),
     incubatorActions: bindActionCreators(incubatorActions, dispatch),
   }
 );

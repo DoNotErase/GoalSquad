@@ -1,5 +1,5 @@
 const mainState = {
-  user = {},
+  user: {},
   deets: {},
 };
 
