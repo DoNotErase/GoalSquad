@@ -103,7 +103,7 @@ class UserGoal extends React.Component {
   }
 
   makeUpdateButton() {
-    if (this.props.goal.goal_difficulty === 'custom') {
+    if (this.props.goal.goal_difficulty === 'custom' || !this.props.state.user.fitbit_id) {
       return (
         <Button basic color="blue" onClick={(() => { this.setState({ open: true }); })}> Update Progress </Button>
       );
@@ -193,6 +193,7 @@ class UserGoal extends React.Component {
 }
 
 UserGoal.propTypes = {
+  state: PropTypes.objectOf(PropTypes.object).isRequired,
   goal: PropTypes.shape({
     goal_id: PropTypes.number,
     user_goal_id: PropTypes.number,
@@ -205,8 +206,12 @@ UserGoal.propTypes = {
   incubatorActions: PropTypes.objectOf(PropTypes.func).isRequired,
 };
 
+const mapStateToProps = state => (
+  { state: state.main }
+);
+
 const mapDispatchToProps = dispatch => (
   { incubatorActions: bindActionCreators(incubatorActions, dispatch) }
 );
 
-export default connect(null, mapDispatchToProps)(UserGoal);
+export default connect(mapStateToProps, mapDispatchToProps)(UserGoal);

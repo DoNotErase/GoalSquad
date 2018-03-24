@@ -3,10 +3,12 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const FitbitStrategy = require('passport-fitbit-oauth2').FitbitOAuth2Strategy;
+const LocalStrategy = require('passport-local');
 const passport = require('passport');
 const config = require('../config.js');
 const axios = require('axios');
 const path = require('path');
+const bcrypt = require('bcrypt-nodejs');
 
 const app = express();
 // http for streaming and .server for event listeners
@@ -30,6 +32,29 @@ app.use(passport.session({
 }));
 
 /** **************OAUTH**************** */
+
+passport.use(new LocalStrategy(
+  {
+    usernameField: 'username',
+    passwordField: 'password',
+  },
+  async (username, password, done) => {
+    try {
+      const user = await db.findByUsername(username);
+      console.log(user);
+      if (!user) {
+        return done(null, false);
+      }
+      if (bcrypt.compareSync(password, user.password)) {
+        console.log('yay!');
+        return done(null, user);
+      }
+      return done(null, false);
+    } catch (err) {
+      return done(err);
+    }
+  },
+));
 
 passport.use(new FitbitStrategy(
   {
@@ -60,6 +85,32 @@ passport.deserializeUser((user, done) => {
   done(null, user);
 });
 
+app.post(
+  '/localLogin', passport.authenticate('local', { failureRedirect: '/' }),
+  (req, res) => {
+    res.redirect('/incubator');
+  },
+);
+
+
+app.post('/localSignup', async (req, res) => {
+  try {
+    const salt = bcrypt.genSaltSync(10);
+
+    const hash = bcrypt.hashSync(req.body.password, salt);
+
+    const newUser = await db.createUserLocal(req.body.username, hash);
+    if (!newUser) {
+      res.json({ error: 'username in use!' });
+    } else {
+      res.json(newUser);
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).end();
+  }
+});
+
 app.get(
   '/auth/fitbit',
   passport.authenticate(
@@ -76,25 +127,19 @@ app.get('/callback', passport.authenticate('fitbit', {
 app.get('/auth/fitbit/success', async (req, res) => {
   try {
     const token = await db.getAccessToken(req.session.passport.user.id);
-    try {
-      const activities = await axios.get('https://api.fitbit.com/1/user/-/activities.json', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      // console.log('activityes', activities);
-      const userID = req.session.passport.user.id;
-      await Promise.all([
-        db.newUserLifetimeDistance(userID, activities.data.lifetime.total.distance),
-        db.newUserLifetimeSteps(userID, activities.data.lifetime.total.steps),
-        db.newUserLifetimeFloors(userID, activities.data.lifetime.total.floors),
-      ]);
-      await db.updateGoalStatuses();
-      res.redirect('/incubator');
-    } catch (err) {
-      console.log('probably a new user', token);
-      res.redirect('/auth/fitbit/failure');
-    }
+    const activities = await axios.get('https://api.fitbit.com/1/user/-/activities.json', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const userID = req.session.passport.user.id;
+    await Promise.all([
+      db.newUserLifetimeDistance(userID, activities.data.lifetime.total.distance),
+      db.newUserLifetimeSteps(userID, activities.data.lifetime.total.steps),
+      db.newUserLifetimeFloors(userID, activities.data.lifetime.total.floors),
+    ]);
+    await db.updateGoalStatuses();
+    res.redirect('/incubator');
   } catch (err) {
     console.log('hello was in success then failed');
     res.redirect('/auth/fitbit/failure');
@@ -223,6 +268,7 @@ app.get('/userGoals', async (req, res) => {
         const userGoals = await db.getActiveUserGoals(req.session.passport.user.id);
         res.json(userGoals);
       } catch (err) {
+        console.log(err);
         res.status(500).send('err in getActiveUserGoals');
       }
     } else if (req.query.type === 'all') {
@@ -230,6 +276,7 @@ app.get('/userGoals', async (req, res) => {
         const userGoals = await db.getUserGoals(req.session.passport.user.id);
         res.json(userGoals);
       } catch (err) {
+        console.log(err);
         res.status(500).send('err in get userGoals');
       }
     } else {
@@ -263,19 +310,23 @@ app.post('/createUserGoal', async (req, res) => {
   try {
     if (req.session.passport) {
       newGoal.userID = req.session.passport.user.id;
-      const token = await db.getAccessToken(req.session.passport.user.id);
-      let currentLifeTime = await axios.get('https://api.fitbit.com/1/user/-/activities.json', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      currentLifeTime = currentLifeTime.data;
       const goalDetails = await db.getGoalInfo(newGoal.goalID);
-      newGoal.startValue = currentLifeTime.lifetime.total[goalDetails.goal_activity];
+      if (typeof newGoal.userID === 'string') {
+        const token = await db.getAccessToken(req.session.passport.user.id);
+        let currentLifeTime = await axios.get('https://api.fitbit.com/1/user/-/activities.json', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        currentLifeTime = currentLifeTime.data;
+        newGoal.startValue = currentLifeTime.lifetime.total[goalDetails.goal_activity];
+      } else {
+        newGoal.startValue = 0;
+      }
       newGoal.targetValue = newGoal.startValue + goalDetails.goal_amount;
       await db.createUserGoal(newGoal);
       res.end();
-    } else {
+    }  else {
       res.status(401).json({ error: 'user not authenticated' });
     }
   } catch (err) {

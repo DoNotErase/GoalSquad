@@ -17,6 +17,12 @@ const mainReducer = (state = mainState, action) => {
         deets: { ...action.payload },
       };
     }
+    case 'ERR_MESSAGE': {
+      return {
+        ...state,
+        user: { loginErr: action.payload },
+      };
+    }
     default: {
       return state;
     }
