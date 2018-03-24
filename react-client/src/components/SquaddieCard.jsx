@@ -1,8 +1,11 @@
 import React from 'react';
-import { Card, Modal, Image } from 'semantic-ui-react';
+import { Card, Modal, Image, Button } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { CSSTransition } from 'react-transition-group';
+
+const styles = {
+  cardBackground: 'linear-gradient(to bottom, #faedc4, #ffebd8, #ffeff1, #fff8ff, #ffffff)',
+};
 
 class SquaddieCard extends React.Component {
   constructor(props) {
@@ -25,13 +28,15 @@ class SquaddieCard extends React.Component {
       <Modal
         trigger={
           <Card
+            color="orange"
             raised
             image={this.props.squaddie.monster_icon}
             description={this.props.squaddie.monster_name}
             onClick={() => this.show(true, 'tiny')}
+            className="squaddieicon"
           />
         }
-        className="animated slideInDown"
+        className="slideInDown"
         style={{ background: 'transparent', boxShadow: 'none' }}
         size={size}
         dimmer={dimmer}
@@ -40,7 +45,10 @@ class SquaddieCard extends React.Component {
       >
         <Modal.Content style={{ background: 'transparent' }}>
           <Card centered>
-            <Image src={this.props.squaddie.monster_pic} />
+            <Image
+              src={this.props.squaddie.monster_pic}
+              style={{ backgroundImage: styles.cardBackground }}
+            />
             <Card.Content>
               <Card.Header>
                 {this.props.squaddie.monster_name}
@@ -49,10 +57,17 @@ class SquaddieCard extends React.Component {
                 {this.props.squaddie.monster_description}
               </Card.Description>
             </Card.Content>
+            <Card.Content extra>
+              <Button
+                inverted
+                floated="right"
+                color="green"
+                content="Add to Yard"
+              />
+            </Card.Content>
           </Card>
         </Modal.Content>
       </Modal>
-
     );
   }
 }
