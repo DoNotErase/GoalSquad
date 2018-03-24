@@ -167,6 +167,7 @@ class Goal extends React.Component {
           dimmer={dimmer}
           open={open}
           onClose={this.close}
+          className="fadeIn"
         >
           <Modal.Header>Create a Goal</Modal.Header>
           <Modal.Content >
