@@ -10,7 +10,12 @@ import * as yardActions from '../actions/yardActions';
 import MainMenu from './MainMenu';
 import YardSquaddie from './YardSquaddie';
 
-const child = { width: 900, height: '100%' };
+const child = {
+  width: 900,
+  height: '100%',
+  backgroundImage: 'url(./assets/backgrounds/background-tablet.png)',
+  backgroundSize: 'cover',
+};
 
 class YardPage extends React.Component {
   componentDidMount() {
@@ -30,12 +35,12 @@ class YardPage extends React.Component {
     return (
       <div className="yardpage">
         <Scrollbars>
-          <Image
-          src='./assets/backgrounds/background-tablet.png'
-          style={{ backgroundSize: 'cover' }}
+          <div
+            fluid
+            style={child}
           >
-          <YardSquaddie/>
-          </Image>
+            <YardSquaddie />
+          </div>
         </Scrollbars>
         <MainMenu history={this.props.history} />
       </div>
