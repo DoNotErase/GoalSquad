@@ -48,7 +48,6 @@ class HomePage extends React.Component {
   updateUsername(event) { this.setState({ username: event.target.value }); }
 
   submit() {
-    console.log(this.state.type);
     if (this.state.type === 'Sign Up') {
       if (this.state.username.length > 4) {
         if (this.state.password.length > 3) {
@@ -159,10 +158,7 @@ class HomePage extends React.Component {
 }
 
 HomePage.propTypes = {
-  state: PropTypes.shape({
-    id: PropTypes.string,
-    username: PropTypes.string,
-  }).isRequired,
+  state: PropTypes.objectOf(PropTypes.object).isRequired,
   // actions: PropTypes.objectOf(PropTypes.func).isRequired,
   homePageActions: PropTypes.objectOf(PropTypes.func).isRequired,
   history: PropTypes.shape({

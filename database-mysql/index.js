@@ -76,7 +76,6 @@ module.exports.findByUsername = async (username) => {
 
   try {
     const user = await db.queryAsync(query);
-    console.log(user);
     if (user.length === 0) {
       return false;
     }
@@ -142,7 +141,6 @@ module.exports.getActiveUserGoals = async (id) => {
 
     return await db.queryAsync(query);
   } catch (err) {
-    console.log(err);
     throw new Error('trouble in getActiveUserGoals');
   }
 };
@@ -218,7 +216,6 @@ module.exports.createCustomGoal = async (goalObj) => {
 
     return '';
   } catch (err) {
-    console.log(err);
     throw new Error('trouble in createUserGoal');
   }
 };
