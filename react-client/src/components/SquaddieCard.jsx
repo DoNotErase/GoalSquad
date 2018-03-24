@@ -31,7 +31,7 @@ class SquaddieCard extends React.Component {
             onClick={() => this.show(true, 'tiny')}
           />
         }
-        className="animated slideInDown"
+        className="slideInDown"
         style={{ background: 'transparent', boxShadow: 'none' }}
         size={size}
         dimmer={dimmer}
