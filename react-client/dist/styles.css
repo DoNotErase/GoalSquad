@@ -101,3 +101,7 @@ body {
   .slideInDown {
     animation-name: slideInDown;
   }
+
+  .squaddieicon img {
+    background-image: linear-gradient(to bottom, #faedc4, #ffebd8, #ffeff1, #fff8ff, #ffffff) !important;
+  }
