@@ -14,9 +14,7 @@ const UserGoalsList = props => (
         compact
         clearing
       >
-        <Grid>
-          <UserGoal goal={goal} />
-        </Grid>
+        <UserGoal goal={goal} />
       </Segment>
     ))}
   </Segment.Group>
