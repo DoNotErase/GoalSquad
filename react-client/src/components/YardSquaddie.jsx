@@ -6,13 +6,14 @@ class YardSquaddie extends React.Component {
   constructor() {
     super();
     this.state = {
-
+    
     };
   }
 
+
   render() {
     return (
-      <Draggable>
+      <Draggable bounds="body">
         <Image
           src="./assets/squaddies/scuttlebutt.png"
           size="small"
