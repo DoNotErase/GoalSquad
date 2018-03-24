@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 // import HorizontalScroll from 'react-scroll-horizontal';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { Image } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import * as actions from '../actions/actions';
 import * as yardActions from '../actions/yardActions';
@@ -29,8 +30,12 @@ class YardPage extends React.Component {
     return (
       <div className="yardpage">
         <Scrollbars>
-          <div style={child} className="yardbackground" />
+          <Image
+          src='./assets/backgrounds/background-tablet.png'
+          style={{ backgroundSize: 'cover' }}
+          >
           <YardSquaddie/>
+          </Image>
         </Scrollbars>
         <MainMenu history={this.props.history} />
       </div>
