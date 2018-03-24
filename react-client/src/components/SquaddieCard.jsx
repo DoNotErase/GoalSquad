@@ -1,7 +1,8 @@
 import React from 'react';
-import { Card, Modal, Icon, Image } from 'semantic-ui-react';
+import { Card, Modal, Image } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { CSSTransition } from 'react-transition-group';
 
 class SquaddieCard extends React.Component {
   constructor(props) {
@@ -27,35 +28,26 @@ class SquaddieCard extends React.Component {
             raised
             image={this.props.squaddie.monster_icon}
             description={this.props.squaddie.monster_name}
-            onClick={() => this.show('blurring', 'tiny')}
+            onClick={() => this.show(true, 'tiny')}
           />
         }
+        className="animated slideInDown"
+        style={{ background: 'transparent', boxShadow: 'none' }}
         size={size}
         dimmer={dimmer}
         open={open}
         onClose={this.close}
       >
-        <Modal.Content>
+        <Modal.Content style={{ background: 'transparent' }}>
           <Card centered>
             <Image src={this.props.squaddie.monster_pic} />
             <Card.Content>
               <Card.Header>
                 {this.props.squaddie.monster_name}
               </Card.Header>
-              <Card.Meta>
-                <span className="date">
-                  Joined in 2015
-                </span>
-              </Card.Meta>
               <Card.Description>
                 {this.props.squaddie.monster_description}
               </Card.Description>
-            </Card.Content>
-            <Card.Content extra>
-              <a>
-                <Icon name="user" />
-                22 Friends
-              </a>
             </Card.Content>
           </Card>
         </Modal.Content>

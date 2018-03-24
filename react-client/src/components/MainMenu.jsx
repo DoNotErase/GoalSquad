@@ -5,6 +5,7 @@ const src = './assets/misc/testcardimage.png';
 
 const MainMenu = props => (
   <Modal
+    className="animated fadeIn"
     size="tiny"
     trigger={
       <Button

@@ -105,7 +105,7 @@ class UserGoal extends React.Component {
   makeUpdateButton() {
     if (this.props.goal.goal_difficulty === 'custom') {
       return (
-        <Button onClick={(() => { this.setState({ open: true }); })}> Update Progress </Button>
+        <Button basic color="blue" onClick={(() => { this.setState({ open: true }); })}> Update Progress </Button>
       );
     }
     return (<div />);
@@ -131,16 +131,18 @@ class UserGoal extends React.Component {
     const { goal } = this.props;
     return (
       <div>
-        <Grid.Row columns={2}>
-          <Grid.Column >
-            <Header as="h4">{goal.goal_name}</Header>
-            {this.makeDeadLineMessage()} {/* generate time until expiration or '' if no deadline */}
-            {this.makeUpdateButton()}
-          </Grid.Column>
-          <Grid.Column >
-            {this.goalStatus()} {/* show amount of activity left or button to close out old goal */}
-          </Grid.Column>
-        </Grid.Row>
+        <Grid>
+          <Grid.Row columns={2}>
+            <Grid.Column >
+              <Header as="h4">{goal.goal_name}</Header>
+              {this.makeDeadLineMessage()} {/* generate time until expiration or '' if no deadline */}
+              {this.makeUpdateButton()}
+            </Grid.Column>
+            <Grid.Column >
+              {this.goalStatus()} {/* show amount of activity left or button to close out old goal */}
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
 
         {/* VIEW GOAL MODAL */}
 
