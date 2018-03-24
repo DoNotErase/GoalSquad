@@ -13,8 +13,10 @@ DROP TABLE IF EXISTS monster;
 DROP TABLE IF EXISTS user;
 
 CREATE TABLE user (
-  user_id varchar(255) NOT NULL,
+  user_id int NOT NULL AUTO_INCREMENT,
+  fitbit_id varchar(255),
   user_username varchar(255) NOT NULL,
+  user_password varchar(255),
   user_accesstoken varchar(255),
   user_refreshtoken varchar(255),
   user_level int NOT NULL DEFAULT 1,
@@ -55,7 +57,7 @@ CREATE TABLE monster (
 
 CREATE TABLE user_egg (
   user_egg_id int NOT NULL AUTO_INCREMENT,
-  user_id varchar(255) NOT NULL,
+  user_id int NOT NULL,
   egg_id int NOT NULL,
   egg_xp int NOT NULL DEFAULT 0,
   egg_hatched bool NOT NULL DEFAULT 0,
@@ -66,7 +68,7 @@ CREATE TABLE user_egg (
 
 CREATE TABLE user_monster (
   user_monster_id int NOT NULL AUTO_INCREMENT,
-  user_id varchar(255) NOT NULL,
+  user_id int NOT NULL,
   monster_id int NOT NULL,
   user_monster_level int NOT NULL DEFAULT 1,
   user_monster_new_name varchar(255),
@@ -81,7 +83,7 @@ CREATE TABLE user_monster (
 
 CREATE TABLE user_goal (
   user_goal_id int NOT NULL AUTO_INCREMENT,
-  user_id varchar(255) NOT NULL,
+  user_id int NOT NULL,
   goal_id int NOT NULL,
   user_goal_start_value int,
   user_goal_current int,
@@ -98,7 +100,7 @@ CREATE TABLE user_goal (
 );
 
 insert into user
-  (user_username, user_id)
+  (user_username, fitbit_id)
 VALUES
   ('mickey', '3XP8GJ');
 
@@ -141,22 +143,22 @@ VALUES
 insert into user_egg
   (user_id, egg_id)
 VALUES
-  ('3XP8GJ', 2);
+  (1, 2);
 
 insert into user_monster
   (user_id, monster_id)
 VALUES
-  ('3XP8GJ', 2);
+  (1, 2);
 
 insert into user_goal
   (user_id, goal_id, user_goal_target, user_goal_end_date, user_goal_points)
 VALUES
-  ('3XP8GJ', 2, 20, '2018-03-20', 20),
-  ('3XP8GJ', 14, 6000, '2018-03-21', 25),
-  ('3XP8GJ', 9, 30000, '2018-03-22', 30),
-  ('3XP8GJ', 3, 2000, '2018-03-23', 5),
-  ('3XP8GJ', 5, 5000, '2018-03-24', 40),
-  ('3XP8GJ', 12, 376800, '2018-03-25', 60);
+  (1, 2, 20, '2018-03-20', 20),
+  (1, 14, 6000, '2018-03-21', 25),
+  (1, 9, 30000, '2018-03-22', 30),
+  (1, 3, 2000, '2018-03-23', 5),
+  (1, 5, 5000, '2018-03-24', 40),
+  (1, 12, 376800, '2018-03-25', 60);
 
 
 /*  Execute this file from the command line by typing:
