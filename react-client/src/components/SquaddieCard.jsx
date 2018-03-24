@@ -58,7 +58,12 @@ class SquaddieCard extends React.Component {
               </Card.Description>
             </Card.Content>
             <Card.Content extra>
-              <Button inverted color="green">Add to Yard</Button>
+              <Button
+                inverted
+                floated="right"
+                color="green"
+                content="Add to Yard"
+              />
             </Card.Content>
           </Card>
         </Modal.Content>
