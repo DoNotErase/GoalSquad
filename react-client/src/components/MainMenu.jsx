@@ -1,11 +1,11 @@
 import React from 'react';
 import { Button, Modal, Icon, Link, Card } from 'semantic-ui-react';
 
-const src = './assets/misc/testcardimage.png';
+const src = './assets/icons/';
 
 const MainMenu = props => (
   <Modal
-    className="animated fadeIn"
+    className="fadeIn"
     size="tiny"
     trigger={
       <Button
@@ -20,12 +20,12 @@ const MainMenu = props => (
   >
     <Modal.Content>
       <Card.Group itemsPerRow={3}>
-        <Card raised image={src} onClick={() => { props.history.push('/yard'); }} header="yard" />
-        <Card raised image={src} onClick={() => { props.history.push('/incubator'); }} header="incubator" />
-        <Card raised image={src} onClick={() => { props.history.push('/goals'); }} header="goals" />
-        <Card raised image={src} onClick={() => { props.history.push('/deets'); }} header="deets" />
-        <Card raised image={src} onClick={() => { props.history.push('/squad'); }} header="squad" />
-        <Card raised image={src} onClick={Link} href="/logout" header="logout" />
+        <Card raised image={`${src}yard_icon.png`} onClick={() => { props.history.push('/yard'); }} />
+        <Card raised image={`${src}incubator_icon.png`} onClick={() => { props.history.push('/incubator'); }} />
+        <Card raised image={`${src}goals_icon.png`} onClick={() => { props.history.push('/goals'); }} />
+        <Card raised image={`${src}deets_icon.png`} onClick={() => { props.history.push('/deets'); }} />
+        <Card raised image={`${src}squad_icon.png`} onClick={() => { props.history.push('/squad'); }} />
+        <Card raised image={`${src}logout_icon.png`} onClick={Link} href="/logout" />
       </Card.Group>
     </Modal.Content>
   </Modal>

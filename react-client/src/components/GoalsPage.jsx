@@ -3,12 +3,10 @@ import { Accordion, Icon, Segment, Grid, Header, Divider } from 'semantic-ui-rea
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-// import * as actions from '../actions/actions';
 import * as goalsActions from '../actions/createGoalActions';
 import Goal from './Goal';
 import CustomGoal from './CustomGoal';
 import MainMenu from './MainMenu';
-// import * as incubatorActions from '../actions/incubatorActions';
 
 class GoalsPage extends React.Component {
   constructor() {
