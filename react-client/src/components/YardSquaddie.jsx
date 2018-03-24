@@ -1,17 +1,26 @@
 import React from 'react';
-import Draggable, {DraggableCore} from 'react-draggable';
+import Draggable from 'react-draggable';
+import { Image } from 'semantic-ui-react';
 
 class YardSquaddie extends React.Component {
-    constructor(){
-        super()
-        this.state = {
+  constructor() {
+    super();
+    this.state = {
 
-        }
-    }
+    };
+  }
 
-    render() {
-        return (
-
-        )
-    }
+  render() {
+    return (
+      <Draggable>
+        <Image
+          src="./assets/squaddies/scuttlebutt.png"
+          size="small"
+        />
+      </Draggable>
+    );
+  }
 }
+
+export default YardSquaddie;
+
