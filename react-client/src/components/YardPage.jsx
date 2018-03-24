@@ -42,8 +42,21 @@ YardPage.propTypes = {
   //   username: PropTypes.string,
   // }).isRequired,
   // actions: PropTypes.objectOf(PropTypes.func).isRequired,
-  // yardState: PropTypes.objectOf(PropTypes.string).isRequired,
-  // yardActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  // yardState: PropTypes.objectOf(PropTypes.object).isRequired,
+  yardActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  history: PropTypes.shape({
+    action: PropTypes.string,
+    block: PropTypes.func,
+    createHref: PropTypes.func,
+    go: PropTypes.func,
+    goBack: PropTypes.func,
+    goForward: PropTypes.func,
+    length: PropTypes.number,
+    listen: PropTypes.func,
+    location: PropTypes.object,
+    push: PropTypes.func,
+    replace: PropTypes.func,
+  }).isRequired,
 };
 
 const mapDispatchToProps = dispatch => (

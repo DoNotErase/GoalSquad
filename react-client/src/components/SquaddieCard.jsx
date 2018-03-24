@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, Modal, Icon, Image } from 'semantic-ui-react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class SquaddieCard extends React.Component {
   constructor(props) {
@@ -10,7 +11,6 @@ class SquaddieCard extends React.Component {
     };
     this.show = this.show.bind(this);
     this.close = this.close.bind(this);
-    console.log(props.squaddie);
   }
 
   show(dimmer, size) { this.setState({ dimmer, size, open: true }); }
@@ -65,5 +65,8 @@ class SquaddieCard extends React.Component {
   }
 }
 
+SquaddieCard.propTypes = {
+  squaddie: PropTypes.objectOf(PropTypes.string).isRequired,
+};
 
 export default connect(null, null)(SquaddieCard);

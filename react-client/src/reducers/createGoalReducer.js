@@ -1,5 +1,5 @@
 const createGoalState = {
-  standardGoals: [],
+  standardGoals: {},
 };
 
 const createGoalReducer = (state = createGoalState, action) => {

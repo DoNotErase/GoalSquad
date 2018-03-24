@@ -35,7 +35,6 @@ class GoalsPage extends React.Component {
   render() {
     const { activeIndex } = this.state;
     const goalsList = this.props.goalsState.standardGoals;
-    console.log(goalsList);
     const listItems = Object.keys(goalsList).map((category, categoryIndex) => {
       if (!this.props.incubatorState.userGoals[category] ||
         this.props.incubatorState.userGoals[category].length < 2) {
@@ -87,13 +86,22 @@ class GoalsPage extends React.Component {
 }
 
 GoalsPage.propTypes = {
-  // state: PropTypes.shape({
-  //   id: PropTypes.string,
-  //   username: PropTypes.string,
-  // }).isRequired,
-  // actions: PropTypes.objectOf(PropTypes.func).isRequired,
-  goalsState: PropTypes.objectOf(PropTypes.string).isRequired,
+  incubatorState: PropTypes.objectOf(PropTypes.object).isRequired,
+  goalsState: PropTypes.objectOf(PropTypes.object).isRequired,
   goalsActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  history: PropTypes.shape({
+    action: PropTypes.string,
+    block: PropTypes.func,
+    createHref: PropTypes.func,
+    go: PropTypes.func,
+    goBack: PropTypes.func,
+    goForward: PropTypes.func,
+    length: PropTypes.number,
+    listen: PropTypes.func,
+    location: PropTypes.object,
+    push: PropTypes.func,
+    replace: PropTypes.func,
+  }).isRequired,
 };
 
 const mapDispatchToProps = dispatch => (

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Grid, Card, Header, Divider, Segment } from 'semantic-ui-react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
 import MainMenu from './MainMenu';
 import SquaddieCard from './SquaddieCard';
 import * as squadActions from '../actions/squaddieActions';
@@ -10,7 +11,6 @@ import * as squadActions from '../actions/squaddieActions';
 
 class SquadPage extends React.Component {
   componentDidMount() {
-    console.log(this.props);
     this.props.squadActions.getUserSquaddies();
   }
 
@@ -39,6 +39,24 @@ class SquadPage extends React.Component {
     );
   }
 }
+
+SquadPage.propTypes = {
+  squadState: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.object)).isRequired,
+  squadActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  history: PropTypes.shape({
+    action: PropTypes.string,
+    block: PropTypes.func,
+    createHref: PropTypes.func,
+    go: PropTypes.func,
+    goBack: PropTypes.func,
+    goForward: PropTypes.func,
+    length: PropTypes.number,
+    listen: PropTypes.func,
+    location: PropTypes.object,
+    push: PropTypes.func,
+    replace: PropTypes.func,
+  }).isRequired,
+};
 
 
 const mapStateToProps = state => (

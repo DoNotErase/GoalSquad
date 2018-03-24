@@ -57,8 +57,20 @@ IncubatorPage.propTypes = {
   // }).isRequired,
   // actions: PropTypes.objectOf(PropTypes.func).isRequired,
   incubatorState: PropTypes.objectOf(PropTypes.object).isRequired,
-  incubatorActions: PropTypes.objectOf({
-    getUserGoals: PropTypes.func,
+  incubatorActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  homePageActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  history: PropTypes.shape({
+    action: PropTypes.string,
+    block: PropTypes.func,
+    createHref: PropTypes.func,
+    go: PropTypes.func,
+    goBack: PropTypes.func,
+    goForward: PropTypes.func,
+    length: PropTypes.number,
+    listen: PropTypes.func,
+    location: PropTypes.object,
+    push: PropTypes.func,
+    replace: PropTypes.func,
   }).isRequired,
 };
 
