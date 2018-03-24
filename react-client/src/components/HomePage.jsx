@@ -53,7 +53,6 @@ class HomePage extends React.Component {
       if (this.state.username.length > 4) {
         if (this.state.password.length > 3) {
           this.props.homePageActions.localSignup(this.state.username, this.state.password);
-          this.close();
         } else {
           this.setState({ errorMessage: 'password must be at least 4 characters!' });
         }
@@ -62,7 +61,6 @@ class HomePage extends React.Component {
       }
     } else if (this.state.username.length > 0 && this.state.password.length > 0) {
       this.props.homePageActions.localLogin(this.state.username, this.state.password);
-      this.close();
     }
   }
 
@@ -142,7 +140,7 @@ class HomePage extends React.Component {
             </Modal.Description>
           </Modal.Content>
           <Modal.Actions>
-            {this.state.errorMessage}
+            {this.state.errorMessage} <br /> {this.props.state.user.loginErr}
             <Button color="black" onClick={this.close}>
               Nope
             </Button>
