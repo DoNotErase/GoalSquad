@@ -20,6 +20,8 @@ CREATE TABLE user (
   user_level int NOT NULL DEFAULT 1,
   user_current_xp int NOT NULL DEFAULT 0,
   user_total_points int NOT NULL DEFAULT 0,
+  custom_goal_timer_1 varchar(255),
+  custom_goal_timer_2 varchar(255),
   PRIMARY KEY (user_id)
 );
 

@@ -137,7 +137,13 @@ module.exports.createCustomGoal = async (goalObj) => {
       `('${goalObj.userID}', (SELECT MAX(goal_id) as goal_id FROM goal), 0, ` +
       `0, ${goalObj.goalAmount}, ${goalObj.points}, (utc_timestamp()));`;
 
-    await db.queryAsync(attachUser);
+    const updateUserCustomTimers = 'UPDATE user SET custom_goal_timer_1 = custom_goal_timer_2, ' +
+      `custom_goal_timer_2 = '${goalObj.createTime}' WHERE user_id = '${goalObj.userID}'`;
+
+    await Promise.all([
+      db.queryAsync(attachUser),
+      db.queryAsync(updateUserCustomTimers),
+    ]);
 
     const findGoalID = 'SELECT MAX(user_goal_id) as "goal_id" FROM user_goal';
     const goalID = await db.queryAsync(findGoalID);
@@ -151,6 +157,7 @@ module.exports.createCustomGoal = async (goalObj) => {
 
       await db.queryAsync(setEndDate);
     }
+
     return '';
   } catch (err) {
     console.log(err);

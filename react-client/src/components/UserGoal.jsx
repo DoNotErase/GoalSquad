@@ -3,6 +3,7 @@ import { Header, Statistic, Grid, Button, Modal, Input } from 'semantic-ui-react
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
 import * as incubatorActions from '../actions/incubatorActions';
 
 class UserGoal extends React.Component {
@@ -14,7 +15,6 @@ class UserGoal extends React.Component {
       newCurrent: '',
       errorMessage: '',
     };
-    console.log(props.goal);
 
     this.makeDeadLineMessage = this.makeDeadLineMessage.bind(this);
     this.activityName = this.activityName.bind(this);
@@ -191,6 +191,19 @@ class UserGoal extends React.Component {
     );
   }
 }
+
+UserGoal.propTypes = {
+  goal: PropTypes.shape({
+    goal_id: PropTypes.number,
+    user_goal_id: PropTypes.number,
+    goal_name: PropTypes.string,
+    goal_difficulty: PropTypes.string,
+    goal_points: PropTypes.string,
+    goal_timedivisor: PropTypes.number,
+    goal_activity: PropTypes.string,
+  }).isRequired,
+  incubatorActions: PropTypes.objectOf(PropTypes.func).isRequired,
+};
 
 const mapDispatchToProps = dispatch => (
   { incubatorActions: bindActionCreators(incubatorActions, dispatch) }

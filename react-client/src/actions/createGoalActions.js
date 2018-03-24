@@ -40,6 +40,7 @@ export const submitCustomGoal = (goalName, goalActivity, goalAmount, deadline, p
       goalAmount,
       goalLength: deadline,
       points,
+      createTime: moment().format(),
     })
       .then(() => {
         dispatch(getUserGoals());
