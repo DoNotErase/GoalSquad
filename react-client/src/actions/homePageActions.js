@@ -19,9 +19,7 @@ export const attemptLogin = () => (
 export const localLogin = (username, password) => {
   console.log('login', username, password);
   return dispatch => (
-    axios.get('/localLogin', {
-      params: { username, password },
-    })
+    axios.post('/localLogin', { username, password })
       .then((res) => {
         if (res.data) {
           dispatch(authenticateUser(res.data[0]));

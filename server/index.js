@@ -8,6 +8,7 @@ const passport = require('passport');
 const config = require('../config.js');
 const axios = require('axios');
 const path = require('path');
+const bcrypt = require('bcrypt-nodejs');
 
 const app = express();
 // http for streaming and .server for event listeners
@@ -39,19 +40,20 @@ passport.use(new LocalStrategy(
   },
   async (username, password, done) => {
     try {
-      const user = await db.findByUsername(username);
+      const user = await db.findByUsername(username)[0];
+      console.log(user);
       if (!user) {
         return done(null, false);
       }
-      passwordHash.compare(password, user.password, (err, res) => {
-        if (err) return done(err);
-        if (!res) return done(null, false);
+      if (bcrypt.compareSync(password, user.password)) {
+        console.log('yay!');
         return done(null, user);
-      });
+      }
+      return done(null, false);
     } catch (err) {
       return done(err);
     }
-  }
+  },
 ));
 
 passport.use(new FitbitStrategy(
@@ -83,17 +85,46 @@ passport.deserializeUser((user, done) => {
   done(null, user);
 });
 
-app.get('/localLogin', function(req, res) {
-  console.log(req.query);
+app.post('/localLogin', (req, res, next) => {
+  console.log(req.body, 'body login');
+  passport.authenticate('local', { failureRedirect: '/' }, (err, user) => {
+    console.log(user, 'in callback');
+    if (err) {
+      console.log(err, 'eror');
+      return err;
+    }
+    if (!user) {
+      console.log('no user');
+      return res.json(403, {
+        message: 'no user found',
+      });
+    }
+    // Manually establish the session...
+    req.login(user, (error) => {
+      if (error) {
+        console.log(error, 'eror login');
+        return err;
+      }
+      console.log(user, 'long user');
+      return res.json({
+        message: 'user authenticated',
+      });
+    });
+  })(req, res, next);
 });
 
 app.post('/localSignup', async (req, res) => {
   try {
-    const newUser = await db.createUserLocal(req.body.username);
+    const salt = bcrypt.genSaltSync(10);
+
+    const hash = bcrypt.hashSync(req.body.password, salt);
+
+    const newUser = await db.createUserLocal(req.body.username, hash);
     if (!newUser) {
       res.json({ error: 'username in use!' });
+    } else {
+      res.redirect('/localLogin');
     }
-    res.json(newUser);
   } catch (err) {
     if (err === 'user exists') {
       console.log('user exists');

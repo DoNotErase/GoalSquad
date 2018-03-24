@@ -37,7 +37,7 @@ module.exports.createUserLocal = async (username, password) => {
       return false;
     }
     const create = 'INSERT INTO user (user_username, user_password) ' +
-      `VALUES ('${username}', ${password})`;
+      `VALUES ('${username}', '${password}')`;
     await db.queryAsync(create);
     return await db.queryAsync(query);
   } catch (err) {
@@ -54,6 +54,21 @@ module.exports.userExists = async (fitbitID) => {
       return false;
     }
     return true;
+  } catch (e) {
+    throw e;
+  }
+};
+
+module.exports.findByUsername = async (username) => {
+  console.log(username);
+  const query = `select * from user where user_username = '${username}';`;
+
+  try {
+    const user = await db.queryAsync(query);
+    if (user.length === 0) {
+      return false;
+    }
+    return user[0];
   } catch (e) {
     throw e;
   }
