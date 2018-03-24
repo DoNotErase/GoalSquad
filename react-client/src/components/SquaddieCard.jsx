@@ -1,11 +1,10 @@
 import React from 'react';
-import { Card, Modal, Image } from 'semantic-ui-react';
+import { Card, Modal, Image, Button } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 const styles = {
   cardBackground: 'linear-gradient(to bottom, #faedc4, #ffebd8, #ffeff1, #fff8ff, #ffffff)',
-
 };
 
 class SquaddieCard extends React.Component {
@@ -29,6 +28,7 @@ class SquaddieCard extends React.Component {
       <Modal
         trigger={
           <Card
+            color="orange"
             raised
             image={this.props.squaddie.monster_icon}
             description={this.props.squaddie.monster_name}
@@ -45,7 +45,10 @@ class SquaddieCard extends React.Component {
       >
         <Modal.Content style={{ background: 'transparent' }}>
           <Card centered>
-            <Image src={this.props.squaddie.monster_pic} style={{ backgroundImage: styles.cardBackground }} />
+            <Image
+              src={this.props.squaddie.monster_pic}
+              style={{ backgroundImage: styles.cardBackground }}
+            />
             <Card.Content>
               <Card.Header>
                 {this.props.squaddie.monster_name}
@@ -54,10 +57,12 @@ class SquaddieCard extends React.Component {
                 {this.props.squaddie.monster_description}
               </Card.Description>
             </Card.Content>
+            <Card.Content extra>
+              <Button inverted color="green">Add to Yard</Button>
+            </Card.Content>
           </Card>
         </Modal.Content>
       </Modal>
-
     );
   }
 }
