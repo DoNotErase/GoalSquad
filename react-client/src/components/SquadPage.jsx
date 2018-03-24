@@ -24,7 +24,11 @@ class SquadPage extends React.Component {
             <Scrollbars autoHide style={{ height: '85vh' }}>
               <Segment compact>
                 <Card.Group itemsPerRow={3} centered>
-                  {this.props.squadState.squaddies.map(squaddie => (<SquaddieCard squaddie={squaddie} />))}
+                  {this.props.squadState.squaddies.map(squaddie => (
+                    <SquaddieCard
+                      key={squaddie.monster_name}
+                      squaddie={squaddie}
+                    />))}
                 </Card.Group>
               </Segment>
             </Scrollbars>

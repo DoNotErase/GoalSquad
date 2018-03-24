@@ -35,11 +35,12 @@ class GoalsPage extends React.Component {
   render() {
     const { activeIndex } = this.state;
     const goalsList = this.props.goalsState.standardGoals;
+    console.log(goalsList);
     const listItems = Object.keys(goalsList).map((category, categoryIndex) => {
       if (!this.props.incubatorState.userGoals[category] ||
         this.props.incubatorState.userGoals[category].length < 2) {
         return (
-          <Accordion styled fluid>
+          <Accordion key={category} styled fluid>
             <Accordion.Title
               active={activeIndex === categoryIndex}
               index={categoryIndex}
@@ -51,7 +52,11 @@ class GoalsPage extends React.Component {
             <Accordion.Content active={activeIndex === categoryIndex}>
               <Segment.Group raised>
                 {goalsList[category].map(singleGoal => (
-                  <Goal goal={singleGoal} history={this.props.history} />
+                  <Goal
+                    goal={singleGoal}
+                    history={this.props.history}
+                    key={singleGoal.goal_id}
+                  />
                 ))}
               </Segment.Group>
             </Accordion.Content>

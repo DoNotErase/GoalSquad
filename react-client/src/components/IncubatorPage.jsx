@@ -25,9 +25,9 @@ class IncubatorPage extends React.Component {
         <Grid centered>
           <Grid.Column computer={8} mobile={16}>
             <Scrollbars autoHide style={{ height: '75vh' }}>
-              {Object.keys(this.props.incubatorState.userGoals).map((activity, index) => (
+              {Object.keys(this.props.incubatorState.userGoals).map(activity => (
                 <UserGoalsList
-                  key={index}
+                  key={activity}
                   activityType={activity}
                   goals={this.props.incubatorState.userGoals[activity]}
                 />
