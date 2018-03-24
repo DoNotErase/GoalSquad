@@ -23,16 +23,11 @@ const UserGoalsList = props => (
 );
 
 UserGoalsList.propTypes = {
-  // state: PropTypes.shape({
-  //   steps: PropTypes.number,
-  //   distance: PropTypes.number,
-  //   stairs: PropTypes.number,
-  // }).isRequired,
   goals: PropTypes.arrayOf(PropTypes.object).isRequired,
-  incubatorActions: PropTypes.shape({
-    markGoalSuccess: PropTypes.func,
-    markGoalFailure: PropTypes.func,
-  }).isRequired,
+  // incubatorActions: PropTypes.shape({
+  //   markGoalSuccess: PropTypes.func,
+  //   markGoalFailure: PropTypes.func,
+  // }).isRequired,
 };
 
 const mapStateToProps = state => (

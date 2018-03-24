@@ -2,6 +2,7 @@ import React from 'react';
 import { Segment, Header, Statistic, Grid, Button, Modal, Input, Divider, Checkbox } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
 import * as goalsActions from '../actions/createGoalActions';
 import * as incubatorActions from '../actions/incubatorActions';
 
@@ -212,6 +213,30 @@ class Goal extends React.Component {
     );
   }
 }
+
+Goal.propTypes = {
+  goal: PropTypes.shape({
+    goal_id: PropTypes.number,
+    goal_name: PropTypes.string,
+    goal_difficulty: PropTypes.string,
+    goal_points: PropTypes.string,
+    goal_timedivisor: PropTypes.number,
+  }).isRequired,
+  goalsActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  history: PropTypes.shape({
+    action: PropTypes.string,
+    block: PropTypes.func,
+    createHref: PropTypes.func,
+    go: PropTypes.func,
+    goBack: PropTypes.func,
+    goForward: PropTypes.func,
+    length: PropTypes.number,
+    listen: PropTypes.func,
+    location: PropTypes.object,
+    push: PropTypes.func,
+    replace: PropTypes.func,
+  }).isRequired,
+};
 
 const mapDispatchToProps = dispatch => (
   {

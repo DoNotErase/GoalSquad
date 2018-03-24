@@ -66,7 +66,12 @@ class SquaddieCard extends React.Component {
 }
 
 SquaddieCard.propTypes = {
-  squaddie: PropTypes.objectOf(PropTypes.string).isRequired,
+  squaddie: PropTypes.shape({
+    monster_name: PropTypes.string,
+    monster_pic: PropTypes.string,
+    monster_description: PropTypes.string,
+    monster_icon: PropTypes.string,
+  }).isRequired,
 };
 
 export default connect(null, null)(SquaddieCard);

@@ -3,10 +3,11 @@ import { Segment, Header, Statistic, Grid, Button, Modal, Input, Divider, Checkb
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 import * as goalsActions from '../actions/createGoalActions';
 import * as incubatorActions from '../actions/incubatorActions';
 
-class Goal extends React.Component {
+class CustomGoal extends React.Component {
   constructor(props) {
     super(props);
 
@@ -315,6 +316,24 @@ class Goal extends React.Component {
   }
 }
 
+CustomGoal.propTypes = {
+  userState: PropTypes.objectOf(PropTypes.object).isRequired,
+  goalsActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  history: PropTypes.shape({
+    action: PropTypes.string,
+    block: PropTypes.func,
+    createHref: PropTypes.func,
+    go: PropTypes.func,
+    goBack: PropTypes.func,
+    goForward: PropTypes.func,
+    length: PropTypes.number,
+    listen: PropTypes.func,
+    location: PropTypes.object,
+    push: PropTypes.func,
+    replace: PropTypes.func,
+  }).isRequired,
+};
+
 const mapStateToProps = state => (
   { userState: state.main }
 );
@@ -326,4 +345,4 @@ const mapDispatchToProps = dispatch => (
   }
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(Goal);
+export default connect(mapStateToProps, mapDispatchToProps)(CustomGoal);
