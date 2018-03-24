@@ -39,7 +39,7 @@ class GoalsPage extends React.Component {
       if (!this.props.incubatorState.userGoals[category] ||
         this.props.incubatorState.userGoals[category].length < 2) {
         return (
-          <Accordion styled fluid>
+          <Accordion key={category} styled fluid>
             <Accordion.Title
               active={activeIndex === categoryIndex}
               index={categoryIndex}
@@ -51,7 +51,11 @@ class GoalsPage extends React.Component {
             <Accordion.Content active={activeIndex === categoryIndex}>
               <Segment.Group raised>
                 {goalsList[category].map(singleGoal => (
-                  <Goal goal={singleGoal} history={this.props.history} />
+                  <Goal
+                    goal={singleGoal}
+                    history={this.props.history}
+                    key={singleGoal.goal_id}
+                  />
                 ))}
               </Segment.Group>
             </Accordion.Content>
@@ -72,21 +76,7 @@ class GoalsPage extends React.Component {
             <Header as="h4" className="white" textAlign="center">
               To free up categories, complete existing goals!
             </Header>
-            <Accordion styled fluid>
-              <Accordion.Title
-                active="true"
-                index={10}
-                onClick={this.handleClick}
-              >
-                <Icon name="dropdown" />
-                Custom
-              </Accordion.Title>
-              <Accordion.Content active="true">
-                <Segment.Group raised>
-                  <CustomGoal history={this.props.history} />
-                </Segment.Group>
-              </Accordion.Content>
-            </Accordion>
+            <CustomGoal history={this.props.history} />
           </Grid.Column>
           <MainMenu history={this.props.history} />
         </Grid>
@@ -96,13 +86,22 @@ class GoalsPage extends React.Component {
 }
 
 GoalsPage.propTypes = {
-  // state: PropTypes.shape({
-  //   id: PropTypes.string,
-  //   username: PropTypes.string,
-  // }).isRequired,
-  // actions: PropTypes.objectOf(PropTypes.func).isRequired,
-  goalsState: PropTypes.objectOf(PropTypes.string).isRequired,
+  incubatorState: PropTypes.objectOf(PropTypes.object).isRequired,
+  goalsState: PropTypes.objectOf(PropTypes.object).isRequired,
   goalsActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  history: PropTypes.shape({
+    action: PropTypes.string,
+    block: PropTypes.func,
+    createHref: PropTypes.func,
+    go: PropTypes.func,
+    goBack: PropTypes.func,
+    goForward: PropTypes.func,
+    length: PropTypes.number,
+    listen: PropTypes.func,
+    location: PropTypes.object,
+    push: PropTypes.func,
+    replace: PropTypes.func,
+  }).isRequired,
 };
 
 const mapDispatchToProps = dispatch => (

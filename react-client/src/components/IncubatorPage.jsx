@@ -7,13 +7,14 @@ import PropTypes from 'prop-types';
 import UserGoalsList from './UserGoalsList';
 import ProgressBar from './ProgressBar';
 import MainMenu from './MainMenu';
-import * as actions from '../actions/actions';
+import * as homePageActions from '../actions/homePageActions';
 import * as incubatorActions from '../actions/incubatorActions';
 
 
 class IncubatorPage extends React.Component {
   componentDidMount() {
     this.props.incubatorActions.getUserGoals();
+    this.props.homePageActions.attemptLogin();
   }
 
   render() {
@@ -24,9 +25,9 @@ class IncubatorPage extends React.Component {
         <Grid centered>
           <Grid.Column computer={8} mobile={16}>
             <Scrollbars autoHide style={{ height: '75vh' }}>
-              {Object.keys(this.props.incubatorState.userGoals).map((activity, index) => (
+              {Object.keys(this.props.incubatorState.userGoals).map(activity => (
                 <UserGoalsList
-                  key={index}
+                  key={activity}
                   activityType={activity}
                   goals={this.props.incubatorState.userGoals[activity]}
                 />
@@ -56,14 +57,26 @@ IncubatorPage.propTypes = {
   // }).isRequired,
   // actions: PropTypes.objectOf(PropTypes.func).isRequired,
   incubatorState: PropTypes.objectOf(PropTypes.object).isRequired,
-  incubatorActions: PropTypes.objectOf({
-    getUserGoals: PropTypes.func,
+  incubatorActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  homePageActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  history: PropTypes.shape({
+    action: PropTypes.string,
+    block: PropTypes.func,
+    createHref: PropTypes.func,
+    go: PropTypes.func,
+    goBack: PropTypes.func,
+    goForward: PropTypes.func,
+    length: PropTypes.number,
+    listen: PropTypes.func,
+    location: PropTypes.object,
+    push: PropTypes.func,
+    replace: PropTypes.func,
   }).isRequired,
 };
 
 const mapDispatchToProps = dispatch => (
   {
-    actions: bindActionCreators(actions, dispatch),
+    homePageActions: bindActionCreators(homePageActions, dispatch),
     incubatorActions: bindActionCreators(incubatorActions, dispatch),
   }
 );

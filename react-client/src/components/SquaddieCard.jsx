@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, Modal, Image } from 'semantic-ui-react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
 
 class SquaddieCard extends React.Component {
@@ -11,7 +12,6 @@ class SquaddieCard extends React.Component {
     };
     this.show = this.show.bind(this);
     this.close = this.close.bind(this);
-    console.log(props.squaddie);
   }
 
   show(dimmer, size) { this.setState({ dimmer, size, open: true }); }
@@ -57,5 +57,13 @@ class SquaddieCard extends React.Component {
   }
 }
 
+SquaddieCard.propTypes = {
+  squaddie: PropTypes.shape({
+    monster_name: PropTypes.string,
+    monster_pic: PropTypes.string,
+    monster_description: PropTypes.string,
+    monster_icon: PropTypes.string,
+  }).isRequired,
+};
 
 export default connect(null, null)(SquaddieCard);

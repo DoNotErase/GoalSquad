@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Header, Divider, Grid, Statistic, Segment } from 'semantic-ui-react';
 import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
 import MainMenu from './MainMenu';
 import * as actions from '../actions/actions';
 
@@ -13,10 +14,8 @@ class DeetsPage extends React.Component {
   render() {
     const { deets } = this.props.state;
     if (Object.keys(deets).length === 0) {
-      console.log('no deets!');
       return (<div />);
     }
-    console.log(deets.user);
     return (
       <div className="deetspage">
         <Header as="h1" className="white" textAlign="right">Deets</Header>
@@ -109,6 +108,23 @@ class DeetsPage extends React.Component {
   }
 }
 
+DeetsPage.propTypes = {
+  actions: PropTypes.objectOf(PropTypes.func).isRequired,
+  state: PropTypes.objectOf(PropTypes.object).isRequired,
+  history: PropTypes.shape({
+    action: PropTypes.string,
+    block: PropTypes.func,
+    createHref: PropTypes.func,
+    go: PropTypes.func,
+    goBack: PropTypes.func,
+    goForward: PropTypes.func,
+    length: PropTypes.number,
+    listen: PropTypes.func,
+    location: PropTypes.object,
+    push: PropTypes.func,
+    replace: PropTypes.func,
+  }).isRequired,
+};
 
 const mapStateToProps = state => (
   {

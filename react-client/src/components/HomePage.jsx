@@ -50,7 +50,7 @@ HomePage.propTypes = {
     id: PropTypes.string,
     username: PropTypes.string,
   }).isRequired,
-  actions: PropTypes.objectOf(PropTypes.func).isRequired,
+  // actions: PropTypes.objectOf(PropTypes.func).isRequired,
   homePageActions: PropTypes.objectOf(PropTypes.func).isRequired,
   history: PropTypes.shape({
     action: PropTypes.string,
