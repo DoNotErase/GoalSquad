@@ -5,18 +5,11 @@ const Promise = require('bluebird');
 Promise.promisifyAll(require('mysql/lib/Connection').prototype);
 Promise.promisifyAll(require('mysql/lib/Pool').prototype);
 
-// const db = mysql.createConnection({
-//   host: 'localhost' || config.aws.RDS_HOSTNAME,
-//   user: 'root' || config.aws.RDS_USERNAME,
-//   password: '' || config.aws.RDS_PASSWORD,
-//   port: '8080' || config.aws.RDS_PORT,
-//   database: 'goalsquad',
-// });
-
 const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
+  host: config.aws.RDS_HOSTNAME,
+  user: config.aws.RDS_USERNAME,
+  password: config.aws.RDS_PASSWORD,
+  port: config.aws.RDS_PORT,
   database: 'goalsquad',
 });
 
