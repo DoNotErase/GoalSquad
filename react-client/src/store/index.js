@@ -16,6 +16,7 @@ const reducer = combineReducers({ // combines reducers from reducer folder
   incubator: incubatorReducer,
   squad: squaddieReducer,
   routing: routerReducer,
+  squaddies: squaddieReducer,
 });
 
 // const router = routerMiddleware(browserHistory);

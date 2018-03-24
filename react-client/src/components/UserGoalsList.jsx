@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Segment } from 'semantic-ui-react';
+import { Segment } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
@@ -14,9 +14,7 @@ const UserGoalsList = props => (
         compact
         clearing
       >
-        <Grid>
-          <UserGoal goal={goal} />
-        </Grid>
+        <UserGoal goal={goal} />
       </Segment>
     ))}
   </Segment.Group>
