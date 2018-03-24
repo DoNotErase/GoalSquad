@@ -5,11 +5,18 @@ const Promise = require('bluebird');
 Promise.promisifyAll(require('mysql/lib/Connection').prototype);
 Promise.promisifyAll(require('mysql/lib/Pool').prototype);
 
+// const db = mysql.createConnection({
+//   host: 'localhost' || config.aws.RDS_HOSTNAME,
+//   user: 'root' || config.aws.RDS_USERNAME,
+//   password: '' || config.aws.RDS_PASSWORD,
+//   port: '8080' || config.aws.RDS_PORT,
+//   database: 'goalsquad',
+// });
+
 const db = mysql.createConnection({
-  host: config.aws.RDS_HOSTNAME,
-  user: config.aws.RDS_USERNAME,
-  password: config.aws.RDS_PASSWORD,
-  port: config.aws.RDS_PORT,
+  host: 'localhost',
+  user: 'root',
+  password: '',
   database: 'goalsquad',
 });
 
@@ -21,8 +28,25 @@ module.exports.getUserByID = async (fitbitID) => {
   }
 };
 
+module.exports.createUserLocal = async (username, password) => {
+  const query = `SELECT * FROM user WHERE user_username = '${username}';`;
+  console.log(query);
+  try {
+    const user = await db.queryAsync(query);
+    if (user.length) {
+      return false;
+    }
+    const create = 'INSERT INTO user (user_username, user_password) ' +
+      `VALUES ('${username}', ${password})`;
+    await db.queryAsync(create);
+    return await db.queryAsync(query);
+  } catch (err) {
+    throw err;
+  }
+};
+
 module.exports.userExists = async (fitbitID) => {
-  const query = `SELECT * FROM user WHERE user_id = '${fitbitID}';`;
+  const query = `SELECT * FROM user WHERE fitbit_id = '${fitbitID}';`;
 
   try {
     const user = await db.queryAsync(query);
@@ -37,7 +61,7 @@ module.exports.userExists = async (fitbitID) => {
 
 module.exports.updateTokens = async (fitbitID, accessToken, refreshToken) => {
   const query = `UPDATE user SET user_accesstoken = '${accessToken}', user_refreshtoken = '${refreshToken}' ` +
-    `WHERE user_id = '${fitbitID}';`;
+    `WHERE fibit_id = '${fitbitID}';`;
 
   try {
     return await db.queryAsync(query);
@@ -47,7 +71,7 @@ module.exports.updateTokens = async (fitbitID, accessToken, refreshToken) => {
 };
 
 module.exports.createUser = async (fitbitID, displayName, accessToken, refreshToken) => {
-  const query = 'INSERT INTO user (user_id, user_username, user_accesstoken, user_refreshtoken) ' +
+  const query = 'INSERT INTO user (fibit_id, user_username, user_accesstoken, user_refreshtoken) ' +
     `VALUES ('${fitbitID}', '${displayName}', '${accessToken}', '${refreshToken}');`;
 
   try {
@@ -59,7 +83,7 @@ module.exports.createUser = async (fitbitID, displayName, accessToken, refreshTo
 
 module.exports.getAccessToken = async (fitbitID) => {
   try {
-    const data = await db.queryAsync(`SELECT user_accesstoken FROM user WHERE user_id = '${fitbitID}';`);
+    const data = await db.queryAsync(`SELECT user_accesstoken FROM user WHERE fitbit_id = '${fitbitID}';`);
     return data[0].user_accesstoken;
   } catch (e) {
     throw e;

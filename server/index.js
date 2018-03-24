@@ -3,6 +3,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const FitbitStrategy = require('passport-fitbit-oauth2').FitbitOAuth2Strategy;
+const LocalStrategy = require('passport-local');
 const passport = require('passport');
 const config = require('../config.js');
 const axios = require('axios');
@@ -31,6 +32,28 @@ app.use(passport.session({
 
 /** **************OAUTH**************** */
 
+passport.use(new LocalStrategy(
+  {
+    usernameField: 'username',
+    passwordField: 'password',
+  },
+  async (username, password, done) => {
+    try {
+      const user = await db.findByUsername(username);
+      if (!user) {
+        return done(null, false);
+      }
+      passwordHash.compare(password, user.password, (err, res) => {
+        if (err) return done(err);
+        if (!res) return done(null, false);
+        return done(null, user);
+      });
+    } catch (err) {
+      return done(err);
+    }
+  }
+));
+
 passport.use(new FitbitStrategy(
   {
     clientID: config.fitbit.id,
@@ -58,6 +81,26 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((user, done) => {
   done(null, user);
+});
+
+app.get('/localLogin', function(req, res) {
+  console.log(req.query);
+});
+
+app.post('/localSignup', async (req, res) => {
+  try {
+    const newUser = await db.createUserLocal(req.body.username);
+    if (!newUser) {
+      res.json({ error: 'username in use!' });
+    }
+    res.json(newUser);
+  } catch (err) {
+    if (err === 'user exists') {
+      console.log('user exists');
+    } else {
+      console.log(err);
+    }
+  }
 });
 
 app.get(
