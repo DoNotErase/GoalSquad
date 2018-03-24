@@ -181,6 +181,8 @@ module.exports.createCustomGoal = async (goalObj) => {
 
     await db.queryAsync(createGoal);
 
+    goalObj.userID = await getRightID(goalObj.userID);
+
     const attachUser = 'INSERT INTO user_goal (user_id, goal_id, user_goal_start_value, user_goal_current, ' +
       'user_goal_target, user_goal_points, user_goal_start_date) VALUES ' +
       `('${goalObj.userID}', (SELECT MAX(goal_id) as goal_id FROM goal), 0, ` +
@@ -193,10 +195,9 @@ module.exports.createCustomGoal = async (goalObj) => {
       db.queryAsync(attachUser),
       db.queryAsync(updateUserCustomTimers),
     ]);
-    goalObj.userID = await getRightID(goalObj.userID);
-    const findGoalID = 'SELECT MAX(user_goal_id) as "goal_id" FROM user_goal';
-    const goalID = await db.queryAsync(findGoalID);
 
+    const goalID = await db.queryAsync('SELECT MAX(user_goal_id) as "goal_id" FROM user_goal');
+    console.log(goalID);
     if (goalObj.goalLength) {
       const setEndDate = 'UPDATE user_goal SET user_goal_end_date = ' +
         '(SELECT DATE_ADD((SELECT DATE_ADD((SELECT MAX(user_goal_start_date)), ' +
@@ -373,7 +374,7 @@ module.exports.updateGoalStatuses = async () => {
 module.exports.getUserDeets = async (id) => {
   const userID = await getRightID(id);
   const summarizeGoals = (goals) => {
-    const goalStats = {
+    const goalStats = { 
       total: {
         attempted: 0,
         success: 0,
