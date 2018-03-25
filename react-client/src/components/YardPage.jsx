@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-// import HorizontalScroll from 'react-scroll-horizontal';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Image } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
@@ -36,7 +35,6 @@ class YardPage extends React.Component {
       <div className="yardpage">
         <Scrollbars>
           <div
-            fluid
             style={child}
           >
             <YardSquaddie />
