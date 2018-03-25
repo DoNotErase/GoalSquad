@@ -12,7 +12,7 @@ import YardSquaddie from './YardSquaddie';
 const child = {
   width: 900,
   height: '100%',
-  backgroundImage: 'url(./assets/backgrounds/background-tablet.png)',
+  backgroundImage: 'url(./assets/backgrounds/yard_mobile_background.png)',
   backgroundSize: 'cover',
 };
 
