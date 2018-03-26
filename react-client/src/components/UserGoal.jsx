@@ -63,6 +63,8 @@ class UserGoal extends React.Component {
       if (goal.user_goal_success) {
         return (
           <Button
+            basic
+            color="green"
             onClick={() => {
               this.props.incubatorActions.markGoalSuccess(goal.user_goal_id);
             }}
@@ -72,7 +74,11 @@ class UserGoal extends React.Component {
         );
       }
       return (
-        <Button onClick={() => { this.props.incubatorActions.markGoalFailure(goal.user_goal_id); }}>
+        <Button
+          basic
+          color="red"
+          onClick={() => { this.props.incubatorActions.markGoalFailure(goal.user_goal_id); }}
+        >
           Goal Failed :(
         </Button>);
     }
@@ -151,6 +157,7 @@ class UserGoal extends React.Component {
           dimmer={dimmer}
           open={open}
           onClose={this.close}
+          className="fadeIn"
         >
           <Modal.Header>{goal.goal_name}</Modal.Header>
           <Modal.Content>
@@ -176,7 +183,7 @@ class UserGoal extends React.Component {
           <Modal.Actions>
             <Header as="h5">{this.state.errorMessage}</Header>
             <Button color="black" onClick={this.close}>
-              Nope
+              Cancel
             </Button>
             <Button
               positive
