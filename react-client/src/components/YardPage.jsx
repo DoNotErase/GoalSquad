@@ -9,7 +9,7 @@ import * as yardActions from '../actions/yardActions';
 import MainMenu from './MainMenu';
 import YardSquaddie from './YardSquaddie';
 
-const child = {
+const background = {
   width: 900,
   height: '100%',
   backgroundImage: 'url(./assets/backgrounds/yard_mobile_background.png)',
@@ -35,7 +35,7 @@ class YardPage extends React.Component {
       <div className="yardpage">
         <Scrollbars>
           <div
-            style={child}
+            style={background}
           >
             <YardSquaddie />
           </div>
