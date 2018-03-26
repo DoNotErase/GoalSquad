@@ -51,6 +51,44 @@ body {
     color: white !important;
 }
 
+{
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #fff;
+    box-shadow:
+        0 0 10px 10px #fff,  /* inner white */
+        0 0 30px 40px #f0f, /* middle magenta */
+        0 0 500px 60px #0ff; /* outer cyan */
+}
+
+@keyframes bobble {
+    0% {
+        transform: translate3d(50px, -10px, 0px);
+        animation-timing-function: ease-in;
+    }
+    50% {
+        transform: translate3d(50px, -15px, 0px);
+        animation-timing-function: ease-out;
+    }
+    100% {
+        transform: translate3d(50px, -10px, 0px);
+    }
+}
+
+.glowingEgg {
+    margin-left: 60px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #fff;
+    box-shadow:
+        0 0 5px 5px #fff,  /* inner white */
+        0 0 10px 10px #FFEF48, /* middle yellow */
+        0 0 15px 15px #EBD5FF; /* outer purple */
+    animation: bobble 3s infinite;
+}
+
 /* Menu Modal */
 
 .menubutton {
