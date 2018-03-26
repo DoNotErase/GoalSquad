@@ -63,6 +63,8 @@ class UserGoal extends React.Component {
       if (goal.user_goal_success) {
         return (
           <Button
+            basic
+            color="green"
             onClick={() => {
               this.props.incubatorActions.markGoalSuccess(goal.user_goal_id);
             }}
@@ -72,7 +74,11 @@ class UserGoal extends React.Component {
         );
       }
       return (
-        <Button onClick={() => { this.props.incubatorActions.markGoalFailure(goal.user_goal_id); }}>
+        <Button
+          basic
+          color="red"
+          onClick={() => { this.props.incubatorActions.markGoalFailure(goal.user_goal_id); }}
+        >
           Goal Failed :(
         </Button>);
     }
