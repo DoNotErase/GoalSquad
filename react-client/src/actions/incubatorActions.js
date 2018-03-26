@@ -43,9 +43,9 @@ export const fetchEggStatus = () => (
 // caught in barnReducer
 const newSquaddie = squaddie => ({ type: 'NEW_SQUADDIE', payload: squaddie });
 
-export const hatchEgg = extraXP => (
+export const hatchEgg = (eggID, extraXP) => (
   dispatch => (
-    axios.post('/hatchEgg', { user_egg_id: userEggID, user_id: userID, xp: extraXP })
+    axios.post('/hatchEgg', { eggID: eggID, xp: extraXP })
       .then((res) => {
         dispatch(newSquaddie(res.data));
       })

@@ -41,8 +41,7 @@ class IncubatorPage extends React.Component {
     console.log(this.state.count)
     if(this.state.count === 1) {
       this.setState({count: 3});
-      this.props.incubatorActions.hatchEgg(this.props.incubatorState.egg.user_egg_id, this.props.state.user.user_id, this.props.incubatorState.egg.egg_xp - 100);
-      return;
+      return this.props.incubatorActions.hatchEgg(this.props.incubatorState.egg.user_egg_id, this.props.incubatorState.egg.egg_xp - 100);
     }
     this.setState((prevState, props) => {
       return {count: prevState.count - 1};
