@@ -12,12 +12,42 @@ import * as incubatorActions from '../actions/incubatorActions';
 
 
 class IncubatorPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      count: 0
+    }
+    this.addToCount = this.addToCount.bind(this);
+    
+  }
+
   componentDidMount() {
     this.props.incubatorActions.getUserGoals();
     this.props.homePageActions.attemptLogin();
   }
 
+  getGoals() {
+    return (
+      <div>
+        It looks like you don't have any goals yet! Let's fix that.
+        <Button />
+      </div>
+    )
+  }
+
+  addToCount() {
+    console.log(this.state.count)
+    if(this.state.count === 2) {
+      this.setState({count: 0});
+      return;
+    }
+    this.setState((prevState, props) => {
+      return {count: prevState.count + 1};
+    })
+  }
+
   render() {
+    const userGoals = Object.keys(this.props.incubatorState.userGoals) ? Object.keys(this.props.incubatorState.userGoals) : null;
     return (
       <div className="incubatorpage">
         <Header as="h1" className="white" textAlign="right">Your Goals</Header>
@@ -25,18 +55,22 @@ class IncubatorPage extends React.Component {
         <Grid centered>
           <Grid.Column computer={8} mobile={16}>
             <Scrollbars autoHide style={{ height: '75vh' }}>
-              {Object.keys(this.props.incubatorState.userGoals).map(activity => (
+            {}
+              { userGoals ?
+                Object.keys(this.props.incubatorState.userGoals).map(activity => (
                 <UserGoalsList
                   key={activity}
                   activityType={activity}
                   goals={this.props.incubatorState.userGoals[activity]}
                 />
-              ))} {/* renders list of goals for each activity type */}
+              ))
+              : this.getGoals()
+              } {/* renders list of goals for each activity type */}
             </Scrollbars>
           </Grid.Column>
           <Grid.Row columns={2} style={{ position: 'fixed', bottom: 0, padding: 1 }}>
             <Grid.Column width={3}>
-              <Image src="./assets/icons/egg.png" centered />
+              <Image onClick={this.addToCount} src="./assets/icons/egg.png" centered />
             </Grid.Column>
             <Grid.Column width={13}>
               <ProgressBar history={this.props.history} />
