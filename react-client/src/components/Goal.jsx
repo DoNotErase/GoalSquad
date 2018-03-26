@@ -199,7 +199,7 @@ class Goal extends React.Component {
           <Modal.Actions>
             {this.state.errorMessage}
             <Button color="black" onClick={this.close}>
-                    Nope
+                    Cancel
             </Button>
             <Button
               positive

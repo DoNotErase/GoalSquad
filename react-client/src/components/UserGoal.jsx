@@ -157,6 +157,7 @@ class UserGoal extends React.Component {
           dimmer={dimmer}
           open={open}
           onClose={this.close}
+          className="fadeIn"
         >
           <Modal.Header>{goal.goal_name}</Modal.Header>
           <Modal.Content>
@@ -182,7 +183,7 @@ class UserGoal extends React.Component {
           <Modal.Actions>
             <Header as="h5">{this.state.errorMessage}</Header>
             <Button color="black" onClick={this.close}>
-              Nope
+              Cancel
             </Button>
             <Button
               positive
