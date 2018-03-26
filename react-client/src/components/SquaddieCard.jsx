@@ -17,9 +17,9 @@ class SquaddieCard extends React.Component {
     this.close = this.close.bind(this);
   }
 
-  // addSquaddieToYard() {
-
-  // }
+  toggleSquaddieToYard() {
+    // toggles user_monster_yard flag to true or false
+  }
 
   show(dimmer, size) { this.setState({ dimmer, size, open: true }); }
   close() { this.setState({ open: false }); }
@@ -67,6 +67,7 @@ class SquaddieCard extends React.Component {
                 floated="right"
                 color="green"
                 content="Add to Yard"
+                onClick={this.toggleSquaddieToYard}
               />
             </Card.Content>
           </Card>

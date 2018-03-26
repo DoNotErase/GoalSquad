@@ -259,6 +259,29 @@ app.get('/userSquaddies', async (req, res) => {
   }
 });
 
+/** *******************YARD STUFF**************************** */
+
+app.get('/yardSquad', async (req, res) => {
+  let userID;
+  if (req.session.passport) {
+    if (req.session.passport) {
+      userID = req.session.passport.user.id;
+    } else {
+      res.status(401).send('Bad Passport');
+    }
+  }
+  try {
+    const data = await db.getYardSquaddiesByID(userID);
+    res.status(200).json(data);
+  } catch (err) {
+    res.status(500).send('Err in getting Yard Squaddies');
+  }
+});
+
+app.patch('/yardSquad', async (req, res) => {
+
+});
+
 /** *******************GOAL STUFF**************************** */
 
 app.get('/userGoals', async (req, res) => {

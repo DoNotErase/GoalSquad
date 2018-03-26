@@ -425,3 +425,16 @@ module.exports.getUserDeets = async (id) => {
     throw new Error('get user deets error');
   }
 };
+
+module.exports.getYardSquaddiesByID = async (userid) => {
+  try {
+    return await db.queryAsync(`SELECT * FROM user_monster INNER JOIN monster ON monster.monster_id = user_monster.monster_id WHERE user_id = '${userid}' AND user_monster_yard = 1`);
+  } catch (err) {
+    throw new Error('get yardsquaddies DB error');
+  }
+};
+
+module.exports.updateYardSquaddie = async () => {
+  const updateYardStatus = 'UPDATE user_monster SET user_monster_yard' 
+  // opposite of yard status (0 or 1)
+};
