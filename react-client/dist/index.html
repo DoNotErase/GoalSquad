@@ -56,5 +56,10 @@ messaging.requestPermission()
   <!-- noscript tag used to satisfy Lighthouse test that wants a display page/notification when there is no JS -->
   <noscript>Javascript is needed to run the site. Please enable JavaScript.</noscript>
 </body>
+<script type="text/javascript">
+    if ('ontouchstart' in document.documentElement) {
+    document.body.style.cursor = 'pointer';
+  }
+</script>
 </html>
 

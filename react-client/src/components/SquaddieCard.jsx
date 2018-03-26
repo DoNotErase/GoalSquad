@@ -17,6 +17,10 @@ class SquaddieCard extends React.Component {
     this.close = this.close.bind(this);
   }
 
+  // addSquaddieToYard() {
+
+  // }
+
   show(dimmer, size) { this.setState({ dimmer, size, open: true }); }
   close() { this.setState({ open: false }); }
 
