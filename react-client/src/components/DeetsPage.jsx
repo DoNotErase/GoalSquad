@@ -30,7 +30,6 @@ class DeetsPage extends React.Component {
       return 0;
     };
 
-    console.log(deets);
     if (Object.keys(deets).length === 0) {
       return (<div />);
     }

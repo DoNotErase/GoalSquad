@@ -1,5 +1,6 @@
 import axios from 'axios';
 import moment from 'moment';
+import { updateCustomTime } from './actions';
 import { getUserGoals } from './incubatorActions';
 
 const setDefault = goals => ({ type: 'SET_DEFAULT_GOALS', payload: goals });
@@ -43,6 +44,7 @@ export const submitCustomGoal = (goalName, goalActivity, goalAmount, deadline, p
       createTime: moment().format(),
     })
       .then(() => {
+        dispatch(updateCustomTime(moment()));
         dispatch(getUserGoals());
       })
       .catch((err) => {

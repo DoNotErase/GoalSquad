@@ -9,6 +9,11 @@ export const setUserData = userData => ({
   },
 });
 
+export const updateCustomTime = newTime => ({
+  type: 'NEW_TIMER_2',
+  payload: newTime,
+});
+
 export const deauthorizeFitbit = () => (
   () => (
     axios.post('fitbit/deauthorize')

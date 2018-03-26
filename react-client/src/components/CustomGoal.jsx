@@ -13,7 +13,9 @@ class CustomGoal extends React.Component {
 
     const lastCustom = moment(this.props.userState.user.custom_goal_timer_1);
     const now = moment();
+
     let available = true;
+
     if (now.diff(lastCustom, 'days') === 0) {
       available = false;
     }
@@ -42,17 +44,19 @@ class CustomGoal extends React.Component {
   }
 
   timeUntilCustomGoal() {
-    const lastCustom = moment(this.props.userState.user.custom_goal_timer_1);
+    const lastCustom = moment(this.props.userState.user.custom_goal_timer_1).add(1, 'days');
+    console.log(lastCustom);
     const now = moment();
-    const hours = now.diff(lastCustom, 'hours');
+    console.log(now);
+    const hours = lastCustom.diff(now, 'hours');
     if (hours > 0) {
       return `${hours} hour(s)`;
     }
-    const minutes = now.diff(lastCustom, 'minutes');
+    const minutes = lastCustom.diff(now, 'minutes');
     if (minutes > 0) {
       return `${minutes} minute(s)`;
     }
-    const seconds = now.diff(lastCustom, 'seconds');
+    const seconds = lastCustom.diff(now, 'seconds');
     return `${seconds} seconds`;
   }
 
