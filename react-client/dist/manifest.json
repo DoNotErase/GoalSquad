@@ -1,8 +1,10 @@
+// "theme_color": "#008F7A"
+
 {
   "name": "GoalSquad",
   "short_name": "GS",
-  "theme_color": "#008F7A",
-  "background_color": "#008F7A",
+  "theme_color": "#fff",
+  "background_color": "#fff",
   "display": "standalone",
   "start_url": ".",
   "icons": [

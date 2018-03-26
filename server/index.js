@@ -217,6 +217,7 @@ app.get('/eggStatus', async (req, res) => {
   }
   try {
     const data = await db.getEggInfo(userID);
+    console.log('Got the egg data!')
     res.status(200).json(data);
   } catch (err) {
     res.status(500).send('err in get Egg info');

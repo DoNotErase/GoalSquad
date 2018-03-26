@@ -16,15 +16,15 @@ class IncubatorPage extends React.Component {
     super(props);
     this.state = {
       count: 3,
-      chosenOne: null,
       eggXP: 110
     }
     this.subtractFromCount = this.subtractFromCount.bind(this);
-    this.hatchEgg = this.hatchEgg.bind(this);
+    this.getGoals = this.getGoals.bind(this);
   }
 
   componentDidMount() {
     this.props.incubatorActions.getUserGoals();
+    this.props.incubatorActions.fetchEggStatus();
     this.props.homePageActions.attemptLogin();
     console.log('stateeeeee',this.props)
   }
@@ -41,8 +41,7 @@ class IncubatorPage extends React.Component {
     console.log(this.state.count)
     if(this.state.count === 1) {
       this.setState({count: 3});
-      this.hatchEgg();
-      // show link to yard page (already a link to it but be explicit about it)
+      this.props.incubatorActions.hatchEgg(this.props.incubatorState.egg.user_egg_id, this.props.state.user.user_id, this.props.incubatorState.egg.egg_xp - 100);
       return;
     }
     this.setState((prevState, props) => {
@@ -50,35 +49,21 @@ class IncubatorPage extends React.Component {
     })
   }
 
-  // getRandomSquaddie() {
-  //   let squaddies = ['bard', 'kow', 'pruny', 'scuttlebutt', 'squaggle'] // MVP approach to this--refactor to make dynamic
-  //   let userSquaddies = [] // grab user squaddies, 
-  //   let squaddiesYetToBeHad = [] // make an an array from the monsters the user doesn't have (based n the total array above)
-  //   let max = Math.floor(squaddies.length - 1);
-  //   let rand = Math.floor(Math.random() * (max  + 1)); 
-  //   let chosenOne = squaddiesYetToBeHad[rand];
-  //   // add chosenOne to their list of monsters
-  //   return chosenOne; // or generic image since they apparently have all? Or message alerting them that they have all squaddies
-  // }
-
-  hatchEgg() {
-    this.setState({chosenOne: this.props.incubatorActions.hatchEgg(this.props.incubatorState.egg.egg_xp - 100)});
-  }
-
   openEggModal() {
+    const classByNumbers = {1: 'eggClass1', 2: 'eggClass2', 3: 'eggClass3'};
     return (
-      // this.props.incubatorState.egg.egg_xp >= 100 
-      this.state.eggXP >= 100 
+      this.props.incubatorState.egg.egg_xp >= 100 
+      // this.state.eggXP >= 100 
       ?
       <Modal
-      trigger={<a><Image className="glowingEgg" src="./assets/icons/egg.png" /></a>}>
+      trigger={<a><Image className="glowingEgg" src="./assets/icons/egg.png" centered/></a>}>
         <Modal.Content style={{ background: 'transparent' }}>
           <Card centered>
-            {this.state.count > 1 ? <a><Image onClick={this.subtractFromCount} src='./assets/icons/egg.png'/></a> : <a><Image src={this.state.chosenOne.monster_pic}/></a>}
+            {this.state.count > 0 ? <a><Image size='medium' className={classByNumbers[this.state.count]} onClick={this.subtractFromCount} src='./assets/icons/egg.png' centered/></a> : <a><Image src={this.props.yardState.newSquaddie.monster_pic}/></a>}
             <Card.Content>
-            {this.state.count > 1 
+            {this.state.count > 0 
               ? <Card.Header>Tap {this.state.count} {this.state.count === 1 ? 'more time' : 'more times'} to reveal your new squaddie!</Card.Header>
-              : <Card.Header>Your new squaddie is {this.state.chosenOne.monster_name}!</Card.Header>
+              : <Card.Header>Your new squaddie is {this.props.yardState.monster_name}!</Card.Header>
             }
             </Card.Content>
           </Card>
@@ -93,6 +78,7 @@ class IncubatorPage extends React.Component {
     const styles = {
       cardBackground: 'linear-gradient(to bottom, #faedc4, #ffebd8, #ffeff1, #fff8ff, #ffffff)'
     };
+    const { open, dimmer, size } = this.state;
     return (
       <div className="incubatorpage">
         <Header as="h1" className="white" textAlign="right">Your Goals</Header>
@@ -100,15 +86,15 @@ class IncubatorPage extends React.Component {
         <Grid centered>
           <Grid.Column computer={8} mobile={16}>
             <Scrollbars autoHide style={{ height: '75vh' }}>
-            {}
-              {Object.keys(this.props.incubatorState.userGoals).map(activity => (
+              {Object.keys(this.props.incubatorState.userGoals) 
+                ? Object.keys(this.props.incubatorState.userGoals).map(activity => (
                 <UserGoalsList
                   key={activity}
                   activityType={activity}
                   goals={this.props.incubatorState.userGoals[activity]}
                 />
               ))
-              // : this.getGoals()
+                : this.getGoals()
               } {/* renders list of goals for each activity type */}
             </Scrollbars>
           </Grid.Column>
@@ -163,6 +149,7 @@ const mapDispatchToProps = dispatch => (
 const mapStateToProps = state => (
   {
     state: state.main,
+    yardState: state.yard,
     incubatorState: state.incubator,
   }
 );

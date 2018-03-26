@@ -45,7 +45,7 @@ const newSquaddie = squaddie => ({ type: 'NEW_SQUADDIE', payload: squaddie });
 
 export const hatchEgg = extraXP => (
   dispatch => (
-    axios.post('/hatchEgg', { xp: extraXP })
+    axios.post('/hatchEgg', { user_egg_id: userEggID, user_id: userID, xp: extraXP })
       .then((res) => {
         dispatch(newSquaddie(res.data));
       })
