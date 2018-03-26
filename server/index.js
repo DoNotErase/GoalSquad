@@ -86,7 +86,7 @@ passport.deserializeUser((user, done) => {
 });
 
 app.post(
-  '/localLogin', passport.authenticate('local', { failureRedirect: '/' }),
+  '/localLogin', passport.authenticate('local'),
   (req, res) => {
     res.redirect('/incubator');
   },

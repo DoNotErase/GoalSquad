@@ -7,13 +7,29 @@ import MainMenu from './MainMenu';
 import * as actions from '../actions/actions';
 
 class DeetsPage extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.makeDisconnectButton = this.makeDisconnectButton.bind(this);
+  }
   componentDidMount() {
     this.props.actions.fetchStats();
   }
 
+  makeDisconnectButton() {
+    if (this.props.state.user.fitbit_id) {
+      return (
+        <Button onClick={this.props.actions.deauthorizeFitbit}>
+          Disconnect Fitbit
+        </Button>
+      );
+    }
+    return <div />;
+  }
+
   render() {
     const { deets } = this.props.state;
-
+    console.log(this.props.state);
     const percentSuccess = (statSet) => {
       if (statSet.attempted - statSet.pending > 0) {
         return Math.ceil((statSet.success * 100) /
@@ -24,7 +40,7 @@ class DeetsPage extends React.Component {
 
     const percentFailure = (statSet) => {
       if (statSet.attempted - statSet.pending > 0) {
-        Math.floor((statSet.fail * 100) /
+        return Math.floor((statSet.fail * 100) /
           (statSet.attempted - statSet.pending));
       }
       return 0;
@@ -39,8 +55,12 @@ class DeetsPage extends React.Component {
         <Divider hidden />
         <Grid centered>
           <Grid.Column computer={8} mobile={16}>
-            <Button onClick={this.props.actions.deauthorizeFitbit()}> deauthorize </Button>
             <Segment.Group raised>
+              <Segment compact>
+                <Header as="h2">{this.props.state.user.user_username}</Header>
+                <Header as="h4">{deets.user.total.attempted} Lifetime Goals </Header>
+                {this.makeDisconnectButton()}
+              </Segment>
               <Segment compact>
                 <Grid centered>
                   <Grid.Row columns={1}>
