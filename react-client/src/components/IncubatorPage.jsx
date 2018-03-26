@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Header, Divider, Image } from 'semantic-ui-react';
+import { Button, Card, Divider, Grid, Header, Image, Modal } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -15,9 +15,10 @@ class IncubatorPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      count: 0
+      count: 3,
+      isHatchable: true
     }
-    this.addToCount = this.addToCount.bind(this);
+    this.subtractFromCount = this.subtractFromCount.bind(this);
     
   }
 
@@ -35,18 +36,44 @@ class IncubatorPage extends React.Component {
     )
   }
 
-  addToCount() {
+  subtractFromCount() {
     console.log(this.state.count)
-    if(this.state.count === 2) {
-      this.setState({count: 0});
+    if(this.state.count === 1) {
+      this.setState({count: 3});
+      // reveal the new squaddie
+      // show link to yard page
       return;
     }
     this.setState((prevState, props) => {
-      return {count: prevState.count + 1};
+      return {count: prevState.count - 1};
     })
   }
 
+  openEggModal() {
+    return (
+      this.state.isHatchable 
+      ?
+      <Modal
+      trigger={<a><Image className="glowingEgg" src="./assets/icons/egg.png" center /></a>}>
+        <Modal.Content style={{ background: 'transparent' }}>
+          <Card centered>
+            <a><Image onClick={this.subtractFromCount} src='./assets/icons/egg.png' center/></a>
+
+            <Card.Content>
+             <p>Tap {this.state.count} {this.state.count === 1 ? 'more time' : 'more times'} to reveal your new squaddie!</p>
+            </Card.Content>
+          </Card>
+        </Modal.Content>
+      </Modal>
+      : 
+      <Image src="./assets/icons/egg.png" centered />
+    )
+  }
+
   render() {
+    const styles = {
+      cardBackground: 'linear-gradient(to bottom, #faedc4, #ffebd8, #ffeff1, #fff8ff, #ffffff)',
+    };
     const userGoals = Object.keys(this.props.incubatorState.userGoals) ? Object.keys(this.props.incubatorState.userGoals) : null;
     return (
       <div className="incubatorpage">
@@ -70,7 +97,8 @@ class IncubatorPage extends React.Component {
           </Grid.Column>
           <Grid.Row columns={2} style={{ position: 'fixed', bottom: 0, padding: 1 }}>
             <Grid.Column width={3}>
-              <Image onClick={this.addToCount} src="./assets/icons/egg.png" centered />
+              {this.openEggModal()}
+              {/*<Image onClick={this.addToCount} src="./assets/icons/egg.png" centered />*/}
             </Grid.Column>
             <Grid.Column width={13}>
               <ProgressBar history={this.props.history} />
