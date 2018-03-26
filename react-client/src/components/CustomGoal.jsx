@@ -124,7 +124,7 @@ class CustomGoal extends React.Component {
     }
 
     const activity = `${this.state.activity[0].toUpperCase()}${this.state.activity.slice(1)}`;
-    console.log(activity);
+
     const goalName = `${activity} ${this.state.amount} ${this.state.units}`;
 
     if (this.state.noDeadline) {

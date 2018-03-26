@@ -61,7 +61,7 @@ passport.use(new FitbitStrategy(
     clientID: config.fitbit.id,
     clientSecret: config.fitbit.secret,
     scope: ['activity', 'profile', 'sleep', 'social'],
-    callbackURL: 'http://localhost:8080/callback',
+    callbackURL: 'http://127.0.0.1:8080/callback',
   },
   async (accessToken, refreshToken, profile, done) => {
     try {
@@ -326,7 +326,7 @@ app.post('/createUserGoal', async (req, res) => {
       newGoal.targetValue = newGoal.startValue + goalDetails.goal_amount;
       await db.createUserGoal(newGoal);
       res.end();
-    }  else {
+    } else {
       res.status(401).json({ error: 'user not authenticated' });
     }
   } catch (err) {

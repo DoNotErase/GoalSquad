@@ -374,7 +374,7 @@ module.exports.updateGoalStatuses = async () => {
 module.exports.getUserDeets = async (id) => {
   const userID = await getRightID(id);
   const summarizeGoals = (goals) => {
-    const goalStats = { 
+    const goalStats = {
       total: {
         attempted: 0,
         success: 0,
