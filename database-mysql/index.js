@@ -90,7 +90,7 @@ module.exports.updateTokens = async (fitbitID, accessToken, refreshToken) => {
 };
 
 module.exports.createUser = async (fitbitID, displayName, accessToken, refreshToken) => {
-  const query = 'INSERT INTO user (fibit_id, user_username, user_accesstoken, user_refreshtoken) ' +
+  const query = 'INSERT INTO user (fitbit_id, user_username, user_accesstoken, user_refreshtoken) ' +
     `VALUES ('${fitbitID}', '${displayName}', '${accessToken}', '${refreshToken}');`;
   const makeNewEgg = 'INSERT INTO user_egg (user_id, egg_id, egg_xp) VALUES ' +
     '((SELECT MAX(user_id) FROM user), FLOOR(RAND() * (SELECT COUNT (*) FROM egg) + 1), 0);';

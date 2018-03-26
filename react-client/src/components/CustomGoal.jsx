@@ -45,9 +45,7 @@ class CustomGoal extends React.Component {
 
   timeUntilCustomGoal() {
     const lastCustom = moment(this.props.userState.user.custom_goal_timer_1).add(1, 'days');
-    console.log(lastCustom);
     const now = moment();
-    console.log(now);
     const hours = lastCustom.diff(now, 'hours');
     if (hours > 0) {
       return `${hours} hour(s)`;

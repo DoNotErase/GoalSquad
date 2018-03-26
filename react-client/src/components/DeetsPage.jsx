@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Header, Divider, Grid, Statistic, Segment } from 'semantic-ui-react';
+import { Header, Divider, Grid, Statistic, Segment, Button } from 'semantic-ui-react';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import MainMenu from './MainMenu';
@@ -39,6 +39,7 @@ class DeetsPage extends React.Component {
         <Divider hidden />
         <Grid centered>
           <Grid.Column computer={8} mobile={16}>
+            <Button onClick={this.props.actions.deauthorizeFitbit()}> deauthorize </Button>
             <Segment.Group raised>
               <Segment compact>
                 <Grid centered>
