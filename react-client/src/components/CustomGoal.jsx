@@ -212,6 +212,7 @@ class CustomGoal extends React.Component {
             dimmer={dimmer}
             open={open}
             onClose={this.close}
+            className="fadeIn"
           >
             <Modal.Header>Create a Goal</Modal.Header>
             <Modal.Content >
@@ -296,7 +297,7 @@ class CustomGoal extends React.Component {
             <Modal.Actions>
               {this.state.errorMessage}
               <Button color="black" onClick={this.close}>
-                Nope
+                Cancel
               </Button>
               <Button
                 positive

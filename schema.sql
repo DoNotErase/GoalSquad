@@ -52,6 +52,7 @@ CREATE TABLE monster (
   monster_icon varchar(255),
   monster_description varchar(255),
   monster_sound varchar(255),
+
   PRIMARY KEY (monster_id)
 );
 
@@ -75,6 +76,8 @@ CREATE TABLE user_monster (
   user_monster_attack int,
   user_monster_defense int,
   user_monster_current_xp int,
+  user_monster_xcoord int,
+  user_monster_ycoord int,
 
   PRIMARY KEY (user_monster_id),
   FOREIGN KEY (user_id) REFERENCES user (user_id),
@@ -109,14 +112,18 @@ insert into monster
 VALUES
   ('Scuttlebutt', './assets/squaddies/scuttlebutt.png', './assets/squaddies/scuttlebutt-icon.png', 'This is a sample description of Scuttlebutt.'),
   ('Pruny', './assets/squaddies/pruny.png', './assets/squaddies/pruny-icon.png', 'This is a sample description of Pruny.'),
-  ('Bard', './assets/squaddies/bard.png', './assets/squaddies/bard-icon.png', 'This is a sample description of Bard.');
+  ('Bard', './assets/squaddies/bard.png', './assets/squaddies/bard-icon.png', 'This is a sample description of Bard.'),
+  ('Squaggle', './assets/squaddies/squaggle.png', './assets/squaddies/squaggle-icon.png', 'This is a sample description of Squaggle.'),
+  ('Kow', './assets/squaddies/kow.png', './assets/squaddies/kow-icon.png', 'This is a sample description of Kow.');
 
 insert into egg
   (egg_name)
 VALUES
   ('scuttlebutt_egg'),
   ('pruny_egg'),
-  ('bard_egg');
+  ('bard_egg'),
+  ('squaggle_egg'),
+  ('kow_egg');
 
 insert into goal 
   (goal_name, goal_activity, goal_amount, goal_difficulty, goal_class, goal_points, goal_timedivisor)

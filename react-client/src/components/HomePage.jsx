@@ -141,7 +141,7 @@ class HomePage extends React.Component {
           <Modal.Actions>
             {this.state.errorMessage} <br /> {this.props.state.user.loginErr}
             <Button color="black" onClick={this.close}>
-              Nope
+              Cancel
             </Button>
             <Button
               positive

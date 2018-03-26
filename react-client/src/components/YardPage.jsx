@@ -1,15 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-// import HorizontalScroll from 'react-scroll-horizontal';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { Image } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import * as actions from '../actions/actions';
 import * as yardActions from '../actions/yardActions';
 import MainMenu from './MainMenu';
 import YardSquaddie from './YardSquaddie';
 
-const child = { width: 900, height: '100%' };
+const background = {
+  width: 900,
+  height: '100%',
+  backgroundImage: 'url(./assets/backgrounds/yard_mobile_background.png)',
+  backgroundSize: 'cover',
+};
 
 class YardPage extends React.Component {
   componentDidMount() {
@@ -29,8 +34,11 @@ class YardPage extends React.Component {
     return (
       <div className="yardpage">
         <Scrollbars>
-          <div style={child} className="yardbackground" />
-          <YardSquaddie/>
+          <div
+            style={background}
+          >
+            <YardSquaddie />
+          </div>
         </Scrollbars>
         <MainMenu history={this.props.history} />
       </div>
