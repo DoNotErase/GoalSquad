@@ -52,6 +52,7 @@ CREATE TABLE monster (
   monster_icon varchar(255),
   monster_description varchar(255),
   monster_sound varchar(255),
+
   PRIMARY KEY (monster_id)
 );
 
@@ -75,6 +76,8 @@ CREATE TABLE user_monster (
   user_monster_attack int,
   user_monster_defense int,
   user_monster_current_xp int,
+  user_monster_xcoord int,
+  user_monster_ycoord int,
 
   PRIMARY KEY (user_monster_id),
   FOREIGN KEY (user_id) REFERENCES user (user_id),
