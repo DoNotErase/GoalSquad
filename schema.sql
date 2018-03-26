@@ -76,6 +76,7 @@ CREATE TABLE user_monster (
   user_monster_attack int,
   user_monster_defense int,
   user_monster_current_xp int,
+  user_monster_yard bool default 0,
   user_monster_xcoord int,
   user_monster_ycoord int,
 
