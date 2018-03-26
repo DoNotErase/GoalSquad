@@ -25,8 +25,9 @@ class SquaddieCard extends React.Component {
   close() { this.setState({ open: false }); }
 
   render() {
-    const { open, dimmer, size } = this.state;
 
+    const { open, dimmer, size } = this.state;
+    const { squaddie } = this.props;
     return (
 
       <Modal
@@ -34,8 +35,8 @@ class SquaddieCard extends React.Component {
           <Card
             color="orange"
             raised
-            image={this.props.squaddie.monster_icon}
-            description={this.props.squaddie.monster_name}
+            image={squaddie.user_id ? squaddie.monster_icon : './assets/misc/logo.png'}
+            description={squaddie.monster_name}
             onClick={() => this.show(true, 'tiny')}
             className="squaddieicon"
           />
@@ -49,25 +50,27 @@ class SquaddieCard extends React.Component {
       >
         <Modal.Content style={{ background: 'transparent' }}>
           <Card centered>
-            <Image
-              src={this.props.squaddie.monster_pic}
+            <Image {/* change default image from logo? */}
+              src={squaddie.user_id ? squaddie.monster_pic : './assets/misc/logo.png'}
               style={{ backgroundImage: styles.cardBackground }}
             />
             <Card.Content>
               <Card.Header>
-                {this.props.squaddie.monster_name}
+                {squaddie.monster_name}
               </Card.Header>
               <Card.Description>
-                {this.props.squaddie.monster_description}
+                {squaddie.user_id ? squaddie.monster_description : 'Complete goals to unlock this monster!'}
               </Card.Description>
             </Card.Content>
             <Card.Content extra>
-              <Button
-                inverted
-                floated="right"
-                color="green"
-                content="Add to Yard"
-              />
+              { squaddie.user_id ?
+                <Button
+                  inverted
+                  floated="right"
+                  color="green"
+                  content="Add to Yard"
+                /> : <div />
+              }
             </Card.Content>
           </Card>
         </Modal.Content>
