@@ -1,14 +1,16 @@
 import React from 'react';
-import Draggable from 'react-draggable';
+// import Draggable from 'react-draggable';
 import { Image } from 'semantic-ui-react';
+import Draggable from 'react-draggable';
 
 class YardSquaddie extends React.Component {
   constructor() {
     super();
     this.state = {
-
+    
     };
   }
+
 
   render() {
     return (
