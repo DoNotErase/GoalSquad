@@ -7,7 +7,6 @@ const MainMenu = props => (
   <Modal
     className="fadeIn"
     size="tiny"
-    closeOnDimmerClick
     trigger={
       <Button
         icon
