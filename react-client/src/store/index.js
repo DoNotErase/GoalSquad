@@ -1,5 +1,6 @@
 import thunk from 'redux-thunk';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProduction';
 import { browserHistory } from 'react-router';
 import { routerReducer, routerMiddleware } from 'react-router-redux';
 import mainReducer from '../reducers/mainReducer';
@@ -18,15 +19,10 @@ const reducer = combineReducers({ // combines reducers from reducer folder
   squaddies: squaddieReducer,
 });
 
-// const router = routerMiddleware(browserHistory);
-const middleware = applyMiddleware(
-  thunk,
-  routerMiddleware(browserHistory),
-);
 // creates store and allows for chrome redux plugin
 const store = createStore(
   reducer,
-  middleware,
+  composeWithDevTools(applyMiddleware(thunk, routerMiddleware(browserHistory))),
 );
 
 export default store;

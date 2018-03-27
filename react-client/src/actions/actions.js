@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { NavigationActions } from 'react-navigation';
 
 export const setUserData = userData => ({
   type: 'USER_LIFETIME_ACTIVITY',
