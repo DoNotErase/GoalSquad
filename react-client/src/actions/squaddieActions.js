@@ -41,9 +41,10 @@ export const getYardSquaddies = () => (
   )
 );
 
-export const toggleYardStatus = monsterID => (
-  dispatch => (
-    axios.patch('/yardSquad', { monID: monsterID })
+export const toggleYardStatus = userMonsterID => {
+  console.log(userMonsterID);
+  return dispatch => (
+    axios.patch('/yardSquad', { monID: userMonsterID })
       .then((res) => {
         dispatch(toggleYardSquaddies(res.data));
       })
@@ -51,4 +52,4 @@ export const toggleYardStatus = monsterID => (
         console.log(err);
       })
   )
-);
+};

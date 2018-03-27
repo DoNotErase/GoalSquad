@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { browserHistory } from 'react-router';
+import { routerActions } from 'react-router-redux';
 
 export const setUserData = userData => ({
   type: 'USER_LIFETIME_ACTIVITY',
@@ -38,10 +38,9 @@ export const fetchStats = () => (
         dispatch(setStats(res.data));
       })
       .catch((err) => {
-        if (err.response.status === 401) {
-          console.log('bad');
-          dispatch(browserHistory.push('/'));
-        }
+          console.log('bad', err);
+          //dispatch(routerActions.push('/'));
+        
       })
   )
 );
