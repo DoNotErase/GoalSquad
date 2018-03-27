@@ -40,8 +40,9 @@ class IncubatorPage extends React.Component {
   subtractFromCount() {
     console.log(this.state.count)
     if(this.state.count === 1) {
+      this.props.incubatorActions.hatchEgg(this.props.incubatorState.egg.user_egg_id, this.props.incubatorState.egg.egg_xp - 100);
       this.setState({count: 3});
-      return this.props.incubatorActions.hatchEgg(this.props.incubatorState.egg.user_egg_id, this.props.incubatorState.egg.egg_xp - 100);
+      return;
     }
     this.setState((prevState, props) => {
       return {count: prevState.count - 1};
@@ -58,9 +59,9 @@ class IncubatorPage extends React.Component {
       trigger={<a><Image className="glowingEgg" src="./assets/icons/egg.png" centered/></a>}>
         <Modal.Content style={{ background: 'transparent' }}>
           <Card centered>
-            {this.state.count > 0 ? <a><Image size='medium' className={classByNumbers[this.state.count]} onClick={this.subtractFromCount} src='./assets/icons/egg.png' centered/></a> : <a><Image src={this.props.yardState.newSquaddie.monster_pic}/></a>}
+            {this.state.count === 1 ? <a><Image src={this.props.yardState.newSquaddie.monster_pic}/></a> : <a><Image size='medium' className={classByNumbers[this.state.count]} onClick={this.subtractFromCount} src='./assets/icons/egg.png' centered/></a>}
             <Card.Content>
-            {this.state.count > 0 
+            {this.state.count === 1 
               ? <Card.Header>Tap {this.state.count} {this.state.count === 1 ? 'more time' : 'more times'} to reveal your new squaddie!</Card.Header>
               : <Card.Header>Your new squaddie is {this.props.yardState.monster_name}!</Card.Header>
             }
