@@ -1,7 +1,9 @@
 import React from 'react';
 import { Card, Modal, Image, Button } from 'semantic-ui-react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
+import * as squaddieActions from '../actions/squaddieActions';
 
 const styles = {
   cardBackground: 'linear-gradient(to bottom, #faedc4, #ffebd8, #ffeff1, #fff8ff, #ffffff)',
@@ -12,17 +14,26 @@ class SquaddieCard extends React.Component {
     super(props);
     this.state = {
       open: false,
+      yardstatus: false,
     };
     this.show = this.show.bind(this);
     this.close = this.close.bind(this);
+  }
+
+  toggleSquaddieToYard(monID) {
+    this.setState({ yardstatus: !this.state.yardstatus });
+    this.props.squaddieActions.toggleYardStatus(monID);
   }
 
   show(dimmer, size) { this.setState({ dimmer, size, open: true }); }
   close() { this.setState({ open: false }); }
 
   render() {
-    const { open, dimmer, size } = this.state;
+    const {
+      open, dimmer, size, yardstatus,
+    } = this.state;
     const { squaddie } = this.props;
+    console.log(squaddie);
     return (
 
       <Modal
@@ -62,8 +73,9 @@ class SquaddieCard extends React.Component {
                 <Button
                   inverted
                   floated="right"
-                  color="green"
-                  content="Add to Yard"
+                  color={yardstatus ? 'red' : 'green'}
+                  content={yardstatus ? 'Remove From Yard' : 'Add to Yard'}
+                  onClick={() => { this.toggleSquaddieToYard(this.props.squaddie.user.user_monster_id); }}
                 /> : <div />
               }
             </Card.Content>
@@ -75,7 +87,9 @@ class SquaddieCard extends React.Component {
 }
 
 SquaddieCard.propTypes = {
+  squaddieActions: PropTypes.objectOf(PropTypes.func).isRequired,
   squaddie: PropTypes.shape({
+    monster_id: PropTypes.number,
     monster_name: PropTypes.string,
     monster_pic: PropTypes.string,
     monster_description: PropTypes.string,
@@ -83,4 +97,10 @@ SquaddieCard.propTypes = {
   }).isRequired,
 };
 
-export default connect(null, null)(SquaddieCard);
+const mapDispatchToProps = dispatch => (
+  {
+    squaddieActions: bindActionCreators(squaddieActions, dispatch),
+  }
+);
+
+export default connect(null, mapDispatchToProps)(SquaddieCard);

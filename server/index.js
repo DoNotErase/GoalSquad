@@ -31,7 +31,7 @@ app.use(passport.session({
   saveUninitialized: true,
 }));
 
-function isAuthorized (req, res, next) {
+function isAuthorized(req, res, next) {
   if (req.session.passport) {
     return next();
   }
@@ -244,6 +244,43 @@ app.get('/userSquaddies', isAuthorized, async (req, res) => {
     res.status(500).send('Err in getting Squaddies');
   }
 });
+
+/** *******************YARD STUFF**************************** */
+
+app.get('/yardSquad', async (req, res) => {
+  let userID;
+  if (req.session.passport) {
+    if (req.session.passport) {
+      userID = req.session.passport.user.id;
+    } else {
+      res.status(401).send('Bad Passport');
+    }
+  }
+  try {
+    const data = await db.getYardSquaddiesByID(userID);
+    res.status(200).json(data);
+  } catch (err) {
+    res.status(500).send('Err in getting Yard Squaddies');
+  }
+});
+
+app.patch('/yardSquad', async (req, res) => {
+  try {
+    await db.updateYardSquaddie(req.monID);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
+// app.patch('/updateCustom', async (req, res) => {
+//   try {
+//     await db.updateCustomGoalProgress(req.body.goalID, req.body.newCurrent);
+//     await db.updateGoalStatuses();
+//     res.end();
+//   } catch (err) {
+//     res.status(500).send(err);
+//   }
+// });
 
 /** *******************GOAL STUFF**************************** */
 
