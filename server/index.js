@@ -266,7 +266,7 @@ app.get('/yardSquad', async (req, res) => {
 
 app.patch('/yardSquad', async (req, res) => {
   try {
-    await db.updateYardSquaddie(req.monID);
+    await db.updateYardSquaddie(req.body.monID);
   } catch (err) {
     res.status(500).send(err);
   }

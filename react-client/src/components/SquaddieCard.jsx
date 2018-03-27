@@ -33,7 +33,6 @@ class SquaddieCard extends React.Component {
       open, dimmer, size, yardstatus,
     } = this.state;
     const { squaddie } = this.props;
-    console.log(squaddie);
     return (
 
       <Modal
@@ -41,7 +40,7 @@ class SquaddieCard extends React.Component {
           <Card
             color="orange"
             raised
-            image={squaddie.user ? squaddie.monster_icon : './assets/misc/logo.png'}
+            image={squaddie.user ? squaddie.monster_icon : './assets/squaddies/unknown-squaddie-icon.png'}
             description={squaddie.monster_name}
             onClick={() => this.show(true, 'tiny')}
             className="squaddieicon"
@@ -57,7 +56,7 @@ class SquaddieCard extends React.Component {
         <Modal.Content style={{ background: 'transparent' }}>
           <Card centered>
             <Image
-              src={squaddie.user ? squaddie.monster_pic : './assets/misc/logo.png'}
+              src={squaddie.user ? squaddie.monster_pic : './assets/squaddies/unknown-squaddie.png'}
               style={{ backgroundImage: styles.cardBackground }}
             />
             <Card.Content>
@@ -75,7 +74,7 @@ class SquaddieCard extends React.Component {
                   floated="right"
                   color={yardstatus ? 'red' : 'green'}
                   content={yardstatus ? 'Remove From Yard' : 'Add to Yard'}
-                  onClick={() => { this.toggleSquaddieToYard(this.props.squaddie.user.user_monster_id); }}
+                  onClick={() => { this.toggleSquaddieToYard(this.props.squaddie.monster_id); }}
                 /> : <div />
               }
             </Card.Content>
