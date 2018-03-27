@@ -8,10 +8,28 @@ module.exports.fetchSquaddies = () => (
   dispatch => (
     axios.get('/userSquaddies')
       .then((res) => {
+        console.log('action data', res.data)
         dispatch(setSquaddies(res.data));
       })
       .catch((err) => {
         if (err.response.status === 401) {
+          axios.get('/');
+        }
+      })
+  )
+);
+
+const setSquaddie = squaddie => ({ type: 'NEW_SQUADDIE', payload: squaddie });
+
+module.exports.fetchSquaddie = () => (
+  dispatch => (
+    axios.get('/getSquaddie')
+      .then(res => {
+        console.log('squaddie data', res)
+        dispatch(setSquaddie(res.data));
+      })
+      .catch(err => {
+        if(err.response.status === 401) {
           axios.get('/');
         }
       })

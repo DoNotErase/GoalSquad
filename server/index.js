@@ -283,6 +283,21 @@ app.patch('/yardSquad', async (req, res) => {
 //   }
 // });
 
+app.get('/getSquaddie', async (req, res) => {
+  let userID;
+  if (req.session.passport) {
+    userID = req.session.passport.user.id;
+  } else {
+    res.status(401).send('User does not have a logged session');
+  }
+  try {
+    const squaddie = await db.getNewSquaddie(userID);
+    res.status(200).json(squaddie);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+})
+
 /** *******************GOAL STUFF**************************** */
 
 app.get('/userGoals', isAuthorized, async (req, res) => {

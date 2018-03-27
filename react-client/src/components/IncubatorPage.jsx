@@ -10,6 +10,7 @@ import MainMenu from './MainMenu';
 import * as homePageActions from '../actions/homePageActions';
 import * as incubatorActions from '../actions/incubatorActions';
 import * as squaddieActions from '../actions/squaddieActions';
+import * as yardActions from '../actions/yardActions';
 
 class IncubatorPage extends React.Component {
   constructor(props) {
@@ -20,14 +21,19 @@ class IncubatorPage extends React.Component {
     };
     this.subtractFromCount = this.subtractFromCount.bind(this);
     this.getGoals = this.getGoals.bind(this);
+    if(this.props.incubatorState.egg.egg_xp >= 100) {
+      this.props.incubatorActions.hatchEgg(this.props.incubatorState.egg.user_egg_id, this.props.incubatorState.egg.egg_xp - 100);
+      this.props.yardActions.fetchSquaddies();
+      this.props.yardActions.fetchSquaddie();
+      this.forceUpdate();
+    }
   }
 
   componentDidMount() {
     this.props.incubatorActions.getUserGoals();
     this.props.incubatorActions.fetchEggStatus();
     this.props.homePageActions.attemptLogin();
-    this.props.squaddieActions.getYardSquaddies();
-    console.log('stateeeeee',this.props)
+    console.log('stateeeeee',this.props);
   }
 
   getGoals() {
@@ -75,7 +81,6 @@ class IncubatorPage extends React.Component {
   subtractFromCount() {
     console.log(this.state.count)
     if(this.state.count === 0) {
-      this.props.incubatorActions.hatchEgg(this.props.incubatorState.egg.user_egg_id, this.props.incubatorState.egg.egg_xp - 100);
       this.setState({count: 3});
       this.forceUpdate();
     }
@@ -136,7 +141,6 @@ class IncubatorPage extends React.Component {
           <Grid.Row columns={2} style={{ position: 'fixed', bottom: 0, padding: 1 }}>
             <Grid.Column width={3}>
               {this.openEggModal()}
-              {/*<Image onClick={this.addToCount} src="./assets/icons/egg.png" centered />*/}
             </Grid.Column>
             <Grid.Column width={13}>
               <ProgressBar history={this.props.history} />
@@ -179,6 +183,7 @@ const mapDispatchToProps = dispatch => (
     homePageActions: bindActionCreators(homePageActions, dispatch),
     incubatorActions: bindActionCreators(incubatorActions, dispatch),
     squaddieActions: bindActionCreators(squaddieActions, dispatch),
+    yardActions: bindActionCreators(yardActions, dispatch),
   }
 );
 

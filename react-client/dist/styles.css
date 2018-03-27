@@ -66,10 +66,11 @@ body {
 }
 
 .glowingEgg {
-    width: 40px;
-    height: 40px;
+    border: 0px solid none;
     border-radius: 50%;
-    background: transparent;
+    left: 1px;
+
+    background: #fff;
     box-shadow:
         0 0 5px 5px #fff,  /* inner white */
         0 0 20px 10px #FEFE5A, /* middle yellow */
