@@ -19,8 +19,6 @@ const reducer = combineReducers({ // combines reducers from reducer folder
   squaddies: squaddieReducer,
 });
 
-// const router = routerMiddleware(browserHistory);
-
 // creates store and allows for chrome redux plugin
 const store = createStore(
   reducer,

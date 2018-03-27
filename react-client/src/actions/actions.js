@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { browserHistory } from 'react-router';
 
 export const setUserData = userData => ({
   type: 'USER_LIFETIME_ACTIVITY',
@@ -23,7 +22,8 @@ export const deauthorizeFitbit = () => (
       })
       .catch((err) => {
         if (err.response.status === 401) {
-          axios.get('/');
+          window.location.href = '/';
+          alert('Sorry! Please log in.');
         }
       })
   )
@@ -39,8 +39,8 @@ export const fetchStats = () => (
       })
       .catch((err) => {
         if (err.response.status === 401) {
-          console.log('bad');
-          dispatch(browserHistory.push('/'));
+          window.location.href = '/';
+          alert('Sorry! Please log in.');
         }
       })
   )
