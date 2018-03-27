@@ -22,7 +22,9 @@ export const getUserSquaddies = () => (
         dispatch(setSquaddies(res.data));
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status === 401) {
+          axios.get('/');
+        }
       })
   )
 );

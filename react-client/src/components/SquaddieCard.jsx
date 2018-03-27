@@ -32,7 +32,8 @@ class SquaddieCard extends React.Component {
     const {
       open, dimmer, size, yardstatus,
     } = this.state;
-
+    const { squaddie } = this.props;
+    console.log(squaddie);
     return (
 
       <Modal
@@ -40,8 +41,8 @@ class SquaddieCard extends React.Component {
           <Card
             color="orange"
             raised
-            image={this.props.squaddie.monster_icon}
-            description={this.props.squaddie.monster_name}
+            image={squaddie.user ? squaddie.monster_icon : './assets/misc/logo.png'}
+            description={squaddie.monster_name}
             onClick={() => this.show(true, 'tiny')}
             className="squaddieicon"
           />
@@ -56,25 +57,27 @@ class SquaddieCard extends React.Component {
         <Modal.Content style={{ background: 'transparent' }}>
           <Card centered>
             <Image
-              src={this.props.squaddie.monster_pic}
+              src={squaddie.user ? squaddie.monster_pic : './assets/misc/logo.png'}
               style={{ backgroundImage: styles.cardBackground }}
             />
             <Card.Content>
               <Card.Header>
-                {this.props.squaddie.monster_name}
+                {squaddie.monster_name}
               </Card.Header>
               <Card.Description>
-                {this.props.squaddie.monster_description}
+                {squaddie.user ? squaddie.monster_description : 'Complete goals to unlock this monster!'}
               </Card.Description>
             </Card.Content>
             <Card.Content extra>
-              <Button
-                inverted
-                floated="right"
-                color={yardstatus ? 'red' : 'green'}
-                content={yardstatus ? 'Remove From Yard' : 'Add to Yard'}
-                onClick={() => { this.toggleSquaddieToYard(this.props.squaddie.monster_id); }}
-              />
+              { squaddie.user ?
+                <Button
+                  inverted
+                  floated="right"
+                  color={yardstatus ? 'red' : 'green'}
+                  content={yardstatus ? 'Remove From Yard' : 'Add to Yard'}
+                  onClick={() => { this.toggleSquaddieToYard(this.props.squaddie.user.user_monster_id); }}
+                /> : <div />
+              }
             </Card.Content>
           </Card>
         </Modal.Content>

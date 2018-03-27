@@ -9,16 +9,13 @@ import CustomGoal from './CustomGoal';
 import MainMenu from './MainMenu';
 
 class GoalsPage extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       activeIndex: -1,
     };
     this.handleClick = this.handleClick.bind(this);
-  }
-
-  componentDidMount() {
-    this.props.goalsActions.getDefaultGoals();
+    props.goalsActions.getDefaultGoals();
   }
 
   handleClick(e, titleProps) {
@@ -60,7 +57,6 @@ class GoalsPage extends React.Component {
           </Accordion>
         );
       }
-      return (<div />);
     });
 
     return (
