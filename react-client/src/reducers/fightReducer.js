@@ -1,0 +1,3 @@
+const fightState = {
+  user
+}

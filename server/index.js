@@ -326,7 +326,7 @@ app.post('/createUserGoal', async (req, res) => {
       newGoal.targetValue = newGoal.startValue + goalDetails.goal_amount;
       await db.createUserGoal(newGoal);
       res.end();
-    }  else {
+    } else {
       res.status(401).json({ error: 'user not authenticated' });
     }
   } catch (err) {
@@ -424,3 +424,25 @@ app.listen(8080, () => {
   console.log('listening on port 8080!');
 });
 
+/* *********************** socket io stuff ********************************** */
+io.on('connection', (socket) => {
+  // console.log('new client connected', socket);
+  // socket.join('my room');
+  // socket.broadcast.emit('broadcast', 'hello friends!');
+  // socket.emit('rooms', io.sockets.apadter.rooms);
+  console.log('ROOMS', io.sockets.adapter.rooms);
+  for (const room in io.sockets.adapter.rooms) {
+    if (io.sockets.adapter.rooms[room].length < 2) {
+      socket.join(room);
+      socket.leave(socket.id);
+      socket.to(room).emit('second', room);
+    }
+  }
+  // console.log('rooms', io.sockets.adapter.rooms);
+  // socket.emit('news', { hello: 'world' });
+  // socket.on('attack', (attack) => {
+  //
+  // });
+});
+
+io.listen(8081);
