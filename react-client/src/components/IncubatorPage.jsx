@@ -40,13 +40,23 @@ class IncubatorPage extends React.Component {
         >
         <Grid.Column computer={8} mobile={16}> 
           <Grid.Row>
-              Oh no! 
+              {/*<div className="circle">
+                <span className="char1">O</span>
+                <span className="char2">h</span>
+                <span className="char3"> </span>
+                <span className="char4">n</span>
+                <span className="char5">o</span>
+                <span className="char6">!</span>
+              </div>*/}
+              <div className="no-goals-header">Oh no!</div>
           </Grid.Row>
           <Grid.Row>
             <Image size='small' src='./assets/squaddies/squaggle.png' centered/>
           </Grid.Row>
           <Grid.Row>
-              It looks like you don't have any goals yet! Let's fix that.
+              <div className="no-goals-body">
+                It looks like you don't have any goals yet! Let's fix that.
+              </div>
           </Grid.Row>
           <Grid.Row>
               <Button onClick={() => { this.props.history.push('/goals'); }} animated>

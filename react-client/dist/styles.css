@@ -81,6 +81,34 @@ body {
   
 }
 
+.circle {
+    font: 26px Monaco, MonoSpace;
+    height: 200px;
+    position: absolute;
+    width: 20px;
+    left: 0;
+    top: 0;
+    transform-origin: bottom center;
+}
+
+.char1 { transform: rotate(6deg); }
+.char2 { transform: rotate(12deg); }
+.char3 { transform: rotate(18deg); }
+.char4 { transform: rotate(24deg); }
+.char5 { transform: rotate(30deg); }
+.char6 { transform: rotate(36deg); }
+
+.no-goals-header {
+    font-size: 24px;
+    padding: 5px;
+}
+
+.no-goals-body {
+    font-size: 16px;
+    padding: 5px;
+    padding-bottom: 15px;
+}
+
 /* Menu Modal */
 
 .menubutton {
