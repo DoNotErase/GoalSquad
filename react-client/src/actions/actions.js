@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { browserHistory } from 'react-router';
 
 export const setUserData = userData => ({
   type: 'USER_LIFETIME_ACTIVITY',
@@ -39,7 +40,7 @@ export const fetchStats = () => (
       .catch((err) => {
         if (err.response.status === 401) {
           console.log('bad');
-          axios.get('/');
+          dispatch(browserHistory.push('/'));
         }
       })
   )
