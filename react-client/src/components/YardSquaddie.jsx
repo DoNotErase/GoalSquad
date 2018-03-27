@@ -14,7 +14,6 @@ class YardSquaddie extends React.Component {
     this.handleDrag = this.handleDrag.bind(this);
   }
 
-
   handleDrag(e, ui) {
     const { x, y } = this.state.deltaPosition;
     this.setState({
@@ -30,7 +29,7 @@ class YardSquaddie extends React.Component {
     return (
       <Draggable onDrag={this.handleDrag}>
         <Image
-          src="./assets/squaddies/scuttlebutt.png"
+          src={this.props.squaddie.monster_pic}
           size="small"
         />
       </Draggable>

@@ -2,10 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { Image } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import * as actions from '../actions/actions';
-import * as yardActions from '../actions/yardActions';
+import * as squaddieActions from '../actions/squaddieActions';
 import MainMenu from './MainMenu';
 import YardSquaddie from './YardSquaddie';
 
@@ -16,28 +15,24 @@ const background = {
   backgroundSize: 'cover',
 };
 
+
 class YardPage extends React.Component {
   componentDidMount() {
-    this.props.yardActions.fetchSquaddies();
+    this.props.squaddieActions.getYardSquaddies();
   }
 
   render() {
-    /*
-    if (this.props.yardState.newSquaddie) {
-      have a modal showing that new squaddie
-      on close: yardActions.squaddieAcknowledged()
-        to set newSquaddie back to null
-      newSquaddie should already be present in the main squaddie array
-    }
-    */
-
     return (
       <div className="yardpage">
         <Scrollbars>
           <div
             style={background}
           >
-            <YardSquaddie />
+            {this.props.squadState.yardSquaddies.map(squaddie => (
+              <YardSquaddie
+                key={squaddie.monster_name}
+                squaddie={squaddie}
+              />))};
           </div>
         </Scrollbars>
         <MainMenu history={this.props.history} />
@@ -47,13 +42,8 @@ class YardPage extends React.Component {
 }
 
 YardPage.propTypes = {
-  // state: PropTypes.shape({
-  //   id: PropTypes.string,
-  //   username: PropTypes.string,
-  // }).isRequired,
-  // actions: PropTypes.objectOf(PropTypes.func).isRequired,
-  // yardState: PropTypes.objectOf(PropTypes.object).isRequired,
-  yardActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  squadState: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.object)).isRequired,
+  squaddieActions: PropTypes.objectOf(PropTypes.func).isRequired,
   history: PropTypes.shape({
     action: PropTypes.string,
     block: PropTypes.func,
@@ -72,14 +62,14 @@ YardPage.propTypes = {
 const mapDispatchToProps = dispatch => (
   {
     actions: bindActionCreators(actions, dispatch),
-    yardActions: bindActionCreators(yardActions, dispatch),
+    squaddieActions: bindActionCreators(squaddieActions, dispatch),
   }
 );
 
 const mapStateToProps = state => (
   {
     state: state.main,
-    yardState: state.yard,
+    squadState: state.squad,
   }
 );
 

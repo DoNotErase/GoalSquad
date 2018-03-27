@@ -24,7 +24,7 @@ const reducer = combineReducers({ // combines reducers from reducer folder
 // creates store and allows for chrome redux plugin
 const store = createStore(
   reducer,
-  composeWithDevTools(applyMiddleware(thunk, routerMiddleware(browserHistory)))
+  composeWithDevTools(applyMiddleware(thunk, routerMiddleware(browserHistory))),
 );
 
 export default store;
