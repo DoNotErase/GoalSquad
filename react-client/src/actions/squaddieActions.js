@@ -5,11 +5,45 @@ const setSquaddies = squaddieData => ({
   payload: squaddieData,
 });
 
+const setYardSquaddies = yardSquaddieData => ({
+  type: 'GET_YARD_SQUADDIES',
+  payload: yardSquaddieData,
+});
+
+const toggleYardSquaddies = squaddieData => ({
+  type: 'TOGGLE_YARD_STATUS',
+  payload: squaddieData,
+});
+
 export const getUserSquaddies = () => (
   dispatch => (
     axios.get('/squaddies')
       .then((res) => {
         dispatch(setSquaddies(res.data));
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  )
+);
+
+export const getYardSquaddies = () => (
+  dispatch => (
+    axios.get('/yardSquad')
+      .then((res) => {
+        dispatch(setYardSquaddies(res.data));
+      })
+      .catch((err) => {
+        console.log('error getting yard squaddies', err);
+      })
+  )
+);
+
+export const toggleYardStatus = monsterID => (
+  dispatch => (
+    axios.patch('/yardSquad', { monID: monsterID })
+      .then((res) => {
+        dispatch(toggleYardSquaddies(res.data));
       })
       .catch((err) => {
         console.log(err);

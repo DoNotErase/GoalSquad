@@ -13,7 +13,7 @@ class HomePage extends React.Component {
     this.state = {
       open: false,
       username: '',
-      password: 'ksjadhfh',
+      password: '',
       type: '',
       errorMessage: '',
     };

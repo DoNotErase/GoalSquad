@@ -309,7 +309,6 @@ module.exports.getAllSquaddies = async (id) => {
   // returns a lsit of all squaddies but with null info for ones a user hasn't yet earned
   const query = 'SELECT monster.*, user_monster.* FROM monster LEFT JOIN user_monster ON ' +
     `monster.monster_id = user_monster.monster_id WHERE user_id = '${userID}' OR user_id IS NULL;`;
-
   const squaddies = db.queryAsync(query);
   return squaddies;
 };
@@ -424,4 +423,22 @@ module.exports.getUserDeets = async (id) => {
   } catch (err) {
     throw new Error('get user deets error');
   }
+};
+
+module.exports.getYardSquaddiesByID = async (userid) => {
+  try {
+    return await db.queryAsync(`SELECT * FROM user_monster INNER JOIN monster ON monster.monster_id = user_monster.monster_id WHERE user_id = '${userid}' AND user_monster_yard = 1`);
+  } catch (err) {
+    throw new Error('get yardsquaddies DB error');
+  }
+};
+
+module.exports.updateYardSquaddie = async (monsterID) => {
+  try {
+    const query = `UPDATE user_monster SET user_monster_yard = !user_monster_yard WHERE monster_id = '${monsterID}'`;
+    return await db.queryAsync(query);
+  } catch (err) {
+    throw new Error('error updating yardsquaddie');
+  }
+  // opposite of yard status (0 or 1)
 };
