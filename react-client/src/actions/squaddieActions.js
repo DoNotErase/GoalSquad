@@ -23,7 +23,8 @@ export const getUserSquaddies = () => (
       })
       .catch((err) => {
         if (err.response.status === 401) {
-          axios.get('/');
+          window.location.href = '/';
+          alert('Sorry! Please log in.');
         }
       })
   )
@@ -37,19 +38,26 @@ export const getYardSquaddies = () => (
       })
       .catch((err) => {
         console.log('error getting yard squaddies', err);
+        if (err.response.status === 401) {
+          window.location.href = '/';
+          alert('Sorry! Please log in.');
+        }
       })
   )
 );
 
-export const toggleYardStatus = userMonsterID => {
-  console.log(userMonsterID);
-  return dispatch => (
+export const toggleYardStatus = userMonsterID => (
+  dispatch => (
     axios.patch('/yardSquad', { monID: userMonsterID })
       .then((res) => {
         dispatch(toggleYardSquaddies(res.data));
       })
       .catch((err) => {
         console.log(err);
+        if (err.response.status === 401) {
+          window.location.href = '/';
+          alert('Sorry! Please log in.');
+        }
       })
   )
-};
+);

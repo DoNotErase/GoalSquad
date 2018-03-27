@@ -14,6 +14,7 @@ const Routes = () => (
   <Router history={browserHistory}>
     <Switch>
       <Route exact path="/" component={HomePage} />
+      <Route path="/home" component={HomePage} />
       <Route path="/landing" component={LandingPage} />
       <Route path="/incubator" component={IncubatorPage} />
       <Route path="/deets" component={DeetsPage} />

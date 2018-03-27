@@ -34,7 +34,7 @@ app.use(passport.session({
 function isAuthorized(req, res, next) {
   if (!req.session.passport) {
     console.log('redirect');
-    res.redirect('/'); //i don't understand
+    res.status(401).end();
     return;
   }
   next();
@@ -186,7 +186,7 @@ app.get('/logout', (req, res) => {
 /** *******************FITBIT FETCHES**************************** */
 
 app.get('/login', async (req, res) => {
-  if (req.session.passport) { //autologin on fitbit connection and navigation to'/'
+  if (req.session.passport) { // autologin on fitbit connection and navigation to'/'
     const user = await db.getUserByID(req.session.passport.user.id);
     res.json(user);
   } else {
@@ -425,7 +425,7 @@ app.get('/userDeets', isAuthorized, async (req, res) => {
 
 /** ********************************************************* */
 
-app.get('/*', isAuthorized, (req, res) => {
+app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '../react-client/dist', '/index.html'));
 });
 

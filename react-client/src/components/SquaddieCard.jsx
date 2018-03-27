@@ -65,7 +65,7 @@ class SquaddieCard extends React.Component {
                 {squaddie.monster_name}
               </Card.Header>
               <Card.Description>
-                {squaddie.user ? squaddie.user.user_monster_id : 'Complete goals to unlock this monster!'}
+                {squaddie.user ? squaddie.monster_description : 'Complete goals to unlock this monster!'}
               </Card.Description>
             </Card.Content>
             <Card.Content extra>
@@ -75,7 +75,7 @@ class SquaddieCard extends React.Component {
                   floated="right"
                   color={yardstatus ? 'red' : 'green'}
                   content={yardstatus ? 'Remove From Yard' : 'Add to Yard'}
-                  onClick={() => { this.toggleSquaddieToYard(squaddie.user.user_monster_id); }}
+                  onClick={() => { this.toggleSquaddieToYard(this.props.squaddie.user.user_monster_id); }}
                 /> : <div />
               }
             </Card.Content>

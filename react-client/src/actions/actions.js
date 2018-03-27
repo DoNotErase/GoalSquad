@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { routerActions } from 'react-router-redux';
+import { NavigationActions } from 'react-navigation';
 
 export const setUserData = userData => ({
   type: 'USER_LIFETIME_ACTIVITY',
@@ -23,7 +23,8 @@ export const deauthorizeFitbit = () => (
       })
       .catch((err) => {
         if (err.response.status === 401) {
-          axios.get('/');
+          window.location.href = '/';
+          alert('Sorry! Please log in.');
         }
       })
   )
@@ -38,9 +39,10 @@ export const fetchStats = () => (
         dispatch(setStats(res.data));
       })
       .catch((err) => {
-          console.log('bad', err);
-          //dispatch(routerActions.push('/'));
-        
+        if (err.response.status === 401) {
+          window.location.href = '/';
+          alert('Sorry! Please log in.');
+        }
       })
   )
 );
