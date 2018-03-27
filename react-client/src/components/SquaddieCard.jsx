@@ -55,7 +55,7 @@ class SquaddieCard extends React.Component {
           <Card
             color={(squaddie.user && squaddie.user.user_monster_yard) || yardstatus ? 'orange' : null}
             raised
-            image={squaddie.user ? squaddie.monster_icon : './assets/misc/logo.png'}
+            image={squaddie.user ? squaddie.monster_icon : './assets/squaddies/unknown-squaddie-icon.png'}
             description={squaddie.user ?
               squaddie.user.user_monster_new_name || squaddie.monster_name
               :
