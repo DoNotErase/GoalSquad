@@ -12,7 +12,9 @@ export const getDefaultGoals = () => (
         dispatch(setDefault(res.data));
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status === 401) {
+          axios.get('/');
+        }
       })
   )
 );
@@ -28,7 +30,9 @@ export const submitUserGoal = (goalID, deadline, points) => (
         dispatch(getUserGoals());
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status === 401) {
+          axios.get('/');
+        }
       })
   )
 );
@@ -48,7 +52,9 @@ export const submitCustomGoal = (goalName, goalActivity, goalAmount, deadline, p
         dispatch(getUserGoals());
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status === 401) {
+          axios.get('/');
+        }
       })
   )
 );

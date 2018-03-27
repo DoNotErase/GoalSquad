@@ -21,7 +21,9 @@ export const getUserGoals = () => (
         dispatch(setUserGoals(res.data));
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status === 401) {
+          axios.get('/');
+        }
       })
   )
 );
@@ -35,7 +37,9 @@ export const fetchEggStatus = () => (
         dispatch(setEggStatus(res.data));
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status === 401) {
+          axios.get('/');
+        }
       })
   )
 );
@@ -50,7 +54,9 @@ export const hatchEgg = extraXP => (
         dispatch(newSquaddie(res.data));
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status === 401) {
+          axios.get('/');
+        }
       })
   )
 );
@@ -63,7 +69,9 @@ export const markGoalSuccess = userGoalID => (
         dispatch(fetchEggStatus(res.data)); // because xp was added
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status === 401) {
+          axios.get('/');
+        }
       })
   )
 );
@@ -75,7 +83,9 @@ export const markGoalFailure = userGoalID => (
         dispatch(getUserGoals(userGoalID));
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status === 401) {
+          axios.get('/');
+        }
       })
   )
 );
@@ -87,7 +97,9 @@ export const submitProgress = (userGoalID, newCurrent) => (
         dispatch(getUserGoals(userGoalID));
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status === 401) {
+          axios.get('/');
+        }
       })
   )
 );

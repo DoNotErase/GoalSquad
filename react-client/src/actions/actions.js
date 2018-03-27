@@ -21,7 +21,9 @@ export const deauthorizeFitbit = () => (
         console.log(res);
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status === 401) {
+          axios.get('/');
+        }
       })
   )
 );
@@ -35,7 +37,10 @@ export const fetchStats = () => (
         dispatch(setStats(res.data));
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status === 401) {
+          console.log('bad');
+          axios.get('/');
+        }
       })
   )
 );
