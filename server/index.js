@@ -409,6 +409,8 @@ app.patch('/updateCustom', isAuthorized, async (req, res) => {
 /** ********************** EGGS / SQUADDIES ******************************** */
 
 app.post('/hatchEgg', isAuthorized, async (req, res) => {
+  console.log('reqqqqq', req.body)
+  console.log('session', req.session)
   try {
     const userID = req.session.passport.user.id;
     const userEggID = req.body.eggID;

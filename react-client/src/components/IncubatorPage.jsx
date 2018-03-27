@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Card, Divider, Grid, Header, Image, Modal } from 'semantic-ui-react';
+import { Button, Card, Divider, Grid, Header, Icon, Image, Modal } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -9,14 +9,14 @@ import ProgressBar from './ProgressBar';
 import MainMenu from './MainMenu';
 import * as homePageActions from '../actions/homePageActions';
 import * as incubatorActions from '../actions/incubatorActions';
-
+import * as squaddieActions from '../actions/squaddieActions';
 
 class IncubatorPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       count: 3,
-      eggXP: 110
+      eggXP: 110,
     };
     this.subtractFromCount = this.subtractFromCount.bind(this);
     this.getGoals = this.getGoals.bind(this);
@@ -26,14 +26,33 @@ class IncubatorPage extends React.Component {
     this.props.incubatorActions.getUserGoals();
     this.props.incubatorActions.fetchEggStatus();
     this.props.homePageActions.attemptLogin();
+    this.props.squaddieActions.getYardSquaddies();
     console.log('stateeeeee',this.props)
   }
 
   getGoals() {
     return (
-      <div>
-        It looks like you don't have any goals yet! Let's fix that.
-      </div>
+      // <div className="no-user-goals">
+        <Grid 
+        textAlign="center"
+        verticalAlign="middle"
+        style={{ height: '100%' }}
+        >
+        <Grid.Column computer={8} mobile={16}> 
+          <Grid.Row>
+              It looks like you don't have any goals yet! 
+          </Grid.Row>
+          <Grid.Row>
+              <Button animated>
+                <Button.Content visible>Add goals</Button.Content>
+                <Button.Content hidden>
+                  <Icon name='plus' />
+                </Button.Content>
+              </Button>
+          </Grid.Row>
+        </Grid.Column>
+        </Grid>
+      // </div>
     )
   }
 
@@ -86,7 +105,7 @@ class IncubatorPage extends React.Component {
         <Grid centered>
           <Grid.Column computer={8} mobile={16}>
             <Scrollbars autoHide style={{ height: '75vh' }}>
-              {Object.keys(this.props.incubatorState.userGoals) 
+              {Object.keys(this.props.incubatorState.userGoals).length > 0
                 ? Object.keys(this.props.incubatorState.userGoals).map(activity => (
                 <UserGoalsList
                   key={activity}
@@ -143,6 +162,7 @@ const mapDispatchToProps = dispatch => (
   {
     homePageActions: bindActionCreators(homePageActions, dispatch),
     incubatorActions: bindActionCreators(incubatorActions, dispatch),
+    squaddieActions: bindActionCreators(squaddieActions, dispatch),
   }
 );
 
