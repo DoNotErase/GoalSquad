@@ -13,7 +13,8 @@ export const getDefaultGoals = () => (
       })
       .catch((err) => {
         if (err.response.status === 401) {
-          axios.get('/');
+          window.location.href = '/';
+          alert('Sorry! Please log in.');
         }
       })
   )
@@ -31,7 +32,8 @@ export const submitUserGoal = (goalID, deadline, points) => (
       })
       .catch((err) => {
         if (err.response.status === 401) {
-          axios.get('/');
+          window.location.href = '/';
+          alert('Sorry! Please log in.');
         }
       })
   )
@@ -53,7 +55,8 @@ export const submitCustomGoal = (goalName, goalActivity, goalAmount, deadline, p
       })
       .catch((err) => {
         if (err.response.status === 401) {
-          axios.get('/');
+          window.location.href = '/';
+          alert('Sorry! Please log in.');
         }
       })
   )

@@ -311,7 +311,7 @@ module.exports.getAllSquaddies = async (id) => {
   const userSquaddies = await db.queryAsync(`SELECT * FROM user_monster WHERE user_id = ${userID}`);
 
   userSquaddies.forEach((squaddie) => {
-    allSquaddies[squaddie.monster_id].user = squaddie;
+    allSquaddies[squaddie.monster_id - 1].user = squaddie;
   });
 
   return allSquaddies;
@@ -437,12 +437,21 @@ module.exports.getYardSquaddiesByID = async (userid) => {
   }
 };
 
-module.exports.updateYardSquaddie = async (monsterID) => {
+module.exports.updateYardSquaddie = async (userMonsterID) => {
   try {
-    const query = `UPDATE user_monster SET user_monster_yard = !user_monster_yard WHERE user_monster_id = '${monsterID}'`;
+    console.log(userMonsterID);
+    const query = `UPDATE user_monster SET user_monster_yard = !user_monster_yard WHERE user_monster_id = '${userMonsterID}'`;
     return await db.queryAsync(query);
   } catch (err) {
     throw new Error('error updating yardsquaddie');
   }
   // opposite of yard status (0 or 1)
+};
+
+module.exports.renameSquaddie = async (userMonsterID, newName) => {
+  try {
+    return await db.queryAsync(`UPDATE user_monster SET user_monster_new_name = '${newName}' WHERE user_monster_id = ${userMonsterID}`);
+  } catch (err) {
+    throw new Error('error renaming squaddie');
+  }
 };

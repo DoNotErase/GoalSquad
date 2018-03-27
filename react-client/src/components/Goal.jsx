@@ -147,7 +147,7 @@ class Goal extends React.Component {
           className="fadeIn"
         >
           <Modal.Header>Select a Deadline</Modal.Header>
-          <Modal.Content >
+          <Modal.Content>
             <Modal.Description>
               <p>I want to complete this goal in:</p>
               <Grid relaxed>

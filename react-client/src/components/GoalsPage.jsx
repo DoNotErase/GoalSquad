@@ -2,6 +2,7 @@ import React from 'react';
 import { Accordion, Icon, Segment, Grid, Header, Divider } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Scrollbars } from 'react-custom-scrollbars';
 import PropTypes from 'prop-types';
 import * as goalsActions from '../actions/createGoalActions';
 import Goal from './Goal';
@@ -65,12 +66,14 @@ class GoalsPage extends React.Component {
         <Divider hidden />
         <Grid centered>
           <Grid.Column computer={8} mobile={16}>
-            <Header as="h3" className="white" textAlign="center">Available Categories</Header>
-            {listItems}
-            <Header as="h4" className="white" textAlign="center">
-              To free up categories, complete existing goals!
-            </Header>
-            <CustomGoal history={this.props.history} />
+            <Scrollbars autoHide style={{ height: '75vh' }}>
+              <Header as="h3" className="white" textAlign="center">Available Categories</Header>
+              {listItems}
+              <Header as="h4" className="white" textAlign="center">
+                To free up categories, complete existing goals!
+              </Header>
+              <CustomGoal history={this.props.history} />
+            </Scrollbars>
           </Grid.Column>
           <MainMenu history={this.props.history} />
         </Grid>
