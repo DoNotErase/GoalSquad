@@ -236,6 +236,7 @@ app.get('/squaddies', async (req, res) => {
   }
   try {
     const data = await db.getAllSquaddies(userID);
+    console.log(data);
     res.status(200).json(data);
   } catch (err) {
     res.status(500).send('Err in getting Squaddies');

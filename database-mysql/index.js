@@ -307,11 +307,15 @@ module.exports.getUserSquaddies = async (id) => {
 module.exports.getAllSquaddies = async (id) => {
   const userID = await getRightID(id);
   // returns a lsit of all squaddies but with null info for ones a user hasn't yet earned
-  const query = 'SELECT monster.*, user_monster.* FROM monster LEFT JOIN user_monster ON ' +
-    `monster.monster_id = user_monster.monster_id WHERE user_id = '${userID}' OR user_id IS NULL;`;
+  const allSquaddies = await db.queryAsync('SELECT * FROM monster');
+  const userSquaddies = await db.queryAsync(`SELECT * FROM user_monster WHERE user_id = ${userID}`);
 
-  const squaddies = db.queryAsync(query);
-  return squaddies;
+  userSquaddies.forEach((squaddie) => {
+    allSquaddies[squaddie.monster_id].user = squaddie;
+  });
+  console.log(allSquaddies);
+
+  return allSquaddies;
 };
 
 module.exports.newUserLifetimeDistance = async (id, distance) => {

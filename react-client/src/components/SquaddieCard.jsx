@@ -17,15 +17,10 @@ class SquaddieCard extends React.Component {
     this.close = this.close.bind(this);
   }
 
-  // addSquaddieToYard() {
-
-  // }
-
   show(dimmer, size) { this.setState({ dimmer, size, open: true }); }
   close() { this.setState({ open: false }); }
 
   render() {
-
     const { open, dimmer, size } = this.state;
     const { squaddie } = this.props;
     return (
@@ -35,7 +30,7 @@ class SquaddieCard extends React.Component {
           <Card
             color="orange"
             raised
-            image={squaddie.user_id ? squaddie.monster_icon : './assets/misc/logo.png'}
+            image={squaddie.user ? squaddie.monster_icon : './assets/misc/logo.png'}
             description={squaddie.monster_name}
             onClick={() => this.show(true, 'tiny')}
             className="squaddieicon"
@@ -50,8 +45,8 @@ class SquaddieCard extends React.Component {
       >
         <Modal.Content style={{ background: 'transparent' }}>
           <Card centered>
-            <Image {/* change default image from logo? */}
-              src={squaddie.user_id ? squaddie.monster_pic : './assets/misc/logo.png'}
+            <Image
+              src={squaddie.user ? squaddie.monster_pic : './assets/misc/logo.png'}
               style={{ backgroundImage: styles.cardBackground }}
             />
             <Card.Content>
@@ -59,11 +54,11 @@ class SquaddieCard extends React.Component {
                 {squaddie.monster_name}
               </Card.Header>
               <Card.Description>
-                {squaddie.user_id ? squaddie.monster_description : 'Complete goals to unlock this monster!'}
+                {squaddie.user ? squaddie.monster_description : 'Complete goals to unlock this monster!'}
               </Card.Description>
             </Card.Content>
             <Card.Content extra>
-              { squaddie.user_id ?
+              { squaddie.user ?
                 <Button
                   inverted
                   floated="right"
