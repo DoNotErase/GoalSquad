@@ -310,11 +310,7 @@ module.exports.getAllSquaddies = async (id) => {
   const allSquaddies = await db.queryAsync('SELECT * FROM monster');
   const userSquaddies = await db.queryAsync(`SELECT * FROM user_monster WHERE user_id = ${userID}`);
 
-  console.log(allSquaddies);
-  console.log(userSquaddies);
-
   userSquaddies.forEach((squaddie) => {
-    console.log(squaddie);
     allSquaddies[squaddie.monster_id - 1].user = squaddie;
   });
 
@@ -450,4 +446,12 @@ module.exports.updateYardSquaddie = async (userMonsterID) => {
     throw new Error('error updating yardsquaddie');
   }
   // opposite of yard status (0 or 1)
+};
+
+module.exports.renameSquaddie = async (userMonsterID, newName) => {
+  try {
+    return await db.queryAsync(`UPDATE user_monster SET user_monster_new_name = '${newName}' WHERE user_monster_id = ${userMonsterID}`);
+  } catch (err) {
+    throw new Error('error renaming squaddie');
+  }
 };

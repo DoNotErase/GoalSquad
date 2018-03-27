@@ -50,6 +50,7 @@ class DeetsPage extends React.Component {
     if (Object.keys(deets).length === 0) {
       return (<div />);
     }
+    console.log(this.props.state.user);
     return (
       <div className="deetspage">
         <Header as="h1" className="white" textAlign="right">Deets</Header>

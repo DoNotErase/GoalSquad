@@ -109,7 +109,7 @@ class UserGoal extends React.Component {
   }
 
   makeUpdateButton() {
-    if (this.props.goal.goal_difficulty === 'custom' || !this.props.state.user.fitbit_id) {
+    if ((this.props.goal.goal_difficulty === 'custom' || !this.props.state.user.fitbit_id) && !this.props.goal.user_goal_concluded) {
       return (
         <Button basic color="blue" onClick={(() => { this.setState({ open: true }); })}> Update Progress </Button>
       );

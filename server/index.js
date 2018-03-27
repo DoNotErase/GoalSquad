@@ -266,15 +266,13 @@ app.patch('/yardSquad', isAuthorized, async (req, res) => {
   }
 });
 
-app.patch('/updateCustom', isAuthorized, async (req, res) => {
+app.patch('/squaddie', isAuthorized, async (req, res) => {
   try {
-    await db.updateCustomGoalProgress(req.body.goalID, req.body.newCurrent);
-    await db.updateGoalStatuses();
-    res.end();
+    await db.renameSquaddie(req.body.monID, req.body.name);
   } catch (err) {
     res.status(500).send(err);
   }
-});
+})
 
 /** *******************GOAL STUFF**************************** */
 

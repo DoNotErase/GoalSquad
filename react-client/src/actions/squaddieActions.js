@@ -22,6 +22,7 @@ export const getUserSquaddies = () => (
         dispatch(setSquaddies(res.data));
       })
       .catch((err) => {
+        console.log(err);
         if (err.response.status === 401) {
           window.location.href = '/';
           alert('Sorry! Please log in.');
@@ -57,6 +58,23 @@ export const toggleYardStatus = userMonsterID => (
         if (err.response.status === 401) {
           window.location.href = '/';
           alert('Sorry! Please log in.');
+        }
+      })
+  )
+);
+
+export const changeName = (userMonsterID, newName) => (
+  dispatch => (
+    axios.patch('/squaddie', {
+      monID: userMonsterID,
+      name: newName,
+    })
+      .catch((err) => {
+        if (err.response.status === 401) {
+          window.location.href = '/';
+          alert('Sorry! Please log in.');
+        } else {
+          console.log(err);
         }
       })
   )
