@@ -14,11 +14,13 @@ class SquaddieCard extends React.Component {
     super(props);
     this.state = {
       open: false,
+      yardstatus: false,
     };
     this.show = this.show.bind(this);
     this.close = this.close.bind(this);
   }
   toggleSquaddieToYard(monID) {
+    this.setState({ yardstatus: !this.state.yardstatus });
     this.props.squaddieActions.toggleYardStatus(monID);
   }
 
@@ -36,7 +38,7 @@ class SquaddieCard extends React.Component {
       <Modal
         trigger={
           <Card
-            color={squaddie.user && squaddie.user.user_monster_yard ? 'orange' : null}
+            color={(squaddie.user && squaddie.user.user_monster_yard) || yardstatus ? 'orange' : null}
             raised
             image={squaddie.user ? squaddie.monster_icon : './assets/squaddies/unknown-squaddie-icon.png'}
             description={squaddie.monster_name}
@@ -70,8 +72,8 @@ class SquaddieCard extends React.Component {
                 <Button
                   inverted
                   floated="right"
-                  color={squaddie.user.user_monster_yard ? 'red' : 'green'}
-                  content={squaddie.user.user_monster_yard ? 'Remove From Yard' : 'Add to Yard'}
+                  color={squaddie.user.user_monster_yard || yardstatus ? 'red' : 'green'}
+                  content={squaddie.user.user_monster_yard || yardstatus ? 'Remove From Yard' : 'Add to Yard'}
                   onClick={() => { this.toggleSquaddieToYard(squaddie.user.user_monster_id); }}
                 /> : <div />
               }
