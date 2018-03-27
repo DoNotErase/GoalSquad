@@ -32,7 +32,6 @@ class SquaddieCard extends React.Component {
       open, dimmer, size, yardstatus,
     } = this.state;
     const { squaddie } = this.props;
-    console.log(squaddie)
     return (
 
       <Modal
