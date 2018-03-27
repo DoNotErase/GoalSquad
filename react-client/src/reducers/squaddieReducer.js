@@ -22,7 +22,6 @@ const squadReducer = (state = squadState, action) => {
         ...state,
         yardSquaddies: action.payload,
       };
-
     }
     default: {
       return state;

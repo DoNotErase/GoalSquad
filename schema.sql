@@ -115,7 +115,9 @@ VALUES
   ('Pruny', './assets/squaddies/pruny.png', './assets/squaddies/pruny-icon.png', 'This is a sample description of Pruny.'),
   ('Bard', './assets/squaddies/bard.png', './assets/squaddies/bard-icon.png', 'This is a sample description of Bard.'),
   ('Squaggle', './assets/squaddies/squaggle.png', './assets/squaddies/squaggle-icon.png', 'This is a sample description of Squaggle.'),
-  ('Kow', './assets/squaddies/kow.png', './assets/squaddies/kow-icon.png', 'This is a sample description of Kow.');
+  ('Kow', './assets/squaddies/kow.png', './assets/squaddies/kow-icon.png', 'This is a sample description of Kow.'),
+  ('Ploppo', './assets/squaddies/ploppo.png', './assets/squaddies/ploppo-icon.png', 'This is a sample description of Ploppo.'),
+  ('Geldica', './assets/squaddies/geldica.png', './assets/squaddies/geldica-icon.png', 'This is a sample description of Geldica.');
 
 insert into egg
   (egg_name)
@@ -124,7 +126,9 @@ VALUES
   ('pruny_egg'),
   ('bard_egg'),
   ('squaggle_egg'),
-  ('kow_egg');
+  ('kow_egg'),
+  ('ploppo_egg'),
+  ('geldica_egg');
 
 insert into goal 
   (goal_name, goal_activity, goal_amount, goal_difficulty, goal_class, goal_points, goal_timedivisor)

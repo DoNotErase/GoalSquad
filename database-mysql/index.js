@@ -309,7 +309,6 @@ module.exports.getAllSquaddies = async (id) => {
   // returns a lsit of all squaddies but with null info for ones a user hasn't yet earned
   const query = 'SELECT monster.*, user_monster.* FROM monster LEFT JOIN user_monster ON ' +
     `monster.monster_id = user_monster.monster_id WHERE user_id = '${userID}' OR user_id IS NULL;`;
-
   const squaddies = db.queryAsync(query);
   return squaddies;
 };
