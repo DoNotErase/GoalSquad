@@ -13,30 +13,22 @@ class Fight extends React.Component {
       endpoint: 'http://localhost:8081', // change to reducer later
     };
   }
-
   componentDidMount() {
-  }
-  render() {
     const socket = socketIOClient(this.state.endpoint);
-    console.log('this.state.endpoint', this.state.endpoint);
-    // console.log('socket', socket);
-    // socket.emit('news', () => {
-    //   console.log('data', 'hello');
-    // });
-    socket.on('connect', () => {
-      // console.log('socket stuff', socket.id);
-    });
-    socket.on('broadcast', (data) => {
-      // console.log('broadcast', data);
-    });
+    socket.on('found room', room => this.setState({ room: room }));
+  }
+  hostGame() {
+    const socket = socketIOClient(this.state.endpoint);
 
-    socket.on('second', (room) => {
-      console.log('room info', room);
-    });
+  }
+
+  render() {
     return (
       <div>
         <div>socket page</div>
         <div>{ this.state.endpoint }</div>
+        <button onClick={() => this.emitMessage()}>send</button>
+        <button onClick={() => this.hostGame()}>host</button>
       </div>
     );
   }

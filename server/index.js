@@ -431,13 +431,27 @@ io.on('connection', (socket) => {
   // socket.broadcast.emit('broadcast', 'hello friends!');
   // socket.emit('rooms', io.sockets.apadter.rooms);
   console.log('ROOMS', io.sockets.adapter.rooms);
+  // socket.leave(socket.id);
+
+  // TODO work on room algorithm
+  let inroom = false;
   for (const room in io.sockets.adapter.rooms) {
-    if (io.sockets.adapter.rooms[room].length < 2) {
+    if (io.sockets.adapter.rooms[room].length < 2 && !inroom) {
+      // console.log(room);
       socket.join(room);
-      socket.leave(socket.id);
-      socket.to(room).emit('second', room);
+      inroom = true;
+      console.log('people in room', io.sockets.adapter.rooms[room]);
+      socket.emit('found room', room);
     }
   }
+  // for (const room in io.sockets.adapter.rooms) {
+  //   if (io.sockets.adapter.rooms[room].length < 2 && inroom === false) {
+  //     socket.join(room);
+  //     socket.leave(socket.id);
+  //     inroom = true;
+  //     socket.to(room).emit('second', room);
+  //   }
+  // }
   // console.log('rooms', io.sockets.adapter.rooms);
   // socket.emit('news', { hello: 'world' });
   // socket.on('attack', (attack) => {
