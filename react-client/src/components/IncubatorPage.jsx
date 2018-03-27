@@ -40,10 +40,16 @@ class IncubatorPage extends React.Component {
         >
         <Grid.Column computer={8} mobile={16}> 
           <Grid.Row>
-              It looks like you don't have any goals yet! 
+              Oh no! 
           </Grid.Row>
           <Grid.Row>
-              <Button animated>
+            <Image size='small' src='./assets/squaddies/squaggle.png' centered/>
+          </Grid.Row>
+          <Grid.Row>
+              It looks like you don't have any goals yet! Let's fix that.
+          </Grid.Row>
+          <Grid.Row>
+              <Button onClick={() => { this.props.history.push('/goals'); }} animated>
                 <Button.Content visible>Add goals</Button.Content>
                 <Button.Content hidden>
                   <Icon name='plus' />
