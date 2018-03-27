@@ -279,8 +279,22 @@ app.get('/yardSquad', async (req, res) => {
 });
 
 app.patch('/yardSquad', async (req, res) => {
-
+  try {
+    await db.updateYardSquaddie(req.monster_id);
+  } catch (err) {
+    res.status(500).send(err);
+  }
 });
+
+// app.patch('/updateCustom', async (req, res) => {
+//   try {
+//     await db.updateCustomGoalProgress(req.body.goalID, req.body.newCurrent);
+//     await db.updateGoalStatuses();
+//     res.end();
+//   } catch (err) {
+//     res.status(500).send(err);
+//   }
+// });
 
 /** *******************GOAL STUFF**************************** */
 

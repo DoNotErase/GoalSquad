@@ -434,7 +434,12 @@ module.exports.getYardSquaddiesByID = async (userid) => {
   }
 };
 
-module.exports.updateYardSquaddie = async () => {
-  const updateYardStatus = 'UPDATE user_monster SET user_monster_yard' 
+module.exports.updateYardSquaddie = async (monsterID) => {
+  try {
+    const query = `UPDATE user_monster SET user_monster_yard = !user_monster_yard WHERE monster_id = '${monsterID}'`;
+    return await db.queryAsync(query);
+  } catch (err) {
+    throw new Error('error updating yardsquaddie');
+  }
   // opposite of yard status (0 or 1)
 };

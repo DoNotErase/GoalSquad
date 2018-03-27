@@ -10,6 +10,11 @@ const setYardSquaddies = yardSquaddieData => ({
   payload: yardSquaddieData,
 });
 
+const toggleYardSquaddies = squaddieData => ({
+  type: 'TOGGLE_YARD_STATUS',
+  payload: squaddieData,
+});
+
 export const getUserSquaddies = () => (
   dispatch => (
     axios.get('/squaddies')
@@ -34,11 +39,11 @@ export const getYardSquaddies = () => (
   )
 );
 
-export const toggleYardStatus = () => (
+export const toggleYardStatus = monsterID => (
   dispatch => (
-    axios.patch('/yardSquad')
+    axios.patch('/yardSquad', { monID: monsterID })
       .then((res) => {
-        dispatch(res.data);
+        dispatch(toggleYardSquaddies(res.data));
       })
       .catch((err) => {
         console.log(err);
