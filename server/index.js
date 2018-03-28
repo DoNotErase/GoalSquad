@@ -436,12 +436,12 @@ app.listen(8080, () => {
 const connections = [];
 const rooms = []; // change to object
 io.on('connection', (socket) => {
-  console.log('new client connected', socket.id);
+  // console.log('new client connected', socket.id);
   connections.push(socket);
   // socket.join('my room');
   // socket.broadcast.emit('broadcast', 'hello friends!');
   // socket.emit('rooms', io.sockets.apadter.rooms);
-  console.log('ROOMS', io.sockets.adapter.rooms);
+  // console.log('ROOMS', io.sockets.adapter.rooms);
   // socket.leave(socket.id);
 
   // notice for sockets disconnecting
@@ -450,22 +450,25 @@ io.on('connection', (socket) => {
   });
   // user hosts game - connect to room random room and add room to list of rooms
 
-  socket.on('host', () => {
+  socket.on('host', (username) => {
     const roomName = generateName();
     socket.join(roomName);
-    rooms.push(roomName); // change to object and if room(obj[key]) exists then make another room
-    io.in(roomName).emit('joining', roomName);
+    const roomObj = {
+      roomName: roomName,
+      player1: username,
+    };
+    rooms.push(roomObj);
+    io.in(roomName).emit('hosting', roomObj);
   });
 
-  socket.on('join', () => {
+  socket.on('join', (username) => {
     for (let i = 0; i < rooms.length; i += 1) {
-      let room = rooms[i];
+      let room = rooms[i].roomName;
       if (io.sockets.adapter.rooms[room].length < 2) {
         socket.join(room);
-        rooms.splice(i, 1);
-        i = rooms.length;
-        console.log('room', room);
-        io.in(room).emit('joining', room);
+        rooms[i].player2 = username;
+        io.in(room).emit('joining', rooms[i]);
+        i = rooms.length; // ends loop
       }
     }
   });

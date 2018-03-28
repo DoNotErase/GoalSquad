@@ -25,7 +25,7 @@ const MainMenu = props => (
         <Card raised image={`${src}goals_icon.png`} onClick={() => { props.history.push('/goals'); }} />
         <Card raised image={`${src}deets_icon.png`} onClick={() => { props.history.push('/deets'); }} />
         <Card raised image={`${src}squad_icon.png`} onClick={() => { props.history.push('/squad'); }} />
-        <Card raised image={`${src}battle_icon.png`} onClick={() => { props.history.push('/fight'); }} />
+        <Card raised image={`${src}battle_icon.png`} onClick={() => { props.history.push('/battle'); }} />
         <Card raised image={`${src}logout_icon.png`} onClick={Link} href="/logout" />
       </Card.Group>
     </Modal.Content>

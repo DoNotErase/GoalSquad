@@ -9,7 +9,7 @@ import YardPage from './YardPage';
 import GoalsPage from './GoalsPage';
 import DeetsPage from './DeetsPage';
 import SquadPage from './SquadPage';
-import FightPage from './FightPage';
+import BattleLobbyPage from './BattleLobbyPage';
 
 const Routes = () => (
   <Router history={browserHistory}>
@@ -21,7 +21,7 @@ const Routes = () => (
       <Route path="/squad" component={SquadPage} />
       <Route path="/yard" component={YardPage} />
       <Route path="/goals" component={GoalsPage} />
-      <Route path="/fight" component={FightPage} />
+      <Route path="/battle" component={BattleLobbyPage} />
     </Switch>
   </Router>
 );

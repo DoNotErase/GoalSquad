@@ -1,21 +1,21 @@
 const fightState = {
   user: {},
-  socket: {},
   monster: {},
 };
 
 const fightReducer = (state = fightState, action) => {
   switch (action.type) {
-    case 'GET_USER_INFO': {
+    case 'GET_LOBBY_INFO': {
+      console.log('action.payload', action.payload);
       return {
         ...state,
         user: action.payload,
       };
     }
-    case 'GET_SOCKET_ROOM': {
+    case 'CHOOSE_FIGHTER': {
       return {
         ...state,
-        socket: action.payload,
+        monster: action.payload,
       };
     }
     default: {

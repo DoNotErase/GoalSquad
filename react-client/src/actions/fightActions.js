@@ -1,14 +1,30 @@
 import axios from "axios/index";
 
-export const setRoomName = roomName => ({
-  type: 'GET_SOCKET_ROOM',
+export const setLobbyInfo = roomInfo => ({
+  type: 'GET_LOBBY_INFO',
   payload: {
-    socketRoom: roomName,
+    roomName: roomInfo.roomName,
+    player1: roomInfo.player1,
+    player2: roomInfo.player2,
   },
 });
 
-export const getSocketRoom = (roomName) => {
+export const getLobbyInfo = (roomInfo) => {
   return (dispatch) => {
-    dispatch(setRoomName(roomName));
+    dispatch(setLobbyInfo(roomInfo));
+  };
+};
+
+export const setMonsterFighter = monsterUserID => ({
+  type: 'CHOOSE_FIGHTER',
+  payload: {
+    monster: monsterUserID,
+  },
+});
+
+
+export const getMonsterID = (monsterUserID) => {
+  return (dispatch) => {
+    dispatch(setMonsterFighter(monsterUserID));
   };
 };
