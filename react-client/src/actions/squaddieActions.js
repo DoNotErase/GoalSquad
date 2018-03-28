@@ -15,7 +15,21 @@ const toggleYardSquaddies = squaddieData => ({
   payload: squaddieData,
 });
 
-export const getSquaddiePosition = position => ({ type: 'GET_POSITION', payload: position });
+export const saveSquaddiePosition = position => (
+  dispatch => (
+    axios.patch('/saveposition', { pos: position })
+      .then((res) => {
+        dispatch(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.response.status === 401) {
+          window.location.href = '/';
+          alert('Sorry! Please log in.');
+        }
+      })
+  )
+)
 
 export const getUserSquaddies = () => (
   dispatch => (
