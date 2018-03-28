@@ -6,6 +6,9 @@ const mainState = {
 
 const mainReducer = (state = mainState, action) => {
   switch (action.type) {
+    case 'RESET': {
+      return mainState;
+    }
     case 'USER_LOGIN': {
       return {
         ...state,

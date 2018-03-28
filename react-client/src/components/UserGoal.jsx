@@ -109,7 +109,8 @@ class UserGoal extends React.Component {
   }
 
   makeUpdateButton() {
-    if ((this.props.goal.goal_difficulty === 'custom' || !this.props.state.user.fitbit_id) && !this.props.goal.user_goal_concluded) {
+    if (!this.props.goal.user_goal_concluded &&
+      (this.props.goal.goal_difficulty === 'custom' || !this.props.state.user.fitbit_id)) {
       return (
         <Button basic color="blue" onClick={(() => { this.setState({ open: true }); })}> Update Progress </Button>
       );
@@ -141,11 +142,14 @@ class UserGoal extends React.Component {
           <Grid.Row columns={2}>
             <Grid.Column >
               <Header as="h4">{goal.goal_name}</Header>
-              {this.makeDeadLineMessage()} {/* generate time until expiration or '' if no deadline */}
+              {/* generate time until expiration or '' if no deadline */}
+              {this.makeDeadLineMessage()}
+              {/* generate button if non-fitbit user, for custom goals, if goal not concluded */}
               {this.makeUpdateButton()}
             </Grid.Column>
-            <Grid.Column >
-              {this.goalStatus()} {/* show amount of activity left or button to close out old goal */}
+            <Grid.Column>
+              {/* show amount of activity left or button to close out old goal */}
+              {this.goalStatus()}
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -200,7 +204,9 @@ class UserGoal extends React.Component {
 }
 
 UserGoal.propTypes = {
-  state: PropTypes.objectOf(PropTypes.object).isRequired,
+  state: PropTypes.shape({
+    user: PropTypes.object,
+  }).isRequired,
   goal: PropTypes.shape({
     goal_id: PropTypes.number,
     user_goal_id: PropTypes.number,
@@ -209,6 +215,7 @@ UserGoal.propTypes = {
     goal_points: PropTypes.string,
     goal_timedivisor: PropTypes.number,
     goal_activity: PropTypes.string,
+    user_goal_concluded: PropTypes.number, // really bool 0/1
   }).isRequired,
   incubatorActions: PropTypes.objectOf(PropTypes.func).isRequired,
 };

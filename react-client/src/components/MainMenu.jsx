@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal, Icon, Card } from 'semantic-ui-react';
+import { Button, Modal, Icon, Link, Card } from 'semantic-ui-react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -29,14 +29,13 @@ const MainMenu = props => (
         <Card raised image={`${src}goals_icon.png`} onClick={() => { props.history.push('/goals'); }} />
         <Card raised image={`${src}deets_icon.png`} onClick={() => { props.history.push('/deets'); }} />
         <Card raised image={`${src}squad_icon.png`} onClick={() => { props.history.push('/squad'); }} />
-        <Card raised image={`${src}logout_icon.png`} onClick={props.actions.logout} />
+        <Card raised image={`${src}logout_icon.png`} as={Link} href="/logout" />
       </Card.Group>
     </Modal.Content>
   </Modal>
 );
 
 MainMenu.propTypes = {
-  actions: PropTypes.objectOf(PropTypes.func).isRequired,
   history: PropTypes.shape({
     action: PropTypes.string,
     block: PropTypes.func,
@@ -52,8 +51,12 @@ MainMenu.propTypes = {
   }).isRequired,
 };
 
+const mapStateToProps = state => (
+  { state: state.main }
+);
+
 const mapDispatchToProps = dispatch => (
   { actions: bindActionCreators(actions, dispatch) }
 );
 
-export default connect(null, mapDispatchToProps)(MainMenu);
+export default connect(mapStateToProps, mapDispatchToProps)(MainMenu);

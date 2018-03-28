@@ -11,11 +11,12 @@ import * as squadActions from '../actions/squaddieActions';
 
 class SquadPage extends React.Component {
   componentDidMount() {
-    this.props.squadActions.getUserSquaddies();
+    if (!this.props.squadState.squaddies.length || this.props.squadState.needsUpdate) {
+      this.props.squadActions.getUserSquaddies();
+    }
   }
 
   render() {
-    console.log(this.props.squadState.squaddies);
     return (
       <div className="squadpage">
         <Header as="h1" className="white" textAlign="right">Your Squad</Header>
@@ -42,7 +43,11 @@ class SquadPage extends React.Component {
 }
 
 SquadPage.propTypes = {
-  squadState: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.object)).isRequired,
+  squadState: PropTypes.shape({
+    squaddies: PropTypes.arrayOf(PropTypes.object),
+    yardSquaddies: PropTypes.arrayOf(PropTypes.object),
+    needsUpdate: PropTypes.bool,
+  }).isRequired,
   squadActions: PropTypes.objectOf(PropTypes.func).isRequired,
   history: PropTypes.shape({
     action: PropTypes.string,

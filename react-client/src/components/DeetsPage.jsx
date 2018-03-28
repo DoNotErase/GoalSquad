@@ -12,22 +12,24 @@ class DeetsPage extends React.Component {
     super(props);
 
     this.makeDisconnectButton = this.makeDisconnectButton.bind(this);
-    if (!props.state.needsUpdate) {
+    if (props.state.needsUpdate) {
       props.actions.fetchStats();
       props.actions.turnOffUpdate();
     }
+    this.makeDisconnectButton = this.makeDisconnectButton.bind(this);
   }
 
   makeDisconnectButton() {
     if (this.props.state.user.fitbit_id) {
       return (
-        <Button onClick={() => {
-          this.props.actions.deauthorizeFitbit();
-          this.props.actions.logout();
-        }}
-        >
-          Disconnect Fitbit
-        </Button>
+        <a href="/logout" >
+          <Button onClick={() => {
+            this.props.actions.deauthorizeFitbit();
+          }}
+          >
+            Disconnect Fitbit
+          </Button>
+        </a>
       );
     }
     return <div />;

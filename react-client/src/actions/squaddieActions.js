@@ -53,6 +53,7 @@ export const toggleYardStatus = userMonsterID => (
   dispatch => (
     axios.patch('/yardSquad', { monID: userMonsterID })
       .then((res) => {
+        console.log(res.data); // whats going on here (returning all squaddies on patch?)
         dispatch(toggleYardSquaddies(res.data));
       })
       .catch((err) => {
@@ -66,7 +67,7 @@ export const toggleYardStatus = userMonsterID => (
 );
 
 export const changeName = (userMonsterID, newName) => (
-  dispatch => (
+  () => (
     axios.patch('/squaddie', {
       monID: userMonsterID,
       name: newName,

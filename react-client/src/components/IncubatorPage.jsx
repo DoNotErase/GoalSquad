@@ -18,7 +18,7 @@ class IncubatorPage extends React.Component {
     }
     // get goals if user is logged in and there are no goals or is flagged for update
     if (this.props.state.user &&
-      (!this.props.incubatorState.userGoals || this.props.state.needsUpdate)) {
+      (!this.props.incubatorState.userGoals || this.props.incubatorState.needsUpdate)) {
       this.props.incubatorActions.getUserGoals();
     }
   }
@@ -58,10 +58,13 @@ class IncubatorPage extends React.Component {
 
 IncubatorPage.propTypes = {
   state: PropTypes.shape({
-    needsUpdate: PropTypes.bool,
+    needsUpdate: PropTypes.bool, // really bool 0/1
     user: PropTypes.object,
   }).isRequired,
-  incubatorState: PropTypes.objectOf(PropTypes.object).isRequired,
+  incubatorState: PropTypes.shape({
+    userGoals: PropTypes.object,
+    needsUpdate: PropTypes.bool,
+  }).isRequired,
   incubatorActions: PropTypes.objectOf(PropTypes.func).isRequired,
   homePageActions: PropTypes.objectOf(PropTypes.func).isRequired,
   history: PropTypes.shape({

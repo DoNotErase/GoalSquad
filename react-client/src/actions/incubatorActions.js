@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { routerActions } from 'react-router-redux';
 
 export const setUserGoals = (userGoals) => {
   const sortedGoals = {
@@ -55,6 +54,7 @@ export const hatchEgg = extraXP => (
     axios.post('/hatchEgg', { xp: extraXP })
       .then((res) => {
         dispatch(newSquaddie(res.data));
+        dispatch({ type: 'SQUADDIE_UPDATE' });
       })
       .catch((err) => {
         if (err.response.status === 401) {
@@ -69,6 +69,8 @@ export const markGoalSuccess = userGoalID => (
   dispatch => (
     axios.patch('/completeGoal', { goalID: userGoalID })
       .then((res) => {
+        // pass in goal index within activity to splice out
+        // add xp to egg directly, need points, maybe separate call from userGoal
         dispatch(getUserGoals(userGoalID));
         dispatch(fetchEggStatus(res.data)); // because xp was added
       })
@@ -85,6 +87,7 @@ export const markGoalFailure = userGoalID => (
   dispatch => (
     axios.patch('/failGoal', { goalID: userGoalID })
       .then(() => {
+        // pass in goal index within activity to splice out
         dispatch(getUserGoals(userGoalID));
       })
       .catch((err) => {
@@ -100,6 +103,7 @@ export const submitProgress = (userGoalID, newCurrent) => (
   dispatch => (
     axios.patch('/updateCustom', { goalID: userGoalID, newCurrent })
       .then(() => {
+        // take this out, update local
         dispatch(getUserGoals(userGoalID));
       })
       .catch((err) => {

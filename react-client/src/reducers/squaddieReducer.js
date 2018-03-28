@@ -5,6 +5,7 @@ const squadState = {
     x: 0,
     y: 0,
   },
+  needsUpdate: true,
 };
 
 const squadReducer = (state = squadState, action) => {
@@ -13,6 +14,13 @@ const squadReducer = (state = squadState, action) => {
       return {
         ...state,
         squaddies: action.payload,
+        needsUpdate: false,
+      };
+    }
+    case 'SQUADDIE_UPDATE': {
+      return {
+        ...state,
+        needsUpdate: true,
       };
     }
     case 'TOGGLE_YARD_STATUS': {
@@ -25,6 +33,7 @@ const squadReducer = (state = squadState, action) => {
       return {
         ...state,
         yardSquaddies: action.payload,
+        needsUpdate: false,
       };
     }
     case 'GET_POSITION': {
