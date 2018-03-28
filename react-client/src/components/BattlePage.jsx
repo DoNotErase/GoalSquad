@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Grid, Header, Divider } from 'semantic-ui-react';
-import BattleInterface from './BattleInterface';
+import BattleInterfaceBottom from './BattleInterfaceBottom';
+import BattleInterfaceTop from './BattleInterfaceTop';
 import MainMenu from './MainMenu';
 
 class BattlePage extends React.Component {
@@ -16,8 +17,8 @@ class BattlePage extends React.Component {
         <Divider hidden />
         <Grid centered >
           <Grid.Column computer={8} mobile={16}>
-            <BattleInterface />
-            <BattleInterface />
+            <BattleInterfaceTop />
+            <BattleInterfaceBottom />
           </Grid.Column>
         </Grid>
         <MainMenu history={this.props.history} />
