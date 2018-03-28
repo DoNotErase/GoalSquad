@@ -175,7 +175,7 @@ class CustomGoal extends React.Component {
               <Icon name="dropdown" />
               Custom
             </Accordion.Title>
-            <Accordion.Content active="true">
+            <Accordion.Content active>
               <Segment.Group raised>
                 <Segment
                   compact
