@@ -9,6 +9,7 @@ const config = require('../config.js');
 const axios = require('axios');
 const path = require('path');
 const bcrypt = require('bcrypt-nodejs');
+const generateName = require('sillyname');
 
 const app = express();
 // http for streaming and .server for event listeners
@@ -425,25 +426,41 @@ app.listen(8080, () => {
 });
 
 /* *********************** socket io stuff ********************************** */
+const connections = [];
+const rooms = []; // change to object
 io.on('connection', (socket) => {
-  // console.log('new client connected', socket);
+  console.log('new client connected', socket.id);
+  connections.push(socket);
   // socket.join('my room');
   // socket.broadcast.emit('broadcast', 'hello friends!');
   // socket.emit('rooms', io.sockets.apadter.rooms);
   console.log('ROOMS', io.sockets.adapter.rooms);
   // socket.leave(socket.id);
 
-  // TODO work on room algorithm
-  let inroom = false;
-  for (const room in io.sockets.adapter.rooms) {
-    if (io.sockets.adapter.rooms[room].length < 2 && !inroom) {
-      // console.log(room);
-      socket.join(room);
-      inroom = true;
-      console.log('people in room', io.sockets.adapter.rooms[room]);
-      socket.emit('found room', room);
+  // notice for sockets disconnecting
+  socket.on('disconnect', () => {
+    console.log('Disconnected - ', socket.id);
+  });
+  // user hosts game - connect to room random room and add room to list of rooms
+
+  socket.on('host', () => {
+    const roomName = generateName();
+    socket.join(roomName);
+    rooms.push(roomName); // change to object and if room(obj[key]) exists then make another room
+    io.in(roomName).emit('hosting', roomName);
+  });
+
+  socket.on('join', () => {
+    for (let i = 0; i < rooms.length; i += 1) {
+      let room = rooms[i];
+      if (io.sockets.adapter.rooms[room].length < 2) {
+        socket.join(room);
+        rooms.splice(i, 1);
+        i = rooms.length;
+      }
     }
-  }
+  });
+  // TODO work on room algorithm
   // for (const room in io.sockets.adapter.rooms) {
   //   if (io.sockets.adapter.rooms[room].length < 2 && inroom === false) {
   //     socket.join(room);

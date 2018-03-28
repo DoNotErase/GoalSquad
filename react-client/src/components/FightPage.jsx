@@ -3,8 +3,11 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import socketIOClient from 'socket.io-client';
-// import * as goalsActions from "../actions/createGoalActions";
-// import * as incubatorActions from "../actions/incubatorActions";
+import * as fightActions from '../actions/fightActions';
+import SquadPage from './SquadPage';
+
+
+let socket;
 
 class Fight extends React.Component {
   constructor(props) {
@@ -12,33 +15,57 @@ class Fight extends React.Component {
     this.state = {
       endpoint: 'http://localhost:8081', // change to reducer later
     };
+    socket = socketIOClient('http://localhost:8081');
+    socket.on('hosting', (roomName) => {
+      this.props.fightActions.getSocketRoom(roomName);
+    });
   }
-  componentDidMount() {
-    const socket = socketIOClient(this.state.endpoint);
-    socket.on('found room', room => this.setState({ room: room }));
+  componentWillUnmount() {
+    socket.disconnect();
+    alert('Disconnecting Socket as component will unmount');
   }
   hostGame() {
-    const socket = socketIOClient(this.state.endpoint);
-
+    console.log('button clicked');
+    socket.emit('host', (data) => {
+      console.log(data);
+    });
+  }
+  joinGame() {
+    socket.emit('join', (data) => {
+      console.log(data);
+    })
   }
 
   render() {
-    return (
-      <div>
-        <div>socket page</div>
-        <div>{ this.state.endpoint }</div>
-        <button onClick={() => this.emitMessage()}>send</button>
-        <button onClick={() => this.hostGame()}>host</button>
-      </div>
-    );
+    if (this.props.fightState.socket.socketRoom) {
+      return (
+        <div>
+          <SquadPage />
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <div>socket page</div>
+          <div>{this.state.endpoint}</div>
+          <button onClick={() => this.hostGame()}>host</button>
+          <button onClick={() => this.joinGame()}>join</button>
+        </div>
+      );
+    }
   }
 }
 
 const mapDispatchToProps = dispatch => (
   {
-    // goalsActions: bindActionCreators(goalsActions, dispatch),
-    // incubatorActions: bindActionCreators(incubatorActions, dispatch),
+    fightActions: bindActionCreators(fightActions, dispatch),
   }
 );
 
-export default connect(null, mapDispatchToProps)(Fight);
+const mapStateToProps = state => (
+  {
+    fightState: state.fight,
+  }
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Fight);
