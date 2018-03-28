@@ -18,15 +18,11 @@ class IncubatorPage extends React.Component {
     this.state = {
       count: 3,
       eggXP: 110,
+      firstTime: true,
+      eggWasClicked: false,
     };
     this.subtractFromCount = this.subtractFromCount.bind(this);
     this.getGoals = this.getGoals.bind(this);
-    if(this.props.incubatorState.egg.egg_xp >= 100) {
-      this.props.incubatorActions.hatchEgg(this.props.incubatorState.egg.user_egg_id, this.props.incubatorState.egg.egg_xp - 100);
-      this.props.yardActions.fetchSquaddies();
-      this.props.yardActions.fetchSquaddie();
-      this.forceUpdate();
-    }
   }
 
   componentDidMount() {
@@ -80,20 +76,27 @@ class IncubatorPage extends React.Component {
 
   subtractFromCount() {
     console.log(this.state.count)
-    if(this.state.count === 0) {
+    if(this.state.count === 0) {                                                                                                                                                                  
       this.setState({count: 3});
-      this.forceUpdate();
     }
-    this.setState((prevState, props) => {
+    this.setState(prevState => {
       return {count: prevState.count - 1};
     })
   }
 
+  hatchTheEggDrWu() {
+    this.props.incubatorActions.hatchEgg(this.props.incubatorState.egg.user_egg_id, this.props.incubatorState.egg.egg_xp - 100);  
+    setTimeout(() => {
+      this.props.yardActions.fetchSquaddies();
+    }, 2000);
+    this.setState({firstTime: false});
+  }
+
   openEggModal() {
     const classByNumbers = {1: 'eggClass1', 2: 'eggClass2', 3: 'eggClass3'};
+    if(this.props.incubatorState.egg.egg_xp >= 100 && this.state.firstTime === true) this.hatchTheEggDrWu();
     return (
       this.props.incubatorState.egg.egg_xp >= 100 
-      // this.state.eggXP >= 100 
       ?
       <Modal
       trigger={<a><Image className="glowingEgg" src="./assets/icons/egg.png" centered/></a>}>
@@ -102,7 +105,7 @@ class IncubatorPage extends React.Component {
             {this.state.count === 0 ? <a><Image src={this.props.yardState.newSquaddie.monster_pic}/></a> : <a><Image size='medium' className={classByNumbers[this.state.count]} onClick={this.subtractFromCount} src='./assets/icons/egg.png' centered/></a>}
             <Card.Content>
             {this.state.count === 0 
-              ? <Card.Header>Your new squaddie is {this.props.yardState.monster_name}!</Card.Header>
+              ? <Card.Header>Your new squaddie is {this.props.yardState.newSquaddie.monster_name}!</Card.Header>
               : <Card.Header>Tap {this.state.count} {this.state.count === 1 ? 'more time' : 'more times'} to reveal your new squaddie!</Card.Header>
             }
             </Card.Content>
@@ -115,10 +118,6 @@ class IncubatorPage extends React.Component {
   }
 
   render() {
-    const styles = {
-      cardBackground: 'linear-gradient(to bottom, #faedc4, #ffebd8, #ffeff1, #fff8ff, #ffffff)'
-    };
-    const { open, dimmer, size } = this.state;
     return (
       <div className="incubatorpage">
         <Header as="h1" className="white" textAlign="right">Your Goals</Header>
