@@ -9,6 +9,7 @@ const config = require('../config.js');
 const axios = require('axios');
 const path = require('path');
 const bcrypt = require('bcrypt-nodejs');
+const generateName = require('sillyname');
 
 const app = express();
 // http for streaming and .server for event listeners
@@ -439,3 +440,60 @@ app.listen(8080, () => {
   console.log('listening on port 8080!');
 });
 
+/* *********************** socket io stuff ********************************** */
+const connections = [];
+const rooms = []; // change to object
+io.on('connection', (socket) => {
+  // console.log('new client connected', socket.id);
+  connections.push(socket);
+  // socket.join('my room');
+  // socket.broadcast.emit('broadcast', 'hello friends!');
+  // socket.emit('rooms', io.sockets.apadter.rooms);
+  // console.log('ROOMS', io.sockets.adapter.rooms);
+  // socket.leave(socket.id);
+
+  // notice for sockets disconnecting
+  socket.on('disconnect', () => {
+    console.log('Disconnected - ', socket.id);
+  });
+  // user hosts game - connect to room random room and add room to list of rooms
+
+  socket.on('host', (username) => {
+    const roomName = generateName();
+    socket.join(roomName);
+    const roomObj = {
+      roomName: roomName,
+      player1: username,
+    };
+    rooms.push(roomObj);
+    io.in(roomName).emit('hosting', roomObj);
+  });
+
+  socket.on('join', (username) => {
+    for (let i = 0; i < rooms.length; i += 1) {
+      let room = rooms[i].roomName;
+      if (io.sockets.adapter.rooms[room].length < 2) {
+        socket.join(room);
+        rooms[i].player2 = username;
+        io.in(room).emit('joining', rooms[i]);
+        i = rooms.length; // ends loop
+      }
+    }
+  });
+  // TODO work on room algorithm
+  // for (const room in io.sockets.adapter.rooms) {
+  //   if (io.sockets.adapter.rooms[room].length < 2 && inroom === false) {
+  //     socket.join(room);
+  //     socket.leave(socket.id);
+  //     inroom = true;
+  //     socket.to(room).emit('second', room);
+  //   }
+  // }
+  // console.log('rooms', io.sockets.adapter.rooms);
+  // socket.emit('news', { hello: 'world' });
+  // socket.on('attack', (attack) => {
+  //
+  // });
+});
+
+io.listen(8081);
