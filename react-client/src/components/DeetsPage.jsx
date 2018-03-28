@@ -50,14 +50,13 @@ class DeetsPage extends React.Component {
     if (Object.keys(deets).length === 0) {
       return (<div />);
     }
-    console.log(this.props.state.user);
     return (
       <div className="deetspage">
         <Header as="h1" className="white" textAlign="right">Deets</Header>
         <Divider hidden />
         <Grid centered>
           <Grid.Column computer={8} mobile={16}>
-            <Scrollbars autoHide style={{ height: '75vh' }}>
+            <Scrollbars autoHide style={{ height: '85vh' }}>
               <Segment.Group raised>
                 <Segment compact>
                   <Header as="h2">{this.props.state.user.user_username}</Header>
