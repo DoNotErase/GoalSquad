@@ -1,5 +1,14 @@
 import axios from 'axios';
 
+const handleErr = (err) => {
+  if (err.response.status === 401) {
+    window.location.href = '/';
+    alert('Sorry! Please log in.');
+  } else {
+    console.log(err);
+  }
+};
+
 export const setUserData = userData => ({
   type: 'USER_LIFETIME_ACTIVITY',
   payload: {
@@ -19,15 +28,7 @@ export const updateCustomTime = newTime => ({
 export const deauthorizeFitbit = () => (
   () => (
     axios.post('fitbit/deauthorize')
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        if (err.response.status === 401) {
-          window.location.href = '/';
-          alert('Sorry! Please log in.');
-        }
-      })
+      .catch((err) => { handleErr(err); })
   )
 );
 
@@ -39,11 +40,6 @@ export const fetchStats = () => (
       .then((res) => {
         dispatch(setStats(res.data));
       })
-      .catch((err) => {
-        if (err.response.status === 401) {
-          window.location.href = '/';
-          alert('Sorry! Please log in.');
-        }
-      })
+      .catch((err) => { handleErr(err); })
   )
 );
