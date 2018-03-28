@@ -33,10 +33,16 @@ class Lobby extends React.Component {
     socket.emit('host', this.props.mainState.user.user_username, (data) => {
       console.log(data);
     });
+    this.setState({
+      iam: 'player1',
+    });
   }
   joinGame() {
     socket.emit('join', this.props.mainState.user.user_username, (data) => {
       console.log(data);
+    });
+    this.setState({
+      iam: 'player2',
     });
   }
   chooseFighter(userMonsterID) {
@@ -61,6 +67,7 @@ class Lobby extends React.Component {
           <button onClick={() => this.joinGame()}>join</button>
         </div>
       );
+      // TODO add else statement for waiting to find players if host
     }
   }
 }
