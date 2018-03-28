@@ -89,35 +89,15 @@ class IncubatorPage extends React.Component {
     setTimeout(() => {
       this.props.yardActions.fetchSquaddies();
     }, 2000);
+    setTimeout(() => {
+      this.props.squaddieActions.toggleYardStatus(this.props.yardState.newSquaddie.monster_id);
+    }, 2000)
     this.setState({firstTime: false});
-  }
-
-  renderNewSquaddie() {
-    return (
-      <div>
-
-        <Card.Content>
-          <Card.Header></Card.Header>
-          <Card.Description></Card.Description>
-        </Card.Content>
-      </div>
-    )
-  }
-
-  renderEggSequence() {
-    const classByNumbers = {1: 'eggClass1', 2: 'eggClass2', 3: 'eggClass3'};
-    return (
-      <div>
-        
-        <Card.Content>
-          <Card.Header></Card.Header>
-        </Card.Content>
-      </div>
-    )
   }
 
   openEggModal() {
     if(this.props.incubatorState.egg.egg_xp >= 100 && this.state.firstTime === true) this.hatchTheEggDrWu();
+    const classByNumbers = {1: 'eggClass1', 2: 'eggClass2', 3: 'eggClass3'};
     const squaddie = this.props.yardState.newSquaddie;
     return (
       this.props.incubatorState.egg.egg_xp >= 100 
