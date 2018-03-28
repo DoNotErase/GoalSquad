@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const setSquaddies = squaddies => ({ type: 'SET_SQUADDIES', payload: squaddies });
 
-module.exports.fetchSquaddies = () => (
+export const fetchSquaddies = () => (
   dispatch => (
     axios.get('/userSquaddies')
       .then((res) => {
@@ -18,4 +18,4 @@ module.exports.fetchSquaddies = () => (
   )
 );
 
-module.exports.squaddieAcknowledged = () => ({ type: 'RESET_NEW_SQUADDIE' });
+export const squaddieAcknowledged = () => ({ type: 'RESET_NEW_SQUADDIE' });

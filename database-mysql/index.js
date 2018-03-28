@@ -313,7 +313,6 @@ module.exports.getAllSquaddies = async (id) => {
   userSquaddies.forEach((squaddie) => {
     allSquaddies[squaddie.monster_id - 1].user = squaddie;
   });
-
   return allSquaddies;
 };
 
