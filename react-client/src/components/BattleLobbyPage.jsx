@@ -18,11 +18,11 @@ class Lobby extends React.Component {
     // only has roomname and player1
     socket.on('hosting', (roomInfo) => {
       console.log('roomInfo', roomInfo);
-      this.props.fightActions.getGameInfo(roomInfo);
+      this.props.fightActions.setLobbyInfo(roomInfo);
     });
     // has roomname, player1 and player2
     socket.on('joining', (roomInfo) => {
-      this.props.fightActions.getGameInfo(roomInfo);
+      this.props.fightActions.setLobbyInfo(roomInfo);
     });
   }
   componentWillUnmount() {
