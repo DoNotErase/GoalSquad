@@ -262,7 +262,7 @@ module.exports.hatchEgg = async (userEggID, id, nextXP) => {
     const hatchEgg = `UPDATE user_egg SET egg_hatched = 1 WHERE user_egg_id = '${userEggID}';`;
 
     const newSquaddie = 'INSERT INTO user_monster (user_id, monster_id) VALUES ' +
-      `('${userID}', FLOOR(RAND() * (SELECT COUNT(*) FROM monster) + 1));`;
+      `('${userID}', (SELECT egg_id FROM user_egg WHERE user_egg_id = '${userEggID}'));`;
 
     const makeNewEgg = 'INSERT INTO user_egg (user_id, egg_id, egg_xp) VALUES ' +
       `('${userID}', FLOOR(RAND() * (SELECT COUNT (*) FROM egg) + 1), ${nextXP});`;
@@ -305,16 +305,25 @@ module.exports.getUserSquaddies = async (id) => {
 };
 
 module.exports.getAllSquaddies = async (id) => {
-  const userID = await getRightID(id);
-  // returns a lsit of all squaddies but with null info for ones a user hasn't yet earned
-  const allSquaddies = await db.queryAsync('SELECT * FROM monster');
-  const userSquaddies = await db.queryAsync(`SELECT * FROM user_monster WHERE user_id = ${userID}`);
+  try {
+    const userID = await getRightID(id);
+    // returns a lsit of all squaddies but with null info for ones a user hasn't yet earned
+    const allSquaddies = await db.queryAsync('SELECT * FROM monster');
+    const userSquaddies = await db.queryAsync(`SELECT * FROM user_monster WHERE user_id = ${userID}`);
 
-  userSquaddies.forEach((squaddie) => {
-    allSquaddies[squaddie.monster_id - 1].user = squaddie;
-  });
+    userSquaddies.forEach((squaddie) => {
+      if (!allSquaddies[squaddie.monster_id - 1].user) {
+        allSquaddies[squaddie.monster_id - 1].user = [squaddie];
+      } else {
+        allSquaddies[squaddie.monster_id - 1].user.push(squaddie);
+      }
+    });
+    return allSquaddies;
+  } catch (err) {
+    console.log(err);
+    throw new Error('get all squaddies err');
+  }
 
-  return allSquaddies;
 };
 
 module.exports.newUserLifetimeDistance = async (id, distance) => {
@@ -452,6 +461,7 @@ module.exports.renameSquaddie = async (userMonsterID, newName) => {
   try {
     return await db.queryAsync(`UPDATE user_monster SET user_monster_new_name = '${newName}' WHERE user_monster_id = ${userMonsterID}`);
   } catch (err) {
+    console.log(err);
     throw new Error('error renaming squaddie');
   }
 };

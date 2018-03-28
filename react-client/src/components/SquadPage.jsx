@@ -15,6 +15,7 @@ class SquadPage extends React.Component {
   }
 
   render() {
+    console.log(this.props.squadState.squaddies);
     return (
       <div className="squadpage">
         <Header as="h1" className="white" textAlign="right">Your Squad</Header>
