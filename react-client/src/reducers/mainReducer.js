@@ -23,6 +23,16 @@ const mainReducer = (state = mainState, action) => {
         user: { loginErr: action.payload },
       };
     }
+    case 'NEW_TIMER_2': {
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          custom_timer_1: state.user.custom_timer_2,
+          custom_timer_2: action.payload,
+        },
+      };
+    }
     default: {
       return state;
     }

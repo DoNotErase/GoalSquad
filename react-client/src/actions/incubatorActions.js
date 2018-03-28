@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { routerActions } from 'react-router-redux';
 
 export const setUserGoals = (userGoals) => {
   const sortedGoals = {
@@ -21,7 +22,10 @@ export const getUserGoals = () => (
         dispatch(setUserGoals(res.data));
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status === 401) {
+          window.location.href = '/';
+          alert('Sorry! Please log in.');
+        }
       })
   )
 );
@@ -35,7 +39,10 @@ export const fetchEggStatus = () => (
         dispatch(setEggStatus(res.data));
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status === 401) {
+          window.location.href = '/';
+          alert('Sorry! Please log in.');
+        }
       })
   )
 );
@@ -50,7 +57,10 @@ export const hatchEgg = extraXP => (
         dispatch(newSquaddie(res.data));
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status === 401) {
+          window.location.href = '/';
+          alert('Sorry! Please log in.');
+        }
       })
   )
 );
@@ -63,7 +73,10 @@ export const markGoalSuccess = userGoalID => (
         dispatch(fetchEggStatus(res.data)); // because xp was added
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status === 401) {
+          window.location.href = '/';
+          alert('Sorry! Please log in.');
+        }
       })
   )
 );
@@ -75,7 +88,10 @@ export const markGoalFailure = userGoalID => (
         dispatch(getUserGoals(userGoalID));
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status === 401) {
+          window.location.href = '/';
+          alert('Sorry! Please log in.');
+        }
       })
   )
 );
@@ -87,7 +103,10 @@ export const submitProgress = (userGoalID, newCurrent) => (
         dispatch(getUserGoals(userGoalID));
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status === 401) {
+          window.location.href = '/';
+          alert('Sorry! Please log in.');
+        }
       })
   )
 );

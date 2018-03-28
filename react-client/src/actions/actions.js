@@ -9,6 +9,11 @@ export const setUserData = userData => ({
   },
 });
 
+export const updateCustomTime = newTime => ({
+  type: 'NEW_TIMER_2',
+  payload: newTime,
+});
+
 export const deauthorizeFitbit = () => (
   () => (
     axios.post('fitbit/deauthorize')
@@ -16,7 +21,10 @@ export const deauthorizeFitbit = () => (
         console.log(res);
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status === 401) {
+          window.location.href = '/';
+          alert('Sorry! Please log in.');
+        }
       })
   )
 );
@@ -30,7 +38,10 @@ export const fetchStats = () => (
         dispatch(setStats(res.data));
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status === 401) {
+          window.location.href = '/';
+          alert('Sorry! Please log in.');
+        }
       })
   )
 );

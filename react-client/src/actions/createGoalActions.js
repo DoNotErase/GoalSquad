@@ -1,5 +1,6 @@
 import axios from 'axios';
 import moment from 'moment';
+import { updateCustomTime } from './actions';
 import { getUserGoals } from './incubatorActions';
 
 const setDefault = goals => ({ type: 'SET_DEFAULT_GOALS', payload: goals });
@@ -11,7 +12,10 @@ export const getDefaultGoals = () => (
         dispatch(setDefault(res.data));
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status === 401) {
+          window.location.href = '/';
+          alert('Sorry! Please log in.');
+        }
       })
   )
 );
@@ -27,7 +31,10 @@ export const submitUserGoal = (goalID, deadline, points) => (
         dispatch(getUserGoals());
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status === 401) {
+          window.location.href = '/';
+          alert('Sorry! Please log in.');
+        }
       })
   )
 );
@@ -43,10 +50,14 @@ export const submitCustomGoal = (goalName, goalActivity, goalAmount, deadline, p
       createTime: moment().format(),
     })
       .then(() => {
+        dispatch(updateCustomTime(moment()));
         dispatch(getUserGoals());
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status === 401) {
+          window.location.href = '/';
+          alert('Sorry! Please log in.');
+        }
       })
   )
 );

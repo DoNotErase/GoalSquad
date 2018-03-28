@@ -1,7 +1,9 @@
 import React from 'react';
-import { Card, Modal, Image, Button } from 'semantic-ui-react';
+import ModalActions, { Card, Modal, Image, Button, Input } from 'semantic-ui-react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
+import * as squaddieActions from '../actions/squaddieActions';
 
 const styles = {
   cardBackground: 'linear-gradient(to bottom, #faedc4, #ffebd8, #ffeff1, #fff8ff, #ffffff)',
@@ -12,30 +14,52 @@ class SquaddieCard extends React.Component {
     super(props);
     this.state = {
       open: false,
+      yardstatus: false,
+      rename: false,
+      newName: '',
     };
     this.show = this.show.bind(this);
     this.close = this.close.bind(this);
+    this.closeRename = this.closeRename.bind(this);
+    this.saveRename = this.saveRename.bind(this);
+  }
+  toggleSquaddieToYard(monID) {
+    this.setState({ yardstatus: !this.state.yardstatus });
+    this.props.squaddieActions.toggleYardStatus(monID);
   }
 
-  // addSquaddieToYard() {
-
-  // }
+  saveRename() {
+    const { squaddie } = this.props;
+    if (this.state.newName) {
+      this.props.squaddieActions.changeName(squaddie.user.user_monster_id, this.state.newName);
+      squaddie.user.user_monster_new_name = this.state.newName;
+      this.closeRename();
+    } else {
+      alert('please enter a new name for your squaddie!');
+    }
+  }
 
   show(dimmer, size) { this.setState({ dimmer, size, open: true }); }
   close() { this.setState({ open: false }); }
+  closeRename() { this.setState({ rename: false }); }
 
   render() {
-    const { open, dimmer, size } = this.state;
-
+    const {
+      open, dimmer, size, yardstatus, rename,
+    } = this.state;
+    const { squaddie } = this.props;
     return (
 
       <Modal
         trigger={
           <Card
-            color="orange"
+            color={(squaddie.user && squaddie.user.user_monster_yard) || yardstatus ? 'orange' : null}
             raised
-            image={this.props.squaddie.monster_icon}
-            description={this.props.squaddie.monster_name}
+            image={squaddie.user ? squaddie.monster_icon : './assets/squaddies/unknown-squaddie-icon.png'}
+            description={squaddie.user ?
+              squaddie.user.user_monster_new_name || squaddie.monster_name
+              :
+              squaddie.monster_name}
             onClick={() => this.show(true, 'tiny')}
             className="squaddieicon"
           />
@@ -50,34 +74,68 @@ class SquaddieCard extends React.Component {
         <Modal.Content style={{ background: 'transparent' }}>
           <Card centered>
             <Image
-              src={this.props.squaddie.monster_pic}
+              src={squaddie.user ? squaddie.monster_pic : './assets/squaddies/unknown-squaddie.png'}
               style={{ backgroundImage: styles.cardBackground }}
             />
             <Card.Content>
               <Card.Header>
-                {this.props.squaddie.monster_name}
+                {squaddie.user ?
+                  squaddie.user.user_monster_new_name || squaddie.monster_name
+                  :
+                  squaddie.monster_name}
+                {squaddie.user ?
+                  <Button size="mini" style={{ marginLeft: '5px' }} onClick={() => { this.setState({ rename: true }); }}>
+                  Edit
+                  </Button>
+                  :
+                  <div />}
               </Card.Header>
               <Card.Description>
-                {this.props.squaddie.monster_description}
+                {squaddie.user ? squaddie.monster_description : 'Complete goals to unlock this monster!'}
               </Card.Description>
             </Card.Content>
             <Card.Content extra>
-              <Button
-                inverted
-                floated="right"
-                color="green"
-                content="Add to Yard"
-              />
+              { squaddie.user ?
+                <Button
+                  inverted
+                  floated="right"
+                  color={squaddie.user.user_monster_yard || yardstatus ? 'red' : 'green'}
+                  content={squaddie.user.user_monster_yard || yardstatus ? 'Remove From Yard' : 'Add to Yard'}
+                  onClick={() => { this.toggleSquaddieToYard(squaddie.user.user_monster_id); }}
+                /> : <div />
+              }
             </Card.Content>
           </Card>
         </Modal.Content>
+        <Modal
+          style={{ background: 'transparent', boxShadow: 'none' }}
+          size={size}
+          dimmer={dimmer}
+          open={rename}
+          onClose={this.closeRename}
+        >
+          <Modal.Content>
+            <Modal.Header> Rename squaddie </Modal.Header>
+            <Input
+              placeholder={squaddie.monster_name}
+              value={this.state.newName}
+              onChange={(event) => { this.setState({ newName: event.target.value }); }}
+            />
+          </Modal.Content>
+          <Modal.Actions>
+            <Button onClick={this.closeRename}> Cancel </Button>
+            <Button onClick={this.saveRename}> Save </Button>
+          </Modal.Actions>
+        </Modal>
       </Modal>
     );
   }
 }
 
 SquaddieCard.propTypes = {
+  squaddieActions: PropTypes.objectOf(PropTypes.func).isRequired,
   squaddie: PropTypes.shape({
+    monster_id: PropTypes.number,
     monster_name: PropTypes.string,
     monster_pic: PropTypes.string,
     monster_description: PropTypes.string,
@@ -85,4 +143,14 @@ SquaddieCard.propTypes = {
   }).isRequired,
 };
 
-export default connect(null, null)(SquaddieCard);
+const mapStateToProps = state => ({
+  squadState: state.squad,
+});
+
+const mapDispatchToProps = dispatch => (
+  {
+    squaddieActions: bindActionCreators(squaddieActions, dispatch),
+  }
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(SquaddieCard);
