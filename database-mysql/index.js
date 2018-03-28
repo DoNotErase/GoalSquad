@@ -466,3 +466,12 @@ module.exports.renameSquaddie = async (userMonsterID, newName) => {
     throw new Error('error renaming squaddie');
   }
 };
+
+module.exports.saveSquaddiePosition = async (userMonsterPosition) => {
+  try {
+    console.log(userMonsterPosition);
+    return await db.queryAsync(`UPDATE user_monster SET user_monster_xcoord = ${userMonsterPosition.x}, user_monster_ycoord = ${userMonsterPosition.y} WHERE user_monster_id = ${userMonsterPosition.id}`);
+  } catch (err) {
+    throw new Error('Error saving Squaddie position');
+  }
+}

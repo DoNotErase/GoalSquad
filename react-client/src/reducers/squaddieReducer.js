@@ -1,10 +1,6 @@
 const squadState = {
   squaddies: [],
   yardSquaddies: [],
-  position: {
-    x: 0,
-    y: 0,
-  },
 };
 
 const squadReducer = (state = squadState, action) => {
@@ -22,12 +18,6 @@ const squadReducer = (state = squadState, action) => {
       };
     }
     case 'GET_YARD_SQUADDIES': {
-      return {
-        ...state,
-        yardSquaddies: action.payload,
-      };
-    }
-    case 'GET_POSITION': {
       return {
         ...state,
         yardSquaddies: action.payload,
