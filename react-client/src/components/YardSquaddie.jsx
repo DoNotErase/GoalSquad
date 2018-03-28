@@ -11,6 +11,7 @@ class YardSquaddie extends React.Component {
     super(props);
     this.state = {
       deltaPosition: {
+        id: null,
         x: this.props.squaddie.user_monster_xcoord,
         y: this.props.squaddie.user_monster_ycoord,
       },
