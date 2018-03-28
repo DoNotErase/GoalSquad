@@ -2,9 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { Button } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import * as actions from '../actions/actions';
 import * as squaddieActions from '../actions/squaddieActions';
+import * as yardActions from '../actions/yardActions';
 import MainMenu from './MainMenu';
 import YardSquaddie from './YardSquaddie';
 
@@ -36,6 +38,12 @@ class YardPage extends React.Component {
           </div>
         </Scrollbars>
         <MainMenu history={this.props.history} />
+        <Button
+          style={{ top: 20, right: 20, position: 'fixed' }}
+          content="Save"
+          size="large"
+          color="orange"
+        />
       </div>
     );
   }
@@ -44,6 +52,7 @@ class YardPage extends React.Component {
 YardPage.propTypes = {
   squadState: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.object)).isRequired,
   squaddieActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  yardActions: PropTypes.objectOf(PropTypes.func).isRequired,
   history: PropTypes.shape({
     action: PropTypes.string,
     block: PropTypes.func,
@@ -63,6 +72,7 @@ const mapDispatchToProps = dispatch => (
   {
     actions: bindActionCreators(actions, dispatch),
     squaddieActions: bindActionCreators(squaddieActions, dispatch),
+    yardActions: bindActionCreators(yardActions, dispatch),
   }
 );
 

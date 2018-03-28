@@ -323,7 +323,6 @@ module.exports.getAllSquaddies = async (id) => {
     console.log(err);
     throw new Error('get all squaddies err');
   }
-
 };
 
 module.exports.newUserLifetimeDistance = async (id, distance) => {

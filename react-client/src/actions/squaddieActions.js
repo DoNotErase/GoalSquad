@@ -15,6 +15,8 @@ const toggleYardSquaddies = squaddieData => ({
   payload: squaddieData,
 });
 
+export const getSquaddiePosition = position => ({ type: 'GET_POSITION', payload: position });
+
 export const getUserSquaddies = () => (
   dispatch => (
     axios.get('/squaddies')
