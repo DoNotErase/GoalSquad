@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const handleErr = (err) => {
-  if (err.response.status === 401) {
+  if (err.response && err.response.status === 401) {
     window.location.href = '/';
     alert('Sorry! Please log in.');
   } else {

@@ -6,7 +6,7 @@ import { getUserGoals } from './incubatorActions';
 const setDefault = goals => ({ type: 'SET_DEFAULT_GOALS', payload: goals });
 
 const handleErr = (err) => {
-  if (err.response.status === 401) {
+  if (err.response && err.response.status === 401) {
     window.location.href = '/';
     alert('Sorry! Please log in.');
   } else {

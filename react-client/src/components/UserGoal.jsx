@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import * as incubatorActions from '../actions/incubatorActions';
+import GoalDetailModal from './GoalDetailModal';
 
 class UserGoal extends React.Component {
   constructor(props) {
@@ -19,10 +20,8 @@ class UserGoal extends React.Component {
     this.makeDeadLineMessage = this.makeDeadLineMessage.bind(this);
     this.activityName = this.activityName.bind(this);
     this.goalStatus = this.goalStatus.bind(this);
-    this.updateNewCurrent = this.updateNewCurrent.bind(this);
     this.close = this.close.bind(this);
     this.makeUpdateButton = this.makeUpdateButton.bind(this);
-    this.submitUpdate = this.submitUpdate.bind(this);
   }
 
   makeDeadLineMessage() {
@@ -100,10 +99,6 @@ class UserGoal extends React.Component {
     );
   }
 
-  updateNewCurrent(event) {
-    this.setState({ newCurrent: event.target.value });
-  }
-
   close() {
     this.setState({ open: false });
   }
@@ -118,27 +113,12 @@ class UserGoal extends React.Component {
     return (<div />);
   }
 
-  submitUpdate() {
-    const validatePositiveNumber = (string) => {
-      if (parseInt(string, 10) >= 0) {
-        return true;
-      }
-      return false;
-    };
-    if (validatePositiveNumber(this.state.newCurrent)) {
-      this.props.incubatorActions.submitProgress(this.props.goal.user_goal_id, this.state.newCurrent);
-      this.setState({ errorMessage: '', open: false, newCurrent: '0' });
-    } else {
-      this.setState({ errorMessage: 'please enter a positive number!' });
-    }
-  }
-
   render() {
     const { open, dimmer, size } = this.state;
     const { goal } = this.props;
     return (
       <div>
-        <Grid>
+        <Grid onClick={(() => { this.setState({ open: true }); })}>
           <Grid.Row columns={2}>
             <Grid.Column >
               <Header as="h4">{goal.goal_name}</Header>
@@ -154,50 +134,14 @@ class UserGoal extends React.Component {
           </Grid.Row>
         </Grid>
 
-        {/* VIEW GOAL MODAL */}
-
-        <Modal
+        <GoalDetailModal
           size={size}
           dimmer={dimmer}
           open={open}
-          onClose={this.close}
+          goal={goal}
           className="fadeIn"
-        >
-          <Modal.Header>{goal.goal_name}</Modal.Header>
-          <Modal.Content>
-            <Modal.Description>
-              <Grid relaxed>
-                <Grid.Row>
-                  <Grid.Column>
-                    <Header as="h3">How far have you come?</Header>
-                    <Input
-                      value={this.state.newCurrent}
-                      onChange={this.updateNewCurrent}
-                      style={{ width: 50 }}
-                      label={{ basic: true, content: goal.goal_activity }}
-                      labelPosition="right"
-                      type="text"
-                    />
-                    <Header as="h5">Enter progress since last check-in</Header>
-                  </Grid.Column>
-                </Grid.Row>
-              </Grid>
-            </Modal.Description>
-          </Modal.Content>
-          <Modal.Actions>
-            <Header as="h5">{this.state.errorMessage}</Header>
-            <Button color="black" onClick={this.close}>
-              Cancel
-            </Button>
-            <Button
-              positive
-              icon="checkmark"
-              labelPosition="right"
-              content="Yep, that's me"
-              onClick={this.submitUpdate}
-            />
-          </Modal.Actions>
-        </Modal>
+          close={this.close}
+        />
       </div>
     );
   }
