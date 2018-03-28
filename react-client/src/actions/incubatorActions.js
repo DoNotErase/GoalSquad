@@ -1,5 +1,14 @@
 import axios from 'axios';
 
+const handleErr = (err) => {
+  if (err.response.status === 401) {
+    window.location.href = '/';
+    alert('Sorry! Please log in.');
+  } else {
+    console.log(err);
+  }
+};
+
 export const setUserGoals = (userGoals) => {
   const sortedGoals = {
   };
@@ -20,12 +29,7 @@ export const getUserGoals = () => (
       .then((res) => {
         dispatch(setUserGoals(res.data));
       })
-      .catch((err) => {
-        if (err.response.status === 401) {
-          window.location.href = '/';
-          alert('Sorry! Please log in.');
-        }
-      })
+      .catch((err) => { handleErr(err); })
   )
 );
 
@@ -37,12 +41,7 @@ export const fetchEggStatus = () => (
       .then((res) => {
         dispatch(setEggStatus(res.data));
       })
-      .catch((err) => {
-        if (err.response.status === 401) {
-          window.location.href = '/';
-          alert('Sorry! Please log in.');
-        }
-      })
+      .catch((err) => { handleErr(err); })
   )
 );
 
@@ -56,12 +55,7 @@ export const hatchEgg = extraXP => (
         dispatch(newSquaddie(res.data));
         dispatch({ type: 'SQUADDIE_UPDATE' });
       })
-      .catch((err) => {
-        if (err.response.status === 401) {
-          window.location.href = '/';
-          alert('Sorry! Please log in.');
-        }
-      })
+      .catch((err) => { handleErr(err); })
   )
 );
 
@@ -74,12 +68,7 @@ export const markGoalSuccess = userGoalID => (
         dispatch(getUserGoals(userGoalID));
         dispatch(fetchEggStatus(res.data)); // because xp was added
       })
-      .catch((err) => {
-        if (err.response.status === 401) {
-          window.location.href = '/';
-          alert('Sorry! Please log in.');
-        }
-      })
+      .catch((err) => { handleErr(err); })
   )
 );
 
@@ -90,12 +79,7 @@ export const markGoalFailure = userGoalID => (
         // pass in goal index within activity to splice out
         dispatch(getUserGoals(userGoalID));
       })
-      .catch((err) => {
-        if (err.response.status === 401) {
-          window.location.href = '/';
-          alert('Sorry! Please log in.');
-        }
-      })
+      .catch((err) => { handleErr(err); })
   )
 );
 
@@ -106,11 +90,6 @@ export const submitProgress = (userGoalID, newCurrent) => (
         // take this out, update local
         dispatch(getUserGoals(userGoalID));
       })
-      .catch((err) => {
-        if (err.response.status === 401) {
-          window.location.href = '/';
-          alert('Sorry! Please log in.');
-        }
-      })
+      .catch((err) => { handleErr(err); })
   )
 );

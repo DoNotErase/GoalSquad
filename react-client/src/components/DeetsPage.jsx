@@ -12,11 +12,10 @@ class DeetsPage extends React.Component {
     super(props);
 
     this.makeDisconnectButton = this.makeDisconnectButton.bind(this);
-    if (props.state.needsUpdate) {
+    if (!props.state.deets || props.state.needsUpdate) {
       props.actions.fetchStats();
       props.actions.turnOffUpdate();
     }
-    this.makeDisconnectButton = this.makeDisconnectButton.bind(this);
   }
 
   makeDisconnectButton() {
@@ -37,7 +36,7 @@ class DeetsPage extends React.Component {
 
   render() {
     const { deets } = this.props.state;
-    console.log(this.props.state);
+
     const percentSuccess = (statSet) => {
       if (statSet.attempted - statSet.pending > 0) {
         return Math.ceil((statSet.success * 100) /
@@ -57,7 +56,7 @@ class DeetsPage extends React.Component {
     if (Object.keys(deets).length === 0) {
       return (<div />);
     }
-    console.log(this.props.state.user);
+
     return (
       <div className="deetspage">
         <Header as="h1" className="white" textAlign="right">Deets</Header>
@@ -151,6 +150,7 @@ DeetsPage.propTypes = {
   actions: PropTypes.objectOf(PropTypes.func).isRequired,
   state: PropTypes.shape({
     user: PropTypes.object,
+    deets: PropTypes.object,
     needsUpdate: PropTypes.bool,
   }).isRequired,
   history: PropTypes.shape({
