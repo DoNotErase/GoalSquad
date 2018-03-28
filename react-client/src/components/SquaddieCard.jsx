@@ -55,14 +55,19 @@ class SquaddieCard extends React.Component {
           <Card
             color={(squaddie.user && squaddie.user.user_monster_yard) || yardstatus ? 'orange' : null}
             raised
-            image={squaddie.user ? squaddie.monster_icon : './assets/squaddies/unknown-squaddie-icon.png'}
-            description={squaddie.user ?
+            onClick={() => this.show(true, 'tiny')}
+            className="squaddieicon"
+          >
+            <Image src={squaddie.user ? squaddie.monster_icon : './assets/squaddies/unknown-squaddie-icon.png'} />
+            <Card.Content style={{ padding: '.3em .3em' }}>
+              <Card.Description>
+                {squaddie.user ?
               squaddie.user.user_monster_new_name || squaddie.monster_name
               :
               squaddie.monster_name}
-            onClick={() => this.show(true, 'tiny')}
-            className="squaddieicon"
-          />
+              </Card.Description>
+            </Card.Content>
+          </Card>
         }
         className="slideInDown"
         style={{ background: 'transparent', boxShadow: 'none' }}

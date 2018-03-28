@@ -19,7 +19,7 @@ const MainMenu = props => (
       </Button>}
   >
     <Modal.Content>
-      <Card.Group itemsPerRow={3}>
+      <Card.Group itemsPerRow={3} centered>
         <Card raised image={`${src}yard_icon.png`} onClick={() => { props.history.push('/yard'); }} />
         <Card raised image={`${src}incubator_icon.png`} onClick={() => { props.history.push('/incubator'); }} />
         <Card raised image={`${src}goals_icon.png`} onClick={() => { props.history.push('/goals'); }} />
