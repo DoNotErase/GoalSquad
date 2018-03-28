@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { routerActions } from 'react-router-redux';
 
 export const setUserGoals = (userGoals) => {
   const sortedGoals = {
@@ -22,7 +23,8 @@ export const getUserGoals = () => (
       })
       .catch((err) => {
         if (err.response.status === 401) {
-          axios.get('/');
+          window.location.href = '/';
+          alert('Sorry! Please log in.');
         }
       })
   )
@@ -38,7 +40,8 @@ export const fetchEggStatus = () => (
       })
       .catch((err) => {
         if (err.response.status === 401) {
-          axios.get('/');
+          window.location.href = '/';
+          alert('Sorry! Please log in.');
         }
       })
   )
@@ -58,7 +61,8 @@ export const hatchEgg = (eggID, extraXP) => {
       })
       .catch((err) => {
         if (err.response.status === 401) {
-          axios.get('/');
+          window.location.href = '/';
+          alert('Sorry! Please log in.');
         }
       })
   )
@@ -74,7 +78,8 @@ export const markGoalSuccess = userGoalID => (
       })
       .catch((err) => {
         if (err.response.status === 401) {
-          axios.get('/');
+          window.location.href = '/';
+          alert('Sorry! Please log in.');
         }
       })
   )
@@ -88,7 +93,8 @@ export const markGoalFailure = userGoalID => (
       })
       .catch((err) => {
         if (err.response.status === 401) {
-          axios.get('/');
+          window.location.href = '/';
+          alert('Sorry! Please log in.');
         }
       })
   )
@@ -102,7 +108,8 @@ export const submitProgress = (userGoalID, newCurrent) => (
       })
       .catch((err) => {
         if (err.response.status === 401) {
-          axios.get('/');
+          window.location.href = '/';
+          alert('Sorry! Please log in.');
         }
       })
   )

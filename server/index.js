@@ -32,10 +32,12 @@ app.use(passport.session({
 }));
 
 function isAuthorized(req, res, next) {
-  if (req.session.passport) {
-    return next();
+  if (!req.session.passport) {
+    console.log('redirect');
+    res.status(401).end();
+    return;
   }
-  return res.status(401).end();
+  next();
 }
 
 /** **************OAUTH**************** */
@@ -98,7 +100,6 @@ app.post(
     res.redirect('/incubator');
   },
 );
-
 
 app.post('/localSignup', async (req, res) => {
   try {
@@ -185,7 +186,7 @@ app.get('/logout', (req, res) => {
 /** *******************FITBIT FETCHES**************************** */
 
 app.get('/login', async (req, res) => {
-  if (req.session.passport) {
+  if (req.session.passport) { // autologin on fitbit connection and navigation to'/'
     const user = await db.getUserByID(req.session.passport.user.id);
     res.json(user);
   } else {
@@ -248,16 +249,9 @@ app.get('/userSquaddies', isAuthorized, async (req, res) => {
 
 /** *******************YARD STUFF**************************** */
 
-app.get('/yardSquad', async (req, res) => {
-  let userID;
-  if (req.session.passport) {
-    if (req.session.passport) {
-      userID = req.session.passport.user.id;
-    } else {
-      res.status(401).send('Bad Passport');
-    }
-  }
+app.get('/yardSquad', isAuthorized, async (req, res) => {
   try {
+    const userID = req.session.passport.user.id;
     const data = await db.getYardSquaddiesByID(userID);
     res.status(200).json(data);
   } catch (err) {
@@ -265,23 +259,21 @@ app.get('/yardSquad', async (req, res) => {
   }
 });
 
-app.patch('/yardSquad', async (req, res) => {
+app.patch('/yardSquad', isAuthorized, async (req, res) => {
   try {
-    await db.updateYardSquaddie(req.monID);
+    await db.updateYardSquaddie(req.body.monID);
   } catch (err) {
     res.status(500).send(err);
   }
 });
 
-// app.patch('/updateCustom', async (req, res) => {
-//   try {
-//     await db.updateCustomGoalProgress(req.body.goalID, req.body.newCurrent);
-//     await db.updateGoalStatuses();
-//     res.end();
-//   } catch (err) {
-//     res.status(500).send(err);
-//   }
-// });
+app.patch('/squaddie', isAuthorized, async (req, res) => {
+  try {
+    await db.renameSquaddie(req.body.monID, req.body.name);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+})
 
 app.get('/getSquaddie', async (req, res) => {
   let userID;

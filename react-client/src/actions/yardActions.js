@@ -1,10 +1,9 @@
 import axios from 'axios';
-
 /* new_squaddie is dispatched from incubator actions upon egg hatch */
 
 const setSquaddies = squaddies => ({ type: 'SET_SQUADDIES', payload: squaddies });
 
-module.exports.fetchSquaddies = () => (
+export const fetchSquaddies = () => (
   dispatch => (
     axios.get('/userSquaddies')
       .then((res) => {
@@ -13,10 +12,11 @@ module.exports.fetchSquaddies = () => (
       })
       .catch((err) => {
         if (err.response.status === 401) {
-          axios.get('/');
+          window.location.href = '/';
+          alert('Sorry! Please log in.');
         }
       })
   )
 );
 
-module.exports.squaddieAcknowledged = () => ({ type: 'RESET_NEW_SQUADDIE' });
+export const squaddieAcknowledged = () => ({ type: 'RESET_NEW_SQUADDIE' });
