@@ -13,8 +13,14 @@ import * as incubatorActions from '../actions/incubatorActions';
 
 class IncubatorPage extends React.Component {
   componentDidMount() {
-    this.props.incubatorActions.getUserGoals();
-    this.props.homePageActions.attemptLogin();
+    if (this.props.state.user) {
+      this.props.homePageActions.attemptLogin();
+    }
+    // get goals if user is logged in and there are no goals or is flagged for update
+    if (this.props.state.user &&
+      (!this.props.incubatorState.userGoals || this.props.state.needsUpdate)) {
+      this.props.incubatorActions.getUserGoals();
+    }
   }
 
   render() {
@@ -51,26 +57,15 @@ class IncubatorPage extends React.Component {
 }
 
 IncubatorPage.propTypes = {
-  // state: PropTypes.shape({
-  //   id: PropTypes.string,
-  //   username: PropTypes.string,
-  // }).isRequired,
-  // actions: PropTypes.objectOf(PropTypes.func).isRequired,
+  state: PropTypes.shape({
+    needsUpdate: PropTypes.bool,
+    user: PropTypes.object,
+  }).isRequired,
   incubatorState: PropTypes.objectOf(PropTypes.object).isRequired,
   incubatorActions: PropTypes.objectOf(PropTypes.func).isRequired,
   homePageActions: PropTypes.objectOf(PropTypes.func).isRequired,
   history: PropTypes.shape({
-    action: PropTypes.string,
-    block: PropTypes.func,
-    createHref: PropTypes.func,
-    go: PropTypes.func,
-    goBack: PropTypes.func,
-    goForward: PropTypes.func,
-    length: PropTypes.number,
-    listen: PropTypes.func,
-    location: PropTypes.object,
     push: PropTypes.func,
-    replace: PropTypes.func,
   }).isRequired,
 };
 

@@ -9,6 +9,8 @@ export const setUserData = userData => ({
   },
 });
 
+export const turnOffUpdate = () => ({ type: 'NO_UPDATE' });
+
 export const updateCustomTime = newTime => ({
   type: 'NEW_TIMER_2',
   payload: newTime,

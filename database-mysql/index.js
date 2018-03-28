@@ -312,11 +312,7 @@ module.exports.getAllSquaddies = async (id) => {
     const userSquaddies = await db.queryAsync(`SELECT * FROM user_monster WHERE user_id = ${userID}`);
 
     userSquaddies.forEach((squaddie) => {
-      if (!allSquaddies[squaddie.monster_id - 1].user) {
-        allSquaddies[squaddie.monster_id - 1].user = [squaddie];
-      } else {
-        allSquaddies[squaddie.monster_id - 1].user.push(squaddie);
-      }
+      allSquaddies[squaddie.monster_id - 1].user = squaddie;
     });
     return allSquaddies;
   } catch (err) {
@@ -437,9 +433,10 @@ module.exports.getUserDeets = async (id) => {
   }
 };
 
-module.exports.getYardSquaddiesByID = async (userid) => {
+module.exports.getYardSquaddiesByID = async (id) => {
   try {
-    return await db.queryAsync(`SELECT * FROM user_monster INNER JOIN monster ON monster.monster_id = user_monster.monster_id WHERE user_id = '${userid}' AND user_monster_yard = 1`);
+    const userID = await getRightID(id);
+    return await db.queryAsync(`SELECT * FROM user_monster INNER JOIN monster ON monster.monster_id = user_monster.monster_id WHERE user_id = ${userID} AND user_monster_yard = 1`);
   } catch (err) {
     throw new Error('get yardsquaddies DB error');
   }
@@ -447,7 +444,6 @@ module.exports.getYardSquaddiesByID = async (userid) => {
 
 module.exports.updateYardSquaddie = async (userMonsterID) => {
   try {
-    console.log(userMonsterID);
     const query = `UPDATE user_monster SET user_monster_yard = !user_monster_yard WHERE user_monster_id = '${userMonsterID}'`;
     return await db.queryAsync(query);
   } catch (err) {

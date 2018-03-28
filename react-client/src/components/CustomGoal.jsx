@@ -79,6 +79,7 @@ class CustomGoal extends React.Component {
       units: event.target.value,
     });
   }
+
   updateDeadlineHours(event) {
     this.setState({
       deadline: {
@@ -120,18 +121,22 @@ class CustomGoal extends React.Component {
       return false;
     };
 
+    // form not completed
     if (!(validateString(this.state.activity) && validateString(this.state.units))) {
       this.setState({ errorMessage: 'please enter an activity and units!' });
       return;
     }
 
+    // capitalize activity
     const activity = `${this.state.activity[0].toUpperCase()}${this.state.activity.slice(1)}`;
 
+    // compose name
     const goalName = `${activity} ${this.state.amount} ${this.state.units}`;
 
     if (this.state.noDeadline) {
       this.setState({ open: false, errorMessage: '', noDeadline: false });
       this.props.goalsActions.submitCustomGoal(goalName, this.state.units, this.state.amount, null, 20);
+      // local update?
       this.props.history.push('/incubator');
       return;
     }
@@ -155,6 +160,7 @@ class CustomGoal extends React.Component {
       const hours = (deadline.days * 24) + deadline.hours;
       points += parseInt((points / (hours / 5)), 10);
       this.props.goalsActions.submitCustomGoal(goalName, this.state.units, this.state.amount, deadline, points);
+      // local update?
       this.props.history.push('/incubator');
     }
   }
@@ -320,20 +326,12 @@ class CustomGoal extends React.Component {
 }
 
 CustomGoal.propTypes = {
-  userState: PropTypes.objectOf(PropTypes.object).isRequired,
+  userState: PropTypes.shape({
+    user: PropTypes.object,
+  }).isRequired,
   goalsActions: PropTypes.objectOf(PropTypes.func).isRequired,
   history: PropTypes.shape({
-    action: PropTypes.string,
-    block: PropTypes.func,
-    createHref: PropTypes.func,
-    go: PropTypes.func,
-    goBack: PropTypes.func,
-    goForward: PropTypes.func,
-    length: PropTypes.number,
-    listen: PropTypes.func,
-    location: PropTypes.object,
     push: PropTypes.func,
-    replace: PropTypes.func,
   }).isRequired,
 };
 

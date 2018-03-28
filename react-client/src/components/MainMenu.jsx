@@ -1,5 +1,9 @@
 import React from 'react';
-import { Button, Modal, Icon, Link, Card } from 'semantic-ui-react';
+import { Button, Modal, Icon, Card } from 'semantic-ui-react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import * as actions from '../actions/actions';
 
 const src = './assets/icons/';
 
@@ -25,10 +29,31 @@ const MainMenu = props => (
         <Card raised image={`${src}goals_icon.png`} onClick={() => { props.history.push('/goals'); }} />
         <Card raised image={`${src}deets_icon.png`} onClick={() => { props.history.push('/deets'); }} />
         <Card raised image={`${src}squad_icon.png`} onClick={() => { props.history.push('/squad'); }} />
-        <Card raised image={`${src}logout_icon.png`} onClick={Link} href="/logout" />
+        <Card raised image={`${src}logout_icon.png`} onClick={props.actions.logout} />
       </Card.Group>
     </Modal.Content>
   </Modal>
 );
 
-export default MainMenu;
+MainMenu.propTypes = {
+  actions: PropTypes.objectOf(PropTypes.func).isRequired,
+  history: PropTypes.shape({
+    action: PropTypes.string,
+    block: PropTypes.func,
+    createHref: PropTypes.func,
+    go: PropTypes.func,
+    goBack: PropTypes.func,
+    goForward: PropTypes.func,
+    length: PropTypes.number,
+    listen: PropTypes.func,
+    location: PropTypes.object,
+    push: PropTypes.func,
+    replace: PropTypes.func,
+  }).isRequired,
+};
+
+const mapDispatchToProps = dispatch => (
+  { actions: bindActionCreators(actions, dispatch) }
+);
+
+export default connect(null, mapDispatchToProps)(MainMenu);

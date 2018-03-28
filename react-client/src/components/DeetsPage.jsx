@@ -12,15 +12,20 @@ class DeetsPage extends React.Component {
     super(props);
 
     this.makeDisconnectButton = this.makeDisconnectButton.bind(this);
-  }
-  componentDidMount() {
-    this.props.actions.fetchStats();
+    if (!props.state.needsUpdate) {
+      props.actions.fetchStats();
+      props.actions.turnOffUpdate();
+    }
   }
 
   makeDisconnectButton() {
     if (this.props.state.user.fitbit_id) {
       return (
-        <Button onClick={this.props.actions.deauthorizeFitbit}>
+        <Button onClick={() => {
+          this.props.actions.deauthorizeFitbit();
+          this.props.actions.logout();
+        }}
+        >
           Disconnect Fitbit
         </Button>
       );
@@ -142,19 +147,12 @@ class DeetsPage extends React.Component {
 
 DeetsPage.propTypes = {
   actions: PropTypes.objectOf(PropTypes.func).isRequired,
-  state: PropTypes.objectOf(PropTypes.object).isRequired,
+  state: PropTypes.shape({
+    user: PropTypes.object,
+    needsUpdate: PropTypes.bool,
+  }).isRequired,
   history: PropTypes.shape({
-    action: PropTypes.string,
-    block: PropTypes.func,
-    createHref: PropTypes.func,
-    go: PropTypes.func,
-    goBack: PropTypes.func,
-    goForward: PropTypes.func,
-    length: PropTypes.number,
-    listen: PropTypes.func,
-    location: PropTypes.object,
     push: PropTypes.func,
-    replace: PropTypes.func,
   }).isRequired,
 };
 
