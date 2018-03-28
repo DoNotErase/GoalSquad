@@ -324,25 +324,23 @@ app.post('/createUserGoal', isAuthorized, async (req, res) => {
     start: req.body.startDate,
   };
   try {
-
-      newGoal.userID = req.session.passport.user.id;
-      const goalDetails = await db.getGoalInfo(newGoal.goalID);
-      if (typeof newGoal.userID === 'string') {
-        const token = await db.getAccessToken(req.session.passport.user.id);
-        let currentLifeTime = await axios.get('https://api.fitbit.com/1/user/-/activities.json', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        currentLifeTime = currentLifeTime.data;
-        newGoal.startValue = currentLifeTime.lifetime.total[goalDetails.goal_activity];
-      } else {
-        newGoal.startValue = 0;
-      }
-      newGoal.targetValue = newGoal.startValue + goalDetails.goal_amount;
-      await db.createUserGoal(newGoal);
-      res.end();
-
+    newGoal.userID = req.session.passport.user.id;
+    const goalDetails = await db.getGoalInfo(newGoal.goalID);
+    if (typeof newGoal.userID === 'string') {
+      const token = await db.getAccessToken(req.session.passport.user.id);
+      let currentLifeTime = await axios.get('https://api.fitbit.com/1/user/-/activities.json', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      currentLifeTime = currentLifeTime.data;
+      newGoal.startValue = currentLifeTime.lifetime.total[goalDetails.goal_activity];
+    } else {
+      newGoal.startValue = 0;
+    }
+    newGoal.targetValue = newGoal.startValue + goalDetails.goal_amount;
+    await db.createUserGoal(newGoal);
+    res.end();
   } catch (err) {
     console.log(err.response.data);
     res.status(500).send('could not create goal');
@@ -456,7 +454,7 @@ io.on('connection', (socket) => {
     const roomName = generateName();
     socket.join(roomName);
     rooms.push(roomName); // change to object and if room(obj[key]) exists then make another room
-    io.in(roomName).emit('hosting', roomName);
+    io.in(roomName).emit('joining', roomName);
   });
 
   socket.on('join', () => {
@@ -466,6 +464,8 @@ io.on('connection', (socket) => {
         socket.join(room);
         rooms.splice(i, 1);
         i = rooms.length;
+        console.log('room', room);
+        io.in(room).emit('joining', room);
       }
     }
   });

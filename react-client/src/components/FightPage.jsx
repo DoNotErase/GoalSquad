@@ -16,7 +16,7 @@ class Fight extends React.Component {
       endpoint: 'http://localhost:8081', // change to reducer later
     };
     socket = socketIOClient('http://localhost:8081');
-    socket.on('hosting', (roomName) => {
+    socket.on('joining', (roomName) => {
       this.props.fightActions.getSocketRoom(roomName);
     });
   }
@@ -33,17 +33,17 @@ class Fight extends React.Component {
   joinGame() {
     socket.emit('join', (data) => {
       console.log(data);
-    })
+    });
   }
 
   render() {
-    if (this.props.fightState.socket.socketRoom) {
-      return (
-        <div>
-          <SquadPage />
-        </div>
-      );
-    } else {
+    // if (this.props.fightState.socket.socketRoom) {
+    //   return (
+    //     <div>
+    //       <SquadPage />
+    //     </div>
+    //   );
+    // } else {
       return (
         <div>
           <div>socket page</div>
@@ -53,7 +53,7 @@ class Fight extends React.Component {
         </div>
       );
     }
-  }
+  // }
 }
 
 const mapDispatchToProps = dispatch => (
