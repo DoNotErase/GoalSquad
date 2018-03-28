@@ -7,12 +7,12 @@ import Draggable from 'react-draggable';
 import * as squaddieActions from '../actions/squaddieActions';
 
 class YardSquaddie extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       deltaPosition: {
-        x: 0,
-        y: 0,
+        x: this.props.squaddie.user_monster_xcoord,
+        y: this.props.squaddie.user_monster_ycoord,
       },
     };
     this.handleDrag = this.handleDrag.bind(this);
@@ -36,7 +36,10 @@ class YardSquaddie extends React.Component {
 
   render() {
     return (
-      <Draggable onDrag={this.handleDrag} >
+      <Draggable
+        onDrag={this.handleDrag}
+        defaultPosition={{ x: this.state.deltaPosition.x, y: this.state.deltaPosition.y }}
+      >
         <Image
           src={this.props.squaddie.monster_pic}
           size="small"
