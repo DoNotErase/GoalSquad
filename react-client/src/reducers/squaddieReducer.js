@@ -1,10 +1,6 @@
 const squadState = {
   squaddies: [],
   yardSquaddies: [],
-  position: {
-    x: 0,
-    y: 0,
-  },
   needsUpdate: true,
 };
 
@@ -34,12 +30,6 @@ const squadReducer = (state = squadState, action) => {
         ...state,
         yardSquaddies: action.payload,
         needsUpdate: false,
-      };
-    }
-    case 'GET_POSITION': {
-      return {
-        ...state,
-        yardSquaddies: action.payload,
       };
     }
     default: {
