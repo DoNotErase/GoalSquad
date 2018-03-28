@@ -57,7 +57,7 @@ class IncubatorPage extends React.Component {
           </Grid.Row>
           <Grid.Row>
               <div className="no-goals-body">
-                It looks like you don't have any goals yet! Let's fix that.
+                You need some goals! Let's add some.
               </div>
           </Grid.Row>
           <Grid.Row>
@@ -92,22 +92,48 @@ class IncubatorPage extends React.Component {
     this.setState({firstTime: false});
   }
 
-  openEggModal() {
+  renderNewSquaddie() {
+    return (
+      <div>
+
+        <Card.Content>
+          <Card.Header></Card.Header>
+          <Card.Description></Card.Description>
+        </Card.Content>
+      </div>
+    )
+  }
+
+  renderEggSequence() {
     const classByNumbers = {1: 'eggClass1', 2: 'eggClass2', 3: 'eggClass3'};
+    return (
+      <div>
+        
+        <Card.Content>
+          <Card.Header></Card.Header>
+        </Card.Content>
+      </div>
+    )
+  }
+
+  openEggModal() {
     if(this.props.incubatorState.egg.egg_xp >= 100 && this.state.firstTime === true) this.hatchTheEggDrWu();
+    const squaddie = this.props.yardState.newSquaddie;
     return (
       this.props.incubatorState.egg.egg_xp >= 100 
       ?
       <Modal
-      trigger={<a><Image className="glowingEgg" src="./assets/icons/egg.png" centered/></a>}>
+      trigger={<a><Image className="glowingEgg" src="./assets/icons/egg.png"/></a>}>
         <Modal.Content style={{ background: 'transparent' }}>
           <Card centered>
-            {this.state.count === 0 ? <a><Image src={this.props.yardState.newSquaddie.monster_pic}/></a> : <a><Image size='medium' className={classByNumbers[this.state.count]} onClick={this.subtractFromCount} src='./assets/icons/egg.png' centered/></a>}
+                {this.state.count === 0 ? <Image src={squaddie.monster_pic}/> : <a><Image size='medium' className={classByNumbers[this.state.count]} onClick={this.subtractFromCount} src='./assets/icons/egg.png' centered/></a>}
             <Card.Content>
-            {this.state.count === 0 
-              ? <Card.Header>Your new squaddie is {this.props.yardState.newSquaddie.monster_name}!</Card.Header>
-              : <Card.Header>Tap {this.state.count} {this.state.count === 1 ? 'more time' : 'more times'} to reveal your new squaddie!</Card.Header>
-            }
+              <Card.Header>
+                {this.state.count === 0 ? <p>Your new squaddie is {squaddie.monster_name}!</p> : <p>Tap {this.state.count} {this.state.count === 1 ? 'more time' : 'more times'} to reveal your new squaddie!</p> }
+              </Card.Header>
+              <Card.Description>
+                { this.state.count === 0 ? <p>Head over to  <a onClick={() => { this.props.history.push('/yard'); }}>your yard</a> for some well-deserved play time</p>: null }
+              </Card.Description>
             </Card.Content>
           </Card>
         </Modal.Content>
