@@ -9,17 +9,29 @@ import * as squaddieActions from '../actions/squaddieActions';
 class YardSquaddie extends React.Component {
   constructor() {
     super();
-    this.state = {};
-    // this.handleDrag = this.handleDrag.bind(this);
+    this.state = {
+      deltaPosition: {
+        x: 0,
+        y: 0,
+      },
+    };
+    this.handleDrag = this.handleDrag.bind(this);
   }
 
-  // handleDrag(e, ui) {
-  //   const position = {
-  //     x: this.props.squadState.yardSquaddies.x + ui.deltaX,
-  //     y: this.props.squadState.yardSquaddies.y + ui.deltaY,
-  //   };
-  //   this.props.squaddieActions.getSquaddiePosition(position);
-  // }
+  componentWillUnmount() {
+    this.props.squaddieActions.saveSquaddiePosition(this.state.deltaPosition);
+  }
+
+  handleDrag(e, ui) {
+    const { x, y } = this.state.deltaPosition;
+    this.setState({
+      deltaPosition: {
+        id: this.props.squaddie.user_monster_id,
+        x: x + ui.deltaX,
+        y: y + ui.deltaY,
+      },
+    });
+  }
 
 
   render() {

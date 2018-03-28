@@ -66,7 +66,7 @@ class GoalsPage extends React.Component {
         <Divider hidden />
         <Grid centered>
           <Grid.Column computer={8} mobile={16}>
-            <Scrollbars autoHide style={{ height: '75vh' }}>
+            <Scrollbars autoHide style={{ height: '85vh' }}>
               <Header as="h3" className="white" textAlign="center">Available Categories</Header>
               {listItems}
               <Header as="h4" className="white" textAlign="center">
