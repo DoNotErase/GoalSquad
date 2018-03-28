@@ -273,6 +273,14 @@ app.patch('/squaddie', isAuthorized, async (req, res) => {
   } catch (err) {
     res.status(500).send(err);
   }
+});
+
+app.patch('/saveposition', isAuthorized, async (req, res) => {
+  try {
+    await db.saveSquaddiePosition(req.body.pos);
+  } catch (err) {
+    res.status(500).send(err);
+  }
 })
 
 /** *******************GOAL STUFF**************************** */
