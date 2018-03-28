@@ -1,12 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Card, Link } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import socketIOClient from 'socket.io-client';
 import * as fightActions from '../actions/fightActions';
 import ChooseFightersPage from './ChooseFightersPage';
 
 let socket;
+const src = './assets/icons/';
 
 class Lobby extends React.Component {
   constructor(props) {
@@ -59,6 +61,7 @@ class Lobby extends React.Component {
           <div>{this.state.endpoint}</div>
           <button onClick={() => this.hostGame()}>host</button>
           <button onClick={() => this.joinGame()}>join</button>
+          <Card raised image={`${src}battle_icon.png`} onClick={Link} href='/battle' />
         </div>
       );
     }
