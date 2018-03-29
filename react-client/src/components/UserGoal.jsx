@@ -19,6 +19,7 @@ class UserGoal extends React.Component {
     this.activityName = this.activityName.bind(this);
     this.goalStatus = this.goalStatus.bind(this);
     this.close = this.close.bind(this);
+    this.open = this.open.bind(this);
   }
 
   makeDeadLineMessage() {
@@ -36,7 +37,6 @@ class UserGoal extends React.Component {
       }
       return `${deadline.diff(now, 'minutes') + 1} minutes left!`;
     }
-
     return '';
   }
 
@@ -100,12 +100,18 @@ class UserGoal extends React.Component {
     this.setState({ open: false });
   }
 
+  open() {
+    if (!this.props.goal.user_goal_concluded) {
+      this.setState({ open: true });
+    }
+  }
+
   render() {
     const { open, dimmer, size } = this.state;
     const { goal } = this.props;
     return (
       <div>
-        <Grid onClick={(() => { this.setState({ open: true }); })}>
+        <Grid onClick={this.open}>
           <Grid.Row columns={2}>
             <Grid.Column >
               <Header as="h4">{goal.goal_name}</Header>

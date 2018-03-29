@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, Statistic, Grid, Button, Modal, Input, Progress, Divider } from 'semantic-ui-react';
+import { Header, Grid, Button, Modal, Input, Progress, Divider } from 'semantic-ui-react';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -38,27 +38,34 @@ class GoalDetailModal extends React.Component {
     };
 
     const completeTime = this.estimateCompletion();
-    console.log(completeTime);
-    console.log(moment(this.props.goal.user_goal_end_date));
+
     if (this.props.goal.user_goal_end_date) {
       const difference = completeTime.diff(this.props.goal.user_goal_end_date, 'minutes');
       if (this.state.timePercentage + this.state.activityPercentage < 90) {
         return (
-          <Header as="h3" color="red" float="right"> Pick up the pace! You are at risk of failing this goal by {humanize(difference)}!</Header>
+          <div>
+            <Header as="h3" color="red" textAlign="right" floated="right"> Pick up the pace! You are at risk of failing this goal by {humanize(difference)}!</Header>
+          </div>
         );
       }
       if (this.state.timePercentage + this.state.activityPercentage > 110) {
         return (
-          <Header as="h3" color="green" float="right"> way to go! you are ahead of schedule by {humanize(difference)}!</Header>
+          <div>
+            <Header as="h3" color="green" textAlign="right" floated="right">Way to go!  You are ahead of schedule by {humanize(difference)}!</Header>
+          </div>
         );
       }
       return (
-        <Header as="h3" color="blue" float="right"> Keep up the good work! You are on pace! {humanize(difference)}</Header>
+        <div>
+          <Header as="h3" color="blue" textAlign="right" floated="right"> Keep up the good work! You are on pace!</Header>
+        </div>
       );
     }
     const difference = moment().add('hours', 5).diff(completeTime, 'minutes');
     return (
-      <Header as="h3" color="blue" float="right"> Keep up this pace you will finish in {humanize(difference)}!</Header>
+      <div>
+        <Header as="h3" color="blue" textAlign="right" floated="right"> Keep up this pace and you will finish in {humanize(difference)}!</Header>
+      </div>
     );
   }
 
@@ -131,7 +138,6 @@ class GoalDetailModal extends React.Component {
     return (!goal.user_goal_concluded &&
       (goal.goal_difficulty === 'custom' || !this.props.state.user.fitbit_id)) ?
         <div>
-          <Divider />
           <Header as="h3">How far have you come?</Header>
           <Input
             value={this.state.newCurrent}
@@ -168,11 +174,11 @@ class GoalDetailModal extends React.Component {
 
   estimateCompletion() {
     const { goal } = this.props;
-    const now = moment().add('hours', 5);
-    const start = moment(goal.user_goal_start_date);
-    const estTotalTime = (goal.goal_amount + (100 * now.diff(start, 'minutes'))) / (goal.user_goal_current - goal.user_goal_start_date);
-    const completionTime = start.add('minutes', estTotalTime);
-    return completionTime;
+    const timePercentNeeded = (100 / this.state.activityPercentage) *
+      (100 - this.state.timePercentage);
+    const timeAllotted = moment(goal.user_goal_end_date).diff(moment(goal.user_goal_start_date), 'minutes');
+    const estimatedTimeNeeded = timeAllotted * (timePercentNeeded / 100);
+    return moment(goal.user_goal_start_date).add('minutes', estimatedTimeNeeded);
   }
 
   render() {

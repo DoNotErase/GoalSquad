@@ -36,7 +36,6 @@ class ProgressBar extends React.Component {
           progress
           indicating
         />
-        {/*this.hatchButton()*/}
       </div>
     );
   }

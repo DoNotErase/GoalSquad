@@ -177,9 +177,15 @@ IncubatorPage.propTypes = {
   incubatorState: PropTypes.shape({
     userGoals: PropTypes.object,
     needsUpdate: PropTypes.bool,
+    egg: PropTypes.object,
+  }).isRequired,
+  yardState: PropTypes.objectOf({
+    yardSquaddies: PropTypes.object,
   }).isRequired,
   incubatorActions: PropTypes.objectOf(PropTypes.func).isRequired,
   homePageActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  yardActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  squaddieActions: PropTypes.objectOf(PropTypes.func).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
