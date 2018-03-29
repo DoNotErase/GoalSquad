@@ -34,7 +34,6 @@ class IncubatorPage extends React.Component {
 
   getGoals() {
     return (
-      // <div className="no-user-goals">
         <Grid 
         textAlign="center"
         verticalAlign="middle"
@@ -70,7 +69,6 @@ class IncubatorPage extends React.Component {
           </Grid.Row>
         </Grid.Column>
         </Grid>
-      // </div>
     )
   }
 

@@ -2,8 +2,8 @@ const incubatorState = {
   userGoals: {},
   egg: {
     egg_xp: 0,
-    egg_hatched: false
-  }
+    egg_hatched: false,
+  },
 };
 
 const incubatorReducer = (state = incubatorState, action) => {
