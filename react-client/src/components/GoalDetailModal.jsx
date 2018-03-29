@@ -21,21 +21,44 @@ class GoalDetailModal extends React.Component {
     this.updateNewCurrent = this.updateNewCurrent.bind(this);
     this.submitUpdate = this.submitUpdate.bind(this);
     this.onTrackMessage = this.onTrackMessage.bind(this);
+    this.timeProgress = this.timeProgress.bind(this);
+    this.estimateCompletion = this.estimateCompletion.bind(this);
   }
 
   onTrackMessage() {
-    if (this.state.timePercentage + this.state.activityPercentage < 85) {
+    const humanize = (minutes) => {
+      const positive = Math.abs(minutes);
+      if (positive / 60 < 1) {
+        return `${positive} minutes`;
+      }
+      if ((positive / 60) / 24 < 1) {
+        return `${Math.ceil(positive / 60)} hours`;
+      }
+      return `${Math.ceil((positive / 60) / 24)} days`;
+    };
+
+    const completeTime = this.estimateCompletion();
+    console.log(completeTime);
+    console.log(moment(this.props.goal.user_goal_end_date));
+    if (this.props.goal.user_goal_end_date) {
+      const difference = completeTime.diff(this.props.goal.user_goal_end_date, 'minutes');
+      if (this.state.timePercentage + this.state.activityPercentage < 90) {
+        return (
+          <Header as="h3" color="red" float="right"> Pick up the pace! You are at risk of failing this goal by {humanize(difference)}!</Header>
+        );
+      }
+      if (this.state.timePercentage + this.state.activityPercentage > 110) {
+        return (
+          <Header as="h3" color="green" float="right"> way to go! you are ahead of schedule by {humanize(difference)}!</Header>
+        );
+      }
       return (
-        <Header as="h3" color="red" float="right"> Pick up the pace! You are at risk of failing this goal! </Header>
+        <Header as="h3" color="blue" float="right"> Keep up the good work! You are on pace! {humanize(difference)}</Header>
       );
     }
-    if (this.state.timePercentage + this.state.activityPercentage > 115) {
-      return (
-        <Header as="h3" color="green" float="right"> way to go! you are ahead of schedule! </Header>
-      );
-    }
+    const difference = moment().add('hours', 5).diff(completeTime, 'minutes');
     return (
-      <Header as="h3" color="blue" float="right"> Keep up the good work! You are on pace! </Header>
+      <Header as="h3" color="blue" float="right"> Keep up this pace you will finish in {humanize(difference)}!</Header>
     );
   }
 
@@ -48,12 +71,11 @@ class GoalDetailModal extends React.Component {
 
   timePercentage() {
     const { goal } = this.props;
-
     if (goal.user_goal_end_date) {
-      const now = moment();
+      const now = moment().add('hours', 5);
       const start = moment(goal.user_goal_start_date);
       const end = moment(goal.user_goal_end_date);
-      return 100 - Math.floor((100 * now.diff(start, 'seconds')) / end.diff(start, 'seconds'));
+      return 100 - Math.floor((100 * now.diff(start, 'minutes')) / end.diff(start, 'minutes'));
     }
     return 100;
   }
@@ -75,7 +97,12 @@ class GoalDetailModal extends React.Component {
               onClick={this.submitUpdate}
             />
           </Modal.Actions>
-      : <div />;
+      :
+          <Modal.Actions>
+            <Button color="black" onClick={close}>
+              Close
+            </Button>
+          </Modal.Actions>;
   }
 
   updateNewCurrent(event) {
@@ -119,6 +146,35 @@ class GoalDetailModal extends React.Component {
       : <div />;
   }
 
+  timeProgress() {
+    if (this.props.goal.user_goal_end_date) {
+      return (
+        <div>
+          <Header as="h5"> Time Remaining </Header>
+          <Progress
+            style={{ marginTop: 8 }}
+            size="medium"
+            percent={this.state.timePercentage}
+            progress
+            indicating
+          />
+        </div>
+      );
+    }
+    return (
+      <Header as="h5"> Start date: {moment(this.props.goal.user_goal_start_date).add('hours', -5).format('LLLL')} </Header>
+    );
+  }
+
+  estimateCompletion() {
+    const { goal } = this.props;
+    const now = moment().add('hours', 5);
+    const start = moment(goal.user_goal_start_date);
+    const estTotalTime = (goal.goal_amount + (100 * now.diff(start, 'minutes'))) / (goal.user_goal_current - goal.user_goal_start_date);
+    const completionTime = start.add('minutes', estTotalTime);
+    return completionTime;
+  }
+
   render() {
     const {
       goal, size, dimmer, open, close,
@@ -137,7 +193,7 @@ class GoalDetailModal extends React.Component {
             <Grid relaxed>
               <Grid.Row>
                 <Grid.Column>
-                  Activity Progress
+                  <Header as="h5"> Activity Progress </Header>
                   <Progress
                     style={{ marginTop: 8 }}
                     size="medium"
@@ -145,14 +201,7 @@ class GoalDetailModal extends React.Component {
                     progress
                     indicating
                   />
-                  Time Remaining
-                  <Progress
-                    style={{ marginTop: 8 }}
-                    size="medium"
-                    percent={this.state.timePercentage}
-                    progress
-                    indicating
-                  />
+                  {this.timeProgress()}
                   {this.onTrackMessage()}
                   {this.updateForm()}
                 </Grid.Column>
@@ -179,6 +228,8 @@ GoalDetailModal.propTypes = {
     goal_timedivisor: PropTypes.number,
     goal_activity: PropTypes.string,
     user_goal_concluded: PropTypes.number, // really bool 0/1
+    user_goal_end_date: PropTypes.string,
+    user_goal_start_date: PropTypes.string,
   }).isRequired,
   incubatorActions: PropTypes.objectOf(PropTypes.func).isRequired,
 };
