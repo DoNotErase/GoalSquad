@@ -1,37 +1,43 @@
-var cacheName = 'goalsquad-page';
+importScripts('https://www.gstatic.com/firebasejs/4.12.0/firebase.js');
+importScripts('https://www.gstatic.com/firebasejs/4.12.0/firebase-messaging.js');
 
-var filesToCache = ['/', '/index.html', '/styles.css'];
+var config = {
+  apiKey: "AIzaSyDbOhdxctAyUdSrr0xbDxSazzQfu1wYeNY",
+  authDomain: "goalsquad-f12a7.firebaseapp.com",
+  databaseURL: "https://goalsquad-f12a7.firebaseio.com",
+  projectId: "goalsquad-f12a7",
+  storageBucket: "goalsquad-f12a7.appspot.com",
+  messagingSenderId: "177647825623"
+};
 
-self.addEventListener('install', (event) => {
-  console.log('[ServiceWorker] Install');
-  event.waitUntil(caches.open(cacheName).then((cache) => {
-    console.log('[ServiceWorker] Caching app shell');
-    return cache.addAll(filesToCache);
-  }) );
+firebase.initializeApp(config);
+
+const messaging = firebase.messaging();
+
+messaging.usePublicVapidKey("BM82A28xJ5fYuqFmaOdjPOQZAmzmL0gJvpICyZYqv3tTfkyCgZfHQXCgafhcbXeg2sW01CRBKwF-nSPNxgLCFRg");
+
+//how does this get initiated? 
+// would like to send payload based on met condition,
+// e.g. if(lessThanOneDayOnGoal(this.state.user.activeGoals)) setBackgroundMessagingHandler(message)
+messaging.setBackgroundMessageHandler(function (payload) {
+  const title = payload.data.title;
+  const options = {
+    body: payload.data.body
+  };
+  return self.registration.showNotification(title, options);
 });
 
-self.addEventListener('activate', (event) => {
-  event.waitUntil(self.clients.claim());
+messaging.onTokenRefresh(function () {
+  messaging.getToken().then(function (refreshedToken) {
+    console.log('Token refreshed.');
+    // Indicate that the new Instance ID token has not yet been sent to the
+    // app server.
+    setTokenSentToServer(false);
+    // Send Instance ID token to app server.
+    sendTokenToServer(refreshedToken);
+    // ...
+  }).catch(function (err) {
+    console.log('Unable to retrieve refreshed token ', err);
+    showToken('Unable to retrieve refreshed token ', err);
+  });
 });
-
-self.addEventListener('fetch', (event) => {
-	event.respondWith(caches.open(filesToCache)
-		.then(function(cache) {
-	  	return cache.match(event.request)
-	  .then(function(response) {
-	    var fetchPromise = fetch(event.request) // used at end of request (if fetched)
-	  .then(function(networkResponse) {
-	    // if a response was received, update the cache
-      if (networkResponse) {
-        cache.put(event.request, networkResponse.clone());
-      }
-        return networkResponse;
-      }, function (e) {
-      	 // if the event of an error, do nothing since we're offline
-      });
-        // respond from the cache, or the network
-        return response || fetchPromise;
-	    });
-	}));
-});
-
