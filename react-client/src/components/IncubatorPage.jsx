@@ -17,12 +17,8 @@ class IncubatorPage extends React.Component {
     super(props);
     this.state = {
       count: 3,
-      eggXP: 110,
       firstTime: true,
-      eggWasClicked: false,
     };
-    this.subtractFromCount = this.subtractFromCount.bind(this);
-    this.getGoals = this.getGoals.bind(this);
   }
 
   componentDidMount() {
@@ -41,14 +37,6 @@ class IncubatorPage extends React.Component {
         >
           <Grid.Column computer={8} mobile={16}>
           <Grid.Row>
-            {/*<div className="circle">
-                <span className="char1">O</span>
-                <span className="char2">h</span>
-                <span className="char3"> </span>
-                <span className="char4">n</span>
-                <span className="char5">o</span>
-                <span className="char6">!</span>
-              </div> */}
             <div className="no-goals-header">Oh no!</div>
           </Grid.Row>
           <Grid.Row>
