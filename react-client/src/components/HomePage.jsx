@@ -158,21 +158,12 @@ class HomePage extends React.Component {
 }
 
 HomePage.propTypes = {
-  state: PropTypes.objectOf(PropTypes.object).isRequired,
-  // actions: PropTypes.objectOf(PropTypes.func).isRequired,
+  state: PropTypes.shape({
+    user: PropTypes.object,
+  }).isRequired,
   homePageActions: PropTypes.objectOf(PropTypes.func).isRequired,
   history: PropTypes.shape({
-    action: PropTypes.string,
-    block: PropTypes.func,
-    createHref: PropTypes.func,
-    go: PropTypes.func,
-    goBack: PropTypes.func,
-    goForward: PropTypes.func,
-    length: PropTypes.number,
-    listen: PropTypes.func,
-    location: PropTypes.object,
     push: PropTypes.func,
-    replace: PropTypes.func,
   }).isRequired,
 };
 
@@ -180,6 +171,7 @@ const mapDispatchToProps = dispatch => ({
   homePageActions: bindActionCreators(homePageActions, dispatch),
   actions: bindActionCreators(actions, dispatch),
 });
+
 const mapStateToProps = state => ({ state: state.main });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

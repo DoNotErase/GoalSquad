@@ -1,10 +1,11 @@
 import React from 'react';
-import { Header, Statistic, Grid, Button, Modal, Input } from 'semantic-ui-react';
+import { Header, Statistic, Grid, Button } from 'semantic-ui-react';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import * as incubatorActions from '../actions/incubatorActions';
+import GoalDetailModal from './GoalDetailModal';
 
 class UserGoal extends React.Component {
   constructor(props) {
@@ -12,17 +13,13 @@ class UserGoal extends React.Component {
 
     this.state = {
       open: false,
-      newCurrent: '',
-      errorMessage: '',
     };
 
     this.makeDeadLineMessage = this.makeDeadLineMessage.bind(this);
     this.activityName = this.activityName.bind(this);
     this.goalStatus = this.goalStatus.bind(this);
-    this.updateNewCurrent = this.updateNewCurrent.bind(this);
     this.close = this.close.bind(this);
-    this.makeUpdateButton = this.makeUpdateButton.bind(this);
-    this.submitUpdate = this.submitUpdate.bind(this);
+    this.open = this.open.bind(this);
   }
 
   makeDeadLineMessage() {
@@ -40,7 +37,6 @@ class UserGoal extends React.Component {
       }
       return `${deadline.diff(now, 'minutes') + 1} minutes left!`;
     }
-
     return '';
   }
 
@@ -100,35 +96,13 @@ class UserGoal extends React.Component {
     );
   }
 
-  updateNewCurrent(event) {
-    this.setState({ newCurrent: event.target.value });
-  }
-
   close() {
     this.setState({ open: false });
   }
 
-  makeUpdateButton() {
-    if ((this.props.goal.goal_difficulty === 'custom' || !this.props.state.user.fitbit_id) && !this.props.goal.user_goal_concluded) {
-      return (
-        <Button basic color="blue" onClick={(() => { this.setState({ open: true }); })}> Update Progress </Button>
-      );
-    }
-    return (<div />);
-  }
-
-  submitUpdate() {
-    const validatePositiveNumber = (string) => {
-      if (parseInt(string, 10) >= 0) {
-        return true;
-      }
-      return false;
-    };
-    if (validatePositiveNumber(this.state.newCurrent)) {
-      this.props.incubatorActions.submitProgress(this.props.goal.user_goal_id, this.state.newCurrent);
-      this.setState({ errorMessage: '', open: false, newCurrent: '0' });
-    } else {
-      this.setState({ errorMessage: 'please enter a positive number!' });
+  open() {
+    if (!this.props.goal.user_goal_concluded) {
+      this.setState({ open: true });
     }
   }
 
@@ -137,70 +111,37 @@ class UserGoal extends React.Component {
     const { goal } = this.props;
     return (
       <div>
-        <Grid>
+        <Grid onClick={this.open}>
           <Grid.Row columns={2}>
             <Grid.Column >
               <Header as="h4">{goal.goal_name}</Header>
-              {this.makeDeadLineMessage()} {/* generate time until expiration or '' if no deadline */}
-              {this.makeUpdateButton()}
+              {/* generate time until expiration or '' if no deadline */}
+              {this.makeDeadLineMessage()}
             </Grid.Column>
-            <Grid.Column >
-              {this.goalStatus()} {/* show amount of activity left or button to close out old goal */}
+            <Grid.Column>
+              {/* show amount of activity left or button to close out old goal */}
+              {this.goalStatus()}
             </Grid.Column>
           </Grid.Row>
         </Grid>
 
-        {/* VIEW GOAL MODAL */}
-
-        <Modal
+        <GoalDetailModal
           size={size}
           dimmer={dimmer}
           open={open}
-          onClose={this.close}
+          goal={goal}
           className="fadeIn"
-        >
-          <Modal.Header>{goal.goal_name}</Modal.Header>
-          <Modal.Content>
-            <Modal.Description>
-              <Grid relaxed>
-                <Grid.Row>
-                  <Grid.Column>
-                    <Header as="h3">How far have you come?</Header>
-                    <Input
-                      value={this.state.newCurrent}
-                      onChange={this.updateNewCurrent}
-                      style={{ width: 50 }}
-                      label={{ basic: true, content: goal.goal_activity }}
-                      labelPosition="right"
-                      type="text"
-                    />
-                    <Header as="h5">Enter progress since last check-in</Header>
-                  </Grid.Column>
-                </Grid.Row>
-              </Grid>
-            </Modal.Description>
-          </Modal.Content>
-          <Modal.Actions>
-            <Header as="h5">{this.state.errorMessage}</Header>
-            <Button color="black" onClick={this.close}>
-              Cancel
-            </Button>
-            <Button
-              positive
-              icon="checkmark"
-              labelPosition="right"
-              content="Yep, that's me"
-              onClick={this.submitUpdate}
-            />
-          </Modal.Actions>
-        </Modal>
+          close={this.close}
+        />
       </div>
     );
   }
 }
 
 UserGoal.propTypes = {
-  state: PropTypes.objectOf(PropTypes.object).isRequired,
+  state: PropTypes.shape({
+    user: PropTypes.object,
+  }).isRequired,
   goal: PropTypes.shape({
     goal_id: PropTypes.number,
     user_goal_id: PropTypes.number,
@@ -209,6 +150,7 @@ UserGoal.propTypes = {
     goal_points: PropTypes.string,
     goal_timedivisor: PropTypes.number,
     goal_activity: PropTypes.string,
+    user_goal_concluded: PropTypes.number, // really bool 0/1
   }).isRequired,
   incubatorActions: PropTypes.objectOf(PropTypes.func).isRequired,
 };

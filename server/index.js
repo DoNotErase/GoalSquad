@@ -282,7 +282,7 @@ app.patch('/saveposition', isAuthorized, async (req, res) => {
   } catch (err) {
     res.status(500).send(err);
   }
-})
+});
 
 app.get('/getSquaddie', async (req, res) => {
   let userID;

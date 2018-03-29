@@ -262,7 +262,7 @@ module.exports.hatchEgg = async (userEggID, id, nextXP) => {
     const hatchEgg = `UPDATE user_egg SET egg_hatched = 1 WHERE user_egg_id = '${userEggID}';`;
 
     const newSquaddie = 'INSERT INTO user_monster (user_id, monster_id) VALUES ' +
-      `('${userID}', FLOOR(RAND() * (SELECT COUNT(*) FROM monster) + 1));`;
+      `('${userID}', (SELECT egg_id FROM user_egg WHERE user_egg_id = '${userEggID}'));`;
 
     const makeNewEgg = 'INSERT INTO user_egg (user_id, egg_id, egg_xp) VALUES ' +
       `('${userID}', FLOOR(RAND() * (SELECT COUNT (*) FROM egg) + 1), ${nextXP});`;
@@ -317,15 +317,20 @@ module.exports.getUserSquaddies = async (id) => {
 };
 
 module.exports.getAllSquaddies = async (id) => {
-  const userID = await getRightID(id);
-  // returns a lsit of all squaddies but with null info for ones a user hasn't yet earned
-  const allSquaddies = await db.queryAsync('SELECT * FROM monster');
-  const userSquaddies = await db.queryAsync(`SELECT * FROM user_monster WHERE user_id = ${userID}`);
+  try {
+    const userID = await getRightID(id);
+    // returns a lsit of all squaddies but with null info for ones a user hasn't yet earned
+    const allSquaddies = await db.queryAsync('SELECT * FROM monster');
+    const userSquaddies = await db.queryAsync(`SELECT * FROM user_monster WHERE user_id = ${userID}`);
 
-  userSquaddies.forEach((squaddie) => {
-    allSquaddies[squaddie.monster_id - 1].user = squaddie;
-  });
-  return allSquaddies;
+    userSquaddies.forEach((squaddie) => {
+      allSquaddies[squaddie.monster_id - 1].user = squaddie;
+    });
+    return allSquaddies;
+  } catch (err) {
+    console.log(err);
+    throw new Error('get all squaddies err');
+  }
 };
 
 module.exports.newUserLifetimeDistance = async (id, distance) => {
@@ -440,9 +445,10 @@ module.exports.getUserDeets = async (id) => {
   }
 };
 
-module.exports.getYardSquaddiesByID = async (userid) => {
+module.exports.getYardSquaddiesByID = async (id) => {
   try {
-    return await db.queryAsync(`SELECT * FROM user_monster INNER JOIN monster ON monster.monster_id = user_monster.monster_id WHERE user_id = '${userid}' AND user_monster_yard = 1`);
+    const userID = await getRightID(id);
+    return await db.queryAsync(`SELECT * FROM user_monster INNER JOIN monster ON monster.monster_id = user_monster.monster_id WHERE user_id = ${userID} AND user_monster_yard = 1`);
   } catch (err) {
     throw new Error('get yardsquaddies DB error');
   }
@@ -450,7 +456,6 @@ module.exports.getYardSquaddiesByID = async (userid) => {
 
 module.exports.updateYardSquaddie = async (userMonsterID) => {
   try {
-    console.log(userMonsterID);
     const query = `UPDATE user_monster SET user_monster_yard = !user_monster_yard WHERE user_monster_id = '${userMonsterID}'`;
     return await db.queryAsync(query);
   } catch (err) {
@@ -463,6 +468,7 @@ module.exports.renameSquaddie = async (userMonsterID, newName) => {
   try {
     return await db.queryAsync(`UPDATE user_monster SET user_monster_new_name = '${newName}' WHERE user_monster_id = ${userMonsterID}`);
   } catch (err) {
+    console.log(err);
     throw new Error('error renaming squaddie');
   }
 };
@@ -474,4 +480,4 @@ module.exports.saveSquaddiePosition = async (userMonsterPosition) => {
   } catch (err) {
     throw new Error('Error saving Squaddie position');
   }
-}
+};

@@ -1,5 +1,13 @@
 import axios from 'axios';
-import { routerActions } from 'react-router-redux';
+
+const handleErr = (err) => {
+  if (err.response && err.response.status === 401) {
+    window.location.href = '/';
+    alert('Sorry! Please log in.');
+  } else {
+    console.log(err);
+  }
+};
 
 export const setUserGoals = (userGoals) => {
   const sortedGoals = {
@@ -21,12 +29,7 @@ export const getUserGoals = () => (
       .then((res) => {
         dispatch(setUserGoals(res.data));
       })
-      .catch((err) => {
-        if (err.response.status === 401) {
-          window.location.href = '/';
-          alert('Sorry! Please log in.');
-        }
-      })
+      .catch((err) => { handleErr(err); })
   )
 );
 
@@ -38,12 +41,7 @@ export const fetchEggStatus = () => (
       .then((res) => {
         dispatch(setEggStatus(res.data));
       })
-      .catch((err) => {
-        if (err.response.status === 401) {
-          window.location.href = '/';
-          alert('Sorry! Please log in.');
-        }
-      })
+      .catch((err) => { handleErr(err); })
   )
 );
 
@@ -58,13 +56,9 @@ export const hatchEgg = (eggID, extraXP) => {
       .then((res) => {
         console.log('res data', res.data)
         dispatch(newSquaddie(res.data));
+        dispatch({ type: 'SQUADDIE_UPDATE' });
       })
-      .catch((err) => {
-        if (err.response.status === 401) {
-          window.location.href = '/';
-          alert('Sorry! Please log in.');
-        }
-      })
+      .catch((err) => { handleErr(err); })
   )
   )
 };
@@ -73,15 +67,12 @@ export const markGoalSuccess = userGoalID => (
   dispatch => (
     axios.patch('/completeGoal', { goalID: userGoalID })
       .then((res) => {
+        // pass in goal index within activity to splice out
+        // add xp to egg directly, need points, maybe separate call from userGoal
         dispatch(getUserGoals(userGoalID));
         dispatch(fetchEggStatus(res.data)); // because xp was added
       })
-      .catch((err) => {
-        if (err.response.status === 401) {
-          window.location.href = '/';
-          alert('Sorry! Please log in.');
-        }
-      })
+      .catch((err) => { handleErr(err); })
   )
 );
 
@@ -89,14 +80,10 @@ export const markGoalFailure = userGoalID => (
   dispatch => (
     axios.patch('/failGoal', { goalID: userGoalID })
       .then(() => {
+        // pass in goal index within activity to splice out
         dispatch(getUserGoals(userGoalID));
       })
-      .catch((err) => {
-        if (err.response.status === 401) {
-          window.location.href = '/';
-          alert('Sorry! Please log in.');
-        }
-      })
+      .catch((err) => { handleErr(err); })
   )
 );
 
@@ -104,13 +91,9 @@ export const submitProgress = (userGoalID, newCurrent) => (
   dispatch => (
     axios.patch('/updateCustom', { goalID: userGoalID, newCurrent })
       .then(() => {
+        // take this out, update local
         dispatch(getUserGoals(userGoalID));
       })
-      .catch((err) => {
-        if (err.response.status === 401) {
-          window.location.href = '/';
-          alert('Sorry! Please log in.');
-        }
-      })
+      .catch((err) => { handleErr(err); })
   )
 );

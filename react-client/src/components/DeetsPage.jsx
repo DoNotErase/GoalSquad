@@ -12,17 +12,23 @@ class DeetsPage extends React.Component {
     super(props);
 
     this.makeDisconnectButton = this.makeDisconnectButton.bind(this);
-  }
-  componentDidMount() {
-    this.props.actions.fetchStats();
+    if (!props.state.deets || props.state.needsUpdate) {
+      props.actions.fetchStats();
+      props.actions.turnOffUpdate();
+    }
   }
 
   makeDisconnectButton() {
     if (this.props.state.user.fitbit_id) {
       return (
-        <Button onClick={this.props.actions.deauthorizeFitbit}>
-          Disconnect Fitbit
-        </Button>
+        <a href="/logout" >
+          <Button onClick={() => {
+            this.props.actions.deauthorizeFitbit();
+          }}
+          >
+            Disconnect Fitbit
+          </Button>
+        </a>
       );
     }
     return <div />;
@@ -30,7 +36,7 @@ class DeetsPage extends React.Component {
 
   render() {
     const { deets } = this.props.state;
-    console.log(this.props.state);
+
     const percentSuccess = (statSet) => {
       if (statSet.attempted - statSet.pending > 0) {
         return Math.ceil((statSet.success * 100) /
@@ -50,7 +56,7 @@ class DeetsPage extends React.Component {
     if (Object.keys(deets).length === 0) {
       return (<div />);
     }
-    console.log(this.props.state.user);
+
     return (
       <div className="deetspage">
         <Header as="h1" className="white" textAlign="right">Deets</Header>
@@ -142,19 +148,13 @@ class DeetsPage extends React.Component {
 
 DeetsPage.propTypes = {
   actions: PropTypes.objectOf(PropTypes.func).isRequired,
-  state: PropTypes.objectOf(PropTypes.object).isRequired,
+  state: PropTypes.shape({
+    user: PropTypes.object,
+    deets: PropTypes.object,
+    needsUpdate: PropTypes.bool,
+  }).isRequired,
   history: PropTypes.shape({
-    action: PropTypes.string,
-    block: PropTypes.func,
-    createHref: PropTypes.func,
-    go: PropTypes.func,
-    goBack: PropTypes.func,
-    goForward: PropTypes.func,
-    length: PropTypes.number,
-    listen: PropTypes.func,
-    location: PropTypes.object,
     push: PropTypes.func,
-    replace: PropTypes.func,
   }).isRequired,
 };
 

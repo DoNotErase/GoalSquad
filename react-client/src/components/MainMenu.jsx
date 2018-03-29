@@ -1,5 +1,9 @@
 import React from 'react';
 import { Button, Modal, Icon, Link, Card } from 'semantic-ui-react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import * as actions from '../actions/actions';
 
 const src = './assets/icons/';
 
@@ -32,4 +36,28 @@ const MainMenu = props => (
   </Modal>
 );
 
-export default MainMenu;
+MainMenu.propTypes = {
+  history: PropTypes.shape({
+    action: PropTypes.string,
+    block: PropTypes.func,
+    createHref: PropTypes.func,
+    go: PropTypes.func,
+    goBack: PropTypes.func,
+    goForward: PropTypes.func,
+    length: PropTypes.number,
+    listen: PropTypes.func,
+    location: PropTypes.object,
+    push: PropTypes.func,
+    replace: PropTypes.func,
+  }).isRequired,
+};
+
+const mapStateToProps = state => (
+  { state: state.main }
+);
+
+const mapDispatchToProps = dispatch => (
+  { actions: bindActionCreators(actions, dispatch) }
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainMenu);
