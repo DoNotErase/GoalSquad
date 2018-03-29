@@ -80,7 +80,7 @@ CREATE TABLE user_monster (
   user_monster_yard bool default 0,
   user_monster_xcoord int,
   user_monster_ycoord int,
-
+  user_monster_creation DATETIME,
   PRIMARY KEY (user_monster_id),
   FOREIGN KEY (user_id) REFERENCES user (user_id),
   FOREIGN KEY (monster_id) REFERENCES monster (monster_id)
@@ -175,5 +175,5 @@ VALUES
 
 
 /*  Execute this file from the command line by typing:
- *    mysql -u root < server/schema.sql
+ *    mysql -u root < schema.sql
  *  to create the database and the tables.*/

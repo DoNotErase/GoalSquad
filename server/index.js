@@ -219,6 +219,7 @@ app.get('/eggStatus', isAuthorized, async (req, res) => {
   try {
     const userID = req.session.passport.user.id;
     const data = await db.getEggInfo(userID);
+    console.log('Got the egg data!')
     res.status(200).json(data);
   } catch (err) {
     res.status(500).send('err in get Egg info');
@@ -278,6 +279,21 @@ app.patch('/squaddie', isAuthorized, async (req, res) => {
 app.patch('/saveposition', isAuthorized, async (req, res) => {
   try {
     await db.saveSquaddiePosition(req.body.pos);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+})
+
+app.get('/getSquaddie', async (req, res) => {
+  let userID;
+  if (req.session.passport) {
+    userID = req.session.passport.user.id;
+  } else {
+    res.status(401).send('User does not have a logged session');
+  }
+  try {
+    const squaddie = await db.getNewSquaddie(userID);
+    res.status(200).json(squaddie);
   } catch (err) {
     res.status(500).send(err);
   }
