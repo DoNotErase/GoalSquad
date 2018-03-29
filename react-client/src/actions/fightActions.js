@@ -14,13 +14,6 @@ export const setLobbyInfo = ((roomInfo, player) => {
   };
 });
 
-
-// export const getLobbyInfo = (roomInfo) => {
-//   return (dispatch) => {
-//     dispatch(setLobbyInfo(roomInfo));
-//   };
-// };
-
 export const setPlayerNumber = ((playernumber) => {
   return (dispatch) => {
     dispatch({
@@ -31,13 +24,6 @@ export const setPlayerNumber = ((playernumber) => {
     });
   };
 });
-
-
-// export const getPlayerNumber = (playernumber) => {
-//   return (dispatch) => {
-//     dispatch(setMonsterFighter(playernumber));
-//   };
-// };
 
 export const setMonsterFighter = ((player, squaddie) => {
   if (player === 'player1') {
@@ -61,9 +47,3 @@ export const setMonsterFighter = ((player, squaddie) => {
   }
 });
 
-
-// export const getMonsterID = (monsterUserID) => {
-//   return (dispatch) => {
-//     dispatch(setMonsterFighter(monsterUserID));
-//   };
-// };

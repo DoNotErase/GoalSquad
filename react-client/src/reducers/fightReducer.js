@@ -13,7 +13,6 @@ const fightReducer = (state = fightState, action) => {
     }
     case 'CHOOSE_FIGHTER': {
       const key = Object.keys(action.payload);
-      console.log('key', key);
       return {
         ...state,
         monster: {
