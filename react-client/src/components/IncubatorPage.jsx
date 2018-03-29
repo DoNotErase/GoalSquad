@@ -19,10 +19,10 @@ class IncubatorPage extends React.Component {
       count: 3,
       firstTime: true,
       glowingEgg: false,
+      newSquaddie: false,
     };
     this.subtractFromCount = this.subtractFromCount.bind(this);
     this.getGoals = this.getGoals.bind(this);
-    this.setState({ firstTime: true });
   }
 
   componentDidMount() {
@@ -69,8 +69,11 @@ class IncubatorPage extends React.Component {
 
   subtractFromCount() {
     if (this.state.count === 0) {
-      this.setState({ count: 3 });
-    }
+      this.setState({ count: 3, firstTime: true, newSquaddie: true });
+      setTimeout(() => {
+        this.props.incubatorActions.fetchEggStatus()
+      }, 2000);
+    } 
     this.setState(prevState => ({ count: prevState.count - 1, glowingEgg: false }));
   }
 
@@ -81,7 +84,7 @@ class IncubatorPage extends React.Component {
     }, 2000);
     setTimeout(() => {
       this.props.squaddieActions.toggleYardStatus(this.props.yardState.newSquaddie.monster_id);
-    }, 2000);
+    }, 2000); 
     this.setState({ firstTime: false, glowingEgg: true });
   }
 

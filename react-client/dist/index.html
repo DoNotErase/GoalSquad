@@ -12,49 +12,45 @@
   <div id="app"></div>
 
   <!-- FIREBASE SCRIPT TAG - DON'T PASTE SCRIPTS ABOVE THIS -->
-  <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase-database.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase-firestore.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase-messaging.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
-  <script>
-    // Initialize Firebase
-    var config = {
-      apiKey: "AIzaSyDbOhdxctAyUdSrr0xbDxSazzQfu1wYeNY",
-      authDomain: "goalsquad-f12a7.firebaseapp.com",
-      databaseURL: "https://goalsquad-f12a7.firebaseio.com",
-      projectId: "goalsquad-f12a7",
-      storageBucket: "goalsquad-f12a7.appspot.com",
-      messagingSenderId: "177647825623"
-    };
-    firebase.initializeApp(config);
-  </script>
+<script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+<script>
+// Initialize Firebase
+var configs = {
+    apiKey: "AIzaSyDbOhdxctAyUdSrr0xbDxSazzQfu1wYeNY",
+    authDomain: "goalsquad-f12a7.firebaseapp.com",
+    databaseURL: "https://goalsquad-f12a7.firebaseio.com",
+    projectId: "goalsquad-f12a7",
+    storageBucket: "",
+    messagingSenderId: "177647825623"
+};
+firebase.initializeApp(configs);
+</script>
   <!-- END OF FIREBASE SCRIPT -->
   
 <script type="text/javascript" src="/bundle.js"></script>
 <script>
-  if ('serviceWorker' in navigator) {
+if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js')
-      .then(function () {
-        console.log('Service Worker Registered');
-      });
-  }
+        .then(function () {
+            console.log('Service Worker Registered');
+        });
+}
 </script>
 <script>
-  var messaging = firebase.messaging();
-  messaging.requestPermission()
+var messaging = firebase.messaging();
+messaging.requestPermission()
     .then(function () {
-      console.log('Notification permission granted.');
-      return messaging.getToken();
+        console.log('Notification permission granted.');
+        return messaging.getToken();
     })
     .then(function (token) {
-      console.log(token);
+        console.log(token);
     })
     .catch(function (err) {
-      console.log('Unable to get permission to notify.', err);
+    console.log('Unable to get permission to notify.', err);
     });
 </script>
+
   <!-- noscript tag used to satisfy Lighthouse test that wants a display page/notification when there is no JS -->
   <noscript>Javascript is needed to run the site. Please enable JavaScript.</noscript>
 </body>
@@ -64,4 +60,3 @@
   }
 </script>
 </html>
-
