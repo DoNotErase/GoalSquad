@@ -38,12 +38,6 @@ class YardPage extends React.Component {
           </div>
         </Scrollbars>
         <MainMenu history={this.props.history} />
-        {/* <Button
-          style={{ top: 20, right: 20, position: 'fixed' }}
-          content="Save"
-          size="large"
-          color="orange"
-        /> */}
       </div>
     );
   }

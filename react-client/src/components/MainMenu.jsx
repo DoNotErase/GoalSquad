@@ -7,6 +7,7 @@ const menustyles = {
   top: 15,
   left: 15,
   position: 'fixed',
+  backgroundImage: 'linear-gradient(to right, #d95a37, #df663e, #e67146, #ec7d4e, #f28857)',
 };
 
 const MainMenu = props => (
@@ -18,10 +19,9 @@ const MainMenu = props => (
         icon
         circular
         size="huge"
-        color="orange"
         style={menustyles}
       >
-        <Icon name="tasks" />
+        <Icon name="tasks" inverted />
       </Button>}
   >
     <Modal.Content>
