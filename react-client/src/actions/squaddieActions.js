@@ -1,5 +1,8 @@
 import axios from 'axios';
 
+const isLoading = () => ({ type: 'IS_LOADING', payload: true });
+const doneLoading = () => ({ type: 'DONE_LOADING', payload: false });
+
 const setSquaddies = squaddieData => ({
   type: 'GET_SQUADDIES',
   payload: squaddieData,
@@ -32,10 +35,12 @@ export const saveSquaddiePosition = position => (
 )
 
 export const getUserSquaddies = () => (
-  dispatch => (
-    axios.get('/squaddies')
+  (dispatch) => {
+    dispatch(isLoading());
+    return axios.get('/squaddies')
       .then((res) => {
         dispatch(setSquaddies(res.data));
+        dispatch(doneLoading());
       })
       .catch((err) => {
         console.log(err);
@@ -44,7 +49,7 @@ export const getUserSquaddies = () => (
           alert('Sorry! Please log in.');
         }
       })
-  )
+    }
 );
 
 export const getYardSquaddies = () => (

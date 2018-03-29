@@ -1,10 +1,17 @@
 const squadState = {
   squaddies: [],
   yardSquaddies: [],
+  isLoading: false,
 };
 
 const squadReducer = (state = squadState, action) => {
   switch (action.type) {
+    case 'IS_LOADING': {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
     case 'GET_SQUADDIES': {
       return {
         ...state,
@@ -21,6 +28,12 @@ const squadReducer = (state = squadState, action) => {
       return {
         ...state,
         yardSquaddies: action.payload,
+      };
+    }
+    case 'DONE_LOADING': {
+      return {
+        ...state,
+        isLoading: false,
       };
     }
     default: {
