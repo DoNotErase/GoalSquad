@@ -34,15 +34,20 @@ class IncubatorPage extends React.Component {
               ))} {/* renders list of goals for each activity type */}
             </Scrollbars>
           </Grid.Column>
-          <Grid.Row columns={2} style={{ position: 'fixed', bottom: 0, padding: 1 }}>
+          <Grid.Row
+            columns={2}
+            verticalAlign="top"
+            style={{ position: 'fixed', bottom: 0, padding: 1 }}
+          >
             <Grid.Column width={3}>
-              <Image src="./assets/icons/egg.png" centered />
+              <Image src="./assets/icons/egg_256.png" centered />
             </Grid.Column>
             <Grid.Column width={13}>
-              <ProgressBar history={this.props.history} />
+              <ProgressBar
+                history={this.props.history}
+              />
             </Grid.Column>
           </Grid.Row>
-
         </Grid>
         <MainMenu history={this.props.history} />
       </div>

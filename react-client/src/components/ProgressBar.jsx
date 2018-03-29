@@ -30,7 +30,7 @@ class ProgressBar extends React.Component {
     return (
       <div>
         <Progress
-          style={{ marginTop: 8 }}
+          style={{ marginTop: 12 }}
           value={Math.floor(this.props.incubatorState.egg.egg_xp)}
           size="medium"
           total="100"
