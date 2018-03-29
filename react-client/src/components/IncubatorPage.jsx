@@ -29,96 +29,96 @@ class IncubatorPage extends React.Component {
     this.props.incubatorActions.getUserGoals();
     this.props.incubatorActions.fetchEggStatus();
     this.props.homePageActions.attemptLogin();
-    console.log('stateeeeee',this.props);
+    console.log('stateeeeee', this.props);
   }
 
   getGoals() {
     return (
-        <Grid 
-        textAlign="center"
-        verticalAlign="middle"
-        style={{ height: '100%' }}
+      <Grid
+          textAlign="center"
+          verticalAlign="middle"
+          style={{ height: '100%' }}
         >
-        <Grid.Column computer={8} mobile={16}> 
+          <Grid.Column computer={8} mobile={16}>
           <Grid.Row>
-              {/*<div className="circle">
+            {/*<div className="circle">
                 <span className="char1">O</span>
                 <span className="char2">h</span>
                 <span className="char3"> </span>
                 <span className="char4">n</span>
                 <span className="char5">o</span>
                 <span className="char6">!</span>
-              </div>*/}
-              <div className="no-goals-header">Oh no!</div>
+              </div> */}
+            <div className="no-goals-header">Oh no!</div>
           </Grid.Row>
           <Grid.Row>
-            <Image size='small' src='./assets/squaddies/squaggle.png' centered/>
+            <Image size="small" src="./assets/squaddies/squaggle.png" centered />
           </Grid.Row>
           <Grid.Row>
-              <div className="no-goals-body">
+            <div className="no-goals-body">
                 You need some goals! Let's add some.
               </div>
           </Grid.Row>
           <Grid.Row>
-              <Button onClick={() => { this.props.history.push('/goals'); }} animated>
+            <Button onClick={() => { this.props.history.push('/goals'); }} animated>
                 <Button.Content visible>Add goals</Button.Content>
                 <Button.Content hidden>
-                  <Icon name='plus' />
+                  <Icon name="plus" />
                 </Button.Content>
               </Button>
           </Grid.Row>
         </Grid.Column>
         </Grid>
-    )
+    );
   }
 
   subtractFromCount() {
-    console.log(this.state.count)
-    if(this.state.count === 0) {                                                                                                                                                                  
-      this.setState({count: 3});
+    console.log(this.state.count);
+    if (this.state.count === 0) {
+      this.setState({ count: 3 });
     }
-    this.setState(prevState => {
-      return {count: prevState.count - 1};
-    })
+    this.setState((prevState) => ({count: prevState.count - 1}));
   }
 
   hatchTheEggDrWu() {
-    this.props.incubatorActions.hatchEgg(this.props.incubatorState.egg.user_egg_id, this.props.incubatorState.egg.egg_xp - 100);  
+    this.props.incubatorActions.hatchEgg(this.props.incubatorState.egg.user_egg_id, this.props.incubatorState.egg.egg_xp - 100);
     setTimeout(() => {
       this.props.yardActions.fetchSquaddies();
     }, 2000);
-    setTimeout(() => {
-      this.props.squaddieActions.toggleYardStatus(this.props.yardState.newSquaddie.monster_id);
-    }, 2000)
-    this.setState({firstTime: false});
+    // setTimeout(() => {
+    //   this.props.squaddieActions.toggleYardStatus(this.props.yardState.newSquaddie.monster_id);
+    // }, 2000);
+    this.setState({ firstTime: false });
   }
 
   openEggModal() {
-    if(this.props.incubatorState.egg.egg_xp >= 100 && this.state.firstTime === true) this.hatchTheEggDrWu();
-    const classByNumbers = {1: 'eggClass1', 2: 'eggClass2', 3: 'eggClass3'};
+    if (this.props.incubatorState.egg.egg_xp >= 100 && this.state.firstTime === true) this.hatchTheEggDrWu();
+    const classByCount = { 1: 'eggClass1', 2: 'eggClass2', 3: 'eggClass3' };
+    const pictureByCount = {1: './assets/icons/egg_stage3', 2: './assets/icons/egg_stage2', 3: './assets/icons/egg_stage1'}
     const squaddie = this.props.yardState.newSquaddie;
     return (
-      this.props.incubatorState.egg.egg_xp >= 100 
-      ?
-      <Modal
-      trigger={<a><Image className="glowingEgg" src="./assets/icons/egg.png"/></a>}>
+      this.props.incubatorState.egg.egg_xp >= 100
+        ?
+        <Modal
+        trigger={<a><Image className="glowingEgg" src="./assets/icons/egg.png" /></a>}
+      >
         <Modal.Content style={{ background: 'transparent' }}>
           <Card centered>
-                {this.state.count === 0 ? <Image src={squaddie.monster_pic}/> : <a><Image size='medium' className={classByNumbers[this.state.count]} onClick={this.subtractFromCount} src='./assets/icons/egg.png' centered/></a>}
+            {this.state.count === 0 ? <Image src={squaddie.monster_pic} /> : <a><Image size="medium" className={classByCount[this.state.count]} onClick={this.subtractFromCount} src={pictureByCount[this.state.count]} centered /></a>}
             <Card.Content>
               <Card.Header>
                 {this.state.count === 0 ? <p>Your new squaddie is {squaddie.monster_name}!</p> : <p>Tap {this.state.count} {this.state.count === 1 ? 'more time' : 'more times'} to reveal your new squaddie!</p> }
               </Card.Header>
               <Card.Description>
-                { this.state.count === 0 ? <p>Head over to  <a onClick={() => { this.props.history.push('/yard'); }}>your yard</a> for some well-deserved play time</p>: null }
+                { this.state.count === 0 ? <p>Head over to  <a onClick={() => { this.props.history.push('/yard'); }}>your yard</a> for some well-deserved play time</p> : null }
               </Card.Description>
             </Card.Content>
           </Card>
         </Modal.Content>
       </Modal>
-      : 
+        :
       <Image src="./assets/icons/egg.png" centered />
-    )
+    );
   }
 
   render() {
@@ -131,7 +131,7 @@ class IncubatorPage extends React.Component {
             <Scrollbars autoHide style={{ height: '75vh' }}>
               {Object.keys(this.props.incubatorState.userGoals).length > 0
                 ? Object.keys(this.props.incubatorState.userGoals).map(activity => (
-                <UserGoalsList
+                  <UserGoalsList
                   key={activity}
                   activityType={activity}
                   goals={this.props.incubatorState.userGoals[activity]}
