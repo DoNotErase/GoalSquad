@@ -43,6 +43,7 @@ class ChooseFightersPage extends React.Component {
                     <PickFighter
                       key={squaddie.user_monster_id}
                       squaddie={squaddie}
+                      chooseFighter={this.props.chooseFighter}
                     />))}
                 </Card.Group>
               </Segment>

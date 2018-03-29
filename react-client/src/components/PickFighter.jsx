@@ -18,16 +18,13 @@ class PickFighter extends React.Component {
     this.close = this.close.bind(this);
   }
   close() { this.setState({ open: false }); }
-  pickFighter(squaddie) {
-    //set squaddie to monster1 or monster2 if user is player1 or player2
-
-  }
 
   render() {
     const {
       open, dimmer, size,
     } = this.state;
     const { squaddie } = this.props;
+    const fightstate = this.props.fightState;
     return (
       // TODO add scrollbar component if more than 9 monsters
       <Modal
@@ -61,7 +58,11 @@ class PickFighter extends React.Component {
                 { squaddie.user_monster_new_name ?
                   squaddie.user_monster_new_name : squaddie.monster_name
                 }
-                <Button size="mini" style={{ marginLeft: '5px' }} onClick={() => this.pickFighter(squaddie)}>
+                <Button
+                  size="mini"
+                  style={{ marginLeft: '5px' }}
+                  onClick={() => { this.props.chooseFighter(fightstate.user.roomName, fightstate.user.iam, squaddie); }}
+                >
                   pick this monster
                 </Button>
               </Card.Header>

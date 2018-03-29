@@ -1,10 +1,11 @@
 import axios from "axios/index";
 
-export const setLobbyInfo = ((roomInfo) => {
+export const setLobbyInfo = ((roomInfo, player) => {
   return (dispatch) => {
     dispatch({
       type: 'GET_LOBBY_INFO',
       payload: {
+        iam: player,
         roomName: roomInfo.roomName,
         player1: roomInfo.player1,
         player2: roomInfo.player2,
@@ -38,15 +39,26 @@ export const setPlayerNumber = ((playernumber) => {
 //   };
 // };
 
-export const setMonsterFighter = ((monsterUserID) => {
-  return (dispatch) => {
-    dispatch({
-      type: 'CHOOSE_FIGHTER',
-      payload: {
-        monster: monsterUserID,
-      },
-    });
-  };
+export const setMonsterFighter = ((player, squaddie) => {
+  if (player === 'player1') {
+    return (dispatch) => {
+      dispatch({
+        type: 'CHOOSE_FIGHTER',
+        payload: {
+          monster1: squaddie,
+        },
+      });
+    };
+  } else {
+    return (dispatch) => {
+      dispatch({
+        type: 'CHOOSE_FIGHTER',
+        payload: {
+          monster2: squaddie,
+        },
+      });
+    };
+  }
 });
 
 

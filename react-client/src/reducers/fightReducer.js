@@ -6,16 +6,20 @@ const fightState = {
 const fightReducer = (state = fightState, action) => {
   switch (action.type) {
     case 'GET_LOBBY_INFO': {
-      console.log('action.payload', action.payload);
       return {
         ...state,
         user: action.payload,
       };
     }
     case 'CHOOSE_FIGHTER': {
+      const key = Object.keys(action.payload);
+      console.log('key', key);
       return {
         ...state,
-        monster: action.payload,
+        monster: {
+          ...state.monster,
+          [key]: action.payload[key],
+        },
       };
     }
     default: {

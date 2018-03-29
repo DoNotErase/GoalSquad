@@ -481,6 +481,10 @@ io.on('connection', (socket) => {
       // TODO add situation where no hosts are found
     }
   });
+
+  socket.on('fighter picked', (roomname, playeriam, squaddie) => {
+    io.in(roomname).emit('fighter chosen', { playeriam, squaddie });
+  });
 });
 
 io.listen(8081);
