@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, Statistic, Grid, Button, Modal, Input } from 'semantic-ui-react';
+import { Header, Statistic, Grid, Button } from 'semantic-ui-react';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -13,8 +13,6 @@ class UserGoal extends React.Component {
 
     this.state = {
       open: false,
-      newCurrent: '',
-      errorMessage: '',
     };
 
     this.makeDeadLineMessage = this.makeDeadLineMessage.bind(this);

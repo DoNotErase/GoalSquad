@@ -40,11 +40,11 @@ class IncubatorPage extends React.Component {
   getGoals() {
     return (
       <Grid
-          textAlign="center"
-          verticalAlign="middle"
-          style={{ height: '100%' }}
-        >
-          <Grid.Column computer={8} mobile={16}>
+        textAlign="center"
+        verticalAlign="middle"
+        style={{ height: '100%' }}
+      >
+        <Grid.Column computer={8} mobile={16}>
           <Grid.Row>
             <div className="no-goals-header">Oh no!</div>
           </Grid.Row>
@@ -53,19 +53,19 @@ class IncubatorPage extends React.Component {
           </Grid.Row>
           <Grid.Row>
             <div className="no-goals-body">
-                You need some goals! Let's add some.
-              </div>
+              You need some goals! Let's add some.
+            </div>
           </Grid.Row>
           <Grid.Row>
             <Button onClick={() => { this.props.history.push('/goals'); }} animated>
-                <Button.Content visible>Add goals</Button.Content>
-                <Button.Content hidden>
-                  <Icon name="plus" />
-                </Button.Content>
-              </Button>
+              <Button.Content visible>Add goals</Button.Content>
+              <Button.Content hidden>
+                <Icon name="plus" />
+              </Button.Content>
+            </Button>
           </Grid.Row>
         </Grid.Column>
-        </Grid>
+      </Grid>
     );
   }
 
@@ -79,48 +79,57 @@ class IncubatorPage extends React.Component {
       // setTimeout(() => {
       //   this.props.incubatorActions.fetchEggStatus()
       // }, 2000);
-    } 
+    }
     this.setState(prevState => ({ count: prevState.count - 1, glowingEgg: false }));
   }
 
   hatchTheEggDrWu() {
-    this.props.incubatorActions.hatchEgg(this.props.incubatorState.egg.user_egg_id, this.props.incubatorState.egg.egg_xp - 100);
+    const { incubatorState } = this.props;
+    this.props.incubatorActions.hatchEgg(incubatorState.egg.user_egg_id, incubatorState.egg.egg_xp - 100);
     setTimeout(() => {
       this.props.yardActions.fetchSquaddies();
     }, 2000);
     setTimeout(() => {
       this.props.squaddieActions.toggleYardStatus(this.props.yardState.newSquaddie.monster_id);
-    }, 2000); 
+    }, 2000);
     this.setState({ firstTime: false, glowingEgg: true });
   }
 
   openEggModal() {
     if (this.props.incubatorState.egg.egg_xp >= 100 && this.state.firstTime) this.hatchTheEggDrWu();
-    const classByCount = { 1: 'eggClass1', 2: 'eggClass2', 3: 'eggClass3' };
-    const pictureByCount = { 1: './assets/icons/egg_stage_3.png', 2: './assets/icons/egg_stage_2.png', 3: './assets/icons/egg_stage_1.png' }
+    const classByCount = {
+      1: 'eggClass1',
+      2: 'eggClass2',
+      3: 'eggClass3',
+    };
+    const pictureByCount = {
+      1: './assets/icons/egg_stage_3.png',
+      2: './assets/icons/egg_stage_2.png',
+      3: './assets/icons/egg_stage_1.png',
+    };
     const squaddie = this.props.yardState.newSquaddie;
     return (
       this.props.incubatorState.egg.egg_xp >= 100
         ?
-        <Modal
-        trigger={<a><Image className={this.glowingEggActivated()} src="./assets/icons/egg.png" /></a>}
-      >
-        <Modal.Content style={{ background: 'transparent' }}>
-          <Card centered>
-            {this.state.count === 0 ? <Image src={squaddie.monster_pic} /> : <a><Image size="medium" className={classByCount[this.state.count]} onClick={this.subtractFromCount} src={pictureByCount[this.state.count]} centered /></a>}
-            <Card.Content>
-              <Card.Header>
-                {this.state.count === 0 ? <p>Your new squaddie is {squaddie.monster_name}!</p> : <p>Tap {this.state.count} {this.state.count === 1 ? 'more time' : 'more times'} to reveal your new squaddie!</p> }
-              </Card.Header>
-              <Card.Description>
-                { this.state.count === 0 ? <p>Head over to  <a onClick={() => { this.props.history.push('/yard'); }}>your yard</a> for some well-deserved play time</p> : null }
-              </Card.Description>
-            </Card.Content>
-          </Card>
-        </Modal.Content>
-      </Modal>
+          <Modal
+            trigger={<a><Image className={this.glowingEggActivated()} src="./assets/icons/egg.png" /></a>}
+          >
+            <Modal.Content style={{ background: 'transparent' }}>
+              <Card centered>
+                {this.state.count === 0 ? <Image src={squaddie.monster_pic} /> : <a><Image size="medium" className={classByCount[this.state.count]} onClick={this.subtractFromCount} src={pictureByCount[this.state.count]} centered /></a>}
+                <Card.Content>
+                  <Card.Header>
+                    {this.state.count === 0 ? <p>Your new squaddie is {squaddie.monster_name}!</p> : <p>Tap {this.state.count} {this.state.count === 1 ? 'more time' : 'more times'} to reveal your new squaddie!</p> }
+                  </Card.Header>
+                  <Card.Description>
+                    { this.state.count === 0 ? <p>Head over to  <a onClick={() => { this.props.history.push('/yard'); }}>your yard</a> for some well-deserved play time</p> : null }
+                  </Card.Description>
+                </Card.Content>
+              </Card>
+            </Modal.Content>
+          </Modal>
         :
-      <Image src="./assets/icons/egg.png" centered />
+          <Image src="./assets/icons/egg.png" centered />
     );
   }
 
@@ -135,10 +144,10 @@ class IncubatorPage extends React.Component {
               {Object.keys(this.props.incubatorState.userGoals).length > 0
                 ? Object.keys(this.props.incubatorState.userGoals).map(activity => (
                   <UserGoalsList
-                  key={activity}
-                  activityType={activity}
-                  goals={this.props.incubatorState.userGoals[activity]}
-                />
+                    key={activity}
+                    activityType={activity}
+                    goals={this.props.incubatorState.userGoals[activity]}
+                  />
               ))
                 : this.getGoals()
               } {/* renders list of goals for each activity type */}
