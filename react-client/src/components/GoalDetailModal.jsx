@@ -25,12 +25,18 @@ class GoalDetailModal extends React.Component {
 
   onTrackMessage() {
     if (this.state.timePercentage + this.state.activityPercentage < 85) {
-      return 'pick up the pace! You\'re at risk of failing this goal!';
+      return (
+        <Header as="h3" color="red" float="right"> Pick up the pace! You are at risk of failing this goal! </Header>
+      );
     }
     if (this.state.timePercentage + this.state.activityPercentage > 115) {
-      return 'way to go! you are ahead of schedule!';
+      return (
+        <Header as="h3" color="green" float="right"> way to go! you are ahead of schedule! </Header>
+      );
     }
-    return 'you are on track!';
+    return (
+      <Header as="h3" color="blue" float="right"> Keep up the good work! You are on pace! </Header>
+    );
   }
 
   activityPercentage() {

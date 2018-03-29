@@ -21,7 +21,6 @@ class UserGoal extends React.Component {
     this.activityName = this.activityName.bind(this);
     this.goalStatus = this.goalStatus.bind(this);
     this.close = this.close.bind(this);
-    this.makeUpdateButton = this.makeUpdateButton.bind(this);
   }
 
   makeDeadLineMessage() {
@@ -103,16 +102,6 @@ class UserGoal extends React.Component {
     this.setState({ open: false });
   }
 
-  makeUpdateButton() {
-    if (!this.props.goal.user_goal_concluded &&
-      (this.props.goal.goal_difficulty === 'custom' || !this.props.state.user.fitbit_id)) {
-      return (
-        <Button basic color="blue" onClick={(() => { this.setState({ open: true }); })}> Update Progress </Button>
-      );
-    }
-    return (<div />);
-  }
-
   render() {
     const { open, dimmer, size } = this.state;
     const { goal } = this.props;
@@ -124,8 +113,6 @@ class UserGoal extends React.Component {
               <Header as="h4">{goal.goal_name}</Header>
               {/* generate time until expiration or '' if no deadline */}
               {this.makeDeadLineMessage()}
-              {/* generate button if non-fitbit user, for custom goals, if goal not concluded */}
-              {this.makeUpdateButton()}
             </Grid.Column>
             <Grid.Column>
               {/* show amount of activity left or button to close out old goal */}
