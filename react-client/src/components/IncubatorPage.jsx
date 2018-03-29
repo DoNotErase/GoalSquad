@@ -70,9 +70,9 @@ class IncubatorPage extends React.Component {
   subtractFromCount() {
     if (this.state.count === 0) {
       this.setState({ count: 3, firstTime: true, newSquaddie: true });
-      setTimeout(() => {
-        this.props.incubatorActions.fetchEggStatus()
-      }, 2000);
+      // setTimeout(() => {
+      //   this.props.incubatorActions.fetchEggStatus()
+      // }, 2000);
     } 
     this.setState(prevState => ({ count: prevState.count - 1, glowingEgg: false }));
   }
