@@ -16,7 +16,11 @@ class GoalsPage extends React.Component {
       activeIndex: -1,
     };
     this.handleClick = this.handleClick.bind(this);
-    props.goalsActions.getDefaultGoals();
+
+    // goals only need to be fetched on first pageload
+    if (!props.goalsState.standardGoals.length) {
+      props.goalsActions.getDefaultGoals();
+    }
   }
 
   handleClick(e, titleProps) {
@@ -88,25 +92,13 @@ GoalsPage.propTypes = {
   goalsState: PropTypes.objectOf(PropTypes.object).isRequired,
   goalsActions: PropTypes.objectOf(PropTypes.func).isRequired,
   history: PropTypes.shape({
-    action: PropTypes.string,
-    block: PropTypes.func,
-    createHref: PropTypes.func,
-    go: PropTypes.func,
-    goBack: PropTypes.func,
-    goForward: PropTypes.func,
-    length: PropTypes.number,
-    listen: PropTypes.func,
-    location: PropTypes.object,
     push: PropTypes.func,
-    replace: PropTypes.func,
   }).isRequired,
 };
 
 const mapDispatchToProps = dispatch => (
   {
-    // actions: bindActionCreators(actions, dispatch),
     goalsActions: bindActionCreators(goalsActions, dispatch),
-    // incubatorActions: bindActionCreators(incubatorActions, dispatch),
   }
 );
 

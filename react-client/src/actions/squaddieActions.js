@@ -3,6 +3,15 @@ import axios from 'axios';
 const isLoading = () => ({ type: 'IS_LOADING', payload: true });
 const doneLoading = () => ({ type: 'DONE_LOADING', payload: false });
 
+const handleErr = (err) => {
+  if (err.response && err.response.status === 401) {
+    window.location.href = '/';
+    alert('Sorry! Please log in.');
+  } else {
+    console.log(err);
+  }
+};
+
 const setSquaddies = squaddieData => ({
   type: 'GET_SQUADDIES',
   payload: squaddieData,
@@ -24,15 +33,9 @@ export const saveSquaddiePosition = position => (
       .then((res) => {
         dispatch(res.data);
       })
-      .catch((err) => {
-        console.log(err);
-        if (err.response.status === 401) {
-          window.location.href = '/';
-          alert('Sorry! Please log in.');
-        }
-      })
+      .catch((err) => { handleErr(err); })
   )
-)
+);
 
 export const getUserSquaddies = () => (
   (dispatch) => {
@@ -42,14 +45,8 @@ export const getUserSquaddies = () => (
         dispatch(setSquaddies(res.data));
         dispatch(doneLoading());
       })
-      .catch((err) => {
-        console.log(err);
-        if (err.response.status === 401) {
-          window.location.href = '/';
-          alert('Sorry! Please log in.');
-        }
-      })
-    }
+      .catch((err) => { handleErr(err); })
+  )
 );
 
 export const getYardSquaddies = () => (
@@ -58,13 +55,7 @@ export const getYardSquaddies = () => (
       .then((res) => {
         dispatch(setYardSquaddies(res.data));
       })
-      .catch((err) => {
-        console.log('error getting yard squaddies', err);
-        if (err.response.status === 401) {
-          window.location.href = '/';
-          alert('Sorry! Please log in.');
-        }
-      })
+      .catch((err) => { handleErr(err); })
   )
 );
 
@@ -74,29 +65,16 @@ export const toggleYardStatus = userMonsterID => (
       .then((res) => {
         dispatch(toggleYardSquaddies(res.data));
       })
-      .catch((err) => {
-        console.log(err);
-        if (err.response.status === 401) {
-          window.location.href = '/';
-          alert('Sorry! Please log in.');
-        }
-      })
+      .catch((err) => { handleErr(err); })
   )
 );
 
 export const changeName = (userMonsterID, newName) => (
-  dispatch => (
+  () => (
     axios.patch('/squaddie', {
       monID: userMonsterID,
       name: newName,
     })
-      .catch((err) => {
-        if (err.response.status === 401) {
-          window.location.href = '/';
-          alert('Sorry! Please log in.');
-        } else {
-          console.log(err);
-        }
-      })
+      .catch((err) => { handleErr(err); })
   )
 );

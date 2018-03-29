@@ -7,6 +7,15 @@ const setDefault = goals => ({ type: 'SET_DEFAULT_GOALS', payload: goals });
 const isLoading = () => ({ type: 'IS_LOADING', payload: true });
 const doneLoading = () => ({ type: 'DONE_LOADING', payload: false });
 
+const handleErr = (err) => {
+  if (err.response && err.response.status === 401) {
+    window.location.href = '/';
+    alert('Sorry! Please log in.');
+  } else {
+    console.log(err);
+  }
+};
+
 export const getDefaultGoals = () => (
   (dispatch) => {
     dispatch(isLoading());
@@ -16,10 +25,7 @@ export const getDefaultGoals = () => (
         dispatch(doneLoading());
       })
       .catch((err) => {
-        if (err.response.status === 401) {
-          window.location.href = '/';
-          alert('Sorry! Please log in.');
-        }
+        handleErr(err);
       });
   }
 );
@@ -32,14 +38,10 @@ export const submitUserGoal = (goalID, deadline, points) => (
       points,
     })
       .then(() => {
+        // keep
         dispatch(getUserGoals());
       })
-      .catch((err) => {
-        if (err.response.status === 401) {
-          window.location.href = '/';
-          alert('Sorry! Please log in.');
-        }
-      })
+      .catch((err) => { handleErr(err); })
   )
 );
 
@@ -57,12 +59,7 @@ export const submitCustomGoal = (goalName, goalActivity, goalAmount, deadline, p
         dispatch(updateCustomTime(moment()));
         dispatch(getUserGoals());
       })
-      .catch((err) => {
-        if (err.response.status === 401) {
-          window.location.href = '/';
-          alert('Sorry! Please log in.');
-        }
-      })
+      .catch((err) => { handleErr(err); })
   )
 );
 

@@ -1,21 +1,22 @@
 import axios from 'axios';
 /* new_squaddie is dispatched from incubator actions upon egg hatch */
 
-const setSquaddies = squaddies => ({ type: 'SET_SQUADDIES', payload: squaddies });
+const handleErr = (err) => {
+  if (err.response && err.response.status === 401) {
+    window.location.href = '/';
+    alert('Sorry! Please log in.');
+  } else {
+    console.log(err);
+  }
+};
 
 export const fetchSquaddies = () => (
   dispatch => (
     axios.get('/userSquaddies')
       .then((res) => {
-        console.log('action data', res.data)
-        dispatch(setSquaddies(res.data));
+        dispatch({ type: 'SET_SQUADDIES', payload: res.data });
       })
-      .catch((err) => {
-        if (err.response.status === 401) {
-          window.location.href = '/';
-          alert('Sorry! Please log in.');
-        }
-      })
+      .catch((err) => { handleErr(err); })
   )
 );
 

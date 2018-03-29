@@ -4,6 +4,7 @@ const incubatorState = {
     egg_xp: 0,
     egg_hatched: false,
   },
+  needsUpdate: true,
 };
 
 const incubatorReducer = (state = incubatorState, action) => {
@@ -12,6 +13,7 @@ const incubatorReducer = (state = incubatorState, action) => {
       return {
         ...state,
         userGoals: action.payload,
+        needsUpdate: false,
       };
     }
     case 'EGG_DATA': {

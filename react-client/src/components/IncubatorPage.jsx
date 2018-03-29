@@ -26,9 +26,15 @@ class IncubatorPage extends React.Component {
   }
 
   componentDidMount() {
-    this.props.incubatorActions.getUserGoals();
-    this.props.incubatorActions.fetchEggStatus();
-    this.props.homePageActions.attemptLogin();
+    if (this.props.state.user) {
+      this.props.homePageActions.attemptLogin();
+    }
+    // get goals if user is logged in and there are no goals or is flagged for update
+    if (this.props.state.user &&
+      (!this.props.incubatorState.userGoals || this.props.incubatorState.needsUpdate)) {
+      this.props.incubatorActions.getUserGoals();
+      this.props.incubatorActions.fetchEggStatus();
+    }
   }
 
   getGoals() {
@@ -78,7 +84,8 @@ class IncubatorPage extends React.Component {
   }
 
   hatchTheEggDrWu() {
-    this.props.incubatorActions.hatchEgg(this.props.incubatorState.egg.user_egg_id, this.props.incubatorState.egg.egg_xp - 100);
+    const { incubatorState } = this.props;
+    this.props.incubatorActions.hatchEgg(incubatorState.egg.user_egg_id, incubatorState.egg.egg_xp - 100);
     setTimeout(() => {
       this.props.yardActions.fetchSquaddies();
     }, 2000);
@@ -90,8 +97,16 @@ class IncubatorPage extends React.Component {
 
   openEggModal() {
     if (this.props.incubatorState.egg.egg_xp >= 100 && this.state.firstTime) this.hatchTheEggDrWu();
-    const classByCount = { 1: 'eggClass1', 2: 'eggClass2', 3: 'eggClass3' };
-    const pictureByCount = { 1: './assets/icons/egg_stage_3.png', 2: './assets/icons/egg_stage_2.png', 3: './assets/icons/egg_stage_1.png' };
+    const classByCount = {
+      1: 'eggClass1',
+      2: 'eggClass2',
+      3: 'eggClass3',
+    };
+    const pictureByCount = {
+      1: './assets/icons/egg_stage_3.png',
+      2: './assets/icons/egg_stage_2.png',
+      3: './assets/icons/egg_stage_1.png',
+    };
     const squaddie = this.props.yardState.newSquaddie;
     return (
       this.props.incubatorState.egg.egg_xp >= 100
@@ -160,26 +175,24 @@ class IncubatorPage extends React.Component {
 }
 
 IncubatorPage.propTypes = {
-  // state: PropTypes.shape({
-  //   id: PropTypes.string,
-  //   username: PropTypes.string,
-  // }).isRequired,
-  // actions: PropTypes.objectOf(PropTypes.func).isRequired,
-  incubatorState: PropTypes.objectOf(PropTypes.object).isRequired,
+  state: PropTypes.shape({
+    needsUpdate: PropTypes.bool, // really bool 0/1
+    user: PropTypes.object,
+  }).isRequired,
+  incubatorState: PropTypes.shape({
+    userGoals: PropTypes.object,
+    needsUpdate: PropTypes.bool,
+    egg: PropTypes.object,
+  }).isRequired,
+  yardState: PropTypes.objectOf({
+    yardSquaddies: PropTypes.object,
+  }).isRequired,
   incubatorActions: PropTypes.objectOf(PropTypes.func).isRequired,
   homePageActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  yardActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  squaddieActions: PropTypes.objectOf(PropTypes.func).isRequired,
   history: PropTypes.shape({
-    action: PropTypes.string,
-    block: PropTypes.func,
-    createHref: PropTypes.func,
-    go: PropTypes.func,
-    goBack: PropTypes.func,
-    goForward: PropTypes.func,
-    length: PropTypes.number,
-    listen: PropTypes.func,
-    location: PropTypes.object,
     push: PropTypes.func,
-    replace: PropTypes.func,
   }).isRequired,
 };
 
