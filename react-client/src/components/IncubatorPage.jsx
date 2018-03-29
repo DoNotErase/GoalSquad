@@ -18,14 +18,17 @@ class IncubatorPage extends React.Component {
     this.state = {
       count: 3,
       firstTime: true,
+      glowingEgg: false,
     };
+    this.subtractFromCount = this.subtractFromCount.bind(this);
+    this.getGoals = this.getGoals.bind(this);
+    this.setState({ firstTime: true });
   }
 
   componentDidMount() {
     this.props.incubatorActions.getUserGoals();
     this.props.incubatorActions.fetchEggStatus();
     this.props.homePageActions.attemptLogin();
-    console.log('stateeeeee', this.props);
   }
 
   getGoals() {
@@ -60,12 +63,15 @@ class IncubatorPage extends React.Component {
     );
   }
 
+  glowingEggActivated() {
+    return this.state.glowingEgg ? 'glowingEgg' : '';
+  }
+
   subtractFromCount() {
-    console.log(this.state.count);
     if (this.state.count === 0) {
       this.setState({ count: 3 });
     }
-    this.setState((prevState) => ({count: prevState.count - 1}));
+    this.setState(prevState => ({ count: prevState.count - 1, glowingEgg: false }));
   }
 
   hatchTheEggDrWu() {
@@ -73,22 +79,22 @@ class IncubatorPage extends React.Component {
     setTimeout(() => {
       this.props.yardActions.fetchSquaddies();
     }, 2000);
-    // setTimeout(() => {
-    //   this.props.squaddieActions.toggleYardStatus(this.props.yardState.newSquaddie.monster_id);
-    // }, 2000);
-    this.setState({ firstTime: false });
+    setTimeout(() => {
+      this.props.squaddieActions.toggleYardStatus(this.props.yardState.newSquaddie.monster_id);
+    }, 2000);
+    this.setState({ firstTime: false, glowingEgg: true });
   }
 
   openEggModal() {
-    if (this.props.incubatorState.egg.egg_xp >= 100 && this.state.firstTime === true) this.hatchTheEggDrWu();
+    if (this.props.incubatorState.egg.egg_xp >= 100 && this.state.firstTime) this.hatchTheEggDrWu();
     const classByCount = { 1: 'eggClass1', 2: 'eggClass2', 3: 'eggClass3' };
-    const pictureByCount = {1: './assets/icons/egg_stage3', 2: './assets/icons/egg_stage2', 3: './assets/icons/egg_stage1'}
+    const pictureByCount = { 1: './assets/icons/egg_stage_3.png', 2: './assets/icons/egg_stage_2.png', 3: './assets/icons/egg_stage_1.png' }
     const squaddie = this.props.yardState.newSquaddie;
     return (
       this.props.incubatorState.egg.egg_xp >= 100
         ?
         <Modal
-        trigger={<a><Image className="glowingEgg" src="./assets/icons/egg.png" /></a>}
+        trigger={<a><Image className={this.glowingEggActivated()} src="./assets/icons/egg.png" /></a>}
       >
         <Modal.Content style={{ background: 'transparent' }}>
           <Card centered>
