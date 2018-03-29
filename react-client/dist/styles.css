@@ -1,5 +1,5 @@
 body {
-    background-color: #008F7A;
+    background-color: #474c4f;
     color: black;
 }
 
@@ -54,14 +54,6 @@ maroon: background-image: linear-gradient(to top, #a14055, #aa4554, #b24b54, #ba
 
 .white {
     color: white !important;
-}
-
-/* Menu Modal */
-
-.menubutton {
-    top: 15px;
-    left: 15px;
-    position: fixed !important;
 }
 
 /* Progress Bar */

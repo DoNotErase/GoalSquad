@@ -3,6 +3,12 @@ import { Button, Modal, Icon, Link, Card } from 'semantic-ui-react';
 
 const src = './assets/icons/';
 
+const menustyles = {
+  top: 15,
+  left: 15,
+  position: 'fixed',
+};
+
 const MainMenu = props => (
   <Modal
     className="fadeIn"
@@ -13,7 +19,7 @@ const MainMenu = props => (
         circular
         size="huge"
         color="orange"
-        className="menubutton"
+        style={menustyles}
       >
         <Icon name="tasks" />
       </Button>}
