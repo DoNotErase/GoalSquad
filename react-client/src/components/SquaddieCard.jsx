@@ -7,6 +7,7 @@ import * as squaddieActions from '../actions/squaddieActions';
 
 const styles = {
   cardBackground: 'linear-gradient(to bottom, #faedc4, #ffebd8, #ffeff1, #fff8ff, #ffffff)',
+  iconBackground: 'linear-gradient(to bottom, #faedc4, #ffebd8, #ffffff)',
 };
 
 class SquaddieCard extends React.Component {
@@ -56,9 +57,11 @@ class SquaddieCard extends React.Component {
             color={(squaddie.user && squaddie.user.user_monster_yard) || yardstatus ? 'orange' : null}
             raised
             onClick={() => this.show(true, 'tiny')}
-            className="squaddieicon"
           >
-            <Image src={squaddie.user ? squaddie.monster_icon : './assets/squaddies/unknown-squaddie-icon.png'} />
+            <Image
+              src={squaddie.user ? squaddie.monster_icon : './assets/squaddies/unknown-squaddie-icon.png'}
+              style={{ backgroundImage: styles.iconBackground }}
+            />
             <Card.Content style={{ padding: '.3em .3em' }}>
               <Card.Description>
                 {squaddie.user ?

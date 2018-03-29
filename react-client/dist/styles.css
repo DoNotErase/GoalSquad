@@ -56,15 +56,6 @@ maroon: background-image: linear-gradient(to top, #a14055, #aa4554, #b24b54, #ba
     color: white !important;
 }
 
-/* Progress Bar */
-
-.progressbar {
-    position: fixed !important;
-    bottom: 0;
-    padding: 1px !important;
-}
-
-
  /* ANIMATIONS  */
 @keyframes fadeIn {
   from {
@@ -93,8 +84,4 @@ maroon: background-image: linear-gradient(to top, #a14055, #aa4554, #b24b54, #ba
   
   .slideInDown {
     animation-name: slideInDown;
-  }
-
-  .squaddieicon img {
-    background-image: linear-gradient(to bottom, #faedc4, #ffebd8, #ffffff) !important;
   }
