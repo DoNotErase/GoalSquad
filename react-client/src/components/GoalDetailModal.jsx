@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, Statistic, Grid, Button, Modal, Input } from 'semantic-ui-react';
+import { Header, Statistic, Grid, Button, Modal, Input, Progress, Divider } from 'semantic-ui-react';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -13,34 +13,43 @@ class GoalDetailModal extends React.Component {
     this.state = {
       newCurrent: '',
       errorMessage: '',
+      activityPercentage: this.activityPercentage(),
+      timePercentage: this.timePercentage(),
     };
     this.updateForm = this.updateForm.bind(this);
     this.updateButtons = this.updateButtons.bind(this);
     this.updateNewCurrent = this.updateNewCurrent.bind(this);
     this.submitUpdate = this.submitUpdate.bind(this);
+    this.onTrackMessage = this.onTrackMessage.bind(this);
   }
 
-  updateNewCurrent(event) {
-    this.setState({ newCurrent: event.target.value });
+  onTrackMessage() {
+    if (this.state.timePercentage + this.state.activityPercentage < 85) {
+      return 'pick up the pace! You\'re at risk of failing this goal!';
+    }
+    if (this.state.timePercentage + this.state.activityPercentage > 115) {
+      return 'way to go! you are ahead of schedule!';
+    }
+    return 'you are on track!';
   }
 
-  updateForm() {
+  activityPercentage() {
     const { goal } = this.props;
-    return (!goal.user_goal_concluded &&
-      (goal.goal_difficulty === 'custom' || !this.props.state.user.fitbit_id)) ?
-        <div>
-          <Header as="h3">How far have you come?</Header>
-          <Input
-            value={this.state.newCurrent}
-            onChange={this.updateNewCurrent}
-            style={{ width: 50 }}
-            label={{ basic: true, content: goal.goal_activity }}
-            labelPosition="right"
-            type="text"
-          />
-          <Header as="h5">Enter progress since last check-in</Header>
-        </div>
-      : <div />;
+
+    const progress = goal.user_goal_current - goal.user_goal_start_value;
+    return Math.floor((progress * 100) / goal.goal_amount);
+  }
+
+  timePercentage() {
+    const { goal } = this.props;
+
+    if (goal.user_goal_end_date) {
+      const now = moment();
+      const start = moment(goal.user_goal_start_date);
+      const end = moment(goal.user_goal_end_date);
+      return 100 - Math.floor((100 * now.diff(start, 'seconds')) / end.diff(start, 'seconds'));
+    }
+    return 100;
   }
 
   updateButtons() {
@@ -63,7 +72,12 @@ class GoalDetailModal extends React.Component {
       : <div />;
   }
 
+  updateNewCurrent(event) {
+    this.setState({ newCurrent: event.target.value });
+  }
+
   submitUpdate() {
+    const { close, goal } = this.props;
     const validatePositiveNumber = (string) => {
       if (parseInt(string, 10) >= 0) {
         return true;
@@ -71,16 +85,38 @@ class GoalDetailModal extends React.Component {
       return false;
     };
     if (validatePositiveNumber(this.state.newCurrent)) {
-      this.props.incubatorActions.submitProgress(this.props.goal.user_goal_id, this.state.newCurrent);
-      this.props.close();
+      this.props.incubatorActions.submitProgress(goal.user_goal_id, this.state.newCurrent);
+      close();
       this.setState({ errorMessage: '', newCurrent: '0' });
     } else {
       this.setState({ errorMessage: 'please enter a positive number!' });
     }
   }
 
+  updateForm() {
+    const { goal } = this.props;
+    return (!goal.user_goal_concluded &&
+      (goal.goal_difficulty === 'custom' || !this.props.state.user.fitbit_id)) ?
+        <div>
+          <Divider />
+          <Header as="h3">How far have you come?</Header>
+          <Input
+            value={this.state.newCurrent}
+            onChange={this.updateNewCurrent}
+            style={{ width: 50 }}
+            label={{ basic: true, content: goal.goal_activity }}
+            labelPosition="right"
+            type="text"
+          />
+          <Header as="h5">Enter progress since last check-in</Header>
+        </div>
+      : <div />;
+  }
+
   render() {
-    const { goal, size, dimmer, open, close, } = this.props;
+    const {
+      goal, size, dimmer, open, close,
+    } = this.props;
     return (
       <Modal
         size={size}
@@ -95,7 +131,23 @@ class GoalDetailModal extends React.Component {
             <Grid relaxed>
               <Grid.Row>
                 <Grid.Column>
-                  GOAL STATS HERE;
+                  Activity Progress
+                  <Progress
+                    style={{ marginTop: 8 }}
+                    size="medium"
+                    percent={this.state.activityPercentage}
+                    progress
+                    indicating
+                  />
+                  Time Remaining
+                  <Progress
+                    style={{ marginTop: 8 }}
+                    size="medium"
+                    percent={this.state.timePercentage}
+                    progress
+                    indicating
+                  />
+                  {this.onTrackMessage()}
                   {this.updateForm()}
                 </Grid.Column>
               </Grid.Row>
