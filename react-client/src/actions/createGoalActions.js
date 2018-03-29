@@ -4,20 +4,24 @@ import { updateCustomTime } from './actions';
 import { getUserGoals } from './incubatorActions';
 
 const setDefault = goals => ({ type: 'SET_DEFAULT_GOALS', payload: goals });
+const isLoading = () => ({ type: 'IS_LOADING', payload: true });
+const doneLoading = () => ({ type: 'DONE_LOADING', payload: false });
 
 export const getDefaultGoals = () => (
-  dispatch => (
-    axios.get('/defaultGoals')
+  (dispatch) => {
+    dispatch(isLoading());
+    return axios.get('/defaultGoals')
       .then((res) => {
         dispatch(setDefault(res.data));
+        dispatch(doneLoading());
       })
       .catch((err) => {
         if (err.response.status === 401) {
           window.location.href = '/';
           alert('Sorry! Please log in.');
         }
-      })
-  )
+      });
+  }
 );
 
 export const submitUserGoal = (goalID, deadline, points) => (

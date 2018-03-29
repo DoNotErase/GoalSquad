@@ -1,5 +1,5 @@
 import React from 'react';
-import { Accordion, Icon, Segment, Grid, Header, Divider } from 'semantic-ui-react';
+import { Accordion, Icon, Segment, Grid, Header, Divider, Loader } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -68,7 +68,8 @@ class GoalsPage extends React.Component {
           <Grid.Column computer={8} mobile={16}>
             <Scrollbars autoHide style={{ height: '85vh' }}>
               <Header as="h3" className="white" textAlign="center">Available Categories</Header>
-              {listItems}
+              {this.props.goalsState.isLoading ? <Loader active size="medium" inline="centered" /> : listItems }
+              {/* {listItems} */}
               <Header as="h4" className="white" textAlign="center">
                 To free up categories, complete existing goals!
               </Header>
