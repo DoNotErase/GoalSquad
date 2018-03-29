@@ -40,22 +40,22 @@ class IncubatorPage extends React.Component {
       >
         <Grid.Column computer={8} mobile={16}>
           <Grid.Row>
-            <div className="no-goals-header">Oh no!</div>
+            <Header size="large" className="white">Oh no!</Header>
+            <Divider hidden />
           </Grid.Row>
           <Grid.Row>
-            <Image size="small" src="./assets/squaddies/squaggle.png" centered />
+            <Image size="small" src="./assets/squaddies/scuttlebutt.png" centered />
+            <Divider hidden />
           </Grid.Row>
           <Grid.Row>
-            <div className="no-goals-body">
+            <Header size="medium" className="white">
                 You need some goals! Let's add some.
-            </div>
+            </Header>
+            <Divider hidden />
           </Grid.Row>
           <Grid.Row>
-            <Button onClick={() => { this.props.history.push('/goals'); }} animated>
+            <Button basic inverted onClick={() => { this.props.history.push('/goals'); }}>
               <Button.Content visible>Add goals</Button.Content>
-              <Button.Content hidden>
-                <Icon name="plus" />
-              </Button.Content>
             </Button>
           </Grid.Row>
         </Grid.Column>
