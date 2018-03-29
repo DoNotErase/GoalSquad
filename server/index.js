@@ -478,22 +478,13 @@ io.on('connection', (socket) => {
         io.in(room).emit('joining', rooms[i]);
         i = rooms.length; // ends loop
       }
+      // TODO add situation where no hosts are found
     }
   });
-  // TODO work on room algorithm
-  // for (const room in io.sockets.adapter.rooms) {
-  //   if (io.sockets.adapter.rooms[room].length < 2 && inroom === false) {
-  //     socket.join(room);
-  //     socket.leave(socket.id);
-  //     inroom = true;
-  //     socket.to(room).emit('second', room);
-  //   }
-  // }
-  // console.log('rooms', io.sockets.adapter.rooms);
-  // socket.emit('news', { hello: 'world' });
-  // socket.on('attack', (attack) => {
-  //
-  // });
+
+  socket.on('fighter picked', (roomname, playeriam, squaddie) => {
+    io.in(roomname).emit('fighter chosen', { playeriam, squaddie });
+  });
 });
 
 io.listen(8081);

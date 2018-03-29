@@ -7,11 +7,26 @@ import PropTypes from 'prop-types';
 import MainMenu from './MainMenu';
 import SquaddieCard from './SquaddieCard';
 import * as squadActions from '../actions/squaddieActions';
+import PickFighter from './PickFighter';
+
+const axios = require('axios');
 
 
 class ChooseFightersPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      squaddies: [],
+    };
+  }
   componentDidMount() {
-    this.props.squadActions.getUserSquaddies();
+    axios.get('/userSquaddies')
+      .then((squaddies) => {
+        console.log('squaddies', squaddies);
+        this.setState({
+          squaddies: squaddies.data,
+        });
+      });
   }
 
   render() {
@@ -24,10 +39,11 @@ class ChooseFightersPage extends React.Component {
             <Scrollbars autoHide style={{ height: '85vh' }}>
               <Segment compact>
                 <Card.Group itemsPerRow={3} centered>
-                  {this.props.squadState.squaddies.map(squaddie => (
-                    <SquaddieCard
-                      key={squaddie.monster_name}
+                  {this.state.squaddies.map(squaddie => (
+                    <PickFighter
+                      key={squaddie.user_monster_id}
                       squaddie={squaddie}
+                      chooseFighter={this.props.chooseFighter}
                     />))}
                 </Card.Group>
               </Segment>
