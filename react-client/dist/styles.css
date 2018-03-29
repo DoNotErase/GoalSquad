@@ -14,8 +14,13 @@ body {
     min-height:100%;
     padding: 20px;
     background-color: #008F7A;
-    background-image: linear-gradient(#845EC2, #008F7A);
-}
+    background-image: linear-gradient(to top, #474c4f, #465c64, #406e75, #398081, #379286);}
+
+/* gradients
+
+maroon: background-image: linear-gradient(to top, #a14055, #aa4554, #b24b54, #ba5152, #c15851);
+
+*/
 
 @media (min-width: 600px) and (max-width: 1024px){
     .homepage {
