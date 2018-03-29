@@ -45,8 +45,10 @@ export const getUserSquaddies = () => (
         dispatch(setSquaddies(res.data));
         dispatch(doneLoading());
       })
-      .catch((err) => { handleErr(err); })
-  )
+      .catch((err) => {
+        handleErr(err);
+      });
+  }
 );
 
 export const getYardSquaddies = () => (
