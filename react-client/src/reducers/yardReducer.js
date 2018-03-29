@@ -19,7 +19,8 @@ const yardReducer = (state = yardState, action) => {
     case 'SET_SQUADDIES': {
       return {
         ...state,
-        userSquaddies: [],
+        userSquaddies: action.payload,
+        newSquaddie: action.payload[action.payload.length - 1],
       };
     }
     case 'RESET_NEW_SQUADDIE': {

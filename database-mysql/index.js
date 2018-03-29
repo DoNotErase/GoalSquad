@@ -282,6 +282,18 @@ module.exports.hatchEgg = async (userEggID, id, nextXP) => {
   }
 };
 
+module.exports.getNewSquaddie = async (userID) => {
+  try {
+    const getSquaddie = 'SELECT user_monster.*, monster.*, user.* FROM user_monster INNER JOIN monster ' +
+      'ON user_monster.monster_id = monster.monster_id' +
+      `WHERE user_monster_creation IN (SELECT max(user_monster_creation) AND user_monster.user_id = ${userID} FROM user_monster);`;
+
+    return await db.queryAsync(getSquaddie);
+  } catch (err) {
+    throw err;
+  }
+};
+
 module.exports.getEggInfo = async (id) => {
   try {
     const userID = await getRightID(id);

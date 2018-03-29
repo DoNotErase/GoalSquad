@@ -67,7 +67,7 @@ class UserGoal extends React.Component {
               this.props.incubatorActions.markGoalSuccess(goal.user_goal_id);
             }}
           >
-            Goal Success!
+            Goal Success! Click to activate.
           </Button>
         );
       }
