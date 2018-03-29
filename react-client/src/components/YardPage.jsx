@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { Button } from 'semantic-ui-react';
+import { Loader } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import * as actions from '../actions/actions';
 import * as squaddieActions from '../actions/squaddieActions';
@@ -30,20 +30,17 @@ class YardPage extends React.Component {
           <div
             style={background}
           >
-            {this.props.squadState.yardSquaddies.map(squaddie => (
-              <YardSquaddie
-                key={squaddie.monster_name}
-                squaddie={squaddie}
-              />))};
+            {this.props.squadState.isLoading ? <Loader active size="medium" inline="centered" />
+          :
+          this.props.squadState.yardSquaddies.map(squaddie => (
+            <YardSquaddie
+              key={squaddie.monster_name}
+              squaddie={squaddie}
+            />))
+          }
           </div>
         </Scrollbars>
         <MainMenu history={this.props.history} />
-        {/* <Button
-          style={{ top: 20, right: 20, position: 'fixed' }}
-          content="Save"
-          size="large"
-          color="orange"
-        /> */}
       </div>
     );
   }
