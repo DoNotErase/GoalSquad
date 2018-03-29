@@ -73,13 +73,14 @@ CREATE TABLE user_monster (
   monster_id int NOT NULL,
   user_monster_level int NOT NULL DEFAULT 1,
   user_monster_new_name varchar(255),
-  user_monster_attack int,
-  user_monster_defense int,
-  user_monster_current_xp int,
+  user_monster_hp int DEFAULT 10,
+  user_monster_attack int DEFAULT 1,
+  user_monster_defense int DEFAULT 1,
+  user_monster_current_xp int DEFAULT 0,
   user_monster_yard bool default 0,
   user_monster_xcoord int,
   user_monster_ycoord int,
-
+  user_monster_creation DATETIME,
   PRIMARY KEY (user_monster_id),
   FOREIGN KEY (user_id) REFERENCES user (user_id),
   FOREIGN KEY (monster_id) REFERENCES monster (monster_id)
@@ -174,5 +175,5 @@ VALUES
 
 
 /*  Execute this file from the command line by typing:
- *    mysql -u root < server/schema.sql
+ *    mysql -u root < schema.sql
  *  to create the database and the tables.*/

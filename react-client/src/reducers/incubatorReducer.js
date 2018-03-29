@@ -2,6 +2,7 @@ const incubatorState = {
   userGoals: {},
   egg: {
     egg_xp: 0,
+    egg_hatched: false,
   },
 };
 

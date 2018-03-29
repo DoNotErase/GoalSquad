@@ -7,6 +7,7 @@ export const fetchSquaddies = () => (
   dispatch => (
     axios.get('/userSquaddies')
       .then((res) => {
+        console.log('action data', res.data)
         dispatch(setSquaddies(res.data));
       })
       .catch((err) => {

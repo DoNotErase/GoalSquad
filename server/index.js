@@ -219,6 +219,7 @@ app.get('/eggStatus', isAuthorized, async (req, res) => {
   try {
     const userID = req.session.passport.user.id;
     const data = await db.getEggInfo(userID);
+    console.log('Got the egg data!')
     res.status(200).json(data);
   } catch (err) {
     res.status(500).send('err in get Egg info');
@@ -278,6 +279,21 @@ app.patch('/squaddie', isAuthorized, async (req, res) => {
 app.patch('/saveposition', isAuthorized, async (req, res) => {
   try {
     await db.saveSquaddiePosition(req.body.pos);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+})
+
+app.get('/getSquaddie', async (req, res) => {
+  let userID;
+  if (req.session.passport) {
+    userID = req.session.passport.user.id;
+  } else {
+    res.status(401).send('User does not have a logged session');
+  }
+  try {
+    const squaddie = await db.getNewSquaddie(userID);
+    res.status(200).json(squaddie);
   } catch (err) {
     res.status(500).send(err);
   }
@@ -478,22 +494,13 @@ io.on('connection', (socket) => {
         io.in(room).emit('joining', rooms[i]);
         i = rooms.length; // ends loop
       }
+      // TODO add situation where no hosts are found
     }
   });
-  // TODO work on room algorithm
-  // for (const room in io.sockets.adapter.rooms) {
-  //   if (io.sockets.adapter.rooms[room].length < 2 && inroom === false) {
-  //     socket.join(room);
-  //     socket.leave(socket.id);
-  //     inroom = true;
-  //     socket.to(room).emit('second', room);
-  //   }
-  // }
-  // console.log('rooms', io.sockets.adapter.rooms);
-  // socket.emit('news', { hello: 'world' });
-  // socket.on('attack', (attack) => {
-  //
-  // });
+
+  socket.on('fighter picked', (roomname, playeriam, squaddie) => {
+    io.in(roomname).emit('fighter chosen', { playeriam, squaddie });
+  });
 });
 
 io.listen(8081);
