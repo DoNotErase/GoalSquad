@@ -6,9 +6,9 @@ import PropTypes from 'prop-types';
 import socketIOClient from 'socket.io-client';
 import * as fightActions from '../actions/fightActions';
 import ChooseFightersPage from './ChooseFightersPage';
+import BattlePage from './BattlePage';
 
 let socket;
-const src = './assets/icons/';
 
 class Lobby extends React.Component {
   constructor(props) {
@@ -29,7 +29,7 @@ class Lobby extends React.Component {
     });
     // sets monsters for both players
     socket.on('fighter chosen', (fighterInfo) => {
-      console.log(fighterInfo);
+      console.log('fighterInfo', fighterInfo);
       this.props.fightActions.setMonsterFighter(fighterInfo.playeriam, fighterInfo.squaddie);
     });
   }
@@ -54,13 +54,8 @@ class Lobby extends React.Component {
     });
   }
   chooseFighter(roomname, playeriam, squaddie) {
-    console.log('button clicked');
-    console.log('roomname', roomname);
-    console.log('playeriam', playeriam);
-    console.log('squaddie', squaddie);
     socket.emit('fighter picked', roomname, playeriam, squaddie, (data) => {
       console.log('data', data);
-      // attach to monster data to store based on playeriam
     });
   }
 
@@ -77,7 +72,7 @@ class Lobby extends React.Component {
 
     const monsters = this.props.fightState.monster;
 
-    if (this.props.fightState.user.player2 && !this.props.fightState.fightingMonster) {
+    if (this.props.fightState.user.player2 && (!monsters.monster1 || !monsters.monster2)) {
       return (
         <div>
           <ChooseFightersPage
@@ -88,7 +83,7 @@ class Lobby extends React.Component {
     } else if (monsters.monster1 && monsters.monster2) {
       return (
         <div>
-          <div>Both people have chose monsters</div>
+          <BattlePage />
         </div>
       );
     } else {
@@ -99,12 +94,10 @@ class Lobby extends React.Component {
           <div>{this.state.endpoint}</div>
           <button onClick={() => this.hostGame()}>host</button>
           <button onClick={() => this.joinGame()}>join</button>
-          <Card raised image={`${src}battle_icon.png`} onClick={Link} href='/battle' />
         </div>
       );
       // TODO add else statement for waiting to find players if host
     }
-
   }
 }
 
