@@ -97,10 +97,10 @@ class GoalDetailModal extends React.Component {
               Cancel
             </Button>
             <Button
-              positive
+              color="orange"
               icon="checkmark"
               labelPosition="right"
-              content="Yep, that's me"
+              content="Update Progress"
               onClick={this.submitUpdate}
             />
           </Modal.Actions>
@@ -142,7 +142,7 @@ class GoalDetailModal extends React.Component {
           <Input
             value={this.state.newCurrent}
             onChange={this.updateNewCurrent}
-            style={{ width: 50 }}
+            style={{ width: 100 }}
             label={{ basic: true, content: goal.goal_activity }}
             labelPosition="right"
             type="text"
