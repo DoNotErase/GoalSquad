@@ -140,19 +140,17 @@ class IncubatorPage extends React.Component {
   }
 
   handlePushNotificationCancel() {
-    this.setState({ open: false })
     // set push message notification  preference to false (and notification status to true) in DB
-    this.props.homePageActions.setPushNotificationsToFalse(this.props.state.user.id)
-    // temporarily set notification to true to remove button
-    this.setState({ notifiedOfPushNotifications: true })
+    this.props.homePageActions.updatePushNotificationsToFalse(this.props.state.user.id)
+    // temporarily set push notification to true to remove button
+    this.setState({ open: false, notifiedOfPushNotifications: true })
   }
 
   handlePushNotificationConfirm() {
-    this.setState({ open: false });
     // set push notification preference and notification status to true in DB
-    this.props.homePageActions.setPushNotificationsToTrue(this.props.state.user.id)
-    // temporarily set notification to true to remove button
-    this.setState({ notifiedOfPushNotifications: true })
+    this.props.homePageActions.updatePushNotificationsToTrue(this.props.state.user.id)
+    // temporarily set push notification to true to remove button
+    this.setState({ open: false, notifiedOfPushNotifications: true })
   }
 
   show() {
@@ -161,7 +159,7 @@ class IncubatorPage extends React.Component {
 
   showPushNotificationButton() {
     return (
-      {this.props.state.user.notified_of_push_notifications
+      this.props.state.user.notified_of_push_notifications
       ? null
       : <div>
           <Button onClick={this.show}>Enable Push Notifications</Button>
@@ -172,7 +170,6 @@ class IncubatorPage extends React.Component {
             onConfirm={this.handlePushNotificationConfirm}
           />
         </div>
-      }
     )
   }
 
