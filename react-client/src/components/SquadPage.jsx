@@ -49,6 +49,7 @@ SquadPage.propTypes = {
     squaddies: PropTypes.arrayOf(PropTypes.object),
     yardSquaddies: PropTypes.arrayOf(PropTypes.object),
     needsUpdate: PropTypes.bool,
+    isLoading: PropTypes.bool,
   }).isRequired,
   squadActions: PropTypes.objectOf(PropTypes.func).isRequired,
   history: PropTypes.shape({

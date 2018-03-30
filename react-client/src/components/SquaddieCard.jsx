@@ -24,6 +24,7 @@ class SquaddieCard extends React.Component {
     this.closeRename = this.closeRename.bind(this);
     this.saveRename = this.saveRename.bind(this);
   }
+
   toggleSquaddieToYard(monID) {
     this.setState({ yardstatus: !this.state.yardstatus });
     this.props.squaddieActions.toggleYardStatus(monID);
