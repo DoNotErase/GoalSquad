@@ -36,7 +36,7 @@ const MainMenu = props => (
         <Icon name="tasks" inverted />
       </Button>}
   >
-    <Modal.Content style={modalstyles}>
+    <Modal.Content>
       <Card.Group itemsPerRow={3} centered>
         <Card raised style={cardstyles} image={`${src}yard_icon.png`} onClick={() => { props.history.push('/yard'); }} />
         <Card raised style={cardstyles} image={`${src}incubator_icon.png`} onClick={() => { props.history.push('/incubator'); }} />

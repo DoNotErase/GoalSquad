@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Button, Image, Modal, Input } from 'semantic-ui-react';
+import { Grid, Button, Image, Modal, Input, Divider } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
@@ -99,6 +99,7 @@ class HomePage extends React.Component {
               style={buttonstyles}
             >SIGN IN
             </Button>
+            <Divider horizontal inverted>OR</Divider>
             <Button
               as="a"
               href="/auth/fitbit"
@@ -121,7 +122,7 @@ class HomePage extends React.Component {
           <Modal.Content >
             <Modal.Description>
               <Grid relaxed>
-                <Grid.Row centered columns={1}>
+                <Grid.Row centered>
                   <Input
                     value={this.state.username}
                     onChange={this.updateUsername}
@@ -131,7 +132,7 @@ class HomePage extends React.Component {
                     type="text"
                   />
                 </Grid.Row>
-                <Grid.Row centered columns={1}>
+                <Grid.Row centered>
                   <Input
                     value={this.state.password}
                     onChange={this.updatePassword}
@@ -150,7 +151,7 @@ class HomePage extends React.Component {
               Cancel
             </Button>
             <Button
-              positive
+              color="orange"
               icon="checkmark"
               labelPosition="right"
               content={this.state.type}
