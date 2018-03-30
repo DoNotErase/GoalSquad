@@ -1,5 +1,5 @@
 body {
-    background-color: #008F7A;
+    background-color: #474c4f;
     color: black;
 }
 
@@ -14,8 +14,15 @@ body {
     min-height:100%;
     padding: 20px;
     background-color: #008F7A;
-    background-image: linear-gradient(#845EC2, #008F7A);
-}
+    background-image: linear-gradient(to top, #474c4f, #465c64, #406e75, #398081, #379286);}
+
+/* gradients
+
+maroon: background-image: linear-gradient(to top, #a14055, #aa4554, #b24b54, #ba5152, #c15851);
+pinkish: background-image: linear-gradient(to right, #fe8275, #fb8877, #f88f79, #f5947c, #f29a7f);
+orangy: background-image: linear-gradient(to right, #d95a37, #df663e, #e67146, #ec7d4e, #f28857);
+
+*/
 
 @media (min-width: 600px) and (max-width: 1024px){
     .homepage {
@@ -155,8 +162,4 @@ body {
   
   .slideInDown {
     animation-name: slideInDown;
-  }
-
-  .squaddieicon img {
-    background-image: linear-gradient(to bottom, #faedc4, #ffebd8, #ffffff) !important;
   }

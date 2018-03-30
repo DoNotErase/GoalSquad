@@ -6,6 +6,12 @@ import PropTypes from 'prop-types';
 import * as homePageActions from '../actions/homePageActions';
 import * as actions from '../actions/actions';
 
+const buttonstyles = {
+  backgroundImage: 'linear-gradient(to right, #d95a37, #df663e, #e67146, #ec7d4e, #f28857)',
+  marginTop: 20,
+  borderRadius: '2rem',
+};
+
 class HomePage extends React.Component {
   constructor(props) {
     super(props);
@@ -78,29 +84,29 @@ class HomePage extends React.Component {
           <Grid.Column width={12} style={{ maxWidth: 450 }}>
             <Image src="./assets/misc/logo.png" style={{ marginTop: 25 }} size="huge" />
             <Button
-              as="a"
-              href="/auth/fitbit"
+              onClick={this.openSignUp}
               fluid
               color="orange"
               size="large"
-              style={{ marginTop: 50 }}
-            >Connect with Fitbit
+              style={buttonstyles}
+            >CREATE ACCOUNT
             </Button>
             <Button
               onClick={this.openLogin}
               fluid
               color="orange"
               size="large"
-              style={{ marginTop: 20 }}
-            >Login
+              style={buttonstyles}
+            >SIGN IN
             </Button>
             <Button
-              onClick={this.openSignUp}
+              as="a"
+              href="/auth/fitbit"
               fluid
               color="orange"
               size="large"
-              style={{ marginTop: 20 }}
-            >Sign up
+              style={buttonstyles}
+            >CONNECT WITH FITBIT
             </Button>
           </Grid.Column>
         </Grid>
