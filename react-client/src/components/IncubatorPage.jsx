@@ -46,22 +46,22 @@ class IncubatorPage extends React.Component {
       >
         <Grid.Column computer={8} mobile={16}>
           <Grid.Row>
-            <div className="no-goals-header">Oh no!</div>
+            <Header size="large" className="white">Oh no!</Header>
+            <Divider hidden />
           </Grid.Row>
           <Grid.Row>
-            <Image size="small" src="./assets/squaddies/squaggle.png" centered />
+            <Image size="small" src="./assets/squaddies/scuttlebutt.png" centered />
+            <Divider hidden />
           </Grid.Row>
           <Grid.Row>
-            <div className="no-goals-body">
-              You need some goals! Let's add some.
-            </div>
+            <Header size="medium" className="white">
+                You need some goals! Let's add some.
+            </Header>
+            <Divider hidden />
           </Grid.Row>
           <Grid.Row>
-            <Button onClick={() => { this.props.history.push('/goals'); }} animated>
+            <Button basic inverted onClick={() => { this.props.history.push('/goals'); }}>
               <Button.Content visible>Add goals</Button.Content>
-              <Button.Content hidden>
-                <Icon name="plus" />
-              </Button.Content>
             </Button>
           </Grid.Row>
         </Grid.Column>
@@ -112,7 +112,7 @@ class IncubatorPage extends React.Component {
       this.props.incubatorState.egg.egg_xp >= 100
         ?
           <Modal
-            trigger={<a><Image className={this.glowingEggActivated()} src="./assets/icons/egg.png" /></a>}
+            trigger={<a><Image className={this.glowingEggActivated()} src="./assets/icons/egg_stage_1.png" /></a>}
           >
             <Modal.Content style={{ background: 'transparent' }}>
               <Card centered>
@@ -129,7 +129,7 @@ class IncubatorPage extends React.Component {
             </Modal.Content>
           </Modal>
         :
-          <Image src="./assets/icons/egg.png" centered />
+          <Image src="./assets/icons/egg_stage_1.png" centered />
     );
   }
 
@@ -153,15 +153,20 @@ class IncubatorPage extends React.Component {
               } {/* renders list of goals for each activity type */}
             </Scrollbars>
           </Grid.Column>
-          <Grid.Row columns={2} style={{ position: 'fixed', bottom: 0, padding: 1 }}>
+          <Grid.Row
+            columns={2}
+            verticalAlign="top"
+            style={{ position: 'fixed', bottom: 0, padding: 1 }}
+          >
             <Grid.Column width={3}>
               {this.openEggModal()}
             </Grid.Column>
             <Grid.Column width={13}>
-              <ProgressBar history={this.props.history} />
+              <ProgressBar
+                history={this.props.history}
+              />
             </Grid.Column>
           </Grid.Row>
-
         </Grid>
         <MainMenu history={this.props.history} />
       </div>

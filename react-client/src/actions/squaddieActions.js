@@ -1,5 +1,8 @@
 import axios from 'axios';
 
+const isLoading = () => ({ type: 'IS_LOADING', payload: true });
+const doneLoading = () => ({ type: 'DONE_LOADING', payload: false });
+
 const handleErr = (err) => {
   if (err.response && err.response.status === 401) {
     window.location.href = '/';
@@ -35,13 +38,17 @@ export const saveSquaddiePosition = position => (
 );
 
 export const getUserSquaddies = () => (
-  dispatch => (
-    axios.get('/squaddies')
+  (dispatch) => {
+    dispatch(isLoading());
+    return axios.get('/squaddies')
       .then((res) => {
         dispatch(setSquaddies(res.data));
+        dispatch(doneLoading());
       })
-      .catch((err) => { handleErr(err); })
-  )
+      .catch((err) => {
+        handleErr(err);
+      });
+  }
 );
 
 export const getYardSquaddies = () => (

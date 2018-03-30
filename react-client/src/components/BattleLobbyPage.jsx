@@ -9,6 +9,7 @@ import ChooseFightersPage from './ChooseFightersPage';
 import BattlePage from './BattlePage';
 
 let socket;
+const src = './assets/icons/';
 
 class Lobby extends React.Component {
   constructor(props) {
@@ -94,6 +95,7 @@ class Lobby extends React.Component {
           <div>{this.state.endpoint}</div>
           <button onClick={() => this.hostGame()}>host</button>
           <button onClick={() => this.joinGame()}>join</button>
+          <Card raised image={`${src}battle_icon.png`} onClick={Link} href='/battle' />
         </div>
       );
       // TODO add else statement for waiting to find players if host
