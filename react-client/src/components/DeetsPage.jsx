@@ -73,24 +73,29 @@ class DeetsPage extends React.Component {
               <Segment.Group raised>
                 <Segment compact>
                   <Grid centered>
-                    <Grid.Row columns={1}>
-                      <Grid.Column>
-                        <Statistic.Group size="tiny">
-                          <Statistic color="green">
-                            <Statistic.Value>
-                              {percentSuccess(deets.user.total)}%
-                            </Statistic.Value>
-                            <Statistic.Label>OF GOALS</Statistic.Label>
-                            <Statistic.Value>COMPLETE</Statistic.Value>
-                          </Statistic>
-                          <Statistic color="red">
-                            <Statistic.Value>
-                              {percentFailure(deets.user.total)}%
-                            </Statistic.Value>
-                            <Statistic.Label>OF GOALS</Statistic.Label>
-                            <Statistic.Value>FAILED</Statistic.Value>
-                          </Statistic>
-                        </Statistic.Group>
+                    <Grid.Row columns={2} centered textAlign="center">
+                      <Grid.Column width={8}>
+                        <Statistic color="green" size="tiny">
+                          <Statistic.Value>
+                            {percentSuccess(deets.user.total)}%
+                          </Statistic.Value>
+                          <Statistic.Label>OF GOALS</Statistic.Label>
+                          <Statistic.Value>COMPLETE</Statistic.Value>
+                        </Statistic>
+                      </Grid.Column>
+                      <Grid.Column width={8}>
+                        <Statistic
+                          color="red"
+                          size="tiny"
+                          floated="right"
+                          style={{ marginRight: 5 }}
+                        >
+                          <Statistic.Value>
+                            {percentFailure(deets.user.total)}%
+                          </Statistic.Value>
+                          <Statistic.Label>OF GOALS</Statistic.Label>
+                          <Statistic.Value>FAILED</Statistic.Value>
+                        </Statistic>
                       </Grid.Column>
                     </Grid.Row>
                   </Grid>
@@ -99,20 +104,23 @@ class DeetsPage extends React.Component {
                   <Grid centered>
                     <Grid.Row columns={1}>
                       <Grid.Column>
-                        <Statistic.Group size="mini">
-                          <Statistic horizontal>
-                            <Statistic.Value>
-                              {percentSuccess(deets.global.total)}%
-                            </Statistic.Value>
-                            <Statistic.Label>Global<br />Average</Statistic.Label>
-                          </Statistic>
-                          <Statistic horizontal>
-                            <Statistic.Value>
-                              {percentFailure(deets.global.total)}%
-                            </Statistic.Value>
-                            <Statistic.Label>Global<br />Average</Statistic.Label>
-                          </Statistic>
-                        </Statistic.Group>
+                        <Statistic horizontal size="mini">
+                          <Statistic.Value>
+                            {percentSuccess(deets.global.total)}%
+                          </Statistic.Value>
+                          <Statistic.Label>Global<br />Average</Statistic.Label>
+                        </Statistic>
+                        <Statistic
+                          horizontal
+                          floated="right"
+                          size="mini"
+                          style={{ marginRight: 5 }}
+                        >
+                          <Statistic.Value>
+                            {percentFailure(deets.global.total)}%
+                          </Statistic.Value>
+                          <Statistic.Label>Global<br />Average</Statistic.Label>
+                        </Statistic>
                       </Grid.Column>
                     </Grid.Row>
                   </Grid>
