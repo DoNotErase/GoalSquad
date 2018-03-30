@@ -46,9 +46,9 @@ export const localSignup = (username, password) => (
   )
 );
 
-export const setPushNotificationsToFalse = userID => (
+export const updatePushNotificationsToFalse = userID => (
   dispatch => (
-    axios.patch('/setPushNotificationToFalse', { userID: userID })
+    axios.patch('/updatePushNotificationToFalse', { userID: userID })
       .then(() => {
         // update userInfo with dispatch call
         console.log('Succssfully updated user push notification preference to false')
@@ -57,9 +57,9 @@ export const setPushNotificationsToFalse = userID => (
   )
 )
 
-export const setPushNotificationsToTrue = userID => (
+export const updatePushNotificationsToTrue = userID => (
   dispatch => (
-    axios.patch('/setPushNotificationToTrue', { userID: userID })
+    axios.patch('/updatePushNotificationToTrue', { userID: userID })
       .then(() => {
         // update userInfo with dispatch call
         console.log('Succssfully updated user push notification preference to true')

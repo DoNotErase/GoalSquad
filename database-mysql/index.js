@@ -377,6 +377,25 @@ module.exports.updateCustomGoalProgress = async (goalID, newCurrent) => {
   }
 };
 
+module.exports.updatePushNotificationsToFalse = async userID => {
+  try {
+    const updatePushNotificationsToFalse = `UPDATE user SET notified_of_push_notifications = 1  WHERE user_id = ${userID}`;
+    await db.queryAsync(updatePushNotificationsToFalse);
+  } catch (err) {
+    throw (err);
+  }
+}
+
+module.exports.updatePushNotificationsToTrue = async userID => {
+  try {
+    const updatePushNotificationstoTrue = 'UPDATE user SET notified_of_push_notifications = 1 AND ' +
+    `wants_push_notifications = 1 WHERE user_id = ${userID}`;
+    await db.queryAsync(updatePushNotificationstoTrue);
+  } catch (err) {
+    throw (err);
+  }
+}
+
 module.exports.updateGoalStatuses = async () => {
   const markDoneGoals = 'UPDATE user_goal SET user_goal_success = 1, user_goal_concluded = 1 ' +
     'WHERE user_goal_target <= user_goal_current';
