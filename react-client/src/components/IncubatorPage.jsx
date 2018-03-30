@@ -20,7 +20,7 @@ class IncubatorPage extends React.Component {
       count: 3,
       firstTime: true,
       glowingEgg: false,
-      hasBeenNotifiedOfPushNotifications: false,
+      notifiedOfPushNotifications: false,
 
     };
     this.subtractFromCount = this.subtractFromCount.bind(this);
@@ -142,14 +142,17 @@ class IncubatorPage extends React.Component {
   handlePushNotificationCancel() {
     this.setState({ open: false })
     // set push message notification  preference to false (and notification status to true) in DB
-    this.props.homePageActions.setPushNotificationsToTrue(this.props.state.user.id)
-
+    this.props.homePageActions.setPushNotificationsToFalse(this.props.state.user.id)
+    // temporarily set notification to true to remove button
+    this.setState({ notifiedOfPushNotifications: true })
   }
 
   handlePushNotificationConfirm() {
     this.setState({ open: false });
     // set push notification preference and notification status to true in DB
     this.props.homePageActions.setPushNotificationsToTrue(this.props.state.user.id)
+    // temporarily set notification to true to remove button
+    this.setState({ notifiedOfPushNotifications: true })
   }
 
   show() {
@@ -158,26 +161,28 @@ class IncubatorPage extends React.Component {
 
   showPushNotificationButton() {
     return (
-      <div>
-        <Button onClick={this.show}>Enable Push Notifications</Button>
-        <Confirm
-          open={this.state.open}
-          content='Would you like to receive occassional but super helpful push notifcations?'
-          onCancel={this.handlePushNotificationCancel}
-          onConfirm={this.handlePushNotificationConfirm}
-        />
-      </div>
+      {this.props.state.user.notified_of_push_notifications
+      ? null
+      : <div>
+          <Button onClick={this.show}>Enable Push Notifications</Button>
+          <Confirm
+            open={this.state.open}
+            content='Would you like to receive occassional but super helpful push notifcations?'
+            onCancel={this.handlePushNotificationCancel}
+            onConfirm={this.handlePushNotificationConfirm}
+          />
+        </div>
+      }
     )
   }
 
   render() {
     return (
       <div className="incubatorpage">
-        {!this.props.state.user.notified_of_push_notifications
-          ? this.showPushNotificationButton()
-          : null
+        {this.state.notifiedOfPushNotifications
+          ? null
+          : this.showPushNotificationButton()
         }
-
         <Header as="h1" className="white" textAlign="right">Your Goals</Header>
         <Divider hidden />
         <Grid centered>
