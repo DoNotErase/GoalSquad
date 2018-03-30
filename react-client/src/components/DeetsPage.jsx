@@ -66,7 +66,7 @@ class DeetsPage extends React.Component {
               <Segment.Group raised>
                 <Segment compact>
                   <Header as="h2">{this.props.state.user.user_username}</Header>
-                  <Header as="h4">{deets.user.total.attempted} Lifetime Goals </Header>
+                  <Header as="h4" sub>{deets.user.total.attempted} Lifetime Goals </Header>
                   {this.makeDisconnectButton()}
                 </Segment>
               </Segment.Group>
