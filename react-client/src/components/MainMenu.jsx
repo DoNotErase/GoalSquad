@@ -14,6 +14,14 @@ const menustyles = {
   backgroundImage: 'linear-gradient(to right, #d95a37, #df663e, #e67146, #ec7d4e, #f28857)',
 };
 
+const modalstyles = {
+  backgroundImage: 'linear-gradient(to bottom, #faedc4, #ffebd8, #ffffff)',
+};
+
+const cardstyles = {
+  backgroundImage: '#fff',
+};
+
 const MainMenu = props => (
   <Modal
     className="fadeIn"
@@ -28,15 +36,15 @@ const MainMenu = props => (
         <Icon name="tasks" inverted />
       </Button>}
   >
-    <Modal.Content>
+    <Modal.Content style={modalstyles}>
       <Card.Group itemsPerRow={3} centered>
-        <Card raised image={`${src}yard_icon.png`} onClick={() => { props.history.push('/yard'); }} />
-        <Card raised image={`${src}incubator_icon.png`} onClick={() => { props.history.push('/incubator'); }} />
-        <Card raised image={`${src}goals_icon.png`} onClick={() => { props.history.push('/goals'); }} />
-        <Card raised image={`${src}deets_icon.png`} onClick={() => { props.history.push('/deets'); }} />
-        <Card raised image={`${src}squad_icon.png`} onClick={() => { props.history.push('/squad'); }} />
-        <Card raised image={`${src}battle_icon.png`} onClick={() => { props.history.push('/lobby'); }} />
-        <Card raised image={`${src}logout_icon.png`} onClick={Link} href="/logout" />
+        <Card raised style={cardstyles} image={`${src}yard_icon.png`} onClick={() => { props.history.push('/yard'); }} />
+        <Card raised style={cardstyles} image={`${src}incubator_icon.png`} onClick={() => { props.history.push('/incubator'); }} />
+        <Card raised style={cardstyles} image={`${src}goals_icon.png`} onClick={() => { props.history.push('/goals'); }} />
+        <Card raised style={cardstyles} image={`${src}deets_icon.png`} onClick={() => { props.history.push('/deets'); }} />
+        <Card raised style={cardstyles} image={`${src}squad_icon.png`} onClick={() => { props.history.push('/squad'); }} />
+        <Card raised style={cardstyles} image={`${src}battle_icon.png`} onClick={() => { props.history.push('/lobby'); }} />
+        <Card raised style={cardstyles} image={`${src}logout_icon.png`} onClick={Link} href="/logout" />
       </Card.Group>
     </Modal.Content>
   </Modal>
