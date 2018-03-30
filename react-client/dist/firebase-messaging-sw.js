@@ -11,6 +11,7 @@ var config = {
 };
 
 firebase.initializeApp(config);
+
 const messaging = firebase.messaging();
 messaging.setBackgroundMessageHandler(function(payload) {
  const title = 'Hello Goal Squad User!';
@@ -19,3 +20,4 @@ messaging.setBackgroundMessageHandler(function(payload) {
  };
  return self.registration.showNotification(title, options);
 });
+

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Card, Divider, Grid, Header, Icon, Image, Modal } from 'semantic-ui-react';
+import { Button, Card, Confirm, Divider, Grid, Header, Icon, Image, Modal } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -16,13 +16,18 @@ class IncubatorPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      open: false,
       count: 3,
       firstTime: true,
       glowingEgg: false,
-      newSquaddie: false,
+      hasBeenNotifiedOfPushNotifications: false,
+
     };
     this.subtractFromCount = this.subtractFromCount.bind(this);
     this.getGoals = this.getGoals.bind(this);
+    this.show = this.show.bind(this);
+    this.handlePushNotificationCancel = this.handlePushNotificationCancel.bind(this);
+    this.handlePushNotificationConfirm = this.handlePushNotificationConfirm.bind(this);
   }
 
   componentDidMount() {
@@ -35,6 +40,7 @@ class IncubatorPage extends React.Component {
       this.props.incubatorActions.getUserGoals();
       this.props.incubatorActions.fetchEggStatus();
     }
+    console.log('state', this.props.state)
   }
 
   getGoals() {
@@ -133,9 +139,45 @@ class IncubatorPage extends React.Component {
     );
   }
 
+  handlePushNotificationCancel() {
+    this.setState({ open: false })
+    // set push message notification  preference to false (and notification status to true) in DB
+    this.props.homePageActions.setPushNotificationsToTrue(this.props.state.user.id)
+
+  }
+
+  handlePushNotificationConfirm() {
+    this.setState({ open: false });
+    // set push notification preference and notification status to true in DB
+    this.props.homePageActions.setPushNotificationsToTrue(this.props.state.user.id)
+  }
+
+  show() {
+    this.setState({ open: true })
+  }
+
+  showPushNotificationButton() {
+    return (
+      <div>
+        <Button onClick={this.show}>Enable Push Notifications</Button>
+        <Confirm
+          open={this.state.open}
+          content='Would you like to receive occassional but super helpful push notifcations?'
+          onCancel={this.handlePushNotificationCancel}
+          onConfirm={this.handlePushNotificationConfirm}
+        />
+      </div>
+    )
+  }
+
   render() {
     return (
       <div className="incubatorpage">
+        {!this.props.state.user.notified_of_push_notifications
+          ? this.showPushNotificationButton()
+          : null
+        }
+
         <Header as="h1" className="white" textAlign="right">Your Goals</Header>
         <Divider hidden />
         <Grid centered>

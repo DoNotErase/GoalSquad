@@ -2,6 +2,8 @@ const mainState = {
   user: {},
   deets: {},
   needsUpdate: true,
+  wantsNotifications: false,
+  hasBeenNotified: false,
 };
 
 const mainReducer = (state = mainState, action) => {
