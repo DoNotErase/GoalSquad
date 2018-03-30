@@ -58,10 +58,10 @@ class DeetsPage extends React.Component {
     }
     return (
       <div className="deetspage">
-        <Header as="h1" className="white" textAlign="right">Deets</Header>
-        <Divider hidden />
         <Grid centered>
-          <Grid.Column computer={8} mobile={16}>
+          <Grid.Column computer={8} tablet={10} mobile={16}>
+            <Header as="h1" className="white" textAlign="right">Deets</Header>
+            <Divider hidden />
             <Scrollbars autoHide style={{ height: '85vh' }}>
               <Segment.Group raised>
                 <Segment compact>

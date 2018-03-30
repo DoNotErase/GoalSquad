@@ -13,10 +13,10 @@ class BattlePage extends React.Component {
   render() {
     return (
       <div className="battlepage">
-        <Header as="h1" className="white" textAlign="right">Battle</Header>
-        <Divider hidden />
-        <Grid centered >
-          <Grid.Column computer={8} mobile={16}>
+        <Grid centered stretched>
+          <Grid.Column computer={8} tablet={10} mobile={16}>
+            <Header as="h1" className="white" textAlign="right">Battle</Header>
+            <Divider hidden />
             <BattleInterfaceTop />
             <BattleInterfaceBottom />
           </Grid.Column>

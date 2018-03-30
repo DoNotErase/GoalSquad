@@ -19,11 +19,11 @@ class SquadPage extends React.Component {
   render() {
     return (
       <div className="squadpage">
-        <Header as="h1" className="white" textAlign="right">Your Squad</Header>
-        <Divider hidden />
         <Grid centered>
-          <Grid.Column computer={8} mobile={16}>
+          <Grid.Column computer={8} tablet={10} mobile={16}>
             <Scrollbars autoHide style={{ height: '85vh' }}>
+              <Header as="h1" className="white" textAlign="right">Your Squad</Header>
+              <Divider hidden />
               <Segment>
                 <Card.Group itemsPerRow={3} centered>
                   {this.props.squadState.isLoading ? <Loader active size="medium" inline="centered" />
