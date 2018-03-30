@@ -1,5 +1,5 @@
 import React from 'react';
-import ModalActions, { Card, Modal, Image, Button, Input } from 'semantic-ui-react';
+import { Card, Modal, Image, Button, Input } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';

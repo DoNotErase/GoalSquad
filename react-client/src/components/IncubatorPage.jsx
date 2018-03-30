@@ -186,7 +186,7 @@ IncubatorPage.propTypes = {
     needsUpdate: PropTypes.bool,
     egg: PropTypes.object,
   }).isRequired,
-  yardState: PropTypes.objectOf({
+  yardState: PropTypes.shape({
     yardSquaddies: PropTypes.object,
   }).isRequired,
   incubatorActions: PropTypes.objectOf(PropTypes.func).isRequired,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch, browserHistory } from 'react-router-dom';
+import { BrowserRouter as Router, Route, browserHistory } from 'react-router-dom';
 import TransitionSwitch from 'react-router-transition-switch';
 import Fader from 'react-fader';
 
