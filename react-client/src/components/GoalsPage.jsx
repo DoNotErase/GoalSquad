@@ -73,7 +73,6 @@ class GoalsPage extends React.Component {
             <Scrollbars autoHide style={{ height: '85vh' }}>
               <Header as="h3" className="white" textAlign="center">Available Categories</Header>
               {this.props.goalsState.isLoading ? <Loader active size="medium" inline="centered" /> : listItems }
-              {/* {listItems} */}
               <Header as="h4" className="white" textAlign="center">
                 To free up categories, complete existing goals!
               </Header>
