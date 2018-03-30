@@ -112,13 +112,13 @@ VALUES
 insert into monster
   (monster_name, monster_pic, monster_icon, monster_description)
 VALUES
-  ('Scuttlebutt', './assets/squaddies/scuttlebutt.png', './assets/squaddies/scuttlebutt-icon.png', 'This is a sample description of Scuttlebutt.'),
-  ('Pruny', './assets/squaddies/pruny.png', './assets/squaddies/pruny-icon.png', 'This is a sample description of Pruny.'),
-  ('Bard', './assets/squaddies/bard.png', './assets/squaddies/bard-icon.png', 'This is a sample description of Bard.'),
-  ('Squaggle', './assets/squaddies/squaggle.png', './assets/squaddies/squaggle-icon.png', 'This is a sample description of Squaggle.'),
-  ('Kow', './assets/squaddies/kow.png', './assets/squaddies/kow-icon.png', 'This is a sample description of Kow.'),
-  ('Ploppo', './assets/squaddies/ploppo.png', './assets/squaddies/ploppo-icon.png', 'This is a sample description of Ploppo.'),
-  ('Geldica', './assets/squaddies/geldica.png', './assets/squaddies/geldica-icon.png', 'This is a sample description of Geldica.');
+  ('Scuttlebutt', './assets/squaddies/scuttlebutt.png', './assets/squaddies/scuttlebutt-icon.png', "Likes neither pina coladas nor getting caught in the rain."),
+  ('Pruny', './assets/squaddies/pruny.png', './assets/squaddies/pruny-icon.png', 'Once held Guiness Book of World Record for longest clarinet solo.'),
+  ('Bard', './assets/squaddies/bard.png', './assets/squaddies/bard-icon.png', "Banned from New Hampshire since 2006, case files for the crime have since been sealed."),
+  ('Squaggle', './assets/squaddies/squaggle.png', './assets/squaddies/squaggle-icon.png', 'Nephew of that sea monster in the Indian Ocean you see on old maps.'),
+  ('Kow', './assets/squaddies/kow.png', './assets/squaddies/kow-icon.png', 'Fluent in 14 languages.  Literate in none.'),
+  ('Ploppo', './assets/squaddies/ploppo.png', './assets/squaddies/ploppo-icon.png', 'Mayor of Chernobyl, planning US Presidential campaign for 2028.'),
+  ('Geldica', './assets/squaddies/geldica.png', './assets/squaddies/geldica-icon.png', "Pros: hasn't murdered anyone recently\nCons: relapse is imminent");
 
 insert into egg
   (egg_name)
