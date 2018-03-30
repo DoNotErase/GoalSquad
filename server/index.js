@@ -435,6 +435,29 @@ app.post('/hatchEgg', isAuthorized, async (req, res) => {
   }
 });
 
+
+app.patch('/setPushNotificationToFalse', isAuthorized, async (req, res) => {
+  try{
+    const userID = req.body.userID;
+    const newUserInfo = db.setPushNotificationToFalse(userID);
+    console.log('newUserInfo', newUserInfo);
+    res.json(newUserInfo);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+})
+
+app.patch('/setPushNotificationToTrue', isAuthorized, async (req, res) => {
+  try{
+    const userID = req.body.userID;
+    const newUserInfo = db.setPushNotificationToTrue(userID);
+    console.log('newUserInfo', newUserInfo);
+    res.json(newUserInfo);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+})
+
 /** ********************** USER DEETS *********************************** */
 
 app.get('/userDeets', isAuthorized, async (req, res) => {

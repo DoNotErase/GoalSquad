@@ -50,6 +50,7 @@ export const setPushNotificationsToFalse = userID => (
   dispatch => (
     axios.patch('/setPushNotificationToFalse', { userID: userID })
       .then(() => {
+        // update userInfo with dispatch call
         console.log('Succssfully updated user push notification preference to false')
       })
       .catch((err) => { console.log('Unable to update user push notification preference', err) })
@@ -60,6 +61,7 @@ export const setPushNotificationsToTrue = userID => (
   dispatch => (
     axios.patch('/setPushNotificationToTrue', { userID: userID })
       .then(() => {
+        // update userInfo with dispatch call
         console.log('Succssfully updated user push notification preference to true')
       })
       .catch((err) => { console.log('Unable to update user push notification preference', err) })
