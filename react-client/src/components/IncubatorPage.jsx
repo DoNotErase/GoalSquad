@@ -51,7 +51,7 @@ class IncubatorPage extends React.Component {
             <Divider hidden />
           </Grid.Row>
           <Grid.Row>
-            <Image size="small" src="./assets/squaddies/scuttlebutt.png" centered />
+            <Image size="small" src="./assets/squaddies/grumpkin.png" centered />
             <Divider hidden />
           </Grid.Row>
           <Grid.Row>
