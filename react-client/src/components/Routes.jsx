@@ -1,5 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch, browserHistory } from 'react-router-dom';
+import TransitionSwitch from 'react-router-transition-switch';
+import Fader from 'react-fader';
 
 //  VIEW TO RENDER
 import HomePage from './HomePage';
@@ -14,7 +16,7 @@ import BattlePage from './BattlePage';
 
 const Routes = () => (
   <Router history={browserHistory}>
-    <Switch>
+    <TransitionSwitch component={Fader}>
       <Route exact path="/" component={HomePage} />
       <Route path="/landing" component={LandingPage} />
       <Route path="/incubator" component={IncubatorPage} />
@@ -24,7 +26,7 @@ const Routes = () => (
       <Route path="/goals" component={GoalsPage} />
       <Route path="/lobby" component={BattleLobbyPage} />
       <Route path="/battle" component={BattlePage} />
-    </Switch>
+    </TransitionSwitch>
   </Router>
 );
 
