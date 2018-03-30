@@ -139,9 +139,9 @@ class UserGoal extends React.Component {
 }
 
 UserGoal.propTypes = {
-  state: PropTypes.shape({
-    user: PropTypes.object,
-  }).isRequired,
+  // state: PropTypes.shape({
+  //   user: PropTypes.object,
+  // }).isRequired,
   goal: PropTypes.shape({
     goal_id: PropTypes.number,
     user_goal_id: PropTypes.number,

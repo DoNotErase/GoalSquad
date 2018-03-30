@@ -62,6 +62,7 @@ class GoalsPage extends React.Component {
           </Accordion>
         );
       }
+      return (<div key={category} />);
     });
 
     return (
@@ -88,8 +89,14 @@ class GoalsPage extends React.Component {
 }
 
 GoalsPage.propTypes = {
-  incubatorState: PropTypes.objectOf(PropTypes.object).isRequired,
-  goalsState: PropTypes.objectOf(PropTypes.object).isRequired,
+  incubatorState: PropTypes.objectOf({
+    userGoals: PropTypes.object,
+    isLoading: PropTypes.bool,
+  }).isRequired,
+  goalsState: PropTypes.shape({
+    standardGoals: PropTypes.object,
+    isLoading: PropTypes.bool,
+  }).isRequired,
   goalsActions: PropTypes.objectOf(PropTypes.func).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,

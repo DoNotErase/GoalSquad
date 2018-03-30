@@ -34,7 +34,6 @@ app.use(passport.session({
 
 function isAuthorized(req, res, next) {
   if (!req.session.passport) {
-    console.log('redirect');
     res.status(401).end();
     return;
   }
@@ -51,12 +50,10 @@ passport.use(new LocalStrategy(
   async (username, password, done) => {
     try {
       const user = await db.findByUsername(username);
-      console.log(user);
       if (!user) {
         return done(null, false);
       }
       if (bcrypt.compareSync(password, user.password)) {
-        console.log('yay!');
         return done(null, user);
       }
       return done(null, false);
@@ -219,7 +216,6 @@ app.get('/eggStatus', isAuthorized, async (req, res) => {
   try {
     const userID = req.session.passport.user.id;
     const data = await db.getEggInfo(userID);
-    console.log('Got the egg data!')
     res.status(200).json(data);
   } catch (err) {
     res.status(500).send('err in get Egg info');

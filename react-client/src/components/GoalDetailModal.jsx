@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, Grid, Button, Modal, Input, Progress, Divider } from 'semantic-ui-react';
+import { Header, Grid, Button, Modal, Input, Progress } from 'semantic-ui-react';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -16,6 +16,7 @@ class GoalDetailModal extends React.Component {
       activityPercentage: this.activityPercentage(),
       timePercentage: this.timePercentage(),
     };
+
     this.updateForm = this.updateForm.bind(this);
     this.updateButtons = this.updateButtons.bind(this);
     this.updateNewCurrent = this.updateNewCurrent.bind(this);
@@ -61,7 +62,7 @@ class GoalDetailModal extends React.Component {
         </div>
       );
     }
-    const difference = moment().add('hours', 5).diff(completeTime, 'minutes');
+    const difference = moment().add(5, 'hours').diff(completeTime, 'minutes');
     return (
       <div>
         <Header as="h3" color="blue" textAlign="right" floated="right"> Keep up this pace and you will finish in {humanize(difference)}!</Header>
@@ -79,7 +80,7 @@ class GoalDetailModal extends React.Component {
   timePercentage() {
     const { goal } = this.props;
     if (goal.user_goal_end_date) {
-      const now = moment().add('hours', 5);
+      const now = moment().add(5, 'hours');
       const start = moment(goal.user_goal_start_date);
       const end = moment(goal.user_goal_end_date);
       return 100 - Math.floor((100 * now.diff(start, 'minutes')) / end.diff(start, 'minutes'));
@@ -168,7 +169,7 @@ class GoalDetailModal extends React.Component {
       );
     }
     return (
-      <Header as="h5"> Start date: {moment(this.props.goal.user_goal_start_date).add('hours', -5).format('LLLL')} </Header>
+      <Header as="h5"> Start date: {moment(this.props.goal.user_goal_start_date).add(-5, 'hours').format('LLLL')} </Header>
     );
   }
 
@@ -178,17 +179,15 @@ class GoalDetailModal extends React.Component {
       (100 - this.state.timePercentage);
     const timeAllotted = moment(goal.user_goal_end_date).diff(moment(goal.user_goal_start_date), 'minutes');
     const estimatedTimeNeeded = timeAllotted * (timePercentNeeded / 100);
-    return moment(goal.user_goal_start_date).add('minutes', estimatedTimeNeeded);
+    return moment(goal.user_goal_start_date).add(estimatedTimeNeeded, 'minutes');
   }
 
   render() {
     const {
-      goal, size, dimmer, open, close,
+      goal, open, close,
     } = this.props;
     return (
       <Modal
-        size={size}
-        dimmer={dimmer}
         open={open}
         onClose={close}
         className="fadeIn"
@@ -238,6 +237,10 @@ GoalDetailModal.propTypes = {
     user_goal_start_date: PropTypes.string,
   }).isRequired,
   incubatorActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  close: PropTypes.func.isRequired,
+  // dimmer: PropTypes.bool.isRequired,
+  // size: PropTypes.string.isRequired,
+  open: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => (

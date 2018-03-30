@@ -118,7 +118,15 @@ VALUES
   ('Squaggle', './assets/squaddies/squaggle.png', './assets/squaddies/squaggle-icon.png', 'Nephew of that sea monster in the Indian Ocean you see on old maps.'),
   ('Kow', './assets/squaddies/kow.png', './assets/squaddies/kow-icon.png', 'Fluent in 14 languages.  Literate in none.'),
   ('Ploppo', './assets/squaddies/ploppo.png', './assets/squaddies/ploppo-icon.png', 'Mayor of Chernobyl, planning US Presidential campaign for 2028.'),
-  ('Geldica', './assets/squaddies/geldica.png', './assets/squaddies/geldica-icon.png', "Pros: hasn't murdered anyone recently\nCons: relapse is imminent");
+  ('Geldica', './assets/squaddies/geldica.png', './assets/squaddies/geldica-icon.png', "Pros: hasn't murdered anyone recently\nCons: relapse is imminent"),
+  ('Harry', './assets/squaddies/Hairy.png', './assets/squaddies/Hairy-icon.png', "Please donate to the NAAF to support Harry's fight with alopecia"),
+  ('Broccolli', './assets/squaddies/Broccolli.png', './assets/squaddies/Broccolli-icon.png', "Knows that he looks more like a bean. It's a sensitive subject. Please don't bring it up."),
+  ('Grumpkin', './assets/squaddies/Grumpkin.png', './assets/squaddies/Grumpkin-icon.png', 'Wears the skull of his deceased mother. His cries echo inside the skull and come out as a sad melody.'),
+  ('Kale', './assets/squaddies/Kale.png', './assets/squaddies/Kale-icon.png', 'Recently escapted from a CDC lab studying potential carcinogens, handle with care.'),
+  ('Mothra', './assets/squaddies/Mothra.png', './assets/squaddies/Mothra-icon.png', "2015 Champion of Seattle's Regional Bar Trivia Tournament"),
+  ('Pattycakes', './assets/squaddies/Pattycakes.png', './assets/squaddies/Pattycakes-icon.png', 'Founder of People for the Ethical Taping of Arguments. Is not a person.'),
+  ('Slenderbush', './assets/squaddies/Slenderbush.png', './assets/squaddies/Slenderbush-icon.png', "Has been talking about her mixtape thats about to drop for the last 5 years."),
+  ('Supahfly', './assets/squaddies/Supahfly.png', './assets/squaddies/Supahfly-icon.png', "Knows what really happened to Biggie and Tupac, but isn't talking.");
 
 insert into egg
   (egg_name)
@@ -129,7 +137,15 @@ VALUES
   ('squaggle_egg'),
   ('kow_egg'),
   ('ploppo_egg'),
-  ('geldica_egg');
+  ('geldica_egg'),
+  ('broccolli_egg'),
+  ('grumpkin_egg'),
+  ('harry_egg'),
+  ('kale_egg'),
+  ('mothra_egg'),
+  ('pattycakes_egg'),
+  ('slenderbush_egg'),
+  ('supahfly_egg');
 
 insert into goal 
   (goal_name, goal_activity, goal_amount, goal_difficulty, goal_class, goal_points, goal_timedivisor)

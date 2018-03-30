@@ -9,6 +9,7 @@ import createGoalReducer from '../reducers/createGoalReducer';
 import incubatorReducer from '../reducers/incubatorReducer';
 import squaddieReducer from '../reducers/squaddieReducer';
 import fightReducer from '../reducers/fightReducer';
+import historyReducer from '../reducers/historyReducer';
 
 const reducer = combineReducers({ // combines reducers from reducer folder
   main: mainReducer,
@@ -19,6 +20,7 @@ const reducer = combineReducers({ // combines reducers from reducer folder
   routing: routerReducer,
   squaddies: squaddieReducer,
   fight: fightReducer,
+  history: historyReducer,
 });
 
 // creates store and allows for chrome redux plugin
