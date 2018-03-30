@@ -202,10 +202,10 @@ class Goal extends React.Component {
                     Cancel
             </Button>
             <Button
-              positive
+              color="orange"
               icon="checkmark"
               labelPosition="right"
-              content="Yep, that's me"
+              content="Submit Goal"
               onClick={this.submit}
             />
           </Modal.Actions>
