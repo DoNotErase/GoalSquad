@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Card, Divider, Grid, Header, Icon, Image, Modal } from 'semantic-ui-react';
+import { Button, Card, Divider, Grid, Header, Loader, Image, Modal } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -44,6 +44,7 @@ class IncubatorPage extends React.Component {
         verticalAlign="middle"
         style={{ height: '100%' }}
       >
+        {this.props.incubatorState.isLoading ? <Loader active inverted size="medium" inline="centered" /> :
         <Grid.Column computer={8} mobile={16}>
           <Grid.Row>
             <Header size="large" className="white">Oh no!</Header>
@@ -65,6 +66,7 @@ class IncubatorPage extends React.Component {
             </Button>
           </Grid.Row>
         </Grid.Column>
+        }
       </Grid>
     );
   }
