@@ -92,11 +92,10 @@ class BattleInterfaceBottom extends React.Component {
                     style={{ marginBottom: 2 }}
                     onClick={() => this.show()}
                   />
-                  /*
                   <Confirm
                     open={this.state.open}
                     onCancel={this.handleCancel}
-                    onConfirm={this.gameEndShow(false)}
+                    onConfirm={() => this.gameEndShow(false)}
                     confirmButton="Surrender"
                     cancelButton="Stay"
                   />
@@ -111,12 +110,11 @@ class BattleInterfaceBottom extends React.Component {
                       </Modal.Description>
                     </Modal.Content>
                     <Modal.Actions>
-                      <Button color="black" onClick={this.gameEndClose}>
+                      <Button color="black" onClick={() => this.gameEndClose()}>
                         Nope
                       </Button>
                     </Modal.Actions>
                   </Modal>
-                  */
                 </Grid.Column>
               </Grid.Row>
             </Grid>
