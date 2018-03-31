@@ -1,34 +1,67 @@
 import React from 'react';
-import { Divider, Grid, Header } from 'semantic-ui-react';
+import { Divider, Grid, Header, Segment } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Scrollbars } from 'react-custom-scrollbars';
+import { bindActionCreators } from 'redux';
 import HistorySort from './HistorySort';
-import HistoryList from './HistoryList';
+import HistoryGoal from './HistoryGoal';
 import MainMenu from './MainMenu';
+import { fetch } from '../actions/historyActions';
 
-const HistoryPage = props => (
-  <div className="historypage">
-    <Header as="h1" className="white" textAlign="right">Past Goals</Header>
-    <Divider hidden />
-    <Grid centered>
-      <Grid.Column computer={8} mobile={16}>
-        <HistorySort />
-      </Grid.Column>
-      <Grid.Row
-        columns={2}
-        verticalAlign="top"
-        style={{ position: 'fixed', bottom: 0, padding: 1 }}
-      >
-        <HistoryList />
-      </Grid.Row>
-    </Grid>
-    <MainMenu history={props.history} />
-  </div>
-);
+class HistoryPage extends React.Component {
+  componentDidMount() {
+    this.props.fetchGoals();
+  }
+
+  render() {
+    return (
+      <div className="historypage">
+        <Header as="h1" className="white" textAlign="right">Past Goals</Header>
+        <Divider hidden />
+        <Grid centered>
+          <Grid.Column computer={8} mobile={16}>
+            <Grid.Row>
+              <Segment>
+                <HistorySort />
+              </Segment>
+            </Grid.Row>
+            <Grid.Row>
+              <Scrollbars autoHide style={{ height: '75vh' }}>
+                <Segment.Group raised>
+                  {this.props.historyState.sortedGoals.map((goal) => {
+                    return (<HistoryGoal goal={goal} />);
+                    })
+                  }
+                </Segment.Group>
+              </Scrollbars>
+            </Grid.Row>
+          </Grid.Column>
+        </Grid>
+        <MainMenu history={this.props.history} />
+      </div>
+    );
+  }
+}
 
 HistoryPage.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
+  historyState: PropTypes.shape({
+    sortedGoals: PropTypes.array,
+    sortType: PropTypes.string,
+    filteredGoals: PropTypes.array,
+  }).isRequired,
+  fetchGoals: PropTypes.func.isRequired,
 };
 
-export default HistoryPage;
+const mapStateToProps = state => ({
+  historyState: state.history,
+});
+
+const mapDispatchToProps = dispatch => ({
+  fetchGoals: bindActionCreators(fetch, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(HistoryPage);

@@ -111,17 +111,17 @@ module.exports.getAccessToken = async (fitbitID) => {
   }
 };
 
-module.exports.getUserGoals = async (id) => {
+module.exports.getOldUserGoals = async (id) => {
   try {
     const userID = await getRightID(id);
     const query = 'SELECT user_goal.*, goal.goal_name, goal.goal_activity, goal.goal_amount, goal.goal_difficulty ' +
       'FROM user_goal INNER JOIN goal ON goal.goal_id = user_goal.goal_id ' +
-      `WHERE user_goal.user_id = '${userID}';`;
+      `WHERE user_goal.user_id = '${userID}' AND user_goal.user_goal_finalized = 1;`;
 
     const goals = await db.queryAsync(query);
     return goals;
   } catch (err) {
-    throw new Error('trouble in getUserGoals');
+    throw new Error('trouble in getOldUserGoals');
   }
 };
 

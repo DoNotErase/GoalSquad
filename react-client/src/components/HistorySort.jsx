@@ -12,17 +12,30 @@ class HistorySort extends React.Component {
   }
 
   render() {
+    const actions = this.props.historyActions;
     return (
       <div>
-        <Grid centered>
-          <Header as="h3"> Sort By: </Header>
-          <Grid.Column computer={8} mobile={16}>
-            <Button>Start Date</Button>
-            <Button>Success</Button>
-            <Button>Length</Button>
-            <Button>Goal Type</Button>
-          </Grid.Column>
-        </Grid>
+        <Header as="h5" style={{ marginBottom: '2px' }}> Sort By: </Header>
+        <Grid.Row>
+          <Button.Group style={{ marginBottom: '2px' }}>
+            <Button onClick={() => actions.sort('date')} compact>Start Date</Button>
+            <Button.Or />
+            <Button onClick={() => actions.sort('points')} compact>Points</Button>
+            <Button.Or />
+            <Button onClick={() => actions.sort('activity')} compact>Activity</Button>
+          </Button.Group>
+        </Grid.Row>
+
+        <Header as="h5" style={{ marginBottom: '2px', marginTop: '4px' }}> Filter: </Header>
+        <Grid.Row>
+          <Button.Group style={{ marginBottom: '2px' }}>
+            <Button onClick={() => actions.filter('all')} compact>All</Button>
+            <Button.Or />
+            <Button onClick={() => actions.filter('success')} compact>Successful</Button>
+            <Button.Or />
+            <Button onClick={() => actions.filter('fail')} compact>Failed</Button>
+          </Button.Group>
+        </Grid.Row>
       </div>
     );
   }

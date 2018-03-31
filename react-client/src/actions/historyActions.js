@@ -15,6 +15,7 @@ export const fetch = () => (
   dispatch => (
     axios.get('/historicGoals')
       .then((res) => {
+        console.log(res.data);
         dispatch(setHistory(res.data));
       })
       .catch((err) => {

@@ -307,14 +307,6 @@ app.get('/userGoals', isAuthorized, async (req, res) => {
         console.log(err);
         res.status(500).send('err in getActiveUserGoals');
       }
-    } else if (req.query.type === 'all') {
-      try {
-        const userGoals = await db.getUserGoals(req.session.passport.user.id);
-        res.json(userGoals);
-      } catch (err) {
-        console.log(err);
-        res.status(500).send('err in get userGoals');
-      }
     } else {
       res.status(500).send('type of goal not yet recognized!');
     }
@@ -326,6 +318,15 @@ app.get('/userGoals', isAuthorized, async (req, res) => {
 app.get('/defaultGoals', isAuthorized, async (req, res) => {
   try {
     const goals = await db.getDefaultGoals();
+    res.json(goals);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
+app.get('/historicGoals', isAuthorized, async (req, res) => {
+  try {
+    const goals = await db.getOldUserGoals(req.session.passport.user.id);
     res.json(goals);
   } catch (err) {
     res.status(500).send(err);
