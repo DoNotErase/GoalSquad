@@ -11,7 +11,7 @@ import * as homePageActions from '../actions/homePageActions';
 import * as incubatorActions from '../actions/incubatorActions';
 import * as squaddieActions from '../actions/squaddieActions';
 import * as yardActions from '../actions/yardActions';
-import * as firebase from '../firebase/index';
+import firebase from '../firebase/index';
 
 class IncubatorPage extends React.Component {
   constructor(props) {
@@ -204,8 +204,6 @@ class IncubatorPage extends React.Component {
         </Grid>
         <Grid centered>
           <Grid.Column computer={8} tablet={10} mobile={16}>
-            <Header as="h1" className="white" textAlign="right">Your Goals</Header>
-            <Divider hidden />
             <Scrollbars autoHide style={{ height: '75vh' }}>
               {Object.keys(this.props.incubatorState.userGoals).length > 0
                 ? Object.keys(this.props.incubatorState.userGoals).map(activity => (
