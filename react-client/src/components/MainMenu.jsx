@@ -31,7 +31,7 @@ class MainMenu extends React.Component {
   show() { this.setState({ open: true }); }
   close() { this.setState({ open: false }); }
 
-  render(props) {
+  render() {
     const { open } = this.state;
     return (
       <Modal

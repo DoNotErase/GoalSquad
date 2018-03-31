@@ -18,6 +18,7 @@ class SquaddieCard extends React.Component {
       yardstatus: false,
       rename: false,
       newName: '',
+      alert: false,
     };
     this.show = this.show.bind(this);
     this.close = this.close.bind(this);
@@ -35,9 +36,11 @@ class SquaddieCard extends React.Component {
     if (this.state.newName) {
       this.props.squaddieActions.changeName(squaddie.user.user_monster_id, this.state.newName);
       squaddie.user.user_monster_new_name = this.state.newName;
+      this.setState({ alert: false });
       this.closeRename();
     } else {
-      alert('please enter a new name for your squaddie!');
+      this.setState({ alert: true });
+      // alert('please enter a new name for your squaddie!');
     }
   }
 
@@ -47,7 +50,7 @@ class SquaddieCard extends React.Component {
 
   render() {
     const {
-      open, dimmer, size, yardstatus, rename,
+      open, dimmer, size, yardstatus, rename, alert,
     } = this.state;
     const { squaddie } = this.props;
     return (
@@ -130,6 +133,7 @@ class SquaddieCard extends React.Component {
               value={this.state.newName}
               onChange={(event) => { this.setState({ newName: event.target.value }); }}
             />
+            {alert ? '  Please enter a new name!' : ''}
           </Modal.Content>
           <Modal.Actions>
             <Button onClick={this.closeRename}> Cancel </Button>
