@@ -6,12 +6,19 @@ import PropTypes from 'prop-types';
 import { Scrollbars } from 'react-custom-scrollbars';
 import MainMenu from './MainMenu';
 import * as actions from '../actions/actions';
+import * as homePageActions from '../actions/homePageActions';
+import firebase from '../firebase/index';
 
 class DeetsPage extends React.Component {
   constructor(props) {
     super(props);
-
+    this.state = {
+      open: false,
+    };
     this.makeDisconnectButton = this.makeDisconnectButton.bind(this);
+    this.show = this.show.bind(this);
+    this.showUnsubscribeButton = this.showUnsubscribeButton.bind(this);
+    
     if (!props.state.deets || props.state.needsUpdate) {
       props.actions.fetchStats();
       props.actions.turnOffUpdate();
@@ -32,6 +39,35 @@ class DeetsPage extends React.Component {
       );
     }
     return <div />;
+  }
+
+  show() {
+    this.setState({ open: true })
+  }
+
+  handlePushNotificationUnsubscribe() {
+    let messaging = firebase.messaging();
+    messaging.getToken()
+      .then(token => {
+        messaging.deleteToken(token)
+      })
+    // make action call to delete token and set preference to false in DB
+    this.props.homePageActions.unsubscribeFromPushNotifications(this.props.state.user.id)
+    
+  }
+
+  showUnsubscribeButton() {
+    return (
+      <div>
+        <Button onClick={this.show} floated='right' negative>Unsubscribe From Push Notifications</Button>
+        <Confirm
+          open={this.state.open}
+          content='Are you sure?'
+          onConfirm={this.handlePushNotificationUnsubscribe}
+          onCancel={this.setState({ open: false })};
+        />
+      </div>
+    )
   }
 
   render() {
@@ -68,6 +104,7 @@ class DeetsPage extends React.Component {
                   <Header as="h2">{this.props.state.user.user_username}</Header>
                   <Header as="h4">{deets.user.total.attempted} Lifetime Goals </Header>
                   {this.makeDisconnectButton()}
+                  {this.props.state.user.wants_push_notifications ? this.showUnsubscribeButton() : null}
                 </Segment>
               </Segment.Group>
               <Segment.Group raised>
@@ -166,6 +203,7 @@ const mapStateToProps = state => (
 const mapDispatchToProps = dispatch => (
   {
     actions: bindActionCreators(actions, dispatch),
+    homePageActions: bindActionCreators(homePageActions, dispatch),
   }
 );
 

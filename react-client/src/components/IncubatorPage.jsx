@@ -22,7 +22,6 @@ class IncubatorPage extends React.Component {
       firstTime: true,
       glowingEgg: false,
       notifiedOfPushNotifications: false,
-
     };
     this.subtractFromCount = this.subtractFromCount.bind(this);
     this.getGoals = this.getGoals.bind(this);
@@ -141,7 +140,6 @@ class IncubatorPage extends React.Component {
   }
 
   handlePushNotificationCancel() {
-    // set push message notification  preference to false (and notification status to true) in DB
     this.props.homePageActions.updatePushNotificationsToFalse(this.props.state.user.id);
     // temporarily set push notification to true to remove button
     this.setState({ open: false, notifiedOfPushNotifications: true });
@@ -153,7 +151,6 @@ class IncubatorPage extends React.Component {
     messaging.getToken()
       .then((token) => {
         console.log('token', token);
-        // set push notification preference and notification status to true in DB
         this.props.homePageActions.updatePushNotificationsToTrue(this.props.state.user.id, token);
     });
   }
@@ -171,7 +168,7 @@ class IncubatorPage extends React.Component {
   showPushNotificationButton() {
     return (
       <div>
-        <Button onClick={this.show}>Enable Push Notifications</Button>
+        <Button onClick={this.show} floated='right'>Enable Push Notifications</Button>
         <Confirm
           open={this.state.open}
           content='Would you like to receive occassional but super helpful push notifcations?'
