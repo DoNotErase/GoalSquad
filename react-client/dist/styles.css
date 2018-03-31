@@ -3,7 +3,7 @@ body {
     color: black;
 }
 
-.homepage, .goalspage, .incubatorpage, .deetspage, .squadpage, .battlepage {
+.homepage, .goalspage, .incubatorpage, .deetspage, .squadpage, .battlepage, .lobbypage {
     position: fixed;
     top: 0;
     left: 0;

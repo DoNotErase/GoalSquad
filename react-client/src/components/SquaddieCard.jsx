@@ -40,7 +40,6 @@ class SquaddieCard extends React.Component {
       this.closeRename();
     } else {
       this.setState({ alert: true });
-      // alert('please enter a new name for your squaddie!');
     }
   }
 
