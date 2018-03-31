@@ -49,6 +49,9 @@ class Lobby extends React.Component {
     socket.on('attack', ({ damage, user_monster_id }) => {
       this.props.fightActions.decreaseHealth(damage, user_monster_id);
     });
+    socket.on('surrender', ({ surrenderPlayer }) => {
+      // use to display that you either won or lost because someone surrendered
+    });
   }
 
   componentDidMount() {
@@ -82,6 +85,12 @@ class Lobby extends React.Component {
   attack(roomname, damage, user_monster_id) {
     console.log('clicked');
     socket.emit('attack', roomname, damage, user_monster_id, (data) => {
+      console.log('data', data);
+    });
+  }
+
+  surrender(roomname, playeriam) {
+    socket.emit('surrender', roomname, playeriam, (data) => {
       console.log('data', data);
     });
   }

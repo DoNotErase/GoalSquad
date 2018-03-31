@@ -503,8 +503,11 @@ io.on('connection', (socket) => {
   });
 
   socket.on('attack', (roomname, damage, user_monster_id) => {
-    console.log('attack server', roomname, damage);
     io.in(roomname).emit('attack', { damage, user_monster_id });
+  });
+
+  socket.on('surrender', (roomname, surrenderPlayer) => {
+    io.in(roomname).emit('surrender', { surrenderPlayer });
   });
 });
 

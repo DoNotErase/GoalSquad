@@ -1,25 +1,47 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Segment, Grid, Progress, Image, Button, Header, Confirm } from 'semantic-ui-react';
+import { Segment, Grid, Progress, Image, Button, Header, Confirm, Modal } from 'semantic-ui-react';
 
 class BattleInterfaceBottom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       open: false,
+      gameEndOpen: false,
     };
     this.show = this.show.bind(this);
-    this.handleConfirm = this.handleConfirm.bind(this);
+    // this.handleConfirm = this.handleConfirm.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
+    this.gameEndShow = this.gameEndShow.bind(this);
+    this.gameEndClose = this.gameEndClose.bind(this);
   }
 
-  show() { this.setState({ open: true }); }
-  handleConfirm() { this.setState({ open: false }); }
-  handleCancel() { this.setState({ open: false }); }
+  gameEndShow(dimmer) {
+    console.log('gameEndShow', dimmer);
+    this.setState({ dimmer, gameEndOpen: true });
+  }
+  // TODO reset store here
+  gameEndClose() {
+    console.log('gameEndClose');
+    this.setState({ gameEndOpen: false });
+  }
+  show() {
+    console.log('show');
+    this.setState({ open: true });
+  }
+  // handleConfirm() {
+  //   // this.setState({ open: false });
+  //   this.gameEndShow()
+  // }
+  handleCancel() {
+    console.log('handleCancel');
+    this.setState({ open: false });
+  }
+
 
   render() {
-    const monster = this.props.monster;
-    const fightState = this.props.fightState;
+    const { monster, fightState } = this.props;
+    const { gameEndOpen, dimmer } = this.state;
     return (
       <Segment>
         <Grid>
@@ -68,15 +90,33 @@ class BattleInterfaceBottom extends React.Component {
                     color="grey"
                     content="Surrender"
                     style={{ marginBottom: 2 }}
-                    onClick={this.show}
+                    onClick={() => this.show()}
                   />
+                  /*
                   <Confirm
                     open={this.state.open}
                     onCancel={this.handleCancel}
-                    onConfirm={this.handleConfirm}
+                    onConfirm={this.gameEndShow(false)}
                     confirmButton="Surrender"
                     cancelButton="Stay"
                   />
+                  <Modal dimmer={dimmer} open={gameEndOpen} onClose={this.gameEndClose}>
+                    <Modal.Header>Select a Photo</Modal.Header>
+                    <Modal.Content image>
+                      <Image wrapped size="medium" src="/assets/images/avatar/large/rachel.png" />
+                      <Modal.Description>
+                        <Header>Default Profile Image</Header>
+                        <p>I have found the following image associated with your e-mail address.</p>
+                        <p>Is it okay to use this photo?</p>
+                      </Modal.Description>
+                    </Modal.Content>
+                    <Modal.Actions>
+                      <Button color="black" onClick={this.gameEndClose}>
+                        Nope
+                      </Button>
+                    </Modal.Actions>
+                  </Modal>
+                  */
                 </Grid.Column>
               </Grid.Row>
             </Grid>

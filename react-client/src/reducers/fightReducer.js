@@ -11,7 +11,6 @@ const fightState = {
 };
 
 const fightReducer = (state = fightState, action) => {
-  console.log('action', action);
   switch (action.type) {
     case 'GET_LOBBY_INFO': {
       return {
@@ -25,7 +24,6 @@ const fightReducer = (state = fightState, action) => {
     }
     case 'CHOOSE_FIGHTER': {
       if (action.payload.player === 'player1') {
-        console.log('action.payload', action.payload);
         return {
           ...state,
           monster1: action.payload.monster,
@@ -46,13 +44,10 @@ const fightReducer = (state = fightState, action) => {
       state.activePlayer === 'player1' ?
         toggledPlayer = 'player2' :
         toggledPlayer = 'player1';
-      console.log('toggledplayer', toggledPlayer);
-      console.log('action.payload.damage', action.payload.damage);
       // action.payload.user_monster_id has the monster that did the damage
       // so find the other one to decrease their hp
       if (state.monster1.user_monster_id === action.payload.user_monster_id) {
         newHP = state.monster2CurrentHP - action.payload.damage;
-        console.log('newHP', newHP);
         return {
           ...state,
           monster2CurrentHP: newHP,
@@ -60,7 +55,6 @@ const fightReducer = (state = fightState, action) => {
         };
       } else {
         newHP = state.monster1CurrentHP - action.payload.damage;
-        console.log('newHP', newHP);
         return {
           ...state,
           monster1CurrentHP: newHP,
@@ -87,6 +81,11 @@ const fightReducer = (state = fightState, action) => {
           ...state.user,
           [key]: action.payload[key],
         },
+      };
+    }
+    case 'RESET_STATE': {
+      return {
+        fightState,
       };
     }
     default: {
