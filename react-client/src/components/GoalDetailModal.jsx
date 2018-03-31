@@ -93,7 +93,7 @@ class GoalDetailModal extends React.Component {
         (goal.goal_difficulty === 'custom' || !this.props.state.user.fitbit_id)) ?
           <Modal.Actions>
             <Header as="h5">{this.state.errorMessage}</Header>
-            <Button color="black" onClick={close}>
+            <Button color="grey" onClick={close}>
               Cancel
             </Button>
             <Button
@@ -106,7 +106,7 @@ class GoalDetailModal extends React.Component {
           </Modal.Actions>
       :
           <Modal.Actions>
-            <Button color="black" onClick={close}>
+            <Button color="grey" onClick={close}>
               Close
             </Button>
           </Modal.Actions>;
