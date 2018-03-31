@@ -342,12 +342,11 @@ app.post('/createUserGoal', isAuthorized, async (req, res) => {
     targetValue: 0,
     goalLength: req.body.goalLength,
     points: req.body.points,
-    start: req.body.startDate,
   };
   try {
     newGoal.userID = req.session.passport.user.id;
     const goalDetails = await db.getGoalInfo(newGoal.goalID);
-    if (typeof newGoal.userID === 'string') {
+    if (typeof newGoal.userID === 'string' && newGoal.goalID < 19) {
       const token = await db.getAccessToken(req.session.passport.user.id);
       let currentLifeTime = await axios.get('https://api.fitbit.com/1/user/-/activities.json', {
         headers: {
@@ -360,10 +359,11 @@ app.post('/createUserGoal', isAuthorized, async (req, res) => {
       newGoal.startValue = 0;
     }
     newGoal.targetValue = newGoal.startValue + goalDetails.goal_amount;
+    console.log(newGoal);
     await db.createUserGoal(newGoal);
     res.end();
   } catch (err) {
-    console.log(err.response.data);
+    console.log(err);
     res.status(500).send('could not create goal');
   }
 });

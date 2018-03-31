@@ -37,6 +37,7 @@ export const submitUserGoal = (goalID, deadline, points) => (
     })
       .then(() => {
         // keep
+        console.log('yaaaayyyy')
         dispatch(getUserGoals());
       })
       .catch((err) => { handleErr(err); })

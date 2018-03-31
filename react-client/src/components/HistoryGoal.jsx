@@ -47,7 +47,12 @@ class HistoryGoal extends React.Component {
             </Grid.Column>
           </Grid.Row>
         </Grid>
-        <GoalHistoryModal open={this.state.open} close={this.close} goal={goal} />
+        <GoalHistoryModal
+          open={this.state.open}
+          close={this.close}
+          goal={goal}
+          history={this.props.history}
+        />
       </Segment>
     );
   }
@@ -58,6 +63,7 @@ HistoryGoal.propTypes = {
     user_goal_points: PropTypes.number,
     goal_name: PropTypes.string,
   }).isRequired,
+  history: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({

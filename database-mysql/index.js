@@ -168,6 +168,7 @@ module.exports.createUserGoal = async (goalObj) => {
     }
     return '';
   } catch (err) {
+    console.log(err);
     throw new Error('trouble in createUserGoal');
   }
 };
