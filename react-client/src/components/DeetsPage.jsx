@@ -20,6 +20,8 @@ class DeetsPage extends React.Component {
     this.show = this.show.bind(this);
     this.showUnsubscribeButton = this.showUnsubscribeButton.bind(this);
     this.handlePushNotificationUnsubscribe = this.handlePushNotificationUnsubscribe.bind(this);
+    this.handlePushNotificationSubscription = this.handlePushNotificationSubscription.bind(this);
+    this.showSubscribeButton = this.showSubscribeButton.bind(this);
     
     if (!props.state.deets || props.state.needsUpdate) {
       props.actions.fetchStats();
@@ -77,6 +79,33 @@ class DeetsPage extends React.Component {
     )
   }
 
+  handlePushNotificationSubscription() {
+    this.setState({ open: false });
+    let messaging = firebase.messaging();
+    messaging.getToken()
+      .then((token) => {
+        this.props.homePageActions.updatePushNotificationsToTrue(this.props.state.user.id, token);
+    });
+  }
+
+  showSubscribeButton() {
+    return (
+      this.props.state.user.unsubscribed_from_notifications === 1
+      ?
+      <div>
+        <Button onClick={this.show} floated='right' positive>Get Push Notifications</Button>
+        <Confirm
+          open={this.state.open}
+          content='Are you sure?'
+          onConfirm={this.handlePushNotificationSubscription}
+          onCancel={this.handleCancel}
+        />
+      </div>
+      :
+      null
+    )
+  }
+
   render() {
     const { deets } = this.props.state;
 
@@ -110,7 +139,7 @@ class DeetsPage extends React.Component {
                 <Segment compact>
                   <Grid.Row>
                     <Header as="h2">{this.props.state.user.user_username}</Header>
-                    {this.props.state.user.wants_push_notifications === 1 && this.state.hideUnsubscribeButton === false ? this.showUnsubscribeButton() : null}
+                    {this.props.state.user.wants_push_notifications === 1 && this.state.hideUnsubscribeButton === false ? this.showUnsubscribeButton() : this.showSubscribeButton()}
                   </Grid.Row>
                   <Header as="h4">{deets.user.total.attempted} Lifetime Goals </Header>
                   {this.makeDisconnectButton()}

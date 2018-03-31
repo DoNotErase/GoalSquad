@@ -11,23 +11,17 @@ import * as homePageActions from '../actions/homePageActions';
 import * as incubatorActions from '../actions/incubatorActions';
 import * as squaddieActions from '../actions/squaddieActions';
 import * as yardActions from '../actions/yardActions';
-import firebase from '../firebase/index';
 
 class IncubatorPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false,
       count: 3,
       firstTime: true,
       glowingEgg: false,
-      notifiedOfPushNotifications: false,
     };
     this.subtractFromCount = this.subtractFromCount.bind(this);
     this.getGoals = this.getGoals.bind(this);
-    this.show = this.show.bind(this);
-    this.handlePushNotificationCancel = this.handlePushNotificationCancel.bind(this);
-    this.handlePushNotificationConfirm = this.handlePushNotificationConfirm.bind(this);
   }
 
   componentDidMount() {
@@ -82,9 +76,6 @@ class IncubatorPage extends React.Component {
   subtractFromCount() {
     if (this.state.count === 0) {
       this.setState({ count: 3, firstTime: true, newSquaddie: true });
-      // setTimeout(() => {
-      //   this.props.incubatorActions.fetchEggStatus()
-      // }, 2000);
     }
     this.setState(prevState => ({ count: prevState.count - 1, glowingEgg: false }));
   }
@@ -139,53 +130,9 @@ class IncubatorPage extends React.Component {
     );
   }
 
-  handlePushNotificationCancel() {
-    this.props.homePageActions.updatePushNotificationsToFalse(this.props.state.user.id);
-    // temporarily set push notification to true to remove button
-    this.setState({ open: false, notifiedOfPushNotifications: true });
-    console.log('User did not allow permission')
-  }
-
-  handleTokenRefresh() {
-    let messaging = firebase.messaging();
-    messaging.getToken()
-      .then((token) => {
-        console.log('token', token);
-        this.props.homePageActions.updatePushNotificationsToTrue(this.props.state.user.id, token);
-    });
-  }
-
-  handlePushNotificationConfirm() {
-    // temporarily set push notification to true to remove button
-    this.setState({ open: false, notifiedOfPushNotifications: true });
-    this.handleTokenRefresh();
-  }
-
-  show() {
-    this.setState({ open: true })
-  }
-
-  showPushNotificationButton() {
-    return (
-      <div>
-        <Button onClick={this.show} floated='right'>Enable Push Notifications</Button>
-        <Confirm
-          open={this.state.open}
-          content='Would you like to receive occassional but super helpful push notifcations?'
-          onCancel={this.handlePushNotificationCancel}
-          onConfirm={this.handlePushNotificationConfirm}
-        />
-      </div>
-    )
-  }
-
   render() {
     return (
       <div className="incubatorpage">
-        {this.state.notifiedOfPushNotifications
-          ? null
-          : this.props.state.user.notified_of_push_notifications ? null : this.showPushNotificationButton()
-        }
         <Header as="h1" className="white" textAlign="right">Your Goals</Header>
         <Divider hidden />
         <Grid centered>
