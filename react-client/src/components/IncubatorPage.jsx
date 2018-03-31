@@ -165,17 +165,15 @@ class IncubatorPage extends React.Component {
 
   showPushNotificationButton() {
     return (
-      this.props.state.user.notified_of_push_notifications
-      ? null
-      : <div>
-          <Button onClick={this.show}>Enable Push Notifications</Button>
-          <Confirm
-            open={this.state.open}
-            content='Would you like to receive occassional but super helpful push notifcations?'
-            onCancel={this.handlePushNotificationCancel}
-            onConfirm={this.handlePushNotificationConfirm}
-          />
-        </div>
+      <div>
+        <Button onClick={this.show}>Enable Push Notifications</Button>
+        <Confirm
+          open={this.state.open}
+          content='Would you like to receive occassional but super helpful push notifcations?'
+          onCancel={this.handlePushNotificationCancel}
+          onConfirm={this.handlePushNotificationConfirm}
+        />
+      </div>
     )
   }
 
@@ -184,7 +182,7 @@ class IncubatorPage extends React.Component {
       <div className="incubatorpage">
         {this.state.notifiedOfPushNotifications
           ? null
-          : this.showPushNotificationButton()
+          : this.props.state.user.notified_of_push_notifications ? null : this.showPushNotificationButton()
         }
         <Header as="h1" className="white" textAlign="right">Your Goals</Header>
         <Divider hidden />
