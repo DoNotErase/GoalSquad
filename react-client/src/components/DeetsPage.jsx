@@ -55,7 +55,7 @@ class DeetsPage extends React.Component {
         messaging.deleteToken(token)
       })
     // make action call to delete token and set preference to false in DB
-    this.props.homePageActions.unsubscribeFromPushNotifications(this.props.state.user.id)
+    this.props.homePageActions.unsubscribeFromPushNotifications(this.props.state.user.id);
     
   }
 

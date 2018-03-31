@@ -62,12 +62,11 @@ export const updatePushNotificationsToTrue = (userID, token) => (
   )
 )
 
-export const unsubscribeFromPushNotifications = userID => {
-  dispatch => {
-    axios.path('/unsubscribeFromPushNotifications', { userID: userID })
+export const unsubscribeFromPushNotifications = userID => (
+  dispatch => (
+    axios.patch('/unsubscribeFromPushNotifications', { userID: userID })
       .then(() => { console.log('User successfully unsubscribed from push notifications') })
       .catch((err) => { console.log('Unable to unsubscribe user from push notifications') })
-  }
-}
-
+  )
+)
 

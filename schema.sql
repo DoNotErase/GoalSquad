@@ -27,6 +27,7 @@ CREATE TABLE user (
   notified_of_push_notifications bool default 0,
   wants_push_notifications bool default 0,
   push_notification_token varchar(255),
+  unsubscribed_from_notifications bool default 0,
   PRIMARY KEY (user_id)
 );
 

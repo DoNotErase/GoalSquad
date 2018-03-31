@@ -440,7 +440,6 @@ app.patch('/updatePushNotificationsToFalse', isAuthorized, async (req, res) => {
   try{
     const userID = req.user.id;
     const newUserInfo = db.updatePushNotificationsToFalse(userID);
-    console.log('newUserInfo', newUserInfo);
     res.json(newUserInfo);
   } catch (err) {
     res.status(500).send(err);
@@ -452,7 +451,16 @@ app.patch('/updatePushNotificationsToTrue', isAuthorized, async (req, res) => {
     const userID = req.user.id;
     const token = req.body.token;
     const newUserInfo = db.updatePushNotificationsToTrue(userID, token);
-    console.log('newUserInfo', newUserInfo);
+    res.json(newUserInfo);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+})
+
+app.patch('/unsubscribeFromPushNotifications', isAuthorized, async (req, res) => {
+  try{
+    const userID = req.user.id;
+    const newUserInfo = db.unsubscribeFromPushNotifications(userID);
     res.json(newUserInfo);
   } catch (err) {
     res.status(500).send(err);

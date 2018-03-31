@@ -384,6 +384,16 @@ module.exports.updatePushNotificationsToTrue = async (userID, token) => {
   }
 }
 
+module.exports.unsubscribeFromPushNotifications = async userID => {
+  try {
+    const unsubscribeFromPushNotifications = 'UPDATE user SET push_notification_token = NULL, wants_push_notifications = 0, ' +
+    `unsubscribed_from_notifications = 1 WHERE user_id = ${userID}`;
+    await db.queryAsync(unsubscribeFromPushNotifications);
+  } catch (err) {
+    throw (err);
+  }
+}
+
 module.exports.updateGoalStatuses = async () => {
   const markDoneGoals = 'UPDATE user_goal SET user_goal_success = 1, user_goal_concluded = 1 ' +
     'WHERE user_goal_target <= user_goal_current';

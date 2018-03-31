@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Card, Confirm, Divider, Grid, Header, Icon, Image, Modal } from 'semantic-ui-react';
+import { Button, Card, Confirm, Divider, Grid, Header, Icon, Image, Modal, Row } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Scrollbars } from 'react-custom-scrollbars';
