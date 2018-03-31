@@ -84,12 +84,13 @@ class HomePage extends React.Component {
           <Grid.Column width={12} style={{ maxWidth: 450 }}>
             <Image src="./assets/misc/logo.png" style={{ marginTop: 25 }} size="huge" />
             <Button
-              onClick={this.openSignUp}
+              as="a"
+              href="/auth/fitbit"
               fluid
               color="orange"
               size="large"
               style={buttonstyles}
-            >CREATE ACCOUNT
+            >CONNECT WITH FITBIT
             </Button>
             <Button
               onClick={this.openLogin}
@@ -101,13 +102,12 @@ class HomePage extends React.Component {
             </Button>
             <Divider horizontal inverted>OR</Divider>
             <Button
-              as="a"
-              href="/auth/fitbit"
+              onClick={this.openSignUp}
               fluid
               color="orange"
               size="large"
               style={buttonstyles}
-            >CONNECT WITH FITBIT
+            >CREATE ACCOUNT
             </Button>
           </Grid.Column>
         </Grid>
