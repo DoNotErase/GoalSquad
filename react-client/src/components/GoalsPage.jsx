@@ -87,8 +87,14 @@ class GoalsPage extends React.Component {
 }
 
 GoalsPage.propTypes = {
-  incubatorState: PropTypes.objectOf(PropTypes.object).isRequired,
-  goalsState: PropTypes.objectOf(PropTypes.object).isRequired,
+  incubatorState: PropTypes.shape({
+    needsUpdate: PropTypes.bool,
+    userGoals: PropTypes.object,
+  }).isRequired,
+  goalsState: PropTypes.shape({
+    isLoading: PropTypes.bool,
+    standardGoals: PropTypes.object,
+  }).isRequired,
   goalsActions: PropTypes.objectOf(PropTypes.func).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
