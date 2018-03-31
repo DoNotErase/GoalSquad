@@ -46,13 +46,10 @@ export const localSignup = (username, password) => (
   )
 );
 
-const resetMain = () => ({ type: 'RESET' });
-
 export const updatePushNotificationsToFalse = userID => (
   dispatch => (
-    axios.patch('/updatePushNotificationsToFalse', { userID })
+    axios.patch('/updatePushNotificationsToFalse', { userID: userID })
       .then(() => {
-        dispatch(resetMain())
         console.log('Succssfully updated user push notification preference to false')
       })
       .catch((err) => { console.log('Unable to update user push notification preference', err) })
@@ -61,9 +58,8 @@ export const updatePushNotificationsToFalse = userID => (
 
 export const updatePushNotificationsToTrue = userID => (
   dispatch => (
-    axios.patch('/updatePushNotificationsToTrue', { userID })
+    axios.patch('/updatePushNotificationsToTrue', { userID: userID })
       .then(() => {
-        dispatch(resetMain())
         console.log('Succssfully updated user push notification preference to true')
       })
       .catch((err) => { console.log('Unable to update user push notification preference', err) })

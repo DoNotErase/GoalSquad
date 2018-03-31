@@ -282,18 +282,6 @@ module.exports.hatchEgg = async (userEggID, id, nextXP) => {
   }
 };
 
-module.exports.getNewSquaddie = async (userID) => {
-  try {
-    const getSquaddie = 'SELECT user_monster.*, monster.*, user.* FROM user_monster INNER JOIN monster ' +
-      'ON user_monster.monster_id = monster.monster_id' +
-      `WHERE user_monster_creation IN (SELECT max(user_monster_creation) AND user_monster.user_id = ${userID} FROM user_monster);`;
-
-    return await db.queryAsync(getSquaddie);
-  } catch (err) {
-    throw err;
-  }
-};
-
 module.exports.getEggInfo = async (id) => {
   try {
     const userID = await getRightID(id);
@@ -378,8 +366,9 @@ module.exports.updateCustomGoalProgress = async (goalID, newCurrent) => {
 };
 
 module.exports.updatePushNotificationsToFalse = async userID => {
+  console.log('user ID', userID)
   try {
-    const updatePushNotificationsToFalse = `UPDATE user SET notified_of_push_notifications = 1  WHERE user_id = ${userID}`;
+    const updatePushNotificationsToFalse = `UPDATE user SET notified_of_push_notifications = 1 WHERE user_id = ${userID}`;
     await db.queryAsync(updatePushNotificationsToFalse);
   } catch (err) {
     throw (err);
@@ -387,10 +376,11 @@ module.exports.updatePushNotificationsToFalse = async userID => {
 }
 
 module.exports.updatePushNotificationsToTrue = async userID => {
+  console.log('user ID', userID)
   try {
-    const updatePushNotificationstoTrue = 'UPDATE user SET notified_of_push_notifications = 1 AND ' +
+    const updatePushNotificationsToTrue = 'UPDATE user SET notified_of_push_notifications = 1, ' +
     `wants_push_notifications = 1 WHERE user_id = ${userID}`;
-    await db.queryAsync(updatePushNotificationstoTrue);
+    await db.queryAsync(updatePushNotificationsToTrue);
   } catch (err) {
     throw (err);
   }
