@@ -366,7 +366,6 @@ module.exports.updateCustomGoalProgress = async (goalID, newCurrent) => {
 };
 
 module.exports.updatePushNotificationsToFalse = async userID => {
-  console.log('user ID', userID)
   try {
     const updatePushNotificationsToFalse = `UPDATE user SET notified_of_push_notifications = 1 WHERE user_id = ${userID}`;
     await db.queryAsync(updatePushNotificationsToFalse);
@@ -375,11 +374,10 @@ module.exports.updatePushNotificationsToFalse = async userID => {
   }
 }
 
-module.exports.updatePushNotificationsToTrue = async userID => {
-  console.log('user ID', userID)
+module.exports.updatePushNotificationsToTrue = async (userID, token) => {
   try {
     const updatePushNotificationsToTrue = 'UPDATE user SET notified_of_push_notifications = 1, ' +
-    `wants_push_notifications = 1 WHERE user_id = ${userID}`;
+    `wants_push_notifications = 1, push_notification_token = '${token}' WHERE user_id = ${userID}`;
     await db.queryAsync(updatePushNotificationsToTrue);
   } catch (err) {
     throw (err);

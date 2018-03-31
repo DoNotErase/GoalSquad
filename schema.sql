@@ -26,6 +26,7 @@ CREATE TABLE user (
   custom_goal_timer_2 varchar(255),
   notified_of_push_notifications bool default 0,
   wants_push_notifications bool default 0,
+  push_notification_token varchar(255),
   PRIMARY KEY (user_id)
 );
 

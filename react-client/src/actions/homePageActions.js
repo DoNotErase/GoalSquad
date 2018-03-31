@@ -56,9 +56,9 @@ export const updatePushNotificationsToFalse = userID => (
   )
 )
 
-export const updatePushNotificationsToTrue = userID => (
+export const updatePushNotificationsToTrue = (userID, token) => (
   dispatch => (
-    axios.patch('/updatePushNotificationsToTrue', { userID: userID })
+    axios.patch('/updatePushNotificationsToTrue', { userID: userID, token: token })
       .then(() => {
         console.log('Succssfully updated user push notification preference to true')
       })

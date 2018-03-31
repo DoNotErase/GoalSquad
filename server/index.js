@@ -450,7 +450,8 @@ app.patch('/updatePushNotificationsToFalse', isAuthorized, async (req, res) => {
 app.patch('/updatePushNotificationsToTrue', isAuthorized, async (req, res) => {
   try{
     const userID = req.user.id;
-    const newUserInfo = db.updatePushNotificationsToTrue(userID);
+    const token = req.body.token;
+    const newUserInfo = db.updatePushNotificationsToTrue(userID, token);
     console.log('newUserInfo', newUserInfo);
     res.json(newUserInfo);
   } catch (err) {

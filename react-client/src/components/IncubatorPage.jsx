@@ -145,18 +145,23 @@ class IncubatorPage extends React.Component {
     this.props.homePageActions.updatePushNotificationsToFalse(this.props.state.user.id);
     // temporarily set push notification to true to remove button
     this.setState({ open: false, notifiedOfPushNotifications: true });
+    console.log('User did not allow permission')
   }
 
-  handlePushNotificationConfirm() {
-    // set push notification preference and notification status to true in DB
-    this.props.homePageActions.updatePushNotificationsToTrue(this.props.state.user.id);
-    // temporarily set push notification to true to remove button
-    this.setState({ open: false, notifiedOfPushNotifications: true });
+  handleTokenRefresh() {
     let messaging = firebase.messaging();
     messaging.getToken()
       .then((token) => {
-        console.log('token', token)
-      })
+        console.log('token', token);
+        // set push notification preference and notification status to true in DB
+        this.props.homePageActions.updatePushNotificationsToTrue(this.props.state.user.id, token);
+    });
+  }
+
+  handlePushNotificationConfirm() {
+    // temporarily set push notification to true to remove button
+    this.setState({ open: false, notifiedOfPushNotifications: true });
+    this.handleTokenRefresh();
   }
 
   show() {
