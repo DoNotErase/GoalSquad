@@ -1,6 +1,7 @@
 const historyState = {
   goals: [],
   filteredGoals: [],
+  filterType: '',
   sortedGoals: [],
   sortType: '',
 };
@@ -14,33 +15,42 @@ const historyReducer = (state = historyState, action) => {
       };
     }
     case 'SET_FILTERED': {
-      if (action.payload === 'all') {
-        return {
-          ...state,
-          filteredGoals: state.goals,
-        };
-      }
+      let filteredGoals = state.goals;
       if (action.payload === 'success') {
-        const filteredGoals = state.goals.filter(goal => (goal.user_goal.success === 1));
-        return {
-          ...state,
-          filteredGoals,
-        };
+        filteredGoals = state.goals.filter(goal => (goal.user_goal_success === 1));
+      } else if (action.payload === 'fail') {
+        filteredGoals = state.goals.filter(goal => (goal.user_goal_success === 0));
       }
-      if (action.payload === 'fail') {
-        const filteredGoals = state.goals.filter(goal => (goal.user_goal.success === 0));
-        return {
-          ...state,
-          filteredGoals,
-        };
-      }
-      break;
-    }
-    case 'SET_SORTED': {
       return {
         ...state,
-        sortedGoals: action.payload.goals,
-        sortType: action.payload.type,
+        filteredGoals,
+      };
+    }
+    case 'SET_SORTED': {
+      let sorted = state.filteredGoals;
+      const sortType = action.payload || state.sortType;
+      if (sortType === 'date') {
+        sorted = state.filteredGoals.sort((a, b) => {
+          if (a.user_goal_start_date < b.user_goal_start_date) {
+            return -1;
+          }
+          return 1;
+        });
+      } else if (sortType === 'points') {
+        sorted = state.filteredGoals.sort((a, b) => (a.user_goal_points - b.user_goal_points));
+      } else if (sortType === 'activity') {
+        sorted = state.filteredGoals.sort((a, b) => {
+          if (a.goal_activity < b.goal_activity) {
+            return -1;
+          }
+          return 1;
+        });
+      }
+      console.log(sorted);
+      return {
+        ...state,
+        sortedGoals: sorted,
+        sortType: action.payload,
       };
     }
     default: {

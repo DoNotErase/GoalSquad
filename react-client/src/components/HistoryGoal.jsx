@@ -1,12 +1,26 @@
 import React from 'react';
 import { Grid, Segment, Statistic, Header } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+// import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 
-import * as historyActions from '../actions/historyActions';
+// import * as historyActions from '../actions/historyActions';
+import GoalHistoryModal from './GoalHistoryModal';
 
 class HistoryGoal extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      open: false,
+    };
+    this.close = this.close.bind(this);
+  }
+
+  close() {
+    this.setState({ open: false });
+  }
+
   render() {
     const { goal } = this.props;
     return (
@@ -14,6 +28,7 @@ class HistoryGoal extends React.Component {
         compact
         clearing
         color="blue"
+        onClick={() => this.setState({ open: true })}
       >
         <Grid>
           <Grid.Row columns={2}>
@@ -32,21 +47,25 @@ class HistoryGoal extends React.Component {
             </Grid.Column>
           </Grid.Row>
         </Grid>
+        <GoalHistoryModal open={this.state.open} close={this.close} goal={goal} />
       </Segment>
     );
   }
 }
 
 HistoryGoal.propTypes = {
-  historyActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  goal: PropTypes.shape({
+    user_goal_points: PropTypes.number,
+    goal_name: PropTypes.string,
+  }).isRequired,
 };
 
 const mapStateToProps = state => ({
   historyState: state.history,
 });
 
-const mapDispatchToActions = dispatch => ({
-  historyActions: bindActionCreators(historyActions, dispatch),
-});
+// const mapDispatchToActions = dispatch => ({
+//   historyActions: bindActionCreators(historyActions, dispatch),
+// });
 
-export default connect(mapStateToProps, mapDispatchToActions)(HistoryGoal);
+export default connect(mapStateToProps, null)(HistoryGoal);

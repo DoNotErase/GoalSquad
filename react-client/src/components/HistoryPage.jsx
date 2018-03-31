@@ -22,15 +22,13 @@ class HistoryPage extends React.Component {
         <Grid centered>
           <Grid.Column computer={8} mobile={16}>
             <Grid.Row>
-              <Segment>
-                <HistorySort />
-              </Segment>
+              <HistorySort />
             </Grid.Row>
             <Grid.Row>
               <Scrollbars autoHide style={{ height: '75vh' }}>
                 <Segment.Group raised>
                   {this.props.historyState.sortedGoals.map((goal) => {
-                    return (<HistoryGoal goal={goal} />);
+                    return (<HistoryGoal goal={goal} key={goal.user_goal_id} />);
                     })
                   }
                 </Segment.Group>
