@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Card, Confirm, Divider, Grid, Header, Icon, Image, Modal, Row } from 'semantic-ui-react';
+import { Button, Card, Confirm, Divider, Grid, Header, Icon, Image, Modal } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -19,7 +19,12 @@ class IncubatorPage extends React.Component {
       count: 3,
       firstTime: true,
       glowingEgg: false,
+      open: false,
+      notifiedOfPushNotifications: false,
     };
+    this.show = this.show.bind(this);
+    this.handlePushNotificationCancel = this.handlePushNotificationCancel.bind(this);
+    this.handlePushNotificationConfirm = this.handlePushNotificationConfirm.bind(this);
     this.subtractFromCount = this.subtractFromCount.bind(this);
     this.getGoals = this.getGoals.bind(this);
   }
@@ -35,6 +40,48 @@ class IncubatorPage extends React.Component {
       this.props.incubatorActions.fetchEggStatus();
     }
     console.log('state', this.props.state)
+  }
+
+   handlePushNotificationCancel() {
+    this.props.homePageActions.updatePushNotificationsToFalse(this.props.state.user.id);
+    // temporarily set push notification to true to remove button
+    this.setState({ open: false, notifiedOfPushNotifications: true });
+    console.log('User did not allow permission')
+  }
+
+  handleTokenRefresh() {
+    let messaging = firebase.messaging();
+    messaging.getToken()
+      .then((token) => {
+        this.props.homePageActions.updatePushNotificationsToTrue(this.props.state.user.id, token);
+    });
+  }
+
+  handlePushNotificationConfirm() {
+    // temporarily set push notification to true to remove button
+    this.setState({ open: false, notifiedOfPushNotifications: true });
+    this.handleTokenRefresh();
+  }
+
+  show() {
+    this.setState({ open: true })
+  }
+
+  showPushNotificationButton() {
+    return (
+      <div>
+        <Grid.Row verticalAlign='top'>
+            <Button onClick={this.show} floated='right'>Enable Push Notifications</Button>
+            <Confirm
+              open={this.state.open}
+              content='Would you like to receive occassional but super helpful push notifcations?'
+              onCancel={this.handlePushNotificationCancel}
+              onConfirm={this.handlePushNotificationConfirm}
+            />
+            <Divider />
+        </Grid.Row>
+      </div>
+    )
   }
 
   getGoals() {
@@ -131,10 +178,23 @@ class IncubatorPage extends React.Component {
   }
 
   render() {
+    const styles = {
+      position: {
+        top: 15,
+        right: 15,
+        position: 'fixed',
+      }
+    }
     return (
       <div className="incubatorpage">
-        <Header as="h1" className="white" textAlign="right">Your Goals</Header>
-        <Divider hidden />
+        <Grid style={styles.position}>
+            {this.state.notifiedOfPushNotifications
+              ? null
+              : this.props.state.user.notified_of_push_notifications ? null :  this.showPushNotificationButton()
+            }
+            <Grid.Row verticalAlign="middle"><Header as="h1" className="white" textAlign="right">Your Goals</Header></Grid.Row>
+            <Divider hidden />
+        </Grid>
         <Grid centered>
           <Grid.Column computer={8} mobile={16}>
             <Scrollbars autoHide style={{ height: '75vh' }}>
