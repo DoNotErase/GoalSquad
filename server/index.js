@@ -436,8 +436,9 @@ app.post('/hatchEgg', isAuthorized, async (req, res) => {
 });
 
 
-app.patch('/updatePushNotificationsToFalse', isAuthorized, async (req, res) => {
+app.patch('/updatePushNotificationToFalse', isAuthorized, async (req, res) => {
   try{
+    console.log('req', req.body)
     const userID = req.body.userID;
     const newUserInfo = db.updatePushNotificationsToFalse(userID);
     console.log('newUserInfo', newUserInfo);
@@ -449,6 +450,7 @@ app.patch('/updatePushNotificationsToFalse', isAuthorized, async (req, res) => {
 
 app.patch('/updatePushNotificationsToTrue', isAuthorized, async (req, res) => {
   try{
+    console.log('req', req.body)
     const userID = req.body.userID;
     const newUserInfo = db.updatePushNotificationsToTrue(userID);
     console.log('newUserInfo', newUserInfo);
