@@ -18,51 +18,72 @@ const cardstyles = {
   backgroundImage: '#fff',
 };
 
-const MainMenu = props => (
-  <Modal
-    style={{ background: 'transparent', boxShadow: 'none' }}
-    className="fadeIn"
-    size="tiny"
-    trigger={
-      <Button
-        icon
-        circular
-        size="huge"
-        style={menustyles}
+class MainMenu extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false,
+    };
+    this.close = this.close.bind(this);
+    this.show = this.show.bind(this);
+  }
+
+  show() { this.setState({  open: true }); }
+  close() { this.setState({ open: false }); }
+
+  render() {
+    const { open } = this.state;
+    return (
+      <Modal
+        onClose={this.close}
+        open={open}
+        style={{ background: 'transparent', boxShadow: 'none' }}
+        className="fadeIn"
+        size="tiny"
+        trigger={
+          <Button
+            icon
+            circular
+            size="huge"
+            style={menustyles}
+            onClick={this.show}
+          >
+            <Icon name="tasks" inverted />
+          </Button>}
       >
-        <Icon name="tasks" inverted />
-      </Button>}
-  >
-    <Modal.Content
-      style={{ background: 'transparent', boxShadow: 'none' }}
-    >
-      <Card.Group itemsPerRow={3} centered>
-        <Card raised style={cardstyles} image={`${src}yard_icon.png`} onClick={() => { props.history.push('/yard'); }} />
-        <Card raised style={cardstyles} image={`${src}incubator_icon.png`} onClick={() => { props.history.push('/incubator'); }} />
-        <Card raised style={cardstyles} image={`${src}goals_icon.png`} onClick={() => { props.history.push('/goals'); }} />
-        <Card raised style={cardstyles} image={`${src}deets_icon.png`} onClick={() => { props.history.push('/deets'); }} />
-        <Card raised style={cardstyles} image={`${src}squad_icon.png`} onClick={() => { props.history.push('/squad'); }} />
-        <Card raised style={cardstyles} image={`${src}battle_icon.png`} onClick={() => { props.history.push('/lobby'); }} />
-        <Card raised style={cardstyles} image={`${src}logout_icon.png`} onClick={Link} href="/logout" />
-      </Card.Group>
-    </Modal.Content>
-    <Modal.Actions
-      style={{ background: 'transparent', boxShadow: 'none' }}
-    >
-      <Grid centered>
-        <Button
-          style={{ marginTop: 50 }}
-          color="grey"
-          icon
-          circular
-          size="huge"
+        <Modal.Content
+          style={{ background: 'transparent', boxShadow: 'none' }}
         >
-          <Icon name="close" />
-        </Button>
-      </Grid>
-    </Modal.Actions>
-  </Modal>
-);
+          <Card.Group itemsPerRow={3} centered>
+            <Card raised style={cardstyles} image={`${src}yard_icon.png`} onClick={() => { props.history.push('/yard'); }} />
+            <Card raised style={cardstyles} image={`${src}incubator_icon.png`} onClick={() => { props.history.push('/incubator'); }} />
+            <Card raised style={cardstyles} image={`${src}goals_icon.png`} onClick={() => { props.history.push('/goals'); }} />
+            <Card raised style={cardstyles} image={`${src}deets_icon.png`} onClick={() => { props.history.push('/deets'); }} />
+            <Card raised style={cardstyles} image={`${src}squad_icon.png`} onClick={() => { props.history.push('/squad'); }} />
+            <Card raised style={cardstyles} image={`${src}battle_icon.png`} onClick={() => { props.history.push('/lobby'); }} />
+            <Card raised style={cardstyles} image={`${src}logout_icon.png`} onClick={Link} href="/logout" />
+          </Card.Group>
+        </Modal.Content>
+        <Modal.Actions
+          style={{ background: 'transparent', boxShadow: 'none' }}
+        >
+          <Grid centered>
+            <Button
+              style={{ marginTop: 50 }}
+              color="grey"
+              icon
+              circular
+              size="huge"
+              onClick={this.close}
+            >
+              <Icon name="close" />
+            </Button>
+          </Grid>
+        </Modal.Actions>
+      </Modal>
+    );
+  }
+}
 
 MainMenu.propTypes = {
   history: PropTypes.shape({
