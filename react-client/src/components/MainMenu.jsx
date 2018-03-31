@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal, Icon, Link, Card } from 'semantic-ui-react';
+import { Button, Modal, Icon, Link, Card, Grid } from 'semantic-ui-react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -14,16 +14,13 @@ const menustyles = {
   backgroundImage: 'linear-gradient(to right, #d95a37, #df663e, #e67146, #ec7d4e, #f28857)',
 };
 
-const modalstyles = {
-  backgroundImage: 'linear-gradient(to bottom, #faedc4, #ffebd8, #ffffff)',
-};
-
 const cardstyles = {
   backgroundImage: '#fff',
 };
 
 const MainMenu = props => (
   <Modal
+    style={{ background: 'transparent', boxShadow: 'none' }}
     className="fadeIn"
     size="tiny"
     trigger={
@@ -36,7 +33,9 @@ const MainMenu = props => (
         <Icon name="tasks" inverted />
       </Button>}
   >
-    <Modal.Content>
+    <Modal.Content
+      style={{ background: 'transparent', boxShadow: 'none' }}
+    >
       <Card.Group itemsPerRow={3} centered>
         <Card raised style={cardstyles} image={`${src}yard_icon.png`} onClick={() => { props.history.push('/yard'); }} />
         <Card raised style={cardstyles} image={`${src}incubator_icon.png`} onClick={() => { props.history.push('/incubator'); }} />
@@ -47,6 +46,21 @@ const MainMenu = props => (
         <Card raised style={cardstyles} image={`${src}logout_icon.png`} onClick={Link} href="/logout" />
       </Card.Group>
     </Modal.Content>
+    <Modal.Actions
+      style={{ background: 'transparent', boxShadow: 'none' }}
+    >
+      <Grid centered>
+        <Button
+          style={{ marginTop: 50 }}
+          color="grey"
+          icon
+          circular
+          size="huge"
+        >
+          <Icon name="close" />
+        </Button>
+      </Grid>
+    </Modal.Actions>
   </Modal>
 );
 
