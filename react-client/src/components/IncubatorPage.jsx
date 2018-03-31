@@ -11,6 +11,7 @@ import * as homePageActions from '../actions/homePageActions';
 import * as incubatorActions from '../actions/incubatorActions';
 import * as squaddieActions from '../actions/squaddieActions';
 import * as yardActions from '../actions/yardActions';
+import firebase from '../firebase/index';
 
 class IncubatorPage extends React.Component {
   constructor(props) {
@@ -141,16 +142,21 @@ class IncubatorPage extends React.Component {
 
   handlePushNotificationCancel() {
     // set push message notification  preference to false (and notification status to true) in DB
-    this.props.homePageActions.updatePushNotificationsToFalse(this.props.state.user.id)
+    this.props.homePageActions.updatePushNotificationsToFalse(this.props.state.user.id);
     // temporarily set push notification to true to remove button
-    this.setState({ open: false, notifiedOfPushNotifications: true })
+    this.setState({ open: false, notifiedOfPushNotifications: true });
   }
 
   handlePushNotificationConfirm() {
     // set push notification preference and notification status to true in DB
-    this.props.homePageActions.updatePushNotificationsToTrue(this.props.state.user.id)
+    this.props.homePageActions.updatePushNotificationsToTrue(this.props.state.user.id);
     // temporarily set push notification to true to remove button
-    this.setState({ open: false, notifiedOfPushNotifications: true })
+    this.setState({ open: false, notifiedOfPushNotifications: true });
+    let messaging = firebase.messaging();
+    messaging.getToken()
+      .then((token) => {
+        console.log('token', token)
+      })
   }
 
   show() {
