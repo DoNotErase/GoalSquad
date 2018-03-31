@@ -5,6 +5,7 @@ const incubatorState = {
     egg_hatched: false,
   },
   needsUpdate: true,
+  isLoading: false,
 };
 
 const incubatorReducer = (state = incubatorState, action) => {
@@ -20,6 +21,18 @@ const incubatorReducer = (state = incubatorState, action) => {
       return {
         ...state,
         egg: action.payload,
+      };
+    }
+    case 'IS_LOADING': {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case 'DONE_LOADING': {
+      return {
+        ...state,
+        isLoading: false,
       };
     }
     default: {

@@ -1,15 +1,28 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Card, Link } from 'semantic-ui-react';
+import { Grid, Button, Header, Divider } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import socketIOClient from 'socket.io-client';
 import * as fightActions from '../actions/fightActions';
 import ChooseFightersPage from './ChooseFightersPage';
 import BattlePage from './BattlePage';
+import MainMenu from './MainMenu';
 
 let socket;
 const src = './assets/icons/';
+
+const buttonstyletop = {
+  backgroundImage: 'linear-gradient(to right, #d95a37, #df663e, #e67146, #ec7d4e, #f28857)',
+  marginTop: 150,
+  borderRadius: '2rem',
+};
+
+const buttonstylebottom = {
+  backgroundImage: 'linear-gradient(to right, #d95a37, #df663e, #e67146, #ec7d4e, #f28857)',
+  marginTop: 30,
+  borderRadius: '2rem',
+}
 
 class Lobby extends React.Component {
   constructor(props) {
@@ -87,19 +100,40 @@ class Lobby extends React.Component {
           <BattlePage />
         </div>
       );
-    } else {
-      // host or join a game
-      return (
-        <div>
-          <div>socket page</div>
-          <div>{this.state.endpoint}</div>
-          <button onClick={() => this.hostGame()}>host</button>
-          <button onClick={() => this.joinGame()}>join</button>
-          <Card raised image={`${src}battle_icon.png`} onClick={Link} href='/battle' />
-        </div>
-      );
-      // TODO add else statement for waiting to find players if host
     }
+    // host or join a game
+    return (
+      <div className="lobbypage">
+        <Grid centered>
+          <Grid.Column computer={8} tablet={10} mobile={16}>
+            <Header as="h1" className="white" textAlign="right">Lobby</Header>
+            <Divider hidden />
+            <Grid.Column width={12}>
+              <Button
+                onClick={() => this.hostGame()}
+                fluid
+                color="orange"
+                size="large"
+                style={buttonstyletop}
+              >
+              HOST A BATTLE
+              </Button>
+              <Button
+                onClick={() => this.joinGame()}
+                fluid
+                color="orange"
+                size="large"
+                style={buttonstylebottom}
+              >
+              JOIN A BATTLE
+              </Button>
+            </Grid.Column>
+          </Grid.Column>
+          <MainMenu history={this.props.history} />
+        </Grid>
+      </div>
+    );
+    // TODO add else statement for waiting to find players if host
   }
 }
 

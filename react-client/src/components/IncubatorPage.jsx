@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Card, Divider, Grid, Header, Icon, Image, Modal } from 'semantic-ui-react';
+import { Button, Card, Divider, Grid, Header, Loader, Image, Modal } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -44,13 +44,14 @@ class IncubatorPage extends React.Component {
         verticalAlign="middle"
         style={{ height: '100%' }}
       >
-        <Grid.Column computer={8} mobile={16}>
+        {this.props.incubatorState.isLoading ? <Loader active inverted size="medium" inline="centered" /> :
+        <Grid.Column computer={8} tablet={10} mobile={16}>
           <Grid.Row>
             <Header size="large" className="white">Oh no!</Header>
             <Divider hidden />
           </Grid.Row>
           <Grid.Row>
-            <Image size="small" src="./assets/squaddies/scuttlebutt.png" centered />
+            <Image size="small" src="./assets/squaddies/grumpkin.png" centered />
             <Divider hidden />
           </Grid.Row>
           <Grid.Row>
@@ -65,6 +66,7 @@ class IncubatorPage extends React.Component {
             </Button>
           </Grid.Row>
         </Grid.Column>
+        }
       </Grid>
     );
   }
@@ -136,10 +138,10 @@ class IncubatorPage extends React.Component {
   render() {
     return (
       <div className="incubatorpage">
-        <Header as="h1" className="white" textAlign="right">Your Goals</Header>
-        <Divider hidden />
         <Grid centered>
-          <Grid.Column computer={8} mobile={16}>
+          <Grid.Column computer={8} tablet={10} mobile={16}>
+            <Header as="h1" className="white" textAlign="right">Your Goals</Header>
+            <Divider hidden />
             <Scrollbars autoHide style={{ height: '75vh' }}>
               {Object.keys(this.props.incubatorState.userGoals).length > 0
                 ? Object.keys(this.props.incubatorState.userGoals).map(activity => (
@@ -184,7 +186,7 @@ IncubatorPage.propTypes = {
     needsUpdate: PropTypes.bool,
     egg: PropTypes.object,
   }).isRequired,
-  yardState: PropTypes.objectOf({
+  yardState: PropTypes.shape({
     yardSquaddies: PropTypes.object,
   }).isRequired,
   incubatorActions: PropTypes.objectOf(PropTypes.func).isRequired,

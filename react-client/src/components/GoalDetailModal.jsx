@@ -93,20 +93,20 @@ class GoalDetailModal extends React.Component {
         (goal.goal_difficulty === 'custom' || !this.props.state.user.fitbit_id)) ?
           <Modal.Actions>
             <Header as="h5">{this.state.errorMessage}</Header>
-            <Button color="black" onClick={close}>
+            <Button color="grey" onClick={close}>
               Cancel
             </Button>
             <Button
-              positive
+              color="orange"
               icon="checkmark"
               labelPosition="right"
-              content="Yep, that's me"
+              content="Update Progress"
               onClick={this.submitUpdate}
             />
           </Modal.Actions>
       :
           <Modal.Actions>
-            <Button color="black" onClick={close}>
+            <Button color="grey" onClick={close}>
               Close
             </Button>
           </Modal.Actions>;
@@ -142,7 +142,7 @@ class GoalDetailModal extends React.Component {
           <Input
             value={this.state.newCurrent}
             onChange={this.updateNewCurrent}
-            style={{ width: 50 }}
+            style={{ width: 100 }}
             label={{ basic: true, content: goal.goal_activity }}
             labelPosition="right"
             type="text"

@@ -198,14 +198,14 @@ class Goal extends React.Component {
           </Modal.Content>
           <Modal.Actions>
             {this.state.errorMessage}
-            <Button color="black" onClick={this.close}>
+            <Button color="grey" onClick={this.close}>
                     Cancel
             </Button>
             <Button
-              positive
+              color="orange"
               icon="checkmark"
               labelPosition="right"
-              content="Yep, that's me"
+              content="Submit Goal"
               onClick={this.submit}
             />
           </Modal.Actions>

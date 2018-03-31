@@ -15,12 +15,15 @@ class YardSquaddie extends React.Component {
         x: this.props.squaddie.user_monster_xcoord,
         y: this.props.squaddie.user_monster_ycoord,
       },
+      moved: false,
     };
     this.handleDrag = this.handleDrag.bind(this);
   }
 
   componentWillUnmount() {
-    this.props.squaddieActions.saveSquaddiePosition(this.state.deltaPosition);
+    if (this.state.moved) {
+      this.props.squaddieActions.saveSquaddiePosition(this.state.deltaPosition);
+    }
   }
 
   handleDrag(e, ui) {
@@ -31,6 +34,7 @@ class YardSquaddie extends React.Component {
         x: x + ui.deltaX,
         y: y + ui.deltaY,
       },
+      moved: true,
     });
   }
 
@@ -50,10 +54,9 @@ class YardSquaddie extends React.Component {
   }
 }
 
-// YardSquaddie.propTypes = {
-//   yardState: PropTypes.objectOf(PropTypes.objectOf(PropTypes.object)).isRequired,
-//   yardActions: PropTypes.objectOf(PropTypes.func).isRequired,
-// };
+YardSquaddie.propTypes = {
+  squaddieActions: PropTypes.objectOf(PropTypes.func).isRequired,
+};
 
 const mapStateToProps = state => ({
   squadState: state.squad,

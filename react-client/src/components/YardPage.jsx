@@ -6,7 +6,6 @@ import { Loader } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import * as actions from '../actions/actions';
 import * as squaddieActions from '../actions/squaddieActions';
-import * as yardActions from '../actions/yardActions';
 import MainMenu from './MainMenu';
 import YardSquaddie from './YardSquaddie';
 
@@ -16,7 +15,6 @@ const background = {
   backgroundImage: 'url(./assets/backgrounds/yard_mobile_background.png)',
   backgroundSize: 'cover',
 };
-
 
 class YardPage extends React.Component {
   componentDidMount() {
@@ -47,9 +45,11 @@ class YardPage extends React.Component {
 }
 
 YardPage.propTypes = {
-  squadState: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.object)).isRequired,
+  squadState: PropTypes.shape({
+    isLoading: PropTypes.bool,
+    yardSquaddies: PropTypes.array,
+  }).isRequired,
   squaddieActions: PropTypes.objectOf(PropTypes.func).isRequired,
-  yardActions: PropTypes.objectOf(PropTypes.func).isRequired,
   history: PropTypes.shape({
     action: PropTypes.string,
     block: PropTypes.func,
@@ -69,7 +69,6 @@ const mapDispatchToProps = dispatch => (
   {
     actions: bindActionCreators(actions, dispatch),
     squaddieActions: bindActionCreators(squaddieActions, dispatch),
-    yardActions: bindActionCreators(yardActions, dispatch),
   }
 );
 

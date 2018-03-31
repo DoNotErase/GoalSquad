@@ -302,7 +302,7 @@ class CustomGoal extends React.Component {
             </Modal.Content>
             <Modal.Actions>
               {this.state.errorMessage}
-              <Button color="black" onClick={this.close}>
+              <Button color="grey" onClick={this.close}>
                 Cancel
               </Button>
               <Button
