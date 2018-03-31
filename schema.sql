@@ -122,7 +122,14 @@ VALUES
   ('Squaggle', './assets/squaddies/squaggle.png', './assets/squaddies/squaggle-icon.png', 'This is a sample description of Squaggle.'),
   ('Kow', './assets/squaddies/kow.png', './assets/squaddies/kow-icon.png', 'This is a sample description of Kow.'),
   ('Ploppo', './assets/squaddies/ploppo.png', './assets/squaddies/ploppo-icon.png', 'This is a sample description of Ploppo.'),
-  ('Geldica', './assets/squaddies/geldica.png', './assets/squaddies/geldica-icon.png', 'This is a sample description of Geldica.');
+  ('Broccolli', './assets/squaddies/Broccolli.png', './assets/squaddies/Broccolli-icon.png', 'This is a sample description of Broccolli.'),
+  ('Grumpkin', './assets/squaddies/Grumpkin.png', './assets/squaddies/Grumpkin-icon.png', 'This is a sample description of Grumpkin.'),
+  ('Hairy', './assets/squaddies/Hairy.png', './assets/squaddies/Hairy-icon.png', 'This is a sample description of Hairy.'),
+  ('Kale', './assets/squaddies/Kale.png', './assets/squaddies/Kale-icon.png', 'This is a sample description of Kale.'),
+  ('Mothra', './assets/squaddies/Mothra.png', './assets/squaddies/Mothra-icon.png', 'This is a sample description of Mothra.'),
+  ('Pattycakes', './assets/squaddies/Pattycakes.png', './assets/squaddies/Pattycakes-icon.png', 'This is a sample description of Pattycakes.'),
+  ('Slenderbush', './assets/squaddies/Slenderbush.png', './assets/squaddies/Slenderbush-icon.png', 'This is a sample description of Slenderbush.'),
+  ('Supahfly', './assets/squaddies/Supahfly.png', './assets/squaddies/Supahfly-icon.png', 'This is a sample description of Supahfly.');
 
 insert into egg
   (egg_name)
@@ -133,6 +140,14 @@ VALUES
   ('squaggle_egg'),
   ('kow_egg'),
   ('ploppo_egg'),
+  ('broccolli_egg'),
+  ('grumpkin_egg'),
+  ('hairy_egg'),
+  ('kale_egg'),
+  ('mothra_egg'),
+  ('pattycakes_egg'),
+  ('slenderbush_egg'),
+  ('supahfly_egg'),
   ('geldica_egg');
 
 insert into goal 

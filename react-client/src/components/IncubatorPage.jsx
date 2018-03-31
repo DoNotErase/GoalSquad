@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Card, Confirm, Divider, Grid, Header, Icon, Image, Modal } from 'semantic-ui-react';
+import { Button, Card, Confirm, Divider, Grid, Header, Loader, Image, Modal } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -11,6 +11,7 @@ import * as homePageActions from '../actions/homePageActions';
 import * as incubatorActions from '../actions/incubatorActions';
 import * as squaddieActions from '../actions/squaddieActions';
 import * as yardActions from '../actions/yardActions';
+import * as firebase from '../firebase/index';
 
 class IncubatorPage extends React.Component {
   constructor(props) {
@@ -39,49 +40,7 @@ class IncubatorPage extends React.Component {
       this.props.incubatorActions.getUserGoals();
       this.props.incubatorActions.fetchEggStatus();
     }
-    console.log('state', this.props.state)
-  }
-
-   handlePushNotificationCancel() {
-    this.props.homePageActions.updatePushNotificationsToFalse(this.props.state.user.id);
-    // temporarily set push notification to true to remove button
-    this.setState({ open: false, notifiedOfPushNotifications: true });
-    console.log('User did not allow permission')
-  }
-
-  handleTokenRefresh() {
-    let messaging = firebase.messaging();
-    messaging.getToken()
-      .then((token) => {
-        this.props.homePageActions.updatePushNotificationsToTrue(this.props.state.user.id, token);
-    });
-  }
-
-  handlePushNotificationConfirm() {
-    // temporarily set push notification to true to remove button
-    this.setState({ open: false, notifiedOfPushNotifications: true });
-    this.handleTokenRefresh();
-  }
-
-  show() {
-    this.setState({ open: true })
-  }
-
-  showPushNotificationButton() {
-    return (
-      <div>
-        <Grid.Row verticalAlign='top'>
-            <Button onClick={this.show} floated='right'>Enable Push Notifications</Button>
-            <Confirm
-              open={this.state.open}
-              content='Would you like to receive occassional but super helpful push notifcations?'
-              onCancel={this.handlePushNotificationCancel}
-              onConfirm={this.handlePushNotificationConfirm}
-            />
-            <Divider />
-        </Grid.Row>
-      </div>
-    )
+    console.log('state', this.props.state);
   }
 
   getGoals() {
@@ -91,13 +50,14 @@ class IncubatorPage extends React.Component {
         verticalAlign="middle"
         style={{ height: '100%' }}
       >
-        <Grid.Column computer={8} mobile={16}>
+        {this.props.incubatorState.isLoading ? <Loader active inverted size="medium" inline="centered" /> :
+        <Grid.Column computer={8} tablet={10} mobile={16}>
           <Grid.Row>
             <Header size="large" className="white">Oh no!</Header>
             <Divider hidden />
           </Grid.Row>
           <Grid.Row>
-            <Image size="small" src="./assets/squaddies/scuttlebutt.png" centered />
+            <Image size="small" src="./assets/squaddies/grumpkin.png" centered />
             <Divider hidden />
           </Grid.Row>
           <Grid.Row>
@@ -112,7 +72,54 @@ class IncubatorPage extends React.Component {
             </Button>
           </Grid.Row>
         </Grid.Column>
+        }
       </Grid>
+    );
+  }
+
+  handlePushNotificationCancel() {
+    this.props.homePageActions.updatePushNotificationsToFalse(this.props.state.user.id);
+    // temporarily set push notification to true to remove button
+    this.setState({ open: false, notifiedOfPushNotifications: true });
+    console.log('User did not allow permission');
+  }
+
+  handleTokenRefresh() {
+    const messaging = firebase.messaging();
+    messaging.getToken()
+      .then((token) => {
+        this.props.homePageActions.updatePushNotificationsToTrue(this.props.state.user.id, token);
+      });
+  }
+
+  handlePushNotificationConfirm() {
+    // temporarily set push notification to true to remove button
+    this.setState({ open: false, notifiedOfPushNotifications: true });
+    this.handleTokenRefresh();
+  }
+
+  show() {
+    this.setState({ open: true });
+  }
+
+  showPushNotificationButton() {
+    return (
+      this.props.state.user.notified_of_push_notifications
+        ?
+        null
+        :
+        <div>
+          <Grid.Row verticalAlign="top">
+            <Button onClick={this.show} floated="right">Enable Push Notifications</Button>
+            <Confirm
+              open={this.state.open}
+              content="Would you like to receive occassional but super helpful push notifcations?"
+              onCancel={this.handlePushNotificationCancel}
+              onConfirm={this.handlePushNotificationConfirm}
+            />
+            <Divider />
+          </Grid.Row>
+        </div>
     );
   }
 
@@ -183,20 +190,22 @@ class IncubatorPage extends React.Component {
         top: 15,
         right: 15,
         position: 'fixed',
-      }
-    }
+      },
+    };
     return (
       <div className="incubatorpage">
         <Grid style={styles.position}>
-            {this.state.notifiedOfPushNotifications
+          {this.state.notifiedOfPushNotifications
               ? null
-              : this.props.state.user.notified_of_push_notifications ? null :  this.showPushNotificationButton()
-            }
-            <Grid.Row verticalAlign="middle"><Header as="h1" className="white" textAlign="right">Your Goals</Header></Grid.Row>
-            <Divider hidden />
+              : this.showPushNotificationButton()
+          }
+          <Grid.Row verticalAlign="middle"><Header as="h1" className="white" textAlign="right">Your Goals</Header></Grid.Row>
+          <Divider hidden />
         </Grid>
         <Grid centered>
-          <Grid.Column computer={8} mobile={16}>
+          <Grid.Column computer={8} tablet={10} mobile={16}>
+            <Header as="h1" className="white" textAlign="right">Your Goals</Header>
+            <Divider hidden />
             <Scrollbars autoHide style={{ height: '75vh' }}>
               {Object.keys(this.props.incubatorState.userGoals).length > 0
                 ? Object.keys(this.props.incubatorState.userGoals).map(activity => (
@@ -241,7 +250,7 @@ IncubatorPage.propTypes = {
     needsUpdate: PropTypes.bool,
     egg: PropTypes.object,
   }).isRequired,
-  yardState: PropTypes.objectOf({
+  yardState: PropTypes.shape({
     yardSquaddies: PropTypes.object,
   }).isRequired,
   incubatorActions: PropTypes.objectOf(PropTypes.func).isRequired,

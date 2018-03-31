@@ -530,8 +530,13 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('fighter picked', (roomname, playeriam, squaddie) => {
-    io.in(roomname).emit('fighter chosen', { playeriam, squaddie });
+  socket.on('fighter picked', (roomname, player, squaddie) => {
+    io.in(roomname).emit('fighter chosen', { player, squaddie });
+  });
+
+  socket.on('attack', (roomname, damage, user_monster_id) => {
+    console.log('attack server', roomname, damage);
+    io.in(roomname).emit('attack', { damage, user_monster_id });
   });
 });
 

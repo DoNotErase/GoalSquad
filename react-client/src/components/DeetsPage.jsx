@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Confirm, Divider, Grid, Header, Segment, Statistic  } from 'semantic-ui-react';
+import { Button, Confirm, Divider, Grid, Header, Segment, Statistic } from 'semantic-ui-react';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -22,7 +22,7 @@ class DeetsPage extends React.Component {
     this.handlePushNotificationUnsubscribe = this.handlePushNotificationUnsubscribe.bind(this);
     this.handlePushNotificationSubscription = this.handlePushNotificationSubscription.bind(this);
     this.showSubscribeButton = this.showSubscribeButton.bind(this);
-    
+
     if (!props.state.deets || props.state.needsUpdate) {
       props.actions.fetchStats();
       props.actions.turnOffUpdate();
@@ -46,64 +46,63 @@ class DeetsPage extends React.Component {
   }
 
   show() {
-    this.setState({ open: true })
+    this.setState({ open: true });
   }
 
   handlePushNotificationUnsubscribe() {
-    this.setState({ open: false })
-    let messaging = firebase.messaging();
+    this.setState({ open: false });
+    const messaging = firebase.messaging();
     messaging.getToken()
-      .then(token => {
-        messaging.deleteToken(token)
-      })
+      .then((token) => {
+        messaging.deleteToken(token);
+      });
     // make action call to delete token and set preference to false in DB
     this.props.homePageActions.unsubscribeFromPushNotifications(this.props.state.user.id);
-    
   }
 
   handleCancel() {
-    this.setState({ open: false, hideUnsubscribeButton: true })
+    this.setState({ open: false, hideUnsubscribeButton: true });
   }
 
   showUnsubscribeButton() {
     return (
       <div>
-        <Button onClick={this.show} floated='right' negative>Unsubscribe From Push Notifications</Button>
+        <Button onClick={this.show} floated="right" negative>Unsubscribe From Push Notifications</Button>
         <Confirm
           open={this.state.open}
-          content='Are you sure?'
+          content="Are you sure?"
           onConfirm={this.handlePushNotificationUnsubscribe}
           onCancel={this.handleCancel}
         />
       </div>
-    )
+    );
   }
 
   handlePushNotificationSubscription() {
     this.setState({ open: false });
-    let messaging = firebase.messaging();
+    const messaging = firebase.messaging();
     messaging.getToken()
       .then((token) => {
         this.props.homePageActions.updatePushNotificationsToTrue(this.props.state.user.id, token);
-    });
+      });
   }
 
   showSubscribeButton() {
     return (
       this.props.state.user.unsubscribed_from_notifications === 1
-      ?
-      <div>
-        <Button onClick={this.show} floated='right' positive>Get Push Notifications</Button>
-        <Confirm
-          open={this.state.open}
-          content='Are you sure?'
-          onConfirm={this.handlePushNotificationSubscription}
-          onCancel={this.handleCancel}
-        />
-      </div>
-      :
-      null
-    )
+        ?
+          <div>
+            <Button onClick={this.show} floated="right" positive>Get Push Notifications</Button>
+            <Confirm
+              open={this.state.open}
+              content="Are you sure?"
+              onConfirm={this.handlePushNotificationSubscription}
+              onCancel={this.handleCancel}
+            />
+          </div>
+        :
+        null
+    );
   }
 
   render() {
@@ -130,10 +129,10 @@ class DeetsPage extends React.Component {
     }
     return (
       <div className="deetspage">
-        <Header as="h1" className="white" textAlign="right">Deets</Header>
-        <Divider hidden />
         <Grid centered>
-          <Grid.Column computer={8} mobile={16}>
+          <Grid.Column computer={8} tablet={10} mobile={16}>
+            <Header as="h1" className="white" textAlign="right">Deets</Header>
+            <Divider hidden />
             <Scrollbars autoHide style={{ height: '85vh' }}>
               <Segment.Group raised>
                 <Segment compact>
@@ -148,24 +147,29 @@ class DeetsPage extends React.Component {
               <Segment.Group raised>
                 <Segment compact>
                   <Grid centered>
-                    <Grid.Row columns={1}>
-                      <Grid.Column>
-                        <Statistic.Group size="tiny">
-                          <Statistic color="green">
-                            <Statistic.Value>
-                              {percentSuccess(deets.user.total)}%
-                            </Statistic.Value>
-                            <Statistic.Label>OF GOALS</Statistic.Label>
-                            <Statistic.Value>COMPLETE</Statistic.Value>
-                          </Statistic>
-                          <Statistic color="red">
-                            <Statistic.Value>
-                              {percentFailure(deets.user.total)}%
-                            </Statistic.Value>
-                            <Statistic.Label>OF GOALS</Statistic.Label>
-                            <Statistic.Value>FAILED</Statistic.Value>
-                          </Statistic>
-                        </Statistic.Group>
+                    <Grid.Row columns={2} centered textAlign="center">
+                      <Grid.Column width={8}>
+                        <Statistic color="green" size="tiny">
+                          <Statistic.Value>
+                            {percentSuccess(deets.user.total)}%
+                          </Statistic.Value>
+                          <Statistic.Label>OF GOALS</Statistic.Label>
+                          <Statistic.Value>COMPLETE</Statistic.Value>
+                        </Statistic>
+                      </Grid.Column>
+                      <Grid.Column width={8}>
+                        <Statistic
+                          color="red"
+                          size="tiny"
+                          floated="right"
+                          style={{ marginRight: 5 }}
+                        >
+                          <Statistic.Value>
+                            {percentFailure(deets.user.total)}%
+                          </Statistic.Value>
+                          <Statistic.Label>OF GOALS</Statistic.Label>
+                          <Statistic.Value>FAILED</Statistic.Value>
+                        </Statistic>
                       </Grid.Column>
                     </Grid.Row>
                   </Grid>
@@ -174,20 +178,23 @@ class DeetsPage extends React.Component {
                   <Grid centered>
                     <Grid.Row columns={1}>
                       <Grid.Column>
-                        <Statistic.Group size="mini">
-                          <Statistic horizontal>
-                            <Statistic.Value>
-                              {percentSuccess(deets.global.total)}%
-                            </Statistic.Value>
-                            <Statistic.Label>Global<br />Average</Statistic.Label>
-                          </Statistic>
-                          <Statistic horizontal>
-                            <Statistic.Value>
-                              {percentFailure(deets.global.total)}%
-                            </Statistic.Value>
-                            <Statistic.Label>Global<br />Average</Statistic.Label>
-                          </Statistic>
-                        </Statistic.Group>
+                        <Statistic horizontal size="mini">
+                          <Statistic.Value>
+                            {percentSuccess(deets.global.total)}%
+                          </Statistic.Value>
+                          <Statistic.Label>Global<br />Average</Statistic.Label>
+                        </Statistic>
+                        <Statistic
+                          horizontal
+                          floated="right"
+                          size="mini"
+                          style={{ marginRight: 5 }}
+                        >
+                          <Statistic.Value>
+                            {percentFailure(deets.global.total)}%
+                          </Statistic.Value>
+                          <Statistic.Label>Global<br />Average</Statistic.Label>
+                        </Statistic>
                       </Grid.Column>
                     </Grid.Row>
                   </Grid>
