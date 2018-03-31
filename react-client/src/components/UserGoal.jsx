@@ -123,7 +123,7 @@ class UserGoal extends React.Component {
               {this.goalStatus()}
             </Grid.Column>
             <Grid.Column width={2} floated="right" verticalAlign="middle">
-              <Icon name="chevron right" />
+              <Icon name="chevron right" fitted />
             </Grid.Column>
           </Grid.Row>
         </Grid>
