@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Header, Divider, Grid, Statistic, Segment, Button } from 'semantic-ui-react';
+import { Button, Confirm, Divider, Grid, Header, Segment, Statistic  } from 'semantic-ui-react';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -14,10 +14,12 @@ class DeetsPage extends React.Component {
     super(props);
     this.state = {
       open: false,
+      hideUnsubscribeButton: false,
     };
     this.makeDisconnectButton = this.makeDisconnectButton.bind(this);
     this.show = this.show.bind(this);
     this.showUnsubscribeButton = this.showUnsubscribeButton.bind(this);
+    this.handlePushNotificationUnsubscribe = this.handlePushNotificationUnsubscribe.bind(this);
     
     if (!props.state.deets || props.state.needsUpdate) {
       props.actions.fetchStats();
@@ -46,6 +48,7 @@ class DeetsPage extends React.Component {
   }
 
   handlePushNotificationUnsubscribe() {
+    this.setState({ open: false })
     let messaging = firebase.messaging();
     messaging.getToken()
       .then(token => {
@@ -56,6 +59,10 @@ class DeetsPage extends React.Component {
     
   }
 
+  handleCancel() {
+    this.setState({ open: false, hideUnsubscribeButton: true })
+  }
+
   showUnsubscribeButton() {
     return (
       <div>
@@ -64,7 +71,7 @@ class DeetsPage extends React.Component {
           open={this.state.open}
           content='Are you sure?'
           onConfirm={this.handlePushNotificationUnsubscribe}
-          onCancel={this.setState({ open: false })};
+          onCancel={this.handleCancel}
         />
       </div>
     )
@@ -101,10 +108,12 @@ class DeetsPage extends React.Component {
             <Scrollbars autoHide style={{ height: '85vh' }}>
               <Segment.Group raised>
                 <Segment compact>
-                  <Header as="h2">{this.props.state.user.user_username}</Header>
+                  <Grid.Row>
+                    <Header as="h2">{this.props.state.user.user_username}</Header>
+                    {this.props.state.user.wants_push_notifications === 1 && this.state.hideUnsubscribeButton === false ? this.showUnsubscribeButton() : null}
+                  </Grid.Row>
                   <Header as="h4">{deets.user.total.attempted} Lifetime Goals </Header>
                   {this.makeDisconnectButton()}
-                  {this.props.state.user.wants_push_notifications ? this.showUnsubscribeButton() : null}
                 </Segment>
               </Segment.Group>
               <Segment.Group raised>
