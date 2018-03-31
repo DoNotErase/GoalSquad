@@ -28,10 +28,10 @@ class MainMenu extends React.Component {
     this.show = this.show.bind(this);
   }
 
-  show() { this.setState({  open: true }); }
+  show() { this.setState({ open: true }); }
   close() { this.setState({ open: false }); }
 
-  render() {
+  render(props) {
     const { open } = this.state;
     return (
       <Modal
@@ -55,12 +55,12 @@ class MainMenu extends React.Component {
           style={{ background: 'transparent', boxShadow: 'none' }}
         >
           <Card.Group itemsPerRow={3} centered>
-            <Card raised style={cardstyles} image={`${src}yard_icon.png`} onClick={() => { props.history.push('/yard'); }} />
-            <Card raised style={cardstyles} image={`${src}incubator_icon.png`} onClick={() => { props.history.push('/incubator'); }} />
-            <Card raised style={cardstyles} image={`${src}goals_icon.png`} onClick={() => { props.history.push('/goals'); }} />
-            <Card raised style={cardstyles} image={`${src}deets_icon.png`} onClick={() => { props.history.push('/deets'); }} />
-            <Card raised style={cardstyles} image={`${src}squad_icon.png`} onClick={() => { props.history.push('/squad'); }} />
-            <Card raised style={cardstyles} image={`${src}battle_icon.png`} onClick={() => { props.history.push('/lobby'); }} />
+            <Card raised style={cardstyles} image={`${src}yard_icon.png`} onClick={() => { this.props.history.push('/yard'); }} />
+            <Card raised style={cardstyles} image={`${src}incubator_icon.png`} onClick={() => { this.props.history.push('/incubator'); }} />
+            <Card raised style={cardstyles} image={`${src}goals_icon.png`} onClick={() => { this.props.history.push('/goals'); }} />
+            <Card raised style={cardstyles} image={`${src}deets_icon.png`} onClick={() => { this.props.history.push('/deets'); }} />
+            <Card raised style={cardstyles} image={`${src}squad_icon.png`} onClick={() => { this.props.history.push('/squad'); }} />
+            <Card raised style={cardstyles} image={`${src}battle_icon.png`} onClick={() => { this.props.history.push('/lobby'); }} />
             <Card raised style={cardstyles} image={`${src}logout_icon.png`} onClick={Link} href="/logout" />
           </Card.Group>
         </Modal.Content>
