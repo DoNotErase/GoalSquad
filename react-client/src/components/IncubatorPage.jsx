@@ -88,12 +88,12 @@ class IncubatorPage extends React.Component {
     const messaging = firebase.messaging();
     const firebase_database = firebase.database();
     const firebase_auth = firebase.auth();
-    let self = this;
     messaging.getToken()
       .then((token) => {
+        console.log('firebase auth', firebase_auth)
         firebase_database.ref('/tokens').push({
             token: token,
-            uid: firebase_auth.currentUser.uid
+            uid: firebase_auth.uid
         });
         // TODO: remove token since shifting to firebase database
         this.props.homePageActions.updatePushNotificationsToTrue(this.props.state.user.id, token);

@@ -56,7 +56,6 @@ export const fetchEggStatus = () => (
 const newSquaddie = squaddie => ({ type: 'NEW_SQUADDIE', payload: squaddie });
 
 export const hatchEgg = (eggID, extraXP) => {
-  console.log('I got this', eggID);
   return (
     dispatch => (
       axios.post('/hatchEgg', { eggID, xp: extraXP })

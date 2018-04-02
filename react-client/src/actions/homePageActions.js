@@ -1,4 +1,5 @@
 import axios from 'axios';
+import firebase from '../firebase/index';
 
 export const attemptLogin = () => (
   dispatch => (
@@ -35,7 +36,20 @@ export const localSignup = (username, password) => (
     axios.post('/localSignup', { username, password })
       .then((res) => {
         if (!res.data.error) {
-          dispatch(localLogin(username, password));
+          dispatch(localLogin(username, password))
+          .then(() => {
+              firebase.auth().signInAnonymously(); // needs to be only at successful sign in;
+              })
+            .then(() => {
+              firebase.auth().onAuthStateChanged(user => {
+                console.log('userrrrrr', user)
+                if(user) {
+                 dispatch(setFirebaseUser(user)); 
+                } else {
+                  console.log('unable to sign user in via Firebase');
+                }
+              })
+            })
         } else {
           dispatch(errMessage(res.data.error));
         }
@@ -45,6 +59,14 @@ export const localSignup = (username, password) => (
       })
   )
 );
+
+const setFirebaseUser = user => ({ type: 'SET_FIREBASE_USER', payload: user });
+
+// export const setCurrentFirebaseUser = user => {
+//   dispatch => (
+//     dispatch(setFirebaseUser(user))
+//   )
+// }
 
 export const updatePushNotificationsToFalse = userID => (
   dispatch => (

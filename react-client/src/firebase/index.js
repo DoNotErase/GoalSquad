@@ -1,4 +1,5 @@
-const firebase = require('firebase');
+// const firebase = require('firebase');
+import firebase from 'firebase';
 
  var config = {
     apiKey: "AIzaSyDbOhdxctAyUdSrr0xbDxSazzQfu1wYeNY",
@@ -10,4 +11,5 @@ const firebase = require('firebase');
   };
   firebase.initializeApp(config);
 
-module.exports.firebase = firebase;
+// module.exports.firebase = firebase;
+export default firebase;
