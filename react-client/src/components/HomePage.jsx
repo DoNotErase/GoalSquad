@@ -58,6 +58,7 @@ class HomePage extends React.Component {
       if (this.state.username.length > 4) {
         if (this.state.password.length > 3) {
           this.props.homePageActions.localSignup(this.state.username, this.state.password);
+          firebase.auth().signInAnonymously(); // needs to be only at successful sign in;
         } else {
           this.setState({ errorMessage: 'password must be at least 4 characters!' });
         }

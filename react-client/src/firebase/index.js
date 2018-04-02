@@ -1,4 +1,4 @@
- import firebase from 'firebase';
+const firebase = require('firebase');
 
  var config = {
     apiKey: "AIzaSyDbOhdxctAyUdSrr0xbDxSazzQfu1wYeNY",
@@ -9,5 +9,5 @@
     messagingSenderId: "177647825623"
   };
   firebase.initializeApp(config);
-  
-  export default firebase;
+
+module.exports.firebase = firebase;

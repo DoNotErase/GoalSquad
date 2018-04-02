@@ -1,0 +1,11 @@
+{
+  "rules": {
+    "tokens": {
+      ".indexOn": ["uid", "token"],
+      // ".read": "auth != null",
+      ".read": true,
+      // ".write": "auth != null",
+      ".write": true,
+    }
+  }
+}

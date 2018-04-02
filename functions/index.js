@@ -16,7 +16,7 @@ exports.sendNotifications = async () => {
 	}
 
 	// create empty array to store tokens from database call below
-	var tokens = [];
+	// var tokens = [];
 	// make db call to get all people with notification token
 	var tokens  = await db.getUserNotificationTokens()
 

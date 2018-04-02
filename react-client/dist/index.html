@@ -26,6 +26,7 @@ var config = {
 firebase.initializeApp(config);
 
 var messaging = firebase.messaging();
+
 messaging.onTokenRefresh(function () {
   messaging.getToken().then(function (refreshedToken) {
         console.log('Token refreshed.');
@@ -39,6 +40,10 @@ messaging.onTokenRefresh(function () {
         console.log('Unable to retrieve refreshed token ', err);
         showToken('Unable to retrieve refreshed token ', err);
     });
+});
+
+firebase.auth().onAuthStateChanged(firebaseUser => {
+  console.log('firebase user', firebaseUser);
 });
 </script>
   <!-- END OF FIREBASE SCRIPT -->

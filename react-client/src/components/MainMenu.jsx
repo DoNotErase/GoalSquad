@@ -31,6 +31,11 @@ class MainMenu extends React.Component {
   show() { this.setState({ open: true }); }
   close() { this.setState({ open: false }); }
 
+  signOutProcess() {
+    firebase.auth().signOut();
+    Link
+  }
+
   render() {
     const { open } = this.state;
     return (
@@ -61,7 +66,7 @@ class MainMenu extends React.Component {
             <Card raised style={cardstyles} image={`${src}deets_icon.png`} onClick={() => { this.props.history.push('/deets'); }} />
             <Card raised style={cardstyles} image={`${src}squad_icon.png`} onClick={() => { this.props.history.push('/squad'); }} />
             <Card raised style={cardstyles} image={`${src}battle_icon.png`} onClick={() => { this.props.history.push('/lobby'); }} />
-            <Card raised style={cardstyles} image={`${src}logout_icon.png`} onClick={Link} href="/logout" />
+            <Card raised style={cardstyles} image={`${src}logout_icon.png`} onClick={ this.signOutProcess() } href="/logout" />
           </Card.Group>
         </Modal.Content>
         <Modal.Actions
