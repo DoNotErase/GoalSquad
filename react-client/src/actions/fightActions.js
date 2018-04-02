@@ -1,8 +1,6 @@
 import axios from "axios/index";
 
 export const setLobbyInfo = ((roomInfo, player) => {
-  console.log('roominfo', roomInfo);
-  console.log('player', player);
   return (dispatch) => {
     dispatch({
       type: 'GET_LOBBY_INFO',
@@ -55,7 +53,6 @@ export const setPlayerNumber = ((playernumber) => {
 // });
 
 export const setMonsterFighter = ((player, squaddie) => {
-  console.log('squaddie', squaddie);
   return (dispatch) => {
     dispatch({
       type: 'CHOOSE_FIGHTER',
@@ -63,13 +60,14 @@ export const setMonsterFighter = ((player, squaddie) => {
         player,
         monster: squaddie,
         monsterCurrentHP: squaddie.user_monster_hp,
+        monsterAttack: squaddie.user_monster_attack,
+        monsterDefense: squaddie.user_monster_defense,
       },
     });
   };
 });
 
 export const decreaseHealth = ((damage, user_monster_id) => {
-  console.log('user_monster_id', user_monster_id);
   return (dispatch) => {
     dispatch({
       type: 'DECREASE_HEALTH',
@@ -81,6 +79,7 @@ export const decreaseHealth = ((damage, user_monster_id) => {
   };
 });
 
+// Not used
 export const setActivePlayer = ((playernumber) => {
   return (dispatch) => {
     dispatch({
@@ -92,3 +91,22 @@ export const setActivePlayer = ((playernumber) => {
   };
 });
 
+export const resetState = (() => {
+  return (dispatch) => {
+    dispatch({
+      type: 'RESET_STATE',
+    });
+  };
+});
+
+
+export const surrendered = ((surrenderPlayer) => {
+  return (dispatch) => {
+    dispatch({
+      type: 'SURRENDER',
+      payload: {
+        surrenderPlayer,
+      },
+    });
+  };
+});
