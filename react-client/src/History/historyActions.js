@@ -24,7 +24,6 @@ export const fetch = () => (
   dispatch => (
     axios.get('/historicGoals')
       .then((res) => {
-        console.log(res.data);
         dispatch(setHistory(res.data));
         dispatch(filter(''));
         dispatch(sort(''));

@@ -211,7 +211,7 @@ module.exports.createCustomGoal = async (goalObj) => {
     }
 
     const updateUserCustomTimers = 'UPDATE user SET custom_goal_timer_1 = custom_goal_timer_2, ' +
-      `custom_goal_timer_2 = '${goalObj.createTime}' WHERE user_id = '${userID}'`;
+      `custom_goal_timer_2 = (utc_timestamp()) WHERE user_id = '${userID}'`;
 
     await Promise.all([
       db.queryAsync(attachUser),

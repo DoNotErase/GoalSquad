@@ -47,6 +47,17 @@ const GoalHistoryModal = (props) => {
     );
   };
 
+  const canRepeat = () => {
+    if (goal.goal_difficulty === 'custom') {
+      if (moment().diff(moment(props.user.custom_goal_timer_1), 'days') < 1) {
+        return true;
+      }
+    } else if (props.userGoals[goal.goal_activity].length >= 2) {
+      return true;
+    }
+    return false;
+  };
+
   const createRepeatGoal = () => {
     const deadline = {
       days: deadlineDays(),
@@ -83,6 +94,7 @@ const GoalHistoryModal = (props) => {
         </Button>
         <Button
           positive
+          disabled={canRepeat()}
           icon="checkmark"
           labelPosition="right"
           content="Do it again!"
@@ -107,12 +119,19 @@ GoalHistoryModal.propTypes = {
     user_goal_start_date: PropTypes.string,
   }).isRequired,
   goalsActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  user: PropTypes.shape({
+    custom_goal_timer_1: PropTypes.string,
+  }).isRequired,
+  userGoals: PropTypes.objectOf(PropTypes.array).isRequired,
   close: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => (
-  { state: state.main }
+  {
+    user: state.main.user,
+    userGoals: state.incubator.userGoals,
+  }
 );
 
 const mapDispatchToProps = dispatch => (

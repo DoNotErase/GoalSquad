@@ -13,7 +13,6 @@ class CustomGoal extends React.Component {
 
     const lastCustom = moment(this.props.userState.user.custom_goal_timer_1);
     const now = moment();
-
     let available = true;
 
     if (now.diff(lastCustom, 'days') === 0) {
