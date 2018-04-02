@@ -142,6 +142,7 @@ class DeetsPage extends React.Component {
                       </Segment>
                     );
                   }
+                  return (<div key={activity} />);
                 })}
               </Segment.Group>
             </Scrollbars>

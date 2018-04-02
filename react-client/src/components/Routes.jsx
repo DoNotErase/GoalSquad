@@ -13,6 +13,7 @@ import DeetsPage from './DeetsPage';
 import SquadPage from './SquadPage';
 import BattleLobbyPage from './BattleLobbyPage';
 import BattlePage from './BattlePage';
+import HistoryPage from './HistoryPage';
 
 const Routes = () => (
   <Router history={browserHistory}>
@@ -26,6 +27,7 @@ const Routes = () => (
       <Route path="/goals" component={GoalsPage} />
       <Route path="/lobby" component={BattleLobbyPage} />
       <Route path="/battle" component={BattlePage} />
+      <Route path="/history" component={HistoryPage} />
     </TransitionSwitch>
   </Router>
 );

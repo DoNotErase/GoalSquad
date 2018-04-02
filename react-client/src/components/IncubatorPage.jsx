@@ -19,7 +19,6 @@ class IncubatorPage extends React.Component {
       count: 3,
       firstTime: true,
       glowingEgg: false,
-      newSquaddie: false,
     };
     this.subtractFromCount = this.subtractFromCount.bind(this);
     this.getGoals = this.getGoals.bind(this);
@@ -77,7 +76,7 @@ class IncubatorPage extends React.Component {
 
   subtractFromCount() {
     if (this.state.count === 0) {
-      this.setState({ count: 3, firstTime: true, newSquaddie: true });
+      this.setState({ count: 3, firstTime: true });
       // setTimeout(() => {
       //   this.props.incubatorActions.fetchEggStatus()
       // }, 2000);
@@ -114,7 +113,7 @@ class IncubatorPage extends React.Component {
       this.props.incubatorState.egg.egg_xp >= 100
         ?
           <Modal
-            trigger={<a><Image className={this.glowingEggActivated()} src="./assets/icons/egg_stage_1.png" /></a>}
+            trigger={<Image className={this.glowingEggActivated()} src="./assets/icons/egg_stage_1.png" />}
           >
             <Modal.Content style={{ background: 'transparent' }}>
               <Card centered>
@@ -184,6 +183,7 @@ IncubatorPage.propTypes = {
   incubatorState: PropTypes.shape({
     userGoals: PropTypes.object,
     needsUpdate: PropTypes.bool,
+    isLoading: PropTypes.bool,
     egg: PropTypes.object,
   }).isRequired,
   yardState: PropTypes.shape({

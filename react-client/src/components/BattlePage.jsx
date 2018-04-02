@@ -10,7 +10,7 @@ class BattlePage extends React.Component {
     super(props);
     this.state = {
     };
-    console.log(this.props);
+    console.log('battlepage props', this.props);
   }
   componentDidMount() {
 
@@ -19,6 +19,7 @@ class BattlePage extends React.Component {
   render() {
     // monsters show up on different parts if you are player 1 or player 2
     if (this.props.playeriam === 'player1') {
+      // TODO clean this up so it is DRY
       return (
         <div className="battlepage">
           <Grid centered stretched>
@@ -32,7 +33,11 @@ class BattlePage extends React.Component {
               <BattleInterfaceBottom
                 monster={this.props.monster1}
                 currentHP={this.props.monster1CurrentHP}
+                attackStat={this.props.monster1Attack}
+                enemyDefenseStat={this.props.monster2Defense}
                 attack={this.props.attack}
+                surrender={this.props.surrender}
+                surrenderPlayer={this.props.surrenderPlayer}
               />
             </Grid.Column>
           </Grid>
@@ -53,7 +58,11 @@ class BattlePage extends React.Component {
               <BattleInterfaceBottom
                 monster={this.props.monster2}
                 currentHP={this.props.monster2CurrentHP}
+                attackStat={this.props.monster2Attack}
+                enemyDefenseStat={this.props.monster1Defense}
                 attack={this.props.attack}
+                surrender={this.props.surrender}
+                surrenderPlayer={this.props.surrenderPlayer}
               />
             </Grid.Column>
           </Grid>
