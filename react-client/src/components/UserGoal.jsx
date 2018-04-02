@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, Statistic, Grid, Button } from 'semantic-ui-react';
+import { Header, Statistic, Grid, Button, Icon } from 'semantic-ui-react';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -99,15 +99,18 @@ class UserGoal extends React.Component {
     return (
       <div>
         <Grid onClick={this.open}>
-          <Grid.Row columns={2}>
-            <Grid.Column >
+          <Grid.Row columns={3}>
+            <Grid.Column width={9}>
               <Header as="h4">{goal.goal_name}</Header>
               {/* generate time until expiration or '' if no deadline */}
               {this.makeDeadLineMessage()}
             </Grid.Column>
-            <Grid.Column>
+            <Grid.Column width={5}>
               {/* show amount of activity left or button to close out old goal */}
               {this.goalStatus()}
+            </Grid.Column>
+            <Grid.Column width={2} floated="right" verticalAlign="middle">
+              <Icon name="chevron right" fitted />
             </Grid.Column>
           </Grid.Row>
         </Grid>
