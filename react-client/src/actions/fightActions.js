@@ -60,6 +60,8 @@ export const setMonsterFighter = ((player, squaddie) => {
         player,
         monster: squaddie,
         monsterCurrentHP: squaddie.user_monster_hp,
+        monsterAttack: squaddie.user_monster_attack,
+        monsterDefense: squaddie.user_monster_defense,
       },
     });
   };
@@ -77,6 +79,7 @@ export const decreaseHealth = ((damage, user_monster_id) => {
   };
 });
 
+// Not used
 export const setActivePlayer = ((playernumber) => {
   return (dispatch) => {
     dispatch({
@@ -92,6 +95,18 @@ export const resetState = (() => {
   return (dispatch) => {
     dispatch({
       type: 'RESET_STATE',
+    });
+  };
+});
+
+
+export const surrendered = ((surrenderPlayer) => {
+  return (dispatch) => {
+    dispatch({
+      type: 'SURRENDER',
+      payload: {
+        surrenderPlayer,
+      },
     });
   };
 });

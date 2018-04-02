@@ -31,6 +31,7 @@ class Lobby extends React.Component {
     };
     this.chooseFighter = this.chooseFighter.bind(this);
     this.attack = this.attack.bind(this);
+    this.surrender = this.surrender.bind(this);
     const { fightState } = this.props;
 
     socket = socketIOClient('http://localhost:8081');
@@ -51,6 +52,8 @@ class Lobby extends React.Component {
     });
     socket.on('surrender', ({ surrenderPlayer }) => {
       // use to display that you either won or lost because someone surrendered
+      console.log('surrenderPlayer', surrenderPlayer)
+      this.props.fightActions.surrendered(surrenderPlayer);
     });
   }
 
@@ -82,14 +85,14 @@ class Lobby extends React.Component {
       console.log('data', data);
     });
   }
-  attack(roomname, damage, user_monster_id) {
-    console.log('clicked');
-    socket.emit('attack', roomname, damage, user_monster_id, (data) => {
+  attack(roomname, damage, defense, user_monster_id) {
+    socket.emit('attack', roomname, damage, defense, user_monster_id, (data) => {
       console.log('data', data);
     });
   }
 
   surrender(roomname, playeriam) {
+    console.log('clicked');
     socket.emit('surrender', roomname, playeriam, (data) => {
       console.log('data', data);
     });
@@ -119,6 +122,8 @@ class Lobby extends React.Component {
             monster1CurrentHP={fightState.monster1CurrentHP}
             monster2CurrentHP={fightState.monster2CurrentHP}
             attack={this.attack}
+            surrender={this.surrender}
+            surrenderPlayer={fightState.surrenderPlayer}
           />
         </div>
       );

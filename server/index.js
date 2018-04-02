@@ -502,8 +502,9 @@ io.on('connection', (socket) => {
     io.in(roomname).emit('fighter chosen', { player, squaddie });
   });
 
-  socket.on('attack', (roomname, damage, user_monster_id) => {
-    io.in(roomname).emit('attack', { damage, user_monster_id });
+  socket.on('attack', (roomname, damage, defense, user_monster_id) => {
+    let totalDamage = damage + 3 - defense; // change formula later
+    io.in(roomname).emit('attack', { damage: totalDamage, user_monster_id });
   });
 
   socket.on('surrender', (roomname, surrenderPlayer) => {

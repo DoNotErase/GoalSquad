@@ -28,12 +28,16 @@ const fightReducer = (state = fightState, action) => {
           ...state,
           monster1: action.payload.monster,
           monster1CurrentHP: action.payload.monsterCurrentHP,
+          monster1Attack: action.payload.monsterAttack,
+          monster1Defense: action.payload.monsterDefense,
         };
       } else {
         return {
           ...state,
           monster2: action.payload.monster,
           monster2CurrentHP: action.payload.monsterCurrentHP,
+          monster2Attack: action.payload.monsterAttack,
+          monster2Defense: action.payload.monsterDefense,
         };
       }
     }
@@ -85,7 +89,13 @@ const fightReducer = (state = fightState, action) => {
     }
     case 'RESET_STATE': {
       return {
-        fightState,
+        ...fightState,
+      };
+    }
+    case 'SURRENDER': {
+      return {
+        ...state,
+        surrenderPlayer: action.payload.surrenderPlayer,
       };
     }
     default: {

@@ -1,19 +1,25 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Segment, Grid, Progress, Image, Button, Header, Confirm, Modal } from 'semantic-ui-react';
+import * as fightActions from '../actions/fightActions';
 
 class BattleInterfaceBottom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       open: false,
-      gameEndOpen: false,
+      // gameEndOpen: this.props.surrenderPlayer ? true : false, // this line doesn't work
     };
     this.show = this.show.bind(this);
     // this.handleConfirm = this.handleConfirm.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
     this.gameEndShow = this.gameEndShow.bind(this);
     this.gameEndClose = this.gameEndClose.bind(this);
+  }
+
+  componentDidMount() {
+    console.log('bottom props', this.props);
   }
 
   gameEndShow(dimmer) {
@@ -23,7 +29,9 @@ class BattleInterfaceBottom extends React.Component {
   // TODO reset store here
   gameEndClose() {
     console.log('gameEndClose');
-    this.setState({ gameEndOpen: false });
+    this.props.fightActions.resetState();
+    //this.setState({ gameEndOpen: false });
+
   }
   show() {
     console.log('show');
@@ -73,7 +81,7 @@ class BattleInterfaceBottom extends React.Component {
                     color="red"
                     content="Attack"
                     style={{ marginBottom: 2 }}
-                    onClick={() => this.props.attack(fightState.roomName, monster.user_monster_attack, monster.user_monster_id)}
+                    onClick={() => this.props.attack(fightState.roomName, this.props.attackStat, this.props.enemyDefenseStat, monster.user_monster_id)}
                   />
                   <Button
                     disabled={fightState.playeriam !== fightState.activePlayer}
@@ -95,18 +103,19 @@ class BattleInterfaceBottom extends React.Component {
                   <Confirm
                     open={this.state.open}
                     onCancel={this.handleCancel}
-                    onConfirm={() => this.gameEndShow(false)}
+                    onConfirm={() => {
+                      // this.gameEndShow(false)
+                      this.props.surrender(fightState.roomName, fightState.playeriam);
+                    }
+                    }
                     confirmButton="Surrender"
                     cancelButton="Stay"
                   />
-                  <Modal dimmer={dimmer} open={gameEndOpen} onClose={this.gameEndClose}>
-                    <Modal.Header>Select a Photo</Modal.Header>
+                  <Modal dimmer={dimmer} open={this.props.surrenderPlayer === 'player1' || this.props.surrenderPlayer === 'player2'} onClose={this.gameEndClose}>
+                    <Modal.Header>{this.props.surrenderPlayer === fightState.playeriam ? 'you have' : 'oppenent has'} surrendered</Modal.Header>
                     <Modal.Content image>
-                      <Image wrapped size="medium" src="/assets/images/avatar/large/rachel.png" />
                       <Modal.Description>
-                        <Header>Default Profile Image</Header>
-                        <p>I have found the following image associated with your e-mail address.</p>
-                        <p>Is it okay to use this photo?</p>
+                        <Header>Click button to start new game!</Header>
                       </Modal.Description>
                     </Modal.Content>
                     <Modal.Actions>
@@ -131,4 +140,11 @@ const mapStateToProps = state => (
   }
 );
 
-export default connect(mapStateToProps, null)(BattleInterfaceBottom);
+const mapDispatchToProps = dispatch => (
+  {
+    fightActions: bindActionCreators(fightActions, dispatch),
+  }
+);
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(BattleInterfaceBottom);
