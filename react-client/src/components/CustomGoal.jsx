@@ -128,10 +128,10 @@ class CustomGoal extends React.Component {
     }
 
     // capitalize activity
-    const activity = `${this.state.activity[0].toUpperCase()}${this.state.activity.slice(1)}`;
+    const activity = `${this.state.activity[0].toUpperCase()}${this.state.activity.slice(1).toLowerCase()}`;
 
     // compose name
-    const goalName = `${activity} ${this.state.amount} ${this.state.units}`;
+    const goalName = `${activity} ${this.state.amount} ${this.state.units.toLowerCase()}`;
 
     if (this.state.noDeadline) {
       this.setState({ open: false, errorMessage: '', noDeadline: false });
