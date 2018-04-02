@@ -3,10 +3,8 @@
 # Logs
 logs
 *.log
-config.js
-.config.js
 GoalSquad1.pem
-
+/config.js
 # Runtime data
 pids
 *.pid
@@ -31,7 +29,6 @@ react-client/dist/bundle.js
 # see https://npmjs.org/doc/faq.html#Should-I-check-my-node_modules-folder-into-git
 node_modules/
 bower_components/
-/config.js
 
 # Floobits
 .floo

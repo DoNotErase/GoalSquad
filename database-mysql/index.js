@@ -5,13 +5,36 @@ const Promise = require('bluebird');
 Promise.promisifyAll(require('mysql/lib/Connection').prototype);
 Promise.promisifyAll(require('mysql/lib/Pool').prototype);
 
-const db = mysql.createConnection({
-  host: config.aws.RDS_HOSTNAME,
-  user: config.aws.RDS_USERNAME,
-  password: config.aws.RDS_PASSWORD,
-  port: config.aws.RDS_PORT,
+// let connection = {
+//   host: 'us-cdbr-iron-east-05.cleardb.net',
+//   user: 'be54768585b3b7',
+//   password: 'a26695fe',
+//   database: 'heroku_29e348a8b9d4b56'
+// };
+
+const connection = {
+  host: process.env.RDS_HOSTNAME,
+  user: process.env.RDS_USERNAME,
+  password: process.env.RDS_PASSWORD,
+  port: process.env.RDS_PORT,
   database: 'goalsquad',
+};
+
+// Used to inject schema (I think) into clearDB
+// mysql -u root -p goalsquad < my_dump_file.sql
+// mysql -h us-iron-cdbr-east.cleardb.com -u be54768585b3b7 -p heroku_29e348a8b9d4b56 < my_dump_file.sql
+
+
+const db = mysql.createPool({ connectionLimit: 5, ...connection });
+
+db.getConnection((err, connection) => {
+  if(err) {
+    console.log('Database connection error', err);
+  } else {
+    console.log('Database is connected!');
+  }
 });
+
 
 const getRightID = async (id) => {
   if (typeof id === 'number') {
