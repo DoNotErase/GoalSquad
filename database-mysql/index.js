@@ -150,22 +150,23 @@ module.exports.getGoalInfo = async (goalID) => {
 module.exports.createUserGoal = async (goalObj) => {
   try {
     const userID = await getRightID(goalObj.userID);
-    const query = 'INSERT INTO user_goal (user_id, goal_id, user_goal_start_value, user_goal_current, ' +
+    let attachUser = '';
+
+    if (goalObj.goalLength) { // include end date
+      attachUser = 'INSERT INTO user_goal (user_id, goal_id, user_goal_start_value, user_goal_current, ' +
+      'user_goal_target, user_goal_points, user_goal_start_date, user_goal_end_date) VALUES ' +
+      `('${userID}', ${goalObj.goalID}, ${goalObj.startValue}, ${goalObj.startValue}, ` +
+      `${goalObj.targetValue}, ${goalObj.points}, (utc_timestamp()), ` +
+      '(SELECT DATE_ADD((SELECT DATE_ADD((utc_timestamp()), ' +
+      `INTERVAL ${goalObj.goalLength.days} DAY)), ` +
+      `INTERVAL ${goalObj.goalLength.hours} HOUR)));`;
+    } else {
+      attachUser = 'INSERT INTO user_goal (user_id, goal_id, user_goal_start_value, user_goal_current, ' +
       'user_goal_target, user_goal_points, user_goal_start_date) VALUES ' +
       `('${userID}', ${goalObj.goalID}, ${goalObj.startValue}, ${goalObj.startValue}, ${goalObj.targetValue}, ${goalObj.points}, (utc_timestamp()));`;
-
-    await db.queryAsync(query);
-    const findGoalID = 'SELECT MAX(user_goal_id) as "goal_id" FROM user_goal';
-    const goalID = await db.queryAsync(findGoalID);
-    if (goalObj.goalLength) {
-      const setEndDate = 'UPDATE user_goal SET user_goal_end_date = ' +
-        '(SELECT DATE_ADD((SELECT DATE_ADD((SELECT MAX(user_goal_start_date)), ' +
-        `INTERVAL ${goalObj.goalLength.days} DAY)), ` +
-        `INTERVAL ${goalObj.goalLength.hours} HOUR)) ` +
-        `WHERE user_goal_id = ${goalID[0].goal_id};`;
-
-      await db.queryAsync(setEndDate);
     }
+    await db.queryAsync(attachUser);
+
     return '';
   } catch (err) {
     console.log(err);
@@ -187,17 +188,28 @@ module.exports.createCustomGoal = async (goalObj) => {
         '"custom", "custom", 20, 5);';
 
       await db.queryAsync(createGoal);
-      goalID = await db.queryAsync('SELECT MAX(user_goal_id) as "goal_id" FROM user_goal');
+      goalID = await db.queryAsync('SELECT MAX(goal_id) as "goal_id" FROM goal');
     }
 
     goalID = goalID[0].goal_id;
 
     const userID = await getRightID(goalObj.userID);
 
-    const attachUser = 'INSERT INTO user_goal (user_id, goal_id, user_goal_start_value, user_goal_current, ' +
-      'user_goal_target, user_goal_points, user_goal_start_date) VALUES ' +
-      `('${userID}', (SELECT MAX(goal_id) as goal_id FROM goal), 0, ` +
-      `0, ${goalObj.goalAmount}, ${goalObj.points}, (utc_timestamp()));`;
+    let attachUser = '';
+
+    if (goalObj.goalLength) {
+      attachUser = 'INSERT INTO user_goal (user_id, goal_id, user_goal_start_value, user_goal_current, ' +
+        'user_goal_target, user_goal_points, user_goal_start_date, user_goal_end_date) VALUES ' +
+        `('${userID}', ${goalID}, 0, 0, ${goalObj.goalAmount}, ${goalObj.points}, (utc_timestamp()), ` +
+        '(SELECT DATE_ADD((SELECT DATE_ADD((utc_timestamp()), ' +
+        `INTERVAL ${goalObj.goalLength.days} DAY)), ` +
+        `INTERVAL ${goalObj.goalLength.hours} HOUR)));`;
+    } else {
+      attachUser = 'INSERT INTO user_goal (user_id, goal_id, user_goal_start_value, user_goal_current, ' +
+        'user_goal_target, user_goal_points, user_goal_start_date) VALUES ' +
+        `('${userID}', ${goalID}, 0, 0, ${goalObj.goalAmount}, ` +
+        `${goalObj.points}, (utc_timestamp()));`;
+    }
 
     const updateUserCustomTimers = 'UPDATE user SET custom_goal_timer_1 = custom_goal_timer_2, ' +
       `custom_goal_timer_2 = '${goalObj.createTime}' WHERE user_id = '${userID}'`;
@@ -219,6 +231,7 @@ module.exports.createCustomGoal = async (goalObj) => {
 
     return '';
   } catch (err) {
+    console.log(err);
     throw new Error('trouble in createUserGoal');
   }
 };

@@ -133,15 +133,15 @@ class CustomGoal extends React.Component {
     // compose name
     const goalName = `${activity} ${this.state.amount} ${this.state.units.toLowerCase()}`;
 
+    const { deadline, units, amount } = this.state;
+
     if (this.state.noDeadline) {
       this.setState({ open: false, errorMessage: '', noDeadline: false });
-      this.props.goalsActions.submitCustomGoal(goalName, this.state.units, this.state.amount, null, 20);
+      this.props.goalsActions.submitCustomGoal(goalName, units, amount, null, 20);
       // local update?
       this.props.history.push('/incubator');
       return;
     }
-
-    const { deadline } = this.state;
 
     if (deadline.hours === '0' || deadline.hours === '' || deadline.hours === ' ') {
       deadline.hours = 0;
@@ -159,8 +159,8 @@ class CustomGoal extends React.Component {
       let points = 20;
       const hours = (deadline.days * 24) + deadline.hours;
       points += parseInt((points / (hours / 5)), 10);
-      this.props.goalsActions.submitCustomGoal(goalName, this.state.units, this.state.amount, deadline, points);
-      // local update?
+      this.props.goalsActions.submitCustomGoal(goalName, units, amount, deadline, points);
+
       this.props.history.push('/incubator');
     }
   }
