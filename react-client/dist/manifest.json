@@ -7,6 +7,7 @@
   "background_color": "#fff",
   "display": "standalone",
   "start_url": "./index.html",
+  "gcm_sender_id": "103953800507", // for firebase push notifications
   "icons": [
     {
       "src": "/assets/icons/icon-72x72.png",
