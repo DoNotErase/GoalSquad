@@ -169,7 +169,6 @@ module.exports.createUserGoal = async (goalObj) => {
 
     return '';
   } catch (err) {
-    console.log(err);
     throw new Error('trouble in createUserGoal');
   }
 };
@@ -231,7 +230,6 @@ module.exports.createCustomGoal = async (goalObj) => {
 
     return '';
   } catch (err) {
-    console.log(err);
     throw new Error('trouble in createUserGoal');
   }
 };
@@ -351,7 +349,6 @@ module.exports.getAllSquaddies = async (id) => {
     });
     return allSquaddies;
   } catch (err) {
-    console.log(err);
     throw new Error('get all squaddies err');
   }
 };
@@ -491,7 +488,6 @@ module.exports.renameSquaddie = async (userMonsterID, newName) => {
   try {
     return await db.queryAsync(`UPDATE user_monster SET user_monster_new_name = '${newName}' WHERE user_monster_id = ${userMonsterID}`);
   } catch (err) {
-    console.log(err);
     throw new Error('error renaming squaddie');
   }
 };

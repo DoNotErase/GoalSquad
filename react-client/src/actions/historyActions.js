@@ -34,3 +34,5 @@ export const fetch = () => (
       })
   )
 );
+
+export const flipSort = () => { console.log('hey'); return { type: 'FLIP' } };

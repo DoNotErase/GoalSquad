@@ -52,6 +52,12 @@ const historyReducer = (state = historyState, action) => {
         sortType: action.payload,
       };
     }
+    case 'FLIP': {
+      return {
+        ...state,
+        sortedGoals: state.sortedGoals.reverse(),
+      };
+    }
     default: {
       return state;
     }
