@@ -27,10 +27,13 @@ class HistoryPage extends React.Component {
             <Grid.Row>
               <Scrollbars autoHide style={{ height: '75vh' }}>
                 <Segment.Group raised>
-                  {this.props.historyState.sortedGoals.map((goal) => {
-                    return (<HistoryGoal goal={goal} key={goal.user_goal_id} history={this.props.history} />);
-                    })
-                  }
+                  {this.props.historyState.sortedGoals.map(goal => (
+                    <HistoryGoal
+                      key={goal.user_goal_id}
+                      goal={goal}
+                      history={this.props.history}
+                    />
+                  ))}
                 </Segment.Group>
               </Scrollbars>
             </Grid.Row>

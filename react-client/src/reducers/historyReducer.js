@@ -46,7 +46,6 @@ const historyReducer = (state = historyState, action) => {
           return 1;
         });
       }
-      console.log(sorted);
       return {
         ...state,
         sortedGoals: sorted,

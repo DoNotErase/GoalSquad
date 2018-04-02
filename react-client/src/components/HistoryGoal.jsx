@@ -27,7 +27,7 @@ class HistoryGoal extends React.Component {
       <Segment
         compact
         clearing
-        color="blue"
+        color={goal.user_goal_success ? 'green' : 'red'}
         onClick={() => this.setState({ open: true })}
       >
         <Grid>

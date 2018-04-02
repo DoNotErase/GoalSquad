@@ -8,6 +8,7 @@ import * as goalsActions from '../actions/createGoalActions';
 
 const GoalHistoryModal = (props) => {
   const { goal, open, close } = props;
+  const unit = goal.goal_name.split(' ').pop();
 
   const deadlineHours = () => (
     moment(goal.user_goal_end_date)
@@ -38,9 +39,10 @@ const GoalHistoryModal = (props) => {
     if (goal.user_goal_success) {
       return (<div />);
     }
+    const completed = `${goal.user_goal_current - goal.user_goal_start_value}`;
     return (
       <Header as="h5">
-        Completed: {goal.user_goal_current - goal.user_goal_start_value}
+        Completed: {completed} / {goal.goal_amount} {unit}
       </Header>
     );
   };
@@ -50,7 +52,6 @@ const GoalHistoryModal = (props) => {
       days: deadlineDays(),
       hours: deadlineHours(),
     };
-    console.log(deadline);
     props.goalsActions.submitUserGoal(goal.goal_id, deadline, goal.user_goal_points);
   };
 

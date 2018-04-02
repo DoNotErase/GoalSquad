@@ -13,10 +13,10 @@ class UserGoal extends React.Component {
 
     this.state = {
       open: false,
+      activityName: props.goal.goal_name.split(' ').pop(),
     };
 
     this.makeDeadLineMessage = this.makeDeadLineMessage.bind(this);
-    this.activityName = this.activityName.bind(this);
     this.goalStatus = this.goalStatus.bind(this);
     this.close = this.close.bind(this);
     this.open = this.open.bind(this);
@@ -38,19 +38,6 @@ class UserGoal extends React.Component {
       return `${deadline.diff(now, 'minutes') + 1} minutes left!`;
     }
     return '';
-  }
-
-  activityName() {
-    switch (this.props.goal.goal_activity) {
-      case 'distance':
-        return 'Miles';
-      case 'floors':
-        return 'Flights';
-      case 'steps':
-        return 'Steps';
-      default:
-        return this.props.goal.goal_activity;
-    }
   }
 
   goalStatus() {
@@ -87,7 +74,7 @@ class UserGoal extends React.Component {
         <Statistic.Value>
           {goal.user_goal_target - goal.user_goal_current}
           <br />
-          {this.activityName()}
+          {this.state.activityName}
         </Statistic.Value>
         <Statistic.Label>
           to go!
