@@ -23,18 +23,6 @@ const buttonstylebottom = {
   borderRadius: '2rem',
 }
 
-const buttonstyletop = {
-  backgroundImage: 'linear-gradient(to right, #d95a37, #df663e, #e67146, #ec7d4e, #f28857)',
-  marginTop: 150,
-  borderRadius: '2rem',
-};
-
-const buttonstylebottom = {
-  backgroundImage: 'linear-gradient(to right, #d95a37, #df663e, #e67146, #ec7d4e, #f28857)',
-  marginTop: 30,
-  borderRadius: '2rem',
-}
-
 class Lobby extends React.Component {
   constructor(props) {
     super(props);
