@@ -56,16 +56,15 @@ export const fetchEggStatus = () => (
 const newSquaddie = squaddie => ({ type: 'NEW_SQUADDIE', payload: squaddie });
 
 export const hatchEgg = (eggID, extraXP) => (
-    dispatch => (
-      axios.post('/hatchEgg', { eggID, xp: extraXP })
-        .then((res) => {
-          dispatch(newSquaddie(res.data));
-          dispatch({ type: 'SQUADDIE_UPDATE' });
-        })
-        .catch((err) => { handleErr(err); })
-    )
-  );
-};
+  dispatch => (
+    axios.post('/hatchEgg', { eggID, xp: extraXP })
+      .then((res) => {
+        dispatch(newSquaddie(res.data));
+        dispatch({ type: 'SQUADDIE_UPDATE' });
+      })
+      .catch((err) => { handleErr(err); })
+  )
+);
 
 export const markGoalSuccess = userGoalID => (
   dispatch => (

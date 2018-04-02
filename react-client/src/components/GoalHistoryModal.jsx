@@ -41,7 +41,7 @@ const GoalHistoryModal = (props) => {
     }
     const completed = `${goal.user_goal_current - goal.user_goal_start_value}`;
     return (
-      <Header as="h5">
+      <Header as="h5" floated="right" style={{ marginLeft: '20px' }}>
         Completed: {completed} / {goal.goal_amount} {unit}
       </Header>
     );
