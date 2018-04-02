@@ -61,7 +61,7 @@ class PickFighter extends React.Component {
                 <Button
                   size="mini"
                   style={{ marginLeft: '5px' }}
-                  onClick={() => { this.props.chooseFighter(fightstate.user.roomName, fightstate.user.iam, squaddie); }}
+                  onClick={() => { this.props.chooseFighter(fightstate.roomName, fightstate.playeriam, squaddie); }}
                 >
                   pick this monster
                 </Button>

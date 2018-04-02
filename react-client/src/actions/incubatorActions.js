@@ -1,5 +1,8 @@
 import axios from 'axios';
 
+const isLoading = () => ({ type: 'IS_LOADING', payload: true });
+const doneLoading = () => ({ type: 'DONE_LOADING', payload: false });
+
 const handleErr = (err) => {
   if (err.response && err.response.status === 401) {
     window.location.href = '/';
@@ -24,13 +27,17 @@ export const setUserGoals = (userGoals) => {
 };
 
 export const getUserGoals = () => (
-  dispatch => (
-    axios.get('/userGoals')
+  (dispatch) => {
+    dispatch(isLoading());
+    return axios.get('/userGoals')
       .then((res) => {
         dispatch(setUserGoals(res.data));
+        dispatch(doneLoading());
       })
-      .catch((err) => { handleErr(err); })
-  )
+      .catch((err) => {
+        handleErr(err);
+      });
+  }
 );
 
 const setEggStatus = eggData => ({ type: 'EGG_DATA', payload: eggData });
@@ -49,15 +56,16 @@ export const fetchEggStatus = () => (
 const newSquaddie = squaddie => ({ type: 'NEW_SQUADDIE', payload: squaddie });
 
 export const hatchEgg = (eggID, extraXP) => (
-  dispatch => (
-    axios.post('/hatchEgg', { eggID, xp: extraXP })
-      .then((res) => {
-        dispatch(newSquaddie(res.data));
-        dispatch({ type: 'SQUADDIE_UPDATE' });
-      })
-      .catch((err) => { handleErr(err); })
-  )
-);
+    dispatch => (
+      axios.post('/hatchEgg', { eggID, xp: extraXP })
+        .then((res) => {
+          dispatch(newSquaddie(res.data));
+          dispatch({ type: 'SQUADDIE_UPDATE' });
+        })
+        .catch((err) => { handleErr(err); })
+    )
+  );
+};
 
 export const markGoalSuccess = userGoalID => (
   dispatch => (

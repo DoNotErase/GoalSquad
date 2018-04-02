@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Grid, Card, Header, Divider, Segment } from 'semantic-ui-react';
+import { Grid, Card, Header, Divider, Segment, Loader } from 'semantic-ui-react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
@@ -19,14 +19,16 @@ class SquadPage extends React.Component {
   render() {
     return (
       <div className="squadpage">
-        <Header as="h1" className="white" textAlign="right">Your Squad</Header>
-        <Divider hidden />
         <Grid centered>
-          <Grid.Column computer={8} mobile={16}>
+          <Grid.Column computer={8} tablet={10} mobile={16}>
+            <Header as="h1" className="white" textAlign="right">Your Squad</Header>
+            <Divider hidden />
             <Scrollbars autoHide style={{ height: '85vh' }}>
-              <Segment compact>
+              <Segment>
                 <Card.Group itemsPerRow={3} centered>
-                  {this.props.squadState.squaddies.map(squaddie => (
+                  {this.props.squadState.isLoading ? <Loader active size="medium" inline="centered" />
+                  :
+                  this.props.squadState.squaddies.map(squaddie => (
                     <SquaddieCard
                       key={squaddie.monster_name}
                       squaddie={squaddie}

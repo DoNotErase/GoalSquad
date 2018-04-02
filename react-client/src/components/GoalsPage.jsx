@@ -67,14 +67,13 @@ class GoalsPage extends React.Component {
 
     return (
       <div className="goalspage">
-        <Header as="h1" className="white" textAlign="right">Add A Goal</Header>
-        <Divider hidden />
         <Grid centered>
-          <Grid.Column computer={8} mobile={16}>
+          <Grid.Column computer={8} tablet={10} mobile={16}>
+            <Header as="h1" className="white" textAlign="right">Add A Goal</Header>
+            <Divider hidden />
             <Scrollbars autoHide style={{ height: '85vh' }}>
               <Header as="h3" className="white" textAlign="center">Available Categories</Header>
               {this.props.goalsState.isLoading ? <Loader active size="medium" inline="centered" /> : listItems }
-              {/* {listItems} */}
               <Header as="h4" className="white" textAlign="center">
                 To free up categories, complete existing goals!
               </Header>
@@ -89,13 +88,13 @@ class GoalsPage extends React.Component {
 }
 
 GoalsPage.propTypes = {
-  incubatorState: PropTypes.objectOf({
+  incubatorState: PropTypes.shape({
+    needsUpdate: PropTypes.bool,
     userGoals: PropTypes.object,
-    isLoading: PropTypes.bool,
   }).isRequired,
   goalsState: PropTypes.shape({
-    standardGoals: PropTypes.object,
     isLoading: PropTypes.bool,
+    standardGoals: PropTypes.object,
   }).isRequired,
   goalsActions: PropTypes.objectOf(PropTypes.func).isRequired,
   history: PropTypes.shape({

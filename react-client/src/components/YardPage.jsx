@@ -6,7 +6,6 @@ import { Loader } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import * as actions from '../actions/actions';
 import * as squaddieActions from '../actions/squaddieActions';
-import * as yardActions from '../actions/yardActions';
 import MainMenu from './MainMenu';
 import YardSquaddie from './YardSquaddie';
 
@@ -16,7 +15,6 @@ const background = {
   backgroundImage: 'url(./assets/backgrounds/yard_mobile_background.png)',
   backgroundSize: 'cover',
 };
-
 
 class YardPage extends React.Component {
   componentDidMount() {
@@ -63,7 +61,6 @@ const mapDispatchToProps = dispatch => (
   {
     actions: bindActionCreators(actions, dispatch),
     squaddieActions: bindActionCreators(squaddieActions, dispatch),
-    yardActions: bindActionCreators(yardActions, dispatch),
   }
 );
 

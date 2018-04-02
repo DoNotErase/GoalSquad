@@ -58,39 +58,44 @@ class DeetsPage extends React.Component {
     }
     return (
       <div className="deetspage">
-        <Header as="h1" className="white" textAlign="right">Deets</Header>
-        <Divider hidden />
         <Grid centered>
-          <Grid.Column computer={8} mobile={16}>
+          <Grid.Column computer={8} tablet={10} mobile={16}>
+            <Header as="h1" className="white" textAlign="right">Deets</Header>
+            <Divider hidden />
             <Scrollbars autoHide style={{ height: '85vh' }}>
               <Segment.Group raised>
                 <Segment compact>
                   <Header as="h2">{this.props.state.user.user_username}</Header>
-                  <Header as="h4">{deets.user.total.attempted} Lifetime Goals </Header>
+                  <Header as="h4" sub>{deets.user.total.attempted} Lifetime Goals </Header>
                   {this.makeDisconnectButton()}
                 </Segment>
               </Segment.Group>
               <Segment.Group raised>
                 <Segment compact>
                   <Grid centered>
-                    <Grid.Row columns={1}>
-                      <Grid.Column>
-                        <Statistic.Group size="tiny">
-                          <Statistic color="green">
-                            <Statistic.Value>
-                              {percentSuccess(deets.user.total)}%
-                            </Statistic.Value>
-                            <Statistic.Label>OF GOALS</Statistic.Label>
-                            <Statistic.Value>COMPLETE</Statistic.Value>
-                          </Statistic>
-                          <Statistic color="red">
-                            <Statistic.Value>
-                              {percentFailure(deets.user.total)}%
-                            </Statistic.Value>
-                            <Statistic.Label>OF GOALS</Statistic.Label>
-                            <Statistic.Value>FAILED</Statistic.Value>
-                          </Statistic>
-                        </Statistic.Group>
+                    <Grid.Row columns={2} centered textAlign="center">
+                      <Grid.Column width={8}>
+                        <Statistic color="green" size="tiny">
+                          <Statistic.Value>
+                            {percentSuccess(deets.user.total)}%
+                          </Statistic.Value>
+                          <Statistic.Label>OF GOALS</Statistic.Label>
+                          <Statistic.Value>COMPLETE</Statistic.Value>
+                        </Statistic>
+                      </Grid.Column>
+                      <Grid.Column width={8}>
+                        <Statistic
+                          color="red"
+                          size="tiny"
+                          floated="right"
+                          style={{ marginRight: 5 }}
+                        >
+                          <Statistic.Value>
+                            {percentFailure(deets.user.total)}%
+                          </Statistic.Value>
+                          <Statistic.Label>OF GOALS</Statistic.Label>
+                          <Statistic.Value>FAILED</Statistic.Value>
+                        </Statistic>
                       </Grid.Column>
                     </Grid.Row>
                   </Grid>
@@ -99,20 +104,23 @@ class DeetsPage extends React.Component {
                   <Grid centered>
                     <Grid.Row columns={1}>
                       <Grid.Column>
-                        <Statistic.Group size="mini">
-                          <Statistic horizontal>
-                            <Statistic.Value>
-                              {percentSuccess(deets.global.total)}%
-                            </Statistic.Value>
-                            <Statistic.Label>Global<br />Average</Statistic.Label>
-                          </Statistic>
-                          <Statistic horizontal>
-                            <Statistic.Value>
-                              {percentFailure(deets.global.total)}%
-                            </Statistic.Value>
-                            <Statistic.Label>Global<br />Average</Statistic.Label>
-                          </Statistic>
-                        </Statistic.Group>
+                        <Statistic horizontal size="mini">
+                          <Statistic.Value>
+                            {percentSuccess(deets.global.total)}%
+                          </Statistic.Value>
+                          <Statistic.Label>Global<br />Average</Statistic.Label>
+                        </Statistic>
+                        <Statistic
+                          horizontal
+                          floated="right"
+                          size="mini"
+                          style={{ marginRight: 5 }}
+                        >
+                          <Statistic.Value>
+                            {percentFailure(deets.global.total)}%
+                          </Statistic.Value>
+                          <Statistic.Label>Global<br />Average</Statistic.Label>
+                        </Statistic>
                       </Grid.Column>
                     </Grid.Row>
                   </Grid>

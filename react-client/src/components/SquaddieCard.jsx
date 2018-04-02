@@ -1,5 +1,5 @@
 import React from 'react';
-import ModalActions, { Card, Modal, Image, Button, Input } from 'semantic-ui-react';
+import { Card, Modal, Image, Button, Input } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
@@ -18,12 +18,14 @@ class SquaddieCard extends React.Component {
       yardstatus: false,
       rename: false,
       newName: '',
+      alert: false,
     };
     this.show = this.show.bind(this);
     this.close = this.close.bind(this);
     this.closeRename = this.closeRename.bind(this);
     this.saveRename = this.saveRename.bind(this);
   }
+
   toggleSquaddieToYard(monID) {
     this.setState({ yardstatus: !this.state.yardstatus });
     this.props.squaddieActions.toggleYardStatus(monID);
@@ -34,9 +36,10 @@ class SquaddieCard extends React.Component {
     if (this.state.newName) {
       this.props.squaddieActions.changeName(squaddie.user.user_monster_id, this.state.newName);
       squaddie.user.user_monster_new_name = this.state.newName;
+      this.setState({ alert: false });
       this.closeRename();
     } else {
-      alert('please enter a new name for your squaddie!');
+      this.setState({ alert: true });
     }
   }
 
@@ -46,7 +49,7 @@ class SquaddieCard extends React.Component {
 
   render() {
     const {
-      open, dimmer, size, yardstatus, rename,
+      open, dimmer, size, yardstatus, rename, alert,
     } = this.state;
     const { squaddie } = this.props;
     return (
@@ -129,6 +132,7 @@ class SquaddieCard extends React.Component {
               value={this.state.newName}
               onChange={(event) => { this.setState({ newName: event.target.value }); }}
             />
+            {alert ? '  Please enter a new name!' : ''}
           </Modal.Content>
           <Modal.Actions>
             <Button onClick={this.closeRename}> Cancel </Button>
