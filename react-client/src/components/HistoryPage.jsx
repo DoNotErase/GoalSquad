@@ -21,7 +21,7 @@ class HistoryPage extends React.Component {
         <Divider hidden />
         <Grid centered>
           <Grid.Column computer={8} mobile={16}>
-            <Grid.Row>
+            <Grid.Row style={{ marginBottom: '8px' }}>
               <HistorySort />
             </Grid.Row>
             <Grid.Row>

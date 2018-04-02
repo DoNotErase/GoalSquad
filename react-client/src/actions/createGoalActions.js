@@ -36,8 +36,6 @@ export const submitUserGoal = (goalID, deadline, points) => (
       points,
     })
       .then(() => {
-        // keep
-        console.log('yaaaayyyy')
         dispatch(getUserGoals());
       })
       .catch((err) => { handleErr(err); })
@@ -52,7 +50,6 @@ export const submitCustomGoal = (goalName, goalActivity, goalAmount, deadline, p
       goalAmount,
       goalLength: deadline,
       points,
-      createTime: moment().format(),
     })
       .then(() => {
         dispatch(updateCustomTime(moment()));

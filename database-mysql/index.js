@@ -175,12 +175,22 @@ module.exports.createUserGoal = async (goalObj) => {
 
 module.exports.createCustomGoal = async (goalObj) => {
   try {
-    const createGoal = 'INSERT INTO goal (goal_name, goal_activity, ' +
-      'goal_amount, goal_difficulty, goal_class, goal_points, goal_timedivisor) VALUES ' +
-      `('${goalObj.goalName}', '${goalObj.goalActivity}', '${goalObj.goalAmount}', ` +
-      '"custom", "custom", 20, 5);';
+    let goalID;
+    const existing = db.queryAsync(`SELECT goal_id FROM goal WHERE goal_name = '${goalObj.goalName}'`);
 
-    await db.queryAsync(createGoal);
+    if (existing.length) {
+      [goalID] = existing;
+    } else {
+      const createGoal = 'INSERT INTO goal (goal_name, goal_activity, ' +
+        'goal_amount, goal_difficulty, goal_class, goal_points, goal_timedivisor) VALUES ' +
+        `('${goalObj.goalName}', '${goalObj.goalActivity}', '${goalObj.goalAmount}', ` +
+        '"custom", "custom", 20, 5);';
+
+      await db.queryAsync(createGoal);
+      goalID = await db.queryAsync('SELECT MAX(user_goal_id) as "goal_id" FROM user_goal');
+    }
+
+    goalID = goalID[0].goal_id;
 
     const userID = await getRightID(goalObj.userID);
 
@@ -197,13 +207,12 @@ module.exports.createCustomGoal = async (goalObj) => {
       db.queryAsync(updateUserCustomTimers),
     ]);
 
-    const goalID = await db.queryAsync('SELECT MAX(user_goal_id) as "goal_id" FROM user_goal');
     if (goalObj.goalLength) {
       const setEndDate = 'UPDATE user_goal SET user_goal_end_date = ' +
         '(SELECT DATE_ADD((SELECT DATE_ADD((SELECT MAX(user_goal_start_date)), ' +
         `INTERVAL ${goalObj.goalLength.days} DAY)), ` +
         `INTERVAL ${goalObj.goalLength.hours} HOUR)) ` +
-        `WHERE user_goal_id = (${goalID[0].goal_id});`;
+        `WHERE user_goal_id = (${goalID});`;
 
       await db.queryAsync(setEndDate);
     }
