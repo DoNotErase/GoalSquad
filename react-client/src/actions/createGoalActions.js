@@ -24,9 +24,7 @@ export const getDefaultGoals = () => (
         dispatch(setDefault(res.data));
         dispatch(doneLoading());
       })
-      .catch((err) => {
-        handleErr(err);
-      });
+      .catch((err) => { handleErr(err); });
   }
 );
 
@@ -38,7 +36,6 @@ export const submitUserGoal = (goalID, deadline, points) => (
       points,
     })
       .then(() => {
-        // keep
         dispatch(getUserGoals());
       })
       .catch((err) => { handleErr(err); })
@@ -53,7 +50,6 @@ export const submitCustomGoal = (goalName, goalActivity, goalAmount, deadline, p
       goalAmount,
       goalLength: deadline,
       points,
-      createTime: moment().format(),
     })
       .then(() => {
         dispatch(updateCustomTime(moment()));

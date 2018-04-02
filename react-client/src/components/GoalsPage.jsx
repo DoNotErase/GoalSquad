@@ -62,6 +62,7 @@ class GoalsPage extends React.Component {
           </Accordion>
         );
       }
+      return (<div key={category} />);
     });
 
     return (

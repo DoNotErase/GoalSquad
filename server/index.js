@@ -34,7 +34,6 @@ app.use(passport.session({
 
 function isAuthorized(req, res, next) {
   if (!req.session.passport) {
-    console.log('redirect');
     res.status(401).end();
     return;
   }
@@ -51,12 +50,10 @@ passport.use(new LocalStrategy(
   async (username, password, done) => {
     try {
       const user = await db.findByUsername(username);
-      console.log(user);
       if (!user) {
         return done(null, false);
       }
       if (bcrypt.compareSync(password, user.password)) {
-        console.log('yay!');
         return done(null, user);
       }
       return done(null, false);
@@ -219,7 +216,6 @@ app.get('/eggStatus', isAuthorized, async (req, res) => {
   try {
     const userID = req.session.passport.user.id;
     const data = await db.getEggInfo(userID);
-    console.log('Got the egg data!')
     res.status(200).json(data);
   } catch (err) {
     res.status(500).send('err in get Egg info');
@@ -297,7 +293,7 @@ app.get('/getSquaddie', async (req, res) => {
   } catch (err) {
     res.status(500).send(err);
   }
-})
+});
 
 /** *******************GOAL STUFF**************************** */
 
@@ -310,14 +306,6 @@ app.get('/userGoals', isAuthorized, async (req, res) => {
       } catch (err) {
         console.log(err);
         res.status(500).send('err in getActiveUserGoals');
-      }
-    } else if (req.query.type === 'all') {
-      try {
-        const userGoals = await db.getUserGoals(req.session.passport.user.id);
-        res.json(userGoals);
-      } catch (err) {
-        console.log(err);
-        res.status(500).send('err in get userGoals');
       }
     } else {
       res.status(500).send('type of goal not yet recognized!');
@@ -336,6 +324,15 @@ app.get('/defaultGoals', isAuthorized, async (req, res) => {
   }
 });
 
+app.get('/historicGoals', isAuthorized, async (req, res) => {
+  try {
+    const goals = await db.getOldUserGoals(req.session.passport.user.id);
+    res.json(goals);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
 app.post('/createUserGoal', isAuthorized, async (req, res) => {
   // req.body needs: goal_id, deadline existance(deadline(length)), goal points
   const newGoal = {
@@ -345,12 +342,11 @@ app.post('/createUserGoal', isAuthorized, async (req, res) => {
     targetValue: 0,
     goalLength: req.body.goalLength,
     points: req.body.points,
-    start: req.body.startDate,
   };
   try {
     newGoal.userID = req.session.passport.user.id;
     const goalDetails = await db.getGoalInfo(newGoal.goalID);
-    if (typeof newGoal.userID === 'string') {
+    if (typeof newGoal.userID === 'string' && newGoal.goalID < 19) {
       const token = await db.getAccessToken(req.session.passport.user.id);
       let currentLifeTime = await axios.get('https://api.fitbit.com/1/user/-/activities.json', {
         headers: {
@@ -363,10 +359,11 @@ app.post('/createUserGoal', isAuthorized, async (req, res) => {
       newGoal.startValue = 0;
     }
     newGoal.targetValue = newGoal.startValue + goalDetails.goal_amount;
+    console.log(newGoal);
     await db.createUserGoal(newGoal);
     res.end();
   } catch (err) {
-    console.log(err.response.data);
+    console.log(err);
     res.status(500).send('could not create goal');
   }
 });

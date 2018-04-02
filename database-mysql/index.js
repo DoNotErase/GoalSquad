@@ -111,17 +111,17 @@ module.exports.getAccessToken = async (fitbitID) => {
   }
 };
 
-module.exports.getUserGoals = async (id) => {
+module.exports.getOldUserGoals = async (id) => {
   try {
     const userID = await getRightID(id);
     const query = 'SELECT user_goal.*, goal.goal_name, goal.goal_activity, goal.goal_amount, goal.goal_difficulty ' +
       'FROM user_goal INNER JOIN goal ON goal.goal_id = user_goal.goal_id ' +
-      `WHERE user_goal.user_id = '${userID}';`;
+      `WHERE user_goal.user_id = '${userID}' AND user_goal.user_goal_finalized = 1;`;
 
     const goals = await db.queryAsync(query);
     return goals;
   } catch (err) {
-    throw new Error('trouble in getUserGoals');
+    throw new Error('trouble in getOldUserGoals');
   }
 };
 
@@ -149,23 +149,24 @@ module.exports.getGoalInfo = async (goalID) => {
 
 module.exports.createUserGoal = async (goalObj) => {
   try {
-    goalObj.userID = await getRightID(goalObj.userID);
-    const query = 'INSERT INTO user_goal (user_id, goal_id, user_goal_start_value, user_goal_current, ' +
+    const userID = await getRightID(goalObj.userID);
+    let attachUser = '';
+
+    if (goalObj.goalLength) { // include end date
+      attachUser = 'INSERT INTO user_goal (user_id, goal_id, user_goal_start_value, user_goal_current, ' +
+      'user_goal_target, user_goal_points, user_goal_start_date, user_goal_end_date) VALUES ' +
+      `('${userID}', ${goalObj.goalID}, ${goalObj.startValue}, ${goalObj.startValue}, ` +
+      `${goalObj.targetValue}, ${goalObj.points}, (utc_timestamp()), ` +
+      '(SELECT DATE_ADD((SELECT DATE_ADD((utc_timestamp()), ' +
+      `INTERVAL ${goalObj.goalLength.days} DAY)), ` +
+      `INTERVAL ${goalObj.goalLength.hours} HOUR)));`;
+    } else {
+      attachUser = 'INSERT INTO user_goal (user_id, goal_id, user_goal_start_value, user_goal_current, ' +
       'user_goal_target, user_goal_points, user_goal_start_date) VALUES ' +
-      `('${goalObj.userID}', ${goalObj.goalID}, ${goalObj.startValue}, ${goalObj.startValue}, ${goalObj.targetValue}, ${goalObj.points}, (utc_timestamp()));`;
-
-    await db.queryAsync(query);
-    const findGoalID = 'SELECT MAX(user_goal_id) as "goal_id" FROM user_goal';
-    const goalID = await db.queryAsync(findGoalID);
-    if (goalObj.goalLength) {
-      const setEndDate = 'UPDATE user_goal SET user_goal_end_date = ' +
-        '(SELECT DATE_ADD((SELECT DATE_ADD((SELECT MAX(user_goal_start_date)), ' +
-        `INTERVAL ${goalObj.goalLength.days} DAY)), ` +
-        `INTERVAL ${goalObj.goalLength.hours} HOUR)) ` +
-        `WHERE user_goal_id = ${goalID[0].goal_id};`;
-
-      await db.queryAsync(setEndDate);
+      `('${userID}', ${goalObj.goalID}, ${goalObj.startValue}, ${goalObj.startValue}, ${goalObj.targetValue}, ${goalObj.points}, (utc_timestamp()));`;
     }
+    await db.queryAsync(attachUser);
+
     return '';
   } catch (err) {
     throw new Error('trouble in createUserGoal');
@@ -174,35 +175,55 @@ module.exports.createUserGoal = async (goalObj) => {
 
 module.exports.createCustomGoal = async (goalObj) => {
   try {
-    const createGoal = 'INSERT INTO goal (goal_name, goal_activity, ' +
-      'goal_amount, goal_difficulty, goal_class, goal_points, goal_timedivisor) VALUES ' +
-      `('${goalObj.goalName}', '${goalObj.goalActivity}', '${goalObj.goalAmount}', ` +
-      '"custom", "custom", 20, 5);';
+    let goalID;
+    const existing = db.queryAsync(`SELECT goal_id FROM goal WHERE goal_name = '${goalObj.goalName}'`);
 
-    await db.queryAsync(createGoal);
+    if (existing.length) {
+      [goalID] = existing;
+    } else {
+      const createGoal = 'INSERT INTO goal (goal_name, goal_activity, ' +
+        'goal_amount, goal_difficulty, goal_class, goal_points, goal_timedivisor) VALUES ' +
+        `('${goalObj.goalName}', '${goalObj.goalActivity}', '${goalObj.goalAmount}', ` +
+        '"custom", "custom", 20, 5);';
 
-    goalObj.userID = await getRightID(goalObj.userID);
+      await db.queryAsync(createGoal);
+      goalID = await db.queryAsync('SELECT MAX(goal_id) as "goal_id" FROM goal');
+    }
 
-    const attachUser = 'INSERT INTO user_goal (user_id, goal_id, user_goal_start_value, user_goal_current, ' +
-      'user_goal_target, user_goal_points, user_goal_start_date) VALUES ' +
-      `('${goalObj.userID}', (SELECT MAX(goal_id) as goal_id FROM goal), 0, ` +
-      `0, ${goalObj.goalAmount}, ${goalObj.points}, (utc_timestamp()));`;
+    goalID = goalID[0].goal_id;
+
+    const userID = await getRightID(goalObj.userID);
+
+    let attachUser = '';
+
+    if (goalObj.goalLength) {
+      attachUser = 'INSERT INTO user_goal (user_id, goal_id, user_goal_start_value, user_goal_current, ' +
+        'user_goal_target, user_goal_points, user_goal_start_date, user_goal_end_date) VALUES ' +
+        `('${userID}', ${goalID}, 0, 0, ${goalObj.goalAmount}, ${goalObj.points}, (utc_timestamp()), ` +
+        '(SELECT DATE_ADD((SELECT DATE_ADD((utc_timestamp()), ' +
+        `INTERVAL ${goalObj.goalLength.days} DAY)), ` +
+        `INTERVAL ${goalObj.goalLength.hours} HOUR)));`;
+    } else {
+      attachUser = 'INSERT INTO user_goal (user_id, goal_id, user_goal_start_value, user_goal_current, ' +
+        'user_goal_target, user_goal_points, user_goal_start_date) VALUES ' +
+        `('${userID}', ${goalID}, 0, 0, ${goalObj.goalAmount}, ` +
+        `${goalObj.points}, (utc_timestamp()));`;
+    }
 
     const updateUserCustomTimers = 'UPDATE user SET custom_goal_timer_1 = custom_goal_timer_2, ' +
-      `custom_goal_timer_2 = '${goalObj.createTime}' WHERE user_id = '${goalObj.userID}'`;
+      `custom_goal_timer_2 = '${goalObj.createTime}' WHERE user_id = '${userID}'`;
 
     await Promise.all([
       db.queryAsync(attachUser),
       db.queryAsync(updateUserCustomTimers),
     ]);
 
-    const goalID = await db.queryAsync('SELECT MAX(user_goal_id) as "goal_id" FROM user_goal');
     if (goalObj.goalLength) {
       const setEndDate = 'UPDATE user_goal SET user_goal_end_date = ' +
         '(SELECT DATE_ADD((SELECT DATE_ADD((SELECT MAX(user_goal_start_date)), ' +
         `INTERVAL ${goalObj.goalLength.days} DAY)), ` +
         `INTERVAL ${goalObj.goalLength.hours} HOUR)) ` +
-        `WHERE user_goal_id = (${goalID[0].goal_id});`;
+        `WHERE user_goal_id = (${goalID});`;
 
       await db.queryAsync(setEndDate);
     }
@@ -328,7 +349,6 @@ module.exports.getAllSquaddies = async (id) => {
     });
     return allSquaddies;
   } catch (err) {
-    console.log(err);
     throw new Error('get all squaddies err');
   }
 };
@@ -468,14 +488,12 @@ module.exports.renameSquaddie = async (userMonsterID, newName) => {
   try {
     return await db.queryAsync(`UPDATE user_monster SET user_monster_new_name = '${newName}' WHERE user_monster_id = ${userMonsterID}`);
   } catch (err) {
-    console.log(err);
     throw new Error('error renaming squaddie');
   }
 };
 
 module.exports.saveSquaddiePosition = async (userMonsterPosition) => {
   try {
-    console.log(userMonsterPosition);
     return await db.queryAsync(`UPDATE user_monster SET user_monster_xcoord = ${userMonsterPosition.x}, user_monster_ycoord = ${userMonsterPosition.y} WHERE user_monster_id = ${userMonsterPosition.id}`);
   } catch (err) {
     throw new Error('Error saving Squaddie position');

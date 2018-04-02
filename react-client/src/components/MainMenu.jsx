@@ -61,6 +61,7 @@ class MainMenu extends React.Component {
             <Card raised style={cardstyles} image={`${src}deets_icon.png`} onClick={() => { this.props.history.push('/deets'); }} />
             <Card raised style={cardstyles} image={`${src}squad_icon.png`} onClick={() => { this.props.history.push('/squad'); }} />
             <Card raised style={cardstyles} image={`${src}battle_icon.png`} onClick={() => { this.props.history.push('/lobby'); }} />
+            <Card raised style={cardstyles} image={`${src}history_icon.png`} onClick={() => { this.props.history.push('/history'); }} />
             <Card raised style={cardstyles} image={`${src}logout_icon.png`} onClick={Link} href="/logout" />
           </Card.Group>
         </Modal.Content>
@@ -87,17 +88,7 @@ class MainMenu extends React.Component {
 
 MainMenu.propTypes = {
   history: PropTypes.shape({
-    action: PropTypes.string,
-    block: PropTypes.func,
-    createHref: PropTypes.func,
-    go: PropTypes.func,
-    goBack: PropTypes.func,
-    goForward: PropTypes.func,
-    length: PropTypes.number,
-    listen: PropTypes.func,
-    location: PropTypes.object,
     push: PropTypes.func,
-    replace: PropTypes.func,
   }).isRequired,
 };
 
