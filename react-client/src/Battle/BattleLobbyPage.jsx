@@ -131,11 +131,15 @@ class Lobby extends React.Component {
     // host or join a game
     return (
       <div className="lobbypage">
-        <Grid centered>
+        <Grid
+          centered
+          textAlign="center"
+          verticalAlign="middle"
+        >
           <Grid.Column computer={8} tablet={10} mobile={16}>
             <Header as="h1" className="white" textAlign="right">Lobby</Header>
             <Divider hidden />
-            <Grid.Column width={12}>
+            <Grid.Column style={{ maxWidth: 450 }}>
               <Button
                 onClick={() => this.hostGame()}
                 fluid
