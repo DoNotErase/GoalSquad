@@ -120,7 +120,24 @@ class BattleInterfaceBottom extends React.Component {
                     </Modal.Content>
                     <Modal.Actions>
                       <Button color="black" onClick={() => this.gameEndClose()}>
-                        Nope
+                        New Game
+                      </Button>
+                    </Modal.Actions>
+                  </Modal>
+                  <Modal dimmer={dimmer} open={fightState.monster1CurrentHP <= 0 || fightState.monster2CurrentHP <= 0} onClose={this.gameEndClose}>
+                    <Modal.Header>{
+                    fightState.playeriam === 'player1' ?
+                      (fightState.monster1CurrentHP <= 0 ? 'You have lost' : 'You have won') :
+                      (fightState.monster1CurrentHP <= 0 ? 'You have won' : 'You have lost')
+                    }</Modal.Header>
+                    <Modal.Content image>
+                      <Modal.Description>
+                        <Header>Click button to start new game!</Header>
+                      </Modal.Description>
+                    </Modal.Content>
+                    <Modal.Actions>
+                      <Button color="black" onClick={() => this.gameEndClose()}>
+                        New Game
                       </Button>
                     </Modal.Actions>
                   </Modal>
