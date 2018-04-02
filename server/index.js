@@ -13,7 +13,7 @@ const generateName = require('sillyname');
 
 const app = express();
 // http for streaming and .server for event listeners
-const server = require('http').Server(app);
+const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
 const db = require('../database-mysql/index.js');
@@ -449,9 +449,9 @@ app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '../react-client/dist', '/index.html'));
 });
 
-app.listen(8080, () => {
-  console.log('listening on port 8080!');
-});
+// app.listen(8080, () => {
+//   console.log('listening on port 8080!');
+// });
 
 /* *********************** socket io stuff ********************************** */
 const connections = [];
@@ -472,6 +472,7 @@ io.on('connection', (socket) => {
   // user hosts game - connect to room random room and add room to list of rooms
 
   socket.on('host', (username) => {
+    console.log('rooms', rooms);
     const roomName = generateName();
     socket.join(roomName);
     const roomObj = {
@@ -483,6 +484,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('join', (username) => {
+    console.log('rooms', rooms);
     for (let i = 0; i < rooms.length; i += 1) {
       let room = rooms[i].roomName;
       if (io.sockets.adapter.rooms[room].length < 2) {
@@ -491,8 +493,9 @@ io.on('connection', (socket) => {
         io.in(room).emit('joining', rooms[i]);
         i = rooms.length; // ends loop
       }
-      // TODO add situation where no hosts are found
     }
+    // TODO add situation where no hosts are found
+
   });
 
   socket.on('fighter picked', (roomname, player, squaddie) => {
@@ -509,4 +512,6 @@ io.on('connection', (socket) => {
   });
 });
 
-io.listen(8081);
+server.listen(8080, () => {
+  console.log('listening on port 8080!');
+});

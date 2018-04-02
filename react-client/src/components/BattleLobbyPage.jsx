@@ -27,14 +27,14 @@ class Lobby extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      endpoint: 'http://localhost:8081', // change to reducer later
+      endpoint: 'http://localhost:8080', // change to reducer later
     };
     this.chooseFighter = this.chooseFighter.bind(this);
     this.attack = this.attack.bind(this);
     this.surrender = this.surrender.bind(this);
     const { fightState } = this.props;
 
-    socket = socketIOClient('http://localhost:8081');
+    socket = socketIOClient('http://localhost:8080');
     // only has roomname and player1
     socket.on('hosting', (roomInfo) => {
       this.props.fightActions.setLobbyInfo(roomInfo, this.state.playeriam);
