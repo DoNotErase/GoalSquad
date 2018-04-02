@@ -293,7 +293,7 @@ app.get('/getSquaddie', async (req, res) => {
   } catch (err) {
     res.status(500).send(err);
   }
-})
+});
 
 /** *******************GOAL STUFF**************************** */
 

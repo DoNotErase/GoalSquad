@@ -149,10 +149,10 @@ module.exports.getGoalInfo = async (goalID) => {
 
 module.exports.createUserGoal = async (goalObj) => {
   try {
-    goalObj.userID = await getRightID(goalObj.userID);
+    const userID = await getRightID(goalObj.userID);
     const query = 'INSERT INTO user_goal (user_id, goal_id, user_goal_start_value, user_goal_current, ' +
       'user_goal_target, user_goal_points, user_goal_start_date) VALUES ' +
-      `('${goalObj.userID}', ${goalObj.goalID}, ${goalObj.startValue}, ${goalObj.startValue}, ${goalObj.targetValue}, ${goalObj.points}, (utc_timestamp()));`;
+      `('${userID}', ${goalObj.goalID}, ${goalObj.startValue}, ${goalObj.startValue}, ${goalObj.targetValue}, ${goalObj.points}, (utc_timestamp()));`;
 
     await db.queryAsync(query);
     const findGoalID = 'SELECT MAX(user_goal_id) as "goal_id" FROM user_goal';
@@ -182,15 +182,15 @@ module.exports.createCustomGoal = async (goalObj) => {
 
     await db.queryAsync(createGoal);
 
-    goalObj.userID = await getRightID(goalObj.userID);
+    const userID = await getRightID(goalObj.userID);
 
     const attachUser = 'INSERT INTO user_goal (user_id, goal_id, user_goal_start_value, user_goal_current, ' +
       'user_goal_target, user_goal_points, user_goal_start_date) VALUES ' +
-      `('${goalObj.userID}', (SELECT MAX(goal_id) as goal_id FROM goal), 0, ` +
+      `('${userID}', (SELECT MAX(goal_id) as goal_id FROM goal), 0, ` +
       `0, ${goalObj.goalAmount}, ${goalObj.points}, (utc_timestamp()));`;
 
     const updateUserCustomTimers = 'UPDATE user SET custom_goal_timer_1 = custom_goal_timer_2, ' +
-      `custom_goal_timer_2 = '${goalObj.createTime}' WHERE user_id = '${goalObj.userID}'`;
+      `custom_goal_timer_2 = '${goalObj.createTime}' WHERE user_id = '${userID}'`;
 
     await Promise.all([
       db.queryAsync(attachUser),

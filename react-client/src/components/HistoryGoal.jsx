@@ -63,7 +63,9 @@ HistoryGoal.propTypes = {
     user_goal_points: PropTypes.number,
     goal_name: PropTypes.string,
   }).isRequired,
-  history: PropTypes.object.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
 };
 
 const mapStateToProps = state => ({

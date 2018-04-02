@@ -46,7 +46,6 @@ const GoalHistoryModal = (props) => {
   };
 
   const createRepeatGoal = () => {
-    
     const deadline = {
       days: deadlineDays(),
       hours: deadlineHours(),
