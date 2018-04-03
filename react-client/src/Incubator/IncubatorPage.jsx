@@ -10,18 +10,20 @@ import MainMenu from '../MainMenu';
 import * as homePageActions from '../HomePageDeets/homePageActions';
 import * as incubatorActions from './incubatorActions';
 import * as squaddieActions from '../SquaddieYard/squaddieActions';
-import * as yardActions from '../SquaddieYard/yardActions';
 
 class IncubatorPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       count: 3,
-      firstTime: true,
-      glowingEgg: false,
+      open: false,
+      dimmer: false,
     };
     this.subtractFromCount = this.subtractFromCount.bind(this);
     this.getGoals = this.getGoals.bind(this);
+    this.hatchImage = this.hatchImage.bind(this);
+    this.eggImage = this.eggImage.bind(this);
+    this.close = this.close.bind(this);
   }
 
   componentDidMount() {
@@ -70,34 +72,28 @@ class IncubatorPage extends React.Component {
     );
   }
 
-  glowingEggActivated() {
-    return this.state.glowingEgg ? 'glowingEgg' : '';
-  }
-
   subtractFromCount() {
-    if (this.state.count === 0) {
-      this.setState({ count: 3, firstTime: true });
-      // setTimeout(() => {
-      //   this.props.incubatorActions.fetchEggStatus()
-      // }, 2000);
+    if (this.state.count === 3) {
+      const { egg } = this.props.incubatorState;
+      this.props.incubatorActions.hatchEgg(egg.user_egg_id, egg.egg_xp - 100);
     }
-    this.setState(prevState => ({ count: prevState.count - 1, glowingEgg: false }));
+    this.setState(prevState => ({ count: prevState.count - 1 }));
   }
 
-  hatchTheEggDrWu() {
-    const { incubatorState } = this.props;
-    this.props.incubatorActions.hatchEgg(incubatorState.egg.user_egg_id, incubatorState.egg.egg_xp - 100);
-    setTimeout(() => {
-      this.props.yardActions.fetchSquaddies();
-    }, 2000);
-    setTimeout(() => {
-      this.props.squaddieActions.toggleYardStatus(this.props.yardState.newSquaddie.monster_id);
-    }, 2000);
-    this.setState({ firstTime: false, glowingEgg: true });
+  eggImage() {
+    if (this.props.incubatorState.egg.egg_xp >= 100) {
+      return (<Image
+        className="glowingEgg"
+        src="./assets/icons/egg_stage_1.png"
+        onClick={() => this.setState({ open: true, dimmer: true })}
+      />);
+    }
+    return (
+      <Image src="./assets/icons/egg_stage_1.png" />
+    );
   }
 
-  openEggModal() {
-    if (this.props.incubatorState.egg.egg_xp >= 100 && this.state.firstTime) this.hatchTheEggDrWu();
+  hatchImage() {
     const classByCount = {
       1: 'eggClass1',
       2: 'eggClass2',
@@ -108,30 +104,28 @@ class IncubatorPage extends React.Component {
       2: './assets/icons/egg_stage_2.png',
       3: './assets/icons/egg_stage_1.png',
     };
-    const squaddie = this.props.yardState.newSquaddie;
+    if (this.state.count >= 1) {
+      return (
+        <Image
+          size="medium"
+          className={classByCount[this.state.count]}
+          onClick={this.subtractFromCount}
+          src={pictureByCount[this.state.count]}
+          centered
+        />
+      );
+    }
     return (
-      this.props.incubatorState.egg.egg_xp >= 100
-        ?
-          <Modal
-            trigger={<Image className={this.glowingEggActivated()} src="./assets/icons/egg_stage_1.png" />}
-          >
-            <Modal.Content style={{ background: 'transparent' }}>
-              <Card centered>
-                {this.state.count === 0 ? <Image src={squaddie.monster_pic} /> : <a><Image size="medium" className={classByCount[this.state.count]} onClick={this.subtractFromCount} src={pictureByCount[this.state.count]} centered /></a>}
-                <Card.Content>
-                  <Card.Header>
-                    {this.state.count === 0 ? <p>Your new squaddie is {squaddie.monster_name}!</p> : <p>Tap {this.state.count} {this.state.count === 1 ? 'more time' : 'more times'} to reveal your new squaddie!</p> }
-                  </Card.Header>
-                  <Card.Description>
-                    { this.state.count === 0 ? <p>Head over to  <a onClick={() => { this.props.history.push('/yard'); }}>your yard</a> for some well-deserved play time</p> : null }
-                  </Card.Description>
-                </Card.Content>
-              </Card>
-            </Modal.Content>
-          </Modal>
-        :
-          <Image src="./assets/icons/egg_stage_1.png" centered />
+      <Image
+        size="medium"
+        src={this.props.newSquaddie.monster_pic}
+        centered
+      />
     );
+  }
+
+  close() {
+    this.setState({ open: false, dimmer: false });
   }
 
   render() {
@@ -160,7 +154,7 @@ class IncubatorPage extends React.Component {
             style={{ position: 'fixed', bottom: 0, padding: 1 }}
           >
             <Grid.Column width={3}>
-              {this.openEggModal()}
+              {this.eggImage()}
             </Grid.Column>
             <Grid.Column width={13}>
               <ProgressBar
@@ -170,6 +164,37 @@ class IncubatorPage extends React.Component {
           </Grid.Row>
         </Grid>
         <MainMenu history={this.props.history} />
+        <Modal
+          dimmer={this.state.dimmer}
+          open={this.state.open}
+          onClose={this.close}
+          className="fadeIn"
+        >
+          <Modal.Content style={{ background: 'transparent' }}>
+            <Card centered>
+              {this.hatchImage()}
+              <Card.Content>
+                <Card.Header>
+                  {this.state.count === 0 && this.props.newSquaddie ?
+                    <p> Your new squaddie is {this.props.newSquaddie.monster_name}! </p>
+                  :
+                    <p>Tap {this.state.count} {this.state.count === 1 ? 'more time' : 'more times'} to reveal your new squaddie!</p>
+                  }
+                </Card.Header>
+                <Card.Description>
+                  {this.state.count === 0 ?
+                    <p> Head over to
+                      <a onClick={() => { this.props.history.push('/yard'); }}> your yard </a>
+                      for some well-deserved play time
+                    </p>
+                  :
+                    null
+                  }
+                </Card.Description>
+              </Card.Content>
+            </Card>
+          </Modal.Content>
+        </Modal>
       </div>
     );
   }
@@ -186,13 +211,13 @@ IncubatorPage.propTypes = {
     isLoading: PropTypes.bool,
     egg: PropTypes.object,
   }).isRequired,
-  yardState: PropTypes.shape({
-    yardSquaddies: PropTypes.object,
-  }).isRequired,
   incubatorActions: PropTypes.objectOf(PropTypes.func).isRequired,
   homePageActions: PropTypes.objectOf(PropTypes.func).isRequired,
-  yardActions: PropTypes.objectOf(PropTypes.func).isRequired,
-  squaddieActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  newSquaddie: PropTypes.shape({
+    monster_id: PropTypes.number,
+    monster_name: PropTypes.string,
+    monster_pic: PropTypes.string,
+  }).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
@@ -203,7 +228,6 @@ const mapDispatchToProps = dispatch => (
     homePageActions: bindActionCreators(homePageActions, dispatch),
     incubatorActions: bindActionCreators(incubatorActions, dispatch),
     squaddieActions: bindActionCreators(squaddieActions, dispatch),
-    yardActions: bindActionCreators(yardActions, dispatch),
   }
 );
 
@@ -212,6 +236,7 @@ const mapStateToProps = state => (
     state: state.main,
     yardState: state.yard,
     incubatorState: state.incubator,
+    newSquaddie: state.squaddies.newSquaddie,
   }
 );
 

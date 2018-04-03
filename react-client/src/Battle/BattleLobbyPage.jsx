@@ -21,20 +21,20 @@ const buttonstylebottom = {
   backgroundImage: 'linear-gradient(to right, #d95a37, #df663e, #e67146, #ec7d4e, #f28857)',
   marginTop: 30,
   borderRadius: '2rem',
-}
+};
 
 class Lobby extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      endpoint: 'http://localhost:8080', // change to reducer later
-    };
+    this.state = {};
     this.chooseFighter = this.chooseFighter.bind(this);
     this.attack = this.attack.bind(this);
     this.surrender = this.surrender.bind(this);
     const { fightState } = this.props;
 
-    socket = socketIOClient('http://localhost:8080');
+    const socketURL = (process.env.ROOTURL + ':' + process.env.PORT) || 'http://localhost:8080';
+    console.log('socketURL', socketURL);
+    socket = socketIOClient('/');
     // only has roomname and player1
     socket.on('hosting', (roomInfo) => {
       this.props.fightActions.setLobbyInfo(roomInfo, this.state.playeriam);

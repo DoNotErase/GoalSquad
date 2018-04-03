@@ -4,7 +4,6 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import { browserHistory } from 'react-router';
 import { routerReducer, routerMiddleware } from 'react-router-redux';
 import mainReducer from './mainReducer';
-import yardReducer from './SquaddieYard/yardReducer';
 import createGoalReducer from './CreateGoal/createGoalReducer';
 import incubatorReducer from './Incubator/incubatorReducer';
 import squaddieReducer from './SquaddieYard/squaddieReducer';
@@ -13,7 +12,6 @@ import historyReducer from './History/historyReducer';
 
 const reducer = combineReducers({ // combines reducers from reducer folder
   main: mainReducer,
-  yard: yardReducer,
   goals: createGoalReducer,
   incubator: incubatorReducer,
   squad: squaddieReducer,

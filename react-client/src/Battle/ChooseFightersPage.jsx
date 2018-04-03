@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Grid, Card, Header, Divider, Segment } from 'semantic-ui-react';
+import { Grid, Card, Header, Divider, Segment, Modal } from 'semantic-ui-react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
@@ -16,6 +16,7 @@ class ChooseFightersPage extends React.Component {
     super(props);
     this.state = {
       squaddies: [],
+      dimmer: false,
     };
   }
   componentDidMount() {
@@ -29,12 +30,26 @@ class ChooseFightersPage extends React.Component {
   }
 
   render() {
+    const { fightState } = this.props;
+    const { dimmer } = this.state;
     return (
       <div className="squadpage">
         <Grid centered>
           <Grid.Column computer={8} tablet={10} mobile={16}>
             <Header as="h1" className="white" textAlign="right">Your Squad</Header>
             <Divider hidden />
+            {/* Modal for waiting for other player to choose character */}
+            <Modal
+              dimmer={dimmer}
+              open={!fightState.monster1.monster_name^!fightState.monster2.monster_name}
+            >
+              <Modal.Header>Opponent still choosing</Modal.Header>
+              <Modal.Content image>
+                <Modal.Description>
+                  <Header>Click button to start new game!</Header>
+                </Modal.Description>
+              </Modal.Content>
+            </Modal>
             <Scrollbars autoHide style={{ height: '85vh' }}>
               <Segment compact>
                 <Card.Group itemsPerRow={3} centered>
@@ -78,6 +93,7 @@ const mapStateToProps = state => (
   {
     state: state.main,
     squadState: state.squad,
+    fightState: state.fight,
   }
 );
 

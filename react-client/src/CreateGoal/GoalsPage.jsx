@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Scrollbars } from 'react-custom-scrollbars';
 import PropTypes from 'prop-types';
-import * as goalsActions from './createGoalActions';
+import { getDefaultGoals } from './createGoalActions';
 import Goal from './Goal';
 import CustomGoal from './CustomGoal';
 import MainMenu from '../MainMenu';
@@ -19,7 +19,7 @@ class GoalsPage extends React.Component {
 
     // goals only need to be fetched on first pageload
     if (!props.goalsState.standardGoals.length) {
-      props.goalsActions.getDefaultGoals();
+      props.getDefaultGoals();
     }
   }
 
@@ -31,13 +31,12 @@ class GoalsPage extends React.Component {
     this.setState({ activeIndex: newIndex });
   }
 
-
   render() {
     const { activeIndex } = this.state;
     const goalsList = this.props.goalsState.standardGoals;
     const listItems = Object.keys(goalsList).map((category, categoryIndex) => {
-      if (!this.props.incubatorState.userGoals[category] ||
-        this.props.incubatorState.userGoals[category].length < 2) {
+      if (!this.props.userGoals[category] ||
+        this.props.userGoals[category].length < 2) {
         return (
           <Accordion key={category} styled fluid>
             <Accordion.Title
@@ -88,15 +87,12 @@ class GoalsPage extends React.Component {
 }
 
 GoalsPage.propTypes = {
-  incubatorState: PropTypes.shape({
-    needsUpdate: PropTypes.bool,
-    userGoals: PropTypes.object,
-  }).isRequired,
+  userGoals: PropTypes.objectOf(PropTypes.array).isRequired,
   goalsState: PropTypes.shape({
     isLoading: PropTypes.bool,
     standardGoals: PropTypes.object,
   }).isRequired,
-  goalsActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  getDefaultGoals: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
@@ -104,15 +100,14 @@ GoalsPage.propTypes = {
 
 const mapDispatchToProps = dispatch => (
   {
-    goalsActions: bindActionCreators(goalsActions, dispatch),
+    getDefaultGoals: bindActionCreators(getDefaultGoals, dispatch),
   }
 );
 
 const mapStateToProps = state => (
   {
-    state: state.main,
     goalsState: state.goals,
-    incubatorState: state.incubator,
+    userGoals: state.incubator.userGoals,
   }
 );
 

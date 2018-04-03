@@ -11,6 +11,11 @@ const bcrypt = require('bcrypt-nodejs');
 const generateName = require('sillyname');
 const config = require('../config.js');
 
+let config;
+if (!process.env.PORT) {
+  config = require('../config.js');
+}
+
 const app = express();
 // http for streaming and .server for event listeners
 const server = require('http').createServer(app);
@@ -66,8 +71,13 @@ passport.use(new LocalStrategy(
 
 passport.use(new FitbitStrategy(
   {
+<<<<<<< HEAD
     clientID: process.env.FITBIT_ID || config.fitbit.id ,
     clientSecret: process.env.FITBIT_SECRET || config.fitbit.secret ,
+=======
+    clientID: process.env.FITBIT_ID || config.fitbit.id,
+    clientSecret: process.env.FITBIT_SECRET || config.fitbit.secret,
+>>>>>>> fd0573c4c4f88b14d63b7ff137f0d27b495b01cb
     scope: ['activity', 'profile', 'sleep', 'social'],
     callbackURL: process.env.CALLBACK_URL || 'http://127.0.0.1:8080/callback',
   },
@@ -360,7 +370,6 @@ app.post('/createUserGoal', isAuthorized, async (req, res) => {
       newGoal.startValue = 0;
     }
     newGoal.targetValue = newGoal.startValue + goalDetails.goal_amount;
-    console.log(newGoal);
     await db.createUserGoal(newGoal);
     res.end();
   } catch (err) {
@@ -426,7 +435,8 @@ app.post('/hatchEgg', isAuthorized, async (req, res) => {
   try {
     const userID = req.session.passport.user.id;
     const userEggID = req.body.eggID;
-    const newSquaddie = db.hatchEgg(userEggID, userID, req.body.xp);
+    const newSquaddie = await db.hatchEgg(userEggID, userID, req.body.xp);
+
     res.json(newSquaddie[0]);
   } catch (err) {
     res.status(500).send(err);
