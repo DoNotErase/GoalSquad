@@ -184,9 +184,7 @@ class IncubatorPage extends React.Component {
                 <Card.Description>
                   {this.state.count === 0 ?
                     <p> Head over to
-                      <a onClick = {() => {this.props.history.push('/yard');}}>
-                         your yard 
-                      </a>
+                      <a onClick={() => { this.props.history.push('/yard'); }}> your yard </a>
                       for some well-deserved play time
                     </p>
                   :
@@ -215,10 +213,10 @@ IncubatorPage.propTypes = {
   }).isRequired,
   incubatorActions: PropTypes.objectOf(PropTypes.func).isRequired,
   homePageActions: PropTypes.objectOf(PropTypes.func).isRequired,
-  squaddieActions: PropTypes.objectOf(PropTypes.func).isRequired,
   newSquaddie: PropTypes.shape({
     monster_id: PropTypes.number,
     monster_name: PropTypes.string,
+    monster_pic: PropTypes.string,
   }).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,

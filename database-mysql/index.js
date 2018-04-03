@@ -1,5 +1,9 @@
 const mysql = require('mysql');
-const config = require('../config');
+
+let config;
+if (!process.env.RDS_HOSTNAME) {
+  config = require('../config');
+}
 const Promise = require('bluebird');
 
 Promise.promisifyAll(require('mysql/lib/Connection').prototype);

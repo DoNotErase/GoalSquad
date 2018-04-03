@@ -22,6 +22,7 @@ class YardSquaddie extends React.Component {
 
   componentWillUnmount() {
     if (this.state.moved) {
+      console.log('component wll unmount');
       this.props.saveSquaddiePosition(this.state.deltaPosition);
     }
   }
