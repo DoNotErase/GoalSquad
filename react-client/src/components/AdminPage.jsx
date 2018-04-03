@@ -1,6 +1,6 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
-import { Button, Grid, Input }  from 'semantic-ui-react';
+import { Button, Grid, Header, Input }  from 'semantic-ui-react';
 
 
 class AdminPage extends React.Component {
@@ -35,9 +35,14 @@ class AdminPage extends React.Component {
 		return (
 			<div>
 				<Grid 
+				textAlign="center"
 				style={{ height: '100%' }}
 				verticalAlign="middle"
+				container
 				>
+					<Grid.Row centered>
+						<Header>Welcome, Admin user</Header>
+					</Grid.Row>
 				  <Grid.Row centered>
 				    <Input
 				      value={this.state.notification}
