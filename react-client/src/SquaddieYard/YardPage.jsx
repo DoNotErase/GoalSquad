@@ -4,8 +4,7 @@ import { bindActionCreators } from 'redux';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Loader } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-import * as actions from '../actions';
-import * as squaddieActions from './squaddieActions';
+import { getYardSquaddies } from './squaddieActions';
 import MainMenu from '../MainMenu';
 import YardSquaddie from './YardSquaddie';
 
@@ -18,7 +17,7 @@ const background = {
 
 class YardPage extends React.Component {
   componentDidMount() {
-    this.props.squaddieActions.getYardSquaddies();
+    this.props.getYardSquaddies();
   }
 
   render() {
@@ -33,7 +32,7 @@ class YardPage extends React.Component {
             :
               this.props.squadState.yardSquaddies.map(squaddie => (
                 <YardSquaddie
-                  key={squaddie.monster_name}
+                  key={squaddie.user_monster_id}
                   squaddie={squaddie}
                 />))
             }
@@ -50,8 +49,7 @@ YardPage.propTypes = {
     yardSquaddies: PropTypes.arrayOf(PropTypes.object),
     isLoading: PropTypes.bool,
   }).isRequired,
-  squaddieActions: PropTypes.objectOf(PropTypes.func).isRequired,
-  // yardActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  getYardSquaddies: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
@@ -59,8 +57,7 @@ YardPage.propTypes = {
 
 const mapDispatchToProps = dispatch => (
   {
-    actions: bindActionCreators(actions, dispatch),
-    squaddieActions: bindActionCreators(squaddieActions, dispatch),
+    getYardSquaddies: bindActionCreators(getYardSquaddies, dispatch),
   }
 );
 

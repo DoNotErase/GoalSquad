@@ -1,20 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Header, Divider, Grid, Statistic, Segment, Button } from 'semantic-ui-react';
+import { Header, Divider, Grid, Statistic, Segment, Button, Loader } from 'semantic-ui-react';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { Scrollbars } from 'react-custom-scrollbars';
 import MainMenu from '../MainMenu';
-import * as actions from '../actions';
+import { fetchStats, deauthorizeFitbit } from '../actions';
 
 class DeetsPage extends React.Component {
   constructor(props) {
     super(props);
 
     this.makeDisconnectButton = this.makeDisconnectButton.bind(this);
-    if (!props.state.deets || props.state.needsUpdate) {
-      props.actions.fetchStats();
-      props.actions.turnOffUpdate();
+    if (!props.state.deets.user || props.state.needsUpdate) {
+      props.fetchStats();
     }
   }
 
@@ -23,7 +22,7 @@ class DeetsPage extends React.Component {
       return (
         <a href="/logout" >
           <Button onClick={() => {
-            this.props.actions.deauthorizeFitbit();
+            this.props.deauthorizeFitbit();
           }}
           >
             Disconnect Fitbit
@@ -53,8 +52,8 @@ class DeetsPage extends React.Component {
       return 0;
     };
 
-    if (Object.keys(deets).length === 0) {
-      return (<div />);
+    if (!deets.user) {
+      return <Loader active inverted size="medium" inline="centered" />;
     }
     return (
       <div className="deetspage">
@@ -155,7 +154,8 @@ class DeetsPage extends React.Component {
 }
 
 DeetsPage.propTypes = {
-  actions: PropTypes.objectOf(PropTypes.func).isRequired,
+  fetchStats: PropTypes.func.isRequired,
+  deauthorizeFitbit: PropTypes.func.isRequired,
   state: PropTypes.shape({
     user: PropTypes.object,
     deets: PropTypes.object,
@@ -174,7 +174,8 @@ const mapStateToProps = state => (
 
 const mapDispatchToProps = dispatch => (
   {
-    actions: bindActionCreators(actions, dispatch),
+    fetchStats: bindActionCreators(fetchStats, dispatch),
+    deauthorizeFitbit: bindActionCreators(deauthorizeFitbit, dispatch),
   }
 );
 

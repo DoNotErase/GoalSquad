@@ -3,23 +3,16 @@ import { Segment, Header, Statistic, Grid, Button, Modal, Input, Divider, Checkb
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import * as goalsActions from './createGoalActions';
-import * as incubatorActions from '../Incubator/incubatorActions';
+import { submitUserGoal } from './createGoalActions';
 
 class Goal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       open: false,
-      goalID: this.props.goal.goal_id,
-      goalName: this.props.goal.goal_name,
-      // goalAmount: this.props.goal.goal_amount,
-      goalDifficulty: this.props.goal.goal_difficulty,
-      goalPoints: this.props.goal.goal_points,
       difficultyColor: null,
       deadline: { days: 0, hours: 0 },
       noDeadline: false,
-      timeDivisor: this.props.goal.goal_timedivisor,
       errorMessage: '',
     };
 
@@ -29,11 +22,10 @@ class Goal extends React.Component {
     this.submit = this.submit.bind(this);
     this.updateDeadlineHours = this.updateDeadlineHours.bind(this);
     this.updateDeadlineDays = this.updateDeadlineDays.bind(this);
-    // this.difficult = this.difficult.bind(this);
   }
 
   componentDidMount() {
-    this.colorDifficult(this.state.goalDifficulty);
+    this.colorDifficult(this.props.goal.goal_difficulty);
   }
 
   colorDifficult(goalDifficulty) {
@@ -75,9 +67,9 @@ class Goal extends React.Component {
 
   submit() {
     if (this.state.noDeadline) {
-      const points = parseInt(this.state.goalPoints, 10);
+      const points = parseInt(this.props.goal.goal_points, 10);
       this.setState({ open: false, errorMessage: '', noDeadline: false });
-      this.props.goalsActions.submitUserGoal(this.state.goalID, null, points);
+      this.props.submitUserGoal(this.props.goal.goal_id, null, points);
       this.props.history.push('/incubator');
       return;
     }
@@ -97,17 +89,17 @@ class Goal extends React.Component {
       this.setState({ errorMessage: 'please mark no deadline or set a deadline!' });
     } else {
       this.setState({ open: false, errorMessage: '', noDeadline: false });
-      let points = parseInt(this.state.goalPoints, 10);
+      let points = parseInt(this.props.goal.goal_points, 10);
       const hours = (deadline.days * 24) + deadline.hours;
-      points += parseInt((points / (hours / this.state.timeDivisor)), 10);
-      this.props.goalsActions.submitUserGoal(this.state.goalID, deadline, points);
+      points += parseInt((points / (hours / this.props.goal.goal_timedivisor)), 10);
+      this.props.submitUserGoal(this.props.goal.goal_id, deadline, points);
       this.props.history.push('/incubator');
     }
   }
 
   render() {
     const {
-      open, dimmer, size, difficultyColor, goalName, goalPoints,
+      open, dimmer, size, difficultyColor,
     } = this.state;
 
     return (
@@ -121,7 +113,7 @@ class Goal extends React.Component {
           <Grid>
             <Grid.Row columns={2}>
               <Grid.Column>
-                <Header as="h4">{goalName}</Header>
+                <Header as="h4">{this.props.goal.goal_name}</Header>
               </Grid.Column>
               <Grid.Column>
                 <Statistic
@@ -129,7 +121,7 @@ class Goal extends React.Component {
                   floated="right"
                   size="mini"
                 >
-                  <Statistic.Value>{goalPoints}</Statistic.Value>
+                  <Statistic.Value>{this.props.goal.goal_points}</Statistic.Value>
                   <Statistic.Label>points</Statistic.Label>
                 </Statistic>
               </Grid.Column>
@@ -223,7 +215,7 @@ Goal.propTypes = {
     goal_points: PropTypes.string,
     goal_timedivisor: PropTypes.number,
   }).isRequired,
-  goalsActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  submitUserGoal: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
@@ -231,8 +223,7 @@ Goal.propTypes = {
 
 const mapDispatchToProps = dispatch => (
   {
-    goalsActions: bindActionCreators(goalsActions, dispatch),
-    incubatorActions: bindActionCreators(incubatorActions, dispatch),
+    submitUserGoal: bindActionCreators(submitUserGoal, dispatch),
   }
 );
 

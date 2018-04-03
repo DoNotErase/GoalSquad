@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getYardSquaddies } from '../SquaddieYard/squaddieActions';
 
 const isLoading = () => ({ type: 'IS_LOADING', payload: true });
 const doneLoading = () => ({ type: 'DONE_LOADING', payload: false });
@@ -60,7 +61,8 @@ export const hatchEgg = (eggID, extraXP) => (
     axios.post('/hatchEgg', { eggID, xp: extraXP })
       .then((res) => {
         dispatch(newSquaddie(res.data));
-        dispatch({ type: 'SQUADDIE_UPDATE' });
+        dispatch(getYardSquaddies());
+        dispatch(fetchEggStatus());
       })
       .catch((err) => { handleErr(err); })
   )

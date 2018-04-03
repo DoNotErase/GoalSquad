@@ -4,7 +4,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import * as goalsActions from '../CreateGoal/createGoalActions';
+import { submitUserGoal } from '../CreateGoal/createGoalActions';
 
 const GoalHistoryModal = (props) => {
   const { goal, open, close } = props;
@@ -47,12 +47,23 @@ const GoalHistoryModal = (props) => {
     );
   };
 
+  const canRepeat = () => {
+    if (goal.goal_difficulty === 'custom') {
+      if (moment().diff(moment(props.user.custom_goal_timer_1), 'days') < 1) {
+        return true;
+      }
+    } else if (props.userGoals[goal.goal_activity].length >= 2) {
+      return true;
+    }
+    return false;
+  };
+
   const createRepeatGoal = () => {
     const deadline = {
       days: deadlineDays(),
       hours: deadlineHours(),
     };
-    props.goalsActions.submitUserGoal(goal.goal_id, deadline, goal.user_goal_points);
+    props.submitRepeatGoal(goal.goal_id, deadline, goal.user_goal_points);
   };
 
   return (
@@ -83,6 +94,7 @@ const GoalHistoryModal = (props) => {
         </Button>
         <Button
           positive
+          disabled={canRepeat()}
           icon="checkmark"
           labelPosition="right"
           content="Do it again!"
@@ -106,17 +118,24 @@ GoalHistoryModal.propTypes = {
     user_goal_end_date: PropTypes.string,
     user_goal_start_date: PropTypes.string,
   }).isRequired,
-  goalsActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  submitRepeatGoal: PropTypes.func.isRequired,
+  user: PropTypes.shape({
+    custom_goal_timer_1: PropTypes.string,
+  }).isRequired,
+  userGoals: PropTypes.objectOf(PropTypes.array).isRequired,
   close: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => (
-  { state: state.main }
+  {
+    user: state.main.user,
+    userGoals: state.incubator.userGoals,
+  }
 );
 
 const mapDispatchToProps = dispatch => (
-  { goalsActions: bindActionCreators(goalsActions, dispatch) }
+  { submitRepeatGoal: bindActionCreators(submitUserGoal, dispatch) }
 );
 
 export default connect(mapStateToProps, mapDispatchToProps)(GoalHistoryModal);
