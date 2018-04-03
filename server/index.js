@@ -10,7 +10,8 @@ const path = require('path');
 const bcrypt = require('bcrypt-nodejs');
 const generateName = require('sillyname');
 let config;
-if (process.env) {
+
+if (!process.env.PORT) {
   config = require('../config.js');
 }
 
