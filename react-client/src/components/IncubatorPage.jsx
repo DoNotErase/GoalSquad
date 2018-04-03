@@ -90,10 +90,9 @@ class IncubatorPage extends React.Component {
     const firebase_auth = firebase.auth();
     messaging.getToken()
       .then((token) => {
-        console.log('firebase auth', firebase_auth)
         firebase_database.ref('/tokens').push({
             token: token,
-            uid: firebase_auth.uid
+            uid: this.props.state.firebaseUser.uid
         });
         // TODO: remove token since shifting to firebase database
         this.props.homePageActions.updatePushNotificationsToTrue(this.props.state.user.id, token);
@@ -112,22 +111,23 @@ class IncubatorPage extends React.Component {
 
   showPushNotificationButton() {
     return (
-      this.props.state.user.notified_of_push_notifications
+      !this.props.state.user.notified_of_push_notifications && this.props.state.firebaseUser && this.props.state.firebaseUser.uid
         ?
-        null
+          <div>
+            <Grid.Row verticalAlign="top">
+              <Button onClick={this.show} floated="right">Enable Push Notifications</Button>
+              <Confirm
+                open={this.state.open}
+                content="Would you like to receive occassional but super helpful push notifcations?"
+                onCancel={this.handlePushNotificationCancel}
+                onConfirm={this.handlePushNotificationConfirm}
+              />
+              <Divider />
+            </Grid.Row>
+          </div>
         :
-        <div>
-          <Grid.Row verticalAlign="top">
-            <Button onClick={this.show} floated="right">Enable Push Notifications</Button>
-            <Confirm
-              open={this.state.open}
-              content="Would you like to receive occassional but super helpful push notifcations?"
-              onCancel={this.handlePushNotificationCancel}
-              onConfirm={this.handlePushNotificationConfirm}
-            />
-            <Divider />
-          </Grid.Row>
-        </div>
+        null
+        
     );
   }
 
