@@ -11,6 +11,10 @@ const axios = require('axios');
 const path = require('path');
 const bcrypt = require('bcrypt-nodejs');
 const generateName = require('sillyname');
+let config;
+if (!process.env.PORT) {
+  config = require('../config.js');
+}
 
 const app = express();
 // http for streaming and .server for event listeners
