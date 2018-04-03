@@ -24,7 +24,6 @@ export const fetch = () => (
   dispatch => (
     axios.get('/historicGoals')
       .then((res) => {
-        console.log(res.data);
         dispatch(setHistory(res.data));
         dispatch(filter(''));
         dispatch(sort(''));
@@ -35,4 +34,4 @@ export const fetch = () => (
   )
 );
 
-export const flipSort = () => { console.log('hey'); return { type: 'FLIP' } };
+export const flipSort = () => ({ type: 'FLIP' });

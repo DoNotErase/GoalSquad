@@ -4,7 +4,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import * as incubatorActions from './incubatorActions';
+import { submitProgress } from './incubatorActions';
 
 class GoalDetailModal extends React.Component {
   constructor(props) {
@@ -91,7 +91,7 @@ class GoalDetailModal extends React.Component {
   updateButtons() {
     const { goal, close } = this.props;
     return (!goal.user_goal_concluded &&
-        (goal.goal_difficulty === 'custom' || !this.props.state.user.fitbit_id)) ?
+        (goal.goal_difficulty === 'custom' || !this.props.fitbit)) ?
           <Modal.Actions>
             <Header as="h5">{this.state.errorMessage}</Header>
             <Button color="grey" onClick={close}>
@@ -126,7 +126,7 @@ class GoalDetailModal extends React.Component {
       return false;
     };
     if (validatePositiveNumber(this.state.newCurrent)) {
-      this.props.incubatorActions.submitProgress(goal.user_goal_id, this.state.newCurrent);
+      this.props.submitProgress(goal.user_goal_id, this.state.newCurrent);
       close();
       this.setState({ errorMessage: '', newCurrent: '0' });
     } else {
@@ -137,7 +137,7 @@ class GoalDetailModal extends React.Component {
   updateForm() {
     const { goal } = this.props;
     return (!goal.user_goal_concluded &&
-      (goal.goal_difficulty === 'custom' || !this.props.state.user.fitbit_id)) ?
+      (goal.goal_difficulty === 'custom' || !this.props.fitbit)) ?
         <div>
           <Header as="h3">How far have you come?</Header>
           <Input
@@ -221,9 +221,7 @@ class GoalDetailModal extends React.Component {
 }
 
 GoalDetailModal.propTypes = {
-  state: PropTypes.shape({
-    user: PropTypes.object,
-  }).isRequired,
+  fitbit: PropTypes.string.isRequired,
   goal: PropTypes.shape({
     goal_id: PropTypes.number,
     user_goal_id: PropTypes.number,
@@ -236,7 +234,7 @@ GoalDetailModal.propTypes = {
     user_goal_end_date: PropTypes.string,
     user_goal_start_date: PropTypes.string,
   }).isRequired,
-  incubatorActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  submitProgress: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
   // dimmer: PropTypes.bool.isRequired,
   // size: PropTypes.string.isRequired,
@@ -244,11 +242,11 @@ GoalDetailModal.propTypes = {
 };
 
 const mapStateToProps = state => (
-  { state: state.main }
+  { fitbit: state.main.user.fitbit_id }
 );
 
 const mapDispatchToProps = dispatch => (
-  { incubatorActions: bindActionCreators(incubatorActions, dispatch) }
+  { submitProgress: bindActionCreators(submitProgress, dispatch) }
 );
 
 export default connect(mapStateToProps, mapDispatchToProps)(GoalDetailModal);

@@ -3,6 +3,7 @@ const squadState = {
   yardSquaddies: [],
   isLoading: false,
   needsUpdate: true,
+  newSquaddie: {},
 };
 
 const squadReducer = (state = squadState, action) => {
@@ -18,6 +19,12 @@ const squadReducer = (state = squadState, action) => {
         ...state,
         squaddies: action.payload,
         needsUpdate: false,
+      };
+    }
+    case 'NEW_SQUADDIE': {
+      return {
+        ...state,
+        newSquaddie: action.payload,
       };
     }
     case 'SQUADDIE_UPDATE': {

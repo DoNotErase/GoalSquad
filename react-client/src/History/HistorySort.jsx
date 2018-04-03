@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 
-import * as historyActions from './historyActions';
+import * as histActions from './historyActions';
 
 const HistorySort = (props) => {
-  const actions = props.historyActions;
+  const { historyActions } = props;
 
   const src = './assets/icons/';
 
@@ -17,13 +17,13 @@ const HistorySort = (props) => {
       <Grid.Row>
         <div>
           <Button.Group style={{ marginBottom: '2px', align: 'top' }}>
-            <Button onClick={() => actions.sort('date')} compact>Start Date</Button>
+            <Button onClick={() => historyActions.sort('date')} compact>Start Date</Button>
             <Button.Or />
-            <Button onClick={() => actions.sort('points')} compact>Points</Button>
+            <Button onClick={() => historyActions.sort('points')} compact>Points</Button>
             <Button.Or />
-            <Button onClick={() => actions.sort('activity')} compact>Activity</Button>
+            <Button onClick={() => historyActions.sort('activity')} compact>Activity</Button>
             {`${src}reverse.png`}
-            <Button onClick={actions.flipSort} style={{ marginLeft: '5px' }} compact>
+            <Button onClick={historyActions.flipSort} style={{ marginLeft: '5px' }} compact>
               <img
                 src={`${src}reverse.png`}
                 alt=""
@@ -40,11 +40,11 @@ const HistorySort = (props) => {
       <Header as="h5" style={{ marginBottom: '2px', marginTop: '4px' }}> Filter: </Header>
       <Grid.Row>
         <Button.Group style={{ marginBottom: '2px' }}>
-          <Button onClick={() => actions.filter('all')} compact>All</Button>
+          <Button onClick={() => historyActions.filter('all')} compact>All</Button>
           <Button.Or />
-          <Button onClick={() => actions.filter('success')} compact>Successful</Button>
+          <Button onClick={() => historyActions.filter('success')} compact>Successful</Button>
           <Button.Or />
-          <Button onClick={() => actions.filter('fail')} compact>Failed</Button>
+          <Button onClick={() => historyActions.filter('fail')} compact>Failed</Button>
         </Button.Group>
       </Grid.Row>
     </div>
@@ -55,12 +55,8 @@ HistorySort.propTypes = {
   historyActions: PropTypes.objectOf(PropTypes.func).isRequired,
 };
 
-const mapStateToProps = state => ({
-  historyState: state.history,
-});
-
 const mapDispatchToActions = dispatch => ({
-  historyActions: bindActionCreators(historyActions, dispatch),
+  historyActions: bindActionCreators(histActions, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToActions)(HistorySort);
+export default connect(null, mapDispatchToActions)(HistorySort);

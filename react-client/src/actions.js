@@ -36,7 +36,7 @@ const setStats = deets => ({ type: 'SET_DEETS', payload: deets });
 
 export const fetchStats = () => (
   dispatch => (
-    axios.get('userDetails')
+    axios.get('userDeets')
       .then((res) => {
         dispatch(setStats(res.data));
       })

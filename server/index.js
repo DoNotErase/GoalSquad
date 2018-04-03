@@ -9,8 +9,8 @@ const axios = require('axios');
 const path = require('path');
 const bcrypt = require('bcrypt-nodejs');
 const generateName = require('sillyname');
-let config;
 
+let config;
 if (!process.env.PORT) {
   config = require('../config.js');
 }
@@ -364,7 +364,6 @@ app.post('/createUserGoal', isAuthorized, async (req, res) => {
       newGoal.startValue = 0;
     }
     newGoal.targetValue = newGoal.startValue + goalDetails.goal_amount;
-    console.log(newGoal);
     await db.createUserGoal(newGoal);
     res.end();
   } catch (err) {
@@ -430,7 +429,8 @@ app.post('/hatchEgg', isAuthorized, async (req, res) => {
   try {
     const userID = req.session.passport.user.id;
     const userEggID = req.body.eggID;
-    const newSquaddie = db.hatchEgg(userEggID, userID, req.body.xp);
+    const newSquaddie = await db.hatchEgg(userEggID, userID, req.body.xp);
+
     res.json(newSquaddie[0]);
   } catch (err) {
     res.status(500).send(err);

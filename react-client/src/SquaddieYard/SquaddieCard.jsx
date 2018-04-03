@@ -3,7 +3,7 @@ import { Card, Modal, Image, Button, Input } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import * as squaddieActions from './squaddieActions';
+import { toggleYardStatus, changeName } from './squaddieActions';
 
 const styles = {
   cardBackground: 'linear-gradient(to bottom, #faedc4, #ffebd8, #ffeff1, #fff8ff, #ffffff)',
@@ -28,13 +28,13 @@ class SquaddieCard extends React.Component {
 
   toggleSquaddieToYard(monID) {
     this.setState({ yardstatus: !this.state.yardstatus });
-    this.props.squaddieActions.toggleYardStatus(monID);
+    this.props.toggleYardStatus(monID);
   }
 
   saveRename() {
     const { squaddie } = this.props;
     if (this.state.newName) {
-      this.props.squaddieActions.changeName(squaddie.user.user_monster_id, this.state.newName);
+      this.props.changeName(squaddie.user.user_monster_id, this.state.newName);
       squaddie.user.user_monster_new_name = this.state.newName;
       this.setState({ alert: false });
       this.closeRename();
@@ -145,7 +145,8 @@ class SquaddieCard extends React.Component {
 }
 
 SquaddieCard.propTypes = {
-  squaddieActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  toggleYardStatus: PropTypes.func.isRequired,
+  changeName: PropTypes.func.isRequired,
   squaddie: PropTypes.shape({
     monster_id: PropTypes.number,
     monster_name: PropTypes.string,
@@ -155,14 +156,11 @@ SquaddieCard.propTypes = {
   }).isRequired,
 };
 
-const mapStateToProps = state => ({
-  squadState: state.squad,
-});
-
 const mapDispatchToProps = dispatch => (
   {
-    squaddieActions: bindActionCreators(squaddieActions, dispatch),
+    toggleYardStatus: bindActionCreators(toggleYardStatus, dispatch),
+    changeName: bindActionCreators(changeName, dispatch),
   }
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(SquaddieCard);
+export default connect(null, mapDispatchToProps)(SquaddieCard);

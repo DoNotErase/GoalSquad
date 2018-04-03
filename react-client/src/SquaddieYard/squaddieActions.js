@@ -80,3 +80,6 @@ export const changeName = (userMonsterID, newName) => (
       .catch((err) => { handleErr(err); })
   )
 );
+
+export const squaddieAcknowledged = () => ({ type: 'RESET_NEW_SQUADDIE' });
+

@@ -27,7 +27,7 @@ class HistoryPage extends React.Component {
             <Grid.Row>
               <Scrollbars autoHide style={{ height: '75vh' }}>
                 <Segment.Group raised>
-                  {this.props.historyState.sortedGoals.map(goal => (
+                  {this.props.sortedGoals.map(goal => (
                     <HistoryGoal
                       key={goal.user_goal_id}
                       goal={goal}
@@ -49,16 +49,12 @@ HistoryPage.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
-  historyState: PropTypes.shape({
-    sortedGoals: PropTypes.array,
-    sortType: PropTypes.string,
-    filteredGoals: PropTypes.array,
-  }).isRequired,
+  sortedGoals: PropTypes.arrayOf(PropTypes.object).isRequired,
   fetchGoals: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
-  historyState: state.history,
+  sortedGoals: state.history.sortedGoals,
 });
 
 const mapDispatchToProps = dispatch => ({

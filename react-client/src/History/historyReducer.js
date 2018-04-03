@@ -4,6 +4,7 @@ const historyState = {
   filterType: '',
   sortedGoals: [],
   sortType: '',
+  inverted: false,
 };
 
 const historyReducer = (state = historyState, action) => {
@@ -46,6 +47,9 @@ const historyReducer = (state = historyState, action) => {
           return 1;
         });
       }
+      if (state.inverted) {
+        sorted = sorted.reverse();
+      }
       return {
         ...state,
         sortedGoals: sorted,
@@ -56,6 +60,7 @@ const historyReducer = (state = historyState, action) => {
       return {
         ...state,
         sortedGoals: state.sortedGoals.reverse(),
+        inverted: !state.inverted,
       };
     }
     default: {

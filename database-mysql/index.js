@@ -226,7 +226,7 @@ module.exports.createCustomGoal = async (goalObj) => {
     }
 
     const updateUserCustomTimers = 'UPDATE user SET custom_goal_timer_1 = custom_goal_timer_2, ' +
-      `custom_goal_timer_2 = '${goalObj.createTime}' WHERE user_id = '${userID}'`;
+      `custom_goal_timer_2 = (utc_timestamp()) WHERE user_id = '${userID}'`;
 
     await Promise.all([
       db.queryAsync(attachUser),
@@ -276,8 +276,6 @@ module.exports.completeGoalSuccess = async (userGoalID) => {
       `(SELECT user_id FROM user_goal WHERE user_goal_id = ${userGoalID})`;
     await db.queryAsync(updateEgg);
     return 'success';
-    // want to turn this into one call
-    // want to add check for egg hatching?
   } catch (err) {
     throw err;
   }
@@ -292,16 +290,25 @@ module.exports.completeGoalFailure = async (userGoalID) => {
   }
 };
 
+const findEggID = async (userID) => {
+  const possibleIDs = await db.queryAsync('SELECT egg_id from egg WHERE egg_id NOT IN ' +
+    `(SELECT egg_id FROM user_egg WHERE user_id=${userID})`);
+
+  return possibleIDs[Math.ceil(Math.random() * possibleIDs.length)].egg_id;
+};
+
 module.exports.hatchEgg = async (userEggID, id, nextXP) => {
   try {
     const userID = await getRightID(id);
     const hatchEgg = `UPDATE user_egg SET egg_hatched = 1 WHERE user_egg_id = '${userEggID}';`;
 
-    const newSquaddie = 'INSERT INTO user_monster (user_id, monster_id) VALUES ' +
-      `('${userID}', (SELECT egg_id FROM user_egg WHERE user_egg_id = '${userEggID}'));`;
+    const newSquaddie = 'INSERT INTO user_monster (user_id, monster_id, user_monster_yard) VALUES ' +
+      `('${userID}', (SELECT egg_id FROM user_egg WHERE user_egg_id = '${userEggID}'), 1);`;
+
+    const eggID = await findEggID(userID);
 
     const makeNewEgg = 'INSERT INTO user_egg (user_id, egg_id, egg_xp) VALUES ' +
-      `('${userID}', FLOOR(RAND() * (SELECT COUNT (*) FROM egg) + 1), ${nextXP});`;
+      `('${userID}', ${eggID}, ${nextXP});`;
 
     const returnSquaddie = 'SELECT user_monster.*, monster.* FROM user_monster INNER JOIN monster ' +
       'ON user_monster.monster_id = monster.monster_id WHERE user_monster.user_monster_id = (SELECT MAX(user_monster_id) FROM user_monster);';
@@ -314,6 +321,7 @@ module.exports.hatchEgg = async (userEggID, id, nextXP) => {
 
     return await db.queryAsync(returnSquaddie);
   } catch (err) {
+    console.log(err);
     throw err;
   }
 };
