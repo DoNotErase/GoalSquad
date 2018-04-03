@@ -118,7 +118,6 @@ class IncubatorPage extends React.Component {
     return (
       <Image
         size="medium"
-        onClick={this.subtractFromCount}
         src={this.props.newSquaddie.monster_pic}
         centered
       />
