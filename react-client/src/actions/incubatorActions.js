@@ -60,7 +60,6 @@ export const hatchEgg = (eggID, extraXP) => {
     dispatch => (
       axios.post('/hatchEgg', { eggID, xp: extraXP })
         .then((res) => {
-          console.log('res data', res.data);
           dispatch(newSquaddie(res.data));
           dispatch({ type: 'SQUADDIE_UPDATE' });
         })

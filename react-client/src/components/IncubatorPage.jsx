@@ -127,7 +127,6 @@ class IncubatorPage extends React.Component {
           </div>
         :
         null
-        
     );
   }
 

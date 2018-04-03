@@ -11,7 +11,7 @@ const fightState = {
 };
 
 const fightReducer = (state = fightState, action) => {
-  console.log('action', action);
+  // console.log('action', action);
   switch (action.type) {
     case 'GET_LOBBY_INFO': {
       return {

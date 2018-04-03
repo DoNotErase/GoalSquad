@@ -30,6 +30,7 @@ export const localLogin = (username, password) => (
   )
 );
 
+const setFirebaseUser = user => ({ type: 'SET_FIREBASE_USER', payload: user });
 
 export const localSignup = (username, password) => (
   dispatch => (
@@ -42,11 +43,10 @@ export const localSignup = (username, password) => (
               })
             .then(() => {
               firebase.auth().onAuthStateChanged(user => {
-                console.log('userrrrrr', user)
                 if(user) {
                  dispatch(setFirebaseUser(user)); 
                 } else {
-                  console.log('unable to sign user in via Firebase');
+                  console.log('Unable to sign user in via Firebase');
                 }
               })
             })
@@ -59,14 +59,6 @@ export const localSignup = (username, password) => (
       })
   )
 );
-
-const setFirebaseUser = user => ({ type: 'SET_FIREBASE_USER', payload: user });
-
-// export const setCurrentFirebaseUser = user => {
-//   dispatch => (
-//     dispatch(setFirebaseUser(user))
-//   )
-// }
 
 export const updatePushNotificationsToFalse = userID => (
   dispatch => (
