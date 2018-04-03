@@ -1,5 +1,6 @@
 const mysql = require('mysql');
 const Promise = require('bluebird');
+const config = require('../config');
 // needed for mysql
 Promise.promisifyAll(require('mysql/lib/Connection').prototype);
 Promise.promisifyAll(require('mysql/lib/Pool').prototype);
@@ -12,10 +13,10 @@ Promise.promisifyAll(require('mysql/lib/Pool').prototype);
 // };
 
 const connection = {
-  host: process.env.RDS_HOSTNAME,
-  user: process.env.RDS_USERNAME,
-  password: process.env.RDS_PASSWORD,
-  port: process.env.RDS_PORT,
+  host: process.env.RDS_HOSTNAME || config.aws.RDS_HOSTNAME,
+  user: process.env.RDS_USERNAME || config.aws.RDS_USERNAME,
+  password: process.env.RDS_PASSWORD || config.aws.RDS_PASSWORD,
+  port: process.env.RDS_PORT || config.aws.RDS_PORT,
   database: 'goalsquad',
 };
 

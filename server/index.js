@@ -9,6 +9,7 @@ const axios = require('axios');
 const path = require('path');
 const bcrypt = require('bcrypt-nodejs');
 const generateName = require('sillyname');
+const config = require('../config.js');
 
 const app = express();
 // http for streaming and .server for event listeners
@@ -65,8 +66,8 @@ passport.use(new LocalStrategy(
 
 passport.use(new FitbitStrategy(
   {
-    clientID: process.env.FITBIT_ID,
-    clientSecret: process.env.FITBIT_SECRET,
+    clientID: process.env.FITBIT_ID || config.fitbit.id ,
+    clientSecret: process.env.FITBIT_SECRET || config.fitbit.secret ,
     scope: ['activity', 'profile', 'sleep', 'social'],
     callbackURL: process.env.CALLBACK_URL || 'http://127.0.0.1:8080/callback',
   },
