@@ -40,16 +40,16 @@ export const localSignup = (username, password) => (
           dispatch(localLogin(username, password))
           .then(() => {
               firebase.auth().signInAnonymously(); // needs to be only at successful sign in;
-              })
-            .then(() => {
-              firebase.auth().onAuthStateChanged(user => {
-                if(user) {
-                 dispatch(setFirebaseUser(user)); 
-                } else {
-                  console.log('Unable to sign user in via Firebase');
-                }
-              })
+          })
+          .then(() => {
+            firebase.auth().onAuthStateChanged(user => {
+              if(user) {
+               dispatch(setFirebaseUser(user)); 
+              } else {
+                console.log('Unable to sign user in via Firebase');
+              }
             })
+          })
         } else {
           dispatch(errMessage(res.data.error));
         }

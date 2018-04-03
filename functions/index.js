@@ -2,7 +2,7 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
-exports.sendNotifications = functions.database.ref('/notifications/{notificationId}').onWrite((event) => {
+exports.sendNotifications = functions.database.ref('/notifications/{notificationID}').onWrite((event) => {
 
   if (event.data.previous.val()) {
     return;

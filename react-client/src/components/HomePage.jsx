@@ -53,7 +53,8 @@ class HomePage extends React.Component {
 
   updateUsername(event) { this.setState({ username: event.target.value }); }
 
-  submit() {
+  submit(e) {
+    e.preventDefault();
     if (this.state.type === 'Sign Up') {
       if (this.state.username.length > 4) {
         if (this.state.password.length > 3) {
