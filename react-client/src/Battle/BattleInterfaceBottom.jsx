@@ -111,6 +111,7 @@ class BattleInterfaceBottom extends React.Component {
                     confirmButton="Surrender"
                     cancelButton="Stay"
                   />
+                  {/*Modal for surrendering*/}
                   <Modal dimmer={dimmer} open={this.props.surrenderPlayer === 'player1' || this.props.surrenderPlayer === 'player2'} onClose={this.gameEndClose}>
                     <Modal.Header>{this.props.surrenderPlayer === fightState.playeriam ? 'you have' : 'oppenent has'} surrendered</Modal.Header>
                     <Modal.Content image>
@@ -124,6 +125,7 @@ class BattleInterfaceBottom extends React.Component {
                       </Button>
                     </Modal.Actions>
                   </Modal>
+                  {/*Modal for win or loss*/}
                   <Modal dimmer={dimmer} open={fightState.monster1CurrentHP <= 0 || fightState.monster2CurrentHP <= 0} onClose={this.gameEndClose}>
                     <Modal.Header>{
                     fightState.playeriam === 'player1' ?
