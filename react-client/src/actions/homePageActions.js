@@ -39,7 +39,7 @@ export const localSignup = (username, password) => (
         if (!res.data.error) {
           dispatch(localLogin(username, password))
           .then(() => {
-              firebase.auth().signInAnonymously(); // needs to be only at successful sign in;
+              firebase.auth().signInAnonymously();
           })
           .then(() => {
             firebase.auth().onAuthStateChanged(user => {

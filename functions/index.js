@@ -1,5 +1,6 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+
 admin.initializeApp(functions.config().firebase);
 
 exports.sendNotifications = functions.database.ref('/notifications/{notificationID}').onWrite((event) => {
@@ -13,15 +14,12 @@ exports.sendNotifications = functions.database.ref('/notifications/{notification
   }
 
   // Setup notification
-  const NOTIFICATION_SNAPSHOT = event.data;
+  const notification = event.data;
   const payload = {
-    notification: {
       title: 'You have a new message from Goal Squad!',
-      /*body: NOTIFICATION_SNAPSHOT.val().message,*/
-      body: 'This is a test message',
+      body: notification.val().message,
       icon: '../react-client/dist/assets/misc/logo.png',
       click_action: `https://${functions.config().firebase.authDomain}`
-    }
   }
 
   function cleanInvalidTokens(tokensWithKey, results) {
@@ -64,7 +62,7 @@ exports.sendNotifications = functions.database.ref('/notifications/{notification
     }
 
     return admin.messaging().sendToDevice(tokens, payload)
-      .then((response) => cleanInvalidTokens(tokensWithKey, response.results))
-      .then(() => admin.database().ref('/notifications').child(NOTIFICATION_SNAPSHOT.key).remove())
+      // .then((response) => cleanInvalidTokens(tokensWithKey, response.results))
+      // .then(() => admin.database().ref('/notifications').child(notification.key).remove())
   });
 });

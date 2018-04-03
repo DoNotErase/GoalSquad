@@ -27,10 +27,10 @@ class AdminPage extends React.Component {
       		message: notification,
     	})
   		.then(() => {
-    		this.setState({ notification: '' });
+    			this.setState({ notification: '' });
   		})
   		.catch(() => {
-    		console.log("Unable to send notification to Firebase database");
+    			console.log("Unable to send notification to Firebase database");
   		});
 	}
 
