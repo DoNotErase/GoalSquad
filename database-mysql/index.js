@@ -277,6 +277,19 @@ module.exports.completeGoalFailure = async (userGoalID) => {
   }
 };
 
+const findEggID = async(userID) => {
+  let possibleID;
+  let existingEgg;
+  do {
+    possibleID = await db.queryAsync(`SELECT FLOOR((SELECT RAND()) * (SELECT COUNT(*) FROM egg)) as id`);
+    console.log(possibleID, possibleID[0].id);
+    existingEgg = await db.queryAsync('SELECT user_egg_id FROM user_egg WHERE ' +
+      `egg_id = ${possibleID[0].id} AND user_id = ${userID};`);
+  } while (existingEgg.length);
+  console.log(possibleID, possibleID[0].id);
+  return possibleID[0].id;
+};
+
 module.exports.hatchEgg = async (userEggID, id, nextXP) => {
   try {
     const userID = await getRightID(id);
@@ -285,8 +298,10 @@ module.exports.hatchEgg = async (userEggID, id, nextXP) => {
     const newSquaddie = 'INSERT INTO user_monster (user_id, monster_id, user_monster_yard) VALUES ' +
       `('${userID}', (SELECT egg_id FROM user_egg WHERE user_egg_id = '${userEggID}'), 1);`;
 
+    const eggID = await findEggID(userID);
+    console.log(eggID);
     const makeNewEgg = 'INSERT INTO user_egg (user_id, egg_id, egg_xp) VALUES ' +
-      `('${userID}', FLOOR(RAND() * (SELECT COUNT (*) FROM egg) + 1), ${nextXP});`;
+      `('${userID}', ${eggID}, ${nextXP});`;
 
     const returnSquaddie = 'SELECT user_monster.*, monster.* FROM user_monster INNER JOIN monster ' +
       'ON user_monster.monster_id = monster.monster_id WHERE user_monster.user_monster_id = (SELECT MAX(user_monster_id) FROM user_monster);';
@@ -299,6 +314,7 @@ module.exports.hatchEgg = async (userEggID, id, nextXP) => {
 
     return await db.queryAsync(returnSquaddie);
   } catch (err) {
+    console.log(err);
     throw err;
   }
 };

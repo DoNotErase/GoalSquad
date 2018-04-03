@@ -57,8 +57,8 @@ class YardSquaddie extends React.Component {
 YardSquaddie.propTypes = {
   saveSquaddiePosition: PropTypes.func.isRequired,
   squaddie: PropTypes.shape({
-    user_monster_xcoord: PropTypes.string,
-    user_monster_ycoord: PropTypes.string,
+    user_monster_xcoord: PropTypes.number,
+    user_monster_ycoord: PropTypes.number,
     monster_pic: PropTypes.string,
     user_monster_id: PropTypes.number,
   }).isRequired,

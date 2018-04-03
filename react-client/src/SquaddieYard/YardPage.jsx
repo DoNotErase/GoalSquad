@@ -32,7 +32,7 @@ class YardPage extends React.Component {
             :
               this.props.squadState.yardSquaddies.map(squaddie => (
                 <YardSquaddie
-                  key={squaddie.monster_name}
+                  key={squaddie.user_monster_id}
                   squaddie={squaddie}
                 />))
             }

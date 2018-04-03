@@ -56,19 +56,17 @@ export const fetchEggStatus = () => (
 // caught in barnReducer
 const newSquaddie = squaddie => ({ type: 'NEW_SQUADDIE', payload: squaddie });
 
-export const hatchEgg = (eggID, extraXP) => {
-  console.log('hatch!');
-  return dispatch => (
+export const hatchEgg = (eggID, extraXP) => (
+  dispatch => (
     axios.post('/hatchEgg', { eggID, xp: extraXP })
       .then((res) => {
-        console.log('done hatching!', res.data);
         dispatch(newSquaddie(res.data));
         dispatch(getYardSquaddies());
         dispatch(fetchEggStatus());
       })
       .catch((err) => { handleErr(err); })
   )
-};
+);
 
 export const markGoalSuccess = userGoalID => (
   dispatch => (
