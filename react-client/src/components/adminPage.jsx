@@ -15,11 +15,11 @@ class adminPage extends React.Component {
 	sendNotification(e) {
   		e.preventDefault();
   		let notification  = this.props.notification;
-  		if ( !notificationMessage ) return;
+  		if ( !notification ) return;
 
   		FIREBASE_DATABASE.ref('/notifications').push({
       		user: 'ADMIN',
-      		message: notificationMessage,
+      		message: notification,
     	})
     		.then(() => {
       		this.setState({ notification: '' });
