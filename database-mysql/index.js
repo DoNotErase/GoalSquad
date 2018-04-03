@@ -1,6 +1,6 @@
 const mysql = require('mysql');
 const Promise = require('bluebird');
-const config = require('../config');
+const config = require('../config.js');
 // needed for mysql
 Promise.promisifyAll(require('mysql/lib/Connection').prototype);
 Promise.promisifyAll(require('mysql/lib/Pool').prototype);
