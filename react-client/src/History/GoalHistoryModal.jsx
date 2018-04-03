@@ -4,7 +4,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import * as goalsActions from '../CreateGoal/createGoalActions';
+import { submitUserGoal } from '../CreateGoal/createGoalActions';
 
 const GoalHistoryModal = (props) => {
   const { goal, open, close } = props;
@@ -63,7 +63,7 @@ const GoalHistoryModal = (props) => {
       days: deadlineDays(),
       hours: deadlineHours(),
     };
-    props.goalsActions.submitUserGoal(goal.goal_id, deadline, goal.user_goal_points);
+    props.submitRepeatGoal(goal.goal_id, deadline, goal.user_goal_points);
   };
 
   return (
@@ -118,7 +118,7 @@ GoalHistoryModal.propTypes = {
     user_goal_end_date: PropTypes.string,
     user_goal_start_date: PropTypes.string,
   }).isRequired,
-  goalsActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  submitRepeatGoal: PropTypes.func.isRequired,
   user: PropTypes.shape({
     custom_goal_timer_1: PropTypes.string,
   }).isRequired,
@@ -135,7 +135,7 @@ const mapStateToProps = state => (
 );
 
 const mapDispatchToProps = dispatch => (
-  { goalsActions: bindActionCreators(goalsActions, dispatch) }
+  { submitRepeatGoal: bindActionCreators(submitUserGoal, dispatch) }
 );
 
 export default connect(mapStateToProps, mapDispatchToProps)(GoalHistoryModal);

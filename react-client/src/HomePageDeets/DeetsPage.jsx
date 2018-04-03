@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { Scrollbars } from 'react-custom-scrollbars';
 import MainMenu from '../MainMenu';
-import * as actions from '../actions';
+import { fetchStats, deauthorizeFitbit } from '../actions';
 
 class DeetsPage extends React.Component {
   constructor(props) {
@@ -13,8 +13,7 @@ class DeetsPage extends React.Component {
 
     this.makeDisconnectButton = this.makeDisconnectButton.bind(this);
     if (!props.state.deets || props.state.needsUpdate) {
-      props.actions.fetchStats();
-      props.actions.turnOffUpdate();
+      props.fetchStats();
     }
   }
 
@@ -23,7 +22,7 @@ class DeetsPage extends React.Component {
       return (
         <a href="/logout" >
           <Button onClick={() => {
-            this.props.actions.deauthorizeFitbit();
+            this.props.deauthorizeFitbit();
           }}
           >
             Disconnect Fitbit
@@ -155,7 +154,8 @@ class DeetsPage extends React.Component {
 }
 
 DeetsPage.propTypes = {
-  actions: PropTypes.objectOf(PropTypes.func).isRequired,
+  fetchStats: PropTypes.func.isRequired,
+  deauthorizeFitbit: PropTypes.func.isRequired,
   state: PropTypes.shape({
     user: PropTypes.object,
     deets: PropTypes.object,
@@ -174,7 +174,8 @@ const mapStateToProps = state => (
 
 const mapDispatchToProps = dispatch => (
   {
-    actions: bindActionCreators(actions, dispatch),
+    fetchStats: bindActionCreators(fetchStats, dispatch),
+    deauthorizeFitbit: bindActionCreators(deauthorizeFitbit, dispatch),
   }
 );
 

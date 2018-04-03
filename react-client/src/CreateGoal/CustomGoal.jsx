@@ -4,14 +4,13 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import * as goalsActions from './createGoalActions';
-import * as incubatorActions from '../Incubator/incubatorActions';
+import { submitCustomGoal } from './createGoalActions';
 
 class CustomGoal extends React.Component {
   constructor(props) {
     super(props);
 
-    const lastCustom = moment(this.props.userState.user.custom_goal_timer_1);
+    const lastCustom = moment(this.props.customTimer);
     const now = moment();
     let available = true;
 
@@ -43,7 +42,7 @@ class CustomGoal extends React.Component {
   }
 
   timeUntilCustomGoal() {
-    const lastCustom = moment(this.props.userState.user.custom_goal_timer_1).add(1, 'days');
+    const lastCustom = moment(this.props.customTimer).add(1, 'days');
     const now = moment();
     const hours = lastCustom.diff(now, 'hours');
     if (hours > 0) {
@@ -136,7 +135,7 @@ class CustomGoal extends React.Component {
 
     if (this.state.noDeadline) {
       this.setState({ open: false, errorMessage: '', noDeadline: false });
-      this.props.goalsActions.submitCustomGoal(goalName, units, amount, null, 20);
+      this.props.submitCustomGoal(goalName, units, amount, null, 20);
       // local update?
       this.props.history.push('/incubator');
       return;
@@ -158,7 +157,7 @@ class CustomGoal extends React.Component {
       let points = 20;
       const hours = (deadline.days * 24) + deadline.hours;
       points += parseInt((points / (hours / 5)), 10);
-      this.props.goalsActions.submitCustomGoal(goalName, units, amount, deadline, points);
+      this.props.submitCustomGoal(goalName, units, amount, deadline, points);
 
       this.props.history.push('/incubator');
     }
@@ -325,23 +324,20 @@ class CustomGoal extends React.Component {
 }
 
 CustomGoal.propTypes = {
-  userState: PropTypes.shape({
-    user: PropTypes.object,
-  }).isRequired,
-  goalsActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  customTimer: PropTypes.string.isRequired,
+  submitCustomGoal: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
 };
 
 const mapStateToProps = state => (
-  { userState: state.main }
+  { customTimer: state.main.user.custom_goal_timer_1 }
 );
 
 const mapDispatchToProps = dispatch => (
   {
-    goalsActions: bindActionCreators(goalsActions, dispatch),
-    incubatorActions: bindActionCreators(incubatorActions, dispatch),
+    submitCustomGoal: bindActionCreators(submitCustomGoal, dispatch),
   }
 );
 
