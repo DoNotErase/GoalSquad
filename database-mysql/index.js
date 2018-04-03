@@ -1,17 +1,28 @@
 const mysql = require('mysql');
-const config = require('../configReal');
+const config = require('../config');
 const Promise = require('bluebird');
-// needed for mysql
+
 Promise.promisifyAll(require('mysql/lib/Connection').prototype);
 Promise.promisifyAll(require('mysql/lib/Pool').prototype);
 
-const db = mysql.createConnection({
-  host: config.aws.RDS_HOSTNAME,
-  user: config.aws.RDS_USERNAME,
-  password: config.aws.RDS_PASSWORD,
-  port: config.aws.RDS_PORT,
+const connection = {
+  host: process.env.RDS_HOSTNAME || config.aws.RDS_HOSTNAME,
+  user: process.env.RDS_USERNAME || config.aws.RDS_USERNAME,
+  password: process.env.RDS_PASSWORD || config.aws.RDS_PASSWORD,
+  port: process.env.RDS_PORT || config.aws.RDS_PORT,
   database: 'goalsquad',
+};
+
+const db = mysql.createPool({ connectionLimit: 5, ...connection });
+
+db.getConnection((err, connection) => {
+  if (err) {
+    console.log('Database connection error', err);
+  } else {
+    console.log('Database is connected!');
+  }
 });
+
 
 const getRightID = async (id) => {
   if (typeof id === 'number') {

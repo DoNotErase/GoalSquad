@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>Goal Squad</title>
+  <base href="/">
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.12/semantic.min.css"></link>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#008F7A">
@@ -27,10 +28,10 @@ firebase.initializeApp(configs);
 </script>
   <!-- END OF FIREBASE SCRIPT -->
   
-<script type="text/javascript" src="/bundle.js"></script>
+<script type="text/javascript" src="./bundle.js"></script>
 <script>
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js')
+    navigator.serviceWorker.register('./sw.js')
         .then(function () {
             console.log('Service Worker Registered');
         });
@@ -50,6 +51,12 @@ messaging.requestPermission()
     console.log('Unable to get permission to notify.', err);
     });
 </script>
+<!-- <script>
+var http = require("http"); // require not recognized
+setInterval(function () {
+  http.get("http://goal-squad.herokuapp.com");
+}, 300000);
+</script> -->
 
   <!-- noscript tag used to satisfy Lighthouse test that wants a display page/notification when there is no JS -->
   <noscript>Javascript is needed to run the site. Please enable JavaScript.</noscript>
