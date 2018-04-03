@@ -33,6 +33,7 @@ class Lobby extends React.Component {
     const { fightState } = this.props;
 
     const socketURL = (process.env.ROOTURL + ':' + process.env.PORT) || 'http://localhost:8080';
+    console.log('socketURL', socketURL);
     socket = socketIOClient(socketURL);
     // only has roomname and player1
     socket.on('hosting', (roomInfo) => {
