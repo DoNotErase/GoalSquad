@@ -282,8 +282,8 @@ module.exports.hatchEgg = async (userEggID, id, nextXP) => {
     const userID = await getRightID(id);
     const hatchEgg = `UPDATE user_egg SET egg_hatched = 1 WHERE user_egg_id = '${userEggID}';`;
 
-    const newSquaddie = 'INSERT INTO user_monster (user_id, monster_id) VALUES ' +
-      `('${userID}', (SELECT egg_id FROM user_egg WHERE user_egg_id = '${userEggID}'));`;
+    const newSquaddie = 'INSERT INTO user_monster (user_id, monster_id, user_monster_yard) VALUES ' +
+      `('${userID}', (SELECT egg_id FROM user_egg WHERE user_egg_id = '${userEggID}'), 1);`;
 
     const makeNewEgg = 'INSERT INTO user_egg (user_id, egg_id, egg_xp) VALUES ' +
       `('${userID}', FLOOR(RAND() * (SELECT COUNT (*) FROM egg) + 1), ${nextXP});`;

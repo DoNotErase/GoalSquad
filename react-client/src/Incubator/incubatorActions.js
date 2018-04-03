@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getYardSquaddies } from '../SquaddieYard/squaddieActions';
 
 const isLoading = () => ({ type: 'IS_LOADING', payload: true });
 const doneLoading = () => ({ type: 'DONE_LOADING', payload: false });
@@ -55,16 +56,19 @@ export const fetchEggStatus = () => (
 // caught in barnReducer
 const newSquaddie = squaddie => ({ type: 'NEW_SQUADDIE', payload: squaddie });
 
-export const hatchEgg = (eggID, extraXP) => (
-  dispatch => (
+export const hatchEgg = (eggID, extraXP) => {
+  console.log('hatch!');
+  return dispatch => (
     axios.post('/hatchEgg', { eggID, xp: extraXP })
       .then((res) => {
+        console.log('done hatching!', res.data);
         dispatch(newSquaddie(res.data));
-        dispatch({ type: 'SQUADDIE_UPDATE' });
+        dispatch(getYardSquaddies());
+        dispatch(fetchEggStatus());
       })
       .catch((err) => { handleErr(err); })
   )
-);
+};
 
 export const markGoalSuccess = userGoalID => (
   dispatch => (

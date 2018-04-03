@@ -425,7 +425,8 @@ app.post('/hatchEgg', isAuthorized, async (req, res) => {
   try {
     const userID = req.session.passport.user.id;
     const userEggID = req.body.eggID;
-    const newSquaddie = db.hatchEgg(userEggID, userID, req.body.xp);
+    const newSquaddie = await db.hatchEgg(userEggID, userID, req.body.xp);
+    console.log(newSquaddie);
     res.json(newSquaddie[0]);
   } catch (err) {
     res.status(500).send(err);
