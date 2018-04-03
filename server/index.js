@@ -5,12 +5,11 @@ const session = require('express-session');
 const FitbitStrategy = require('passport-fitbit-oauth2').FitbitOAuth2Strategy;
 const LocalStrategy = require('passport-local');
 const passport = require('passport');
-const config = require('../config.js');
-
 const axios = require('axios');
 const path = require('path');
 const bcrypt = require('bcrypt-nodejs');
 const generateName = require('sillyname');
+
 let config;
 if (!process.env.PORT) {
   config = require('../config.js');

@@ -1,11 +1,11 @@
 const mysql = require('mysql');
-
-let config;
-if (!process.env.RDS_HOSTNAME) {
-  config = require('../config');
-}
 const Promise = require('bluebird');
 
+let config;
+if (!process.env.PORT) {
+  config = require('../config.js');
+}
+// needed for mysql
 Promise.promisifyAll(require('mysql/lib/Connection').prototype);
 Promise.promisifyAll(require('mysql/lib/Pool').prototype);
 
