@@ -5,7 +5,6 @@ const session = require('express-session');
 const FitbitStrategy = require('passport-fitbit-oauth2').FitbitOAuth2Strategy;
 const LocalStrategy = require('passport-local');
 const passport = require('passport');
-const config = require('../config.js');
 const axios = require('axios');
 const path = require('path');
 const bcrypt = require('bcrypt-nodejs');
@@ -18,6 +17,7 @@ const io = require('socket.io')(server);
 
 const db = require('../database-mysql/index.js');
 
+app.set('port', (process.env.PORT || 8080));
 app.use(express.static(`${__dirname}/../react-client/dist`));
 app.use(cookieParser());
 app.use(bodyParser.json());
@@ -65,10 +65,10 @@ passport.use(new LocalStrategy(
 
 passport.use(new FitbitStrategy(
   {
-    clientID: config.fitbit.id,
-    clientSecret: config.fitbit.secret,
+    clientID: process.env.FITBIT_ID,
+    clientSecret: process.env.FITBIT_SECRET,
     scope: ['activity', 'profile', 'sleep', 'social'],
-    callbackURL: 'http://127.0.0.1:8080/callback',
+    callbackURL: process.env.CALLBACK_URL || 'http://127.0.0.1:8080/callback',
   },
   async (accessToken, refreshToken, profile, done) => {
     try {
@@ -166,7 +166,7 @@ app.post('/fitbit/deauthorize/', async (req, res) => {
       {
         headers:
         {
-          Authorization: `Basic ${(Buffer.from(`${config.fitbit.id}:${config.fitbit.secret}`)).toString('base64')};`,
+          Authorization: `Basic ${(Buffer.from(`${process.env.FITBIT_ID}:${process.env.FITBIT_SECRET}`)).toString('base64')};`,
           'Content-Type': 'application/x-www-form-urlencoded',
         },
       },
@@ -445,13 +445,9 @@ app.get('/userDeets', isAuthorized, async (req, res) => {
 
 /** ********************************************************* */
 
-app.get('/*', (req, res) => {
+app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../react-client/dist', '/index.html'));
 });
-
-// app.listen(8080, () => {
-//   console.log('listening on port 8080!');
-// });
 
 /* *********************** socket io stuff ********************************** */
 const connections = [];
@@ -476,7 +472,7 @@ io.on('connection', (socket) => {
     const roomName = generateName();
     socket.join(roomName);
     const roomObj = {
-      roomName: roomName,
+      roomName,
       player1: username,
     };
     rooms.push(roomObj);
@@ -486,7 +482,7 @@ io.on('connection', (socket) => {
   socket.on('join', (username) => {
     console.log('rooms', rooms);
     for (let i = 0; i < rooms.length; i += 1) {
-      let room = rooms[i].roomName;
+      const room = rooms[i].roomName;
       if (io.sockets.adapter.rooms[room].length < 2) {
         socket.join(room);
         rooms[i].player2 = username;
@@ -495,7 +491,6 @@ io.on('connection', (socket) => {
       }
     }
     // TODO add situation where no hosts are found
-
   });
 
   socket.on('fighter picked', (roomname, player, squaddie) => {
@@ -503,7 +498,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('attack', (roomname, damage, defense, user_monster_id) => {
-    let totalDamage = damage + 3 - defense; // change formula later
+    const totalDamage = damage + 3 - defense; // change formula later
     io.in(roomname).emit('attack', { damage: totalDamage, user_monster_id });
   });
 
@@ -512,6 +507,6 @@ io.on('connection', (socket) => {
   });
 });
 
-server.listen(8080, () => {
-  console.log('listening on port 8080!');
+server.listen(app.get('port'), () => {
+  console.log('listening on port', app.get('port'));
 });
