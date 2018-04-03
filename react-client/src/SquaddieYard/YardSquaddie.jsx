@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Draggable from 'react-draggable';
-import * as squaddieActions from './squaddieActions';
+import { saveSquaddiePosition } from './squaddieActions';
 
 class YardSquaddie extends React.Component {
   constructor(props) {
@@ -22,7 +22,7 @@ class YardSquaddie extends React.Component {
 
   componentWillUnmount() {
     if (this.state.moved) {
-      this.props.squaddieActions.saveSquaddiePosition(this.state.deltaPosition);
+      this.props.saveSquaddiePosition(this.state.deltaPosition);
     }
   }
 
@@ -55,7 +55,13 @@ class YardSquaddie extends React.Component {
 }
 
 YardSquaddie.propTypes = {
-  squaddieActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  saveSquaddiePosition: PropTypes.func.isRequired,
+  squaddie: PropTypes.shape({
+    user_monster_xcoord: PropTypes.string,
+    user_monster_ycoord: PropTypes.string,
+    monster_pic: PropTypes.string,
+    user_monster_id: PropTypes.number,
+  }).isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -64,7 +70,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => (
   {
-    squaddieActions: bindActionCreators(squaddieActions, dispatch),
+    saveSquaddiePosition: bindActionCreators(saveSquaddiePosition, dispatch),
   }
 );
 

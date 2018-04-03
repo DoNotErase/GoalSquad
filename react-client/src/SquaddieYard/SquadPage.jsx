@@ -6,13 +6,13 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import MainMenu from '../MainMenu';
 import SquaddieCard from './SquaddieCard';
-import * as squadActions from './squaddieActions';
+import { getUserSquaddies } from './squaddieActions';
 
 
 class SquadPage extends React.Component {
   componentDidMount() {
     if (!this.props.squadState.squaddies.length || this.props.squadState.needsUpdate) {
-      this.props.squadActions.getUserSquaddies();
+      this.props.getUserSquaddies();
     }
   }
 
@@ -51,7 +51,7 @@ SquadPage.propTypes = {
     needsUpdate: PropTypes.bool,
     isLoading: PropTypes.bool,
   }).isRequired,
-  squadActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  getUserSquaddies: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
@@ -60,14 +60,13 @@ SquadPage.propTypes = {
 
 const mapStateToProps = state => (
   {
-    state: state.main,
     squadState: state.squad,
   }
 );
 
 const mapDispatchToProps = dispatch => (
   {
-    squadActions: bindActionCreators(squadActions, dispatch),
+    getUserSquaddies: bindActionCreators(getUserSquaddies, dispatch),
   }
 );
 
