@@ -1,7 +1,7 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { Button, Grid, Header, Input }  from 'semantic-ui-react';
-
+import firebase from '../firebase/index';
 
 class AdminPage extends React.Component {
 	constructor(props) {
@@ -10,16 +10,19 @@ class AdminPage extends React.Component {
 			notification: ''
 		}
 		this.sendNotification = this.sendNotification.bind(this);
+		this.updateNotification = this.updateNotification.bind(this);
 	}
 
 	updateNotification(e) { this.setState({ notification: e.target.value }); }
 
 	sendNotification(e) {
   		e.preventDefault();
-  		let notification  = this.props.notification;
+  		console.log('notifcation', this.state.notification)
+  		let notification  = this.state.notification;
+  		let firebase_database = firebase.database();
   		if ( !notification ) return;
 
-  		FIREBASE_DATABASE.ref('/notifications').push({
+  		firebase_database.ref('/notifications').push({
       		user: 'ADMIN',
       		message: notification,
     	})
