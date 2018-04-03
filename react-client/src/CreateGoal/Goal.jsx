@@ -92,14 +92,14 @@ class Goal extends React.Component {
       let points = parseInt(this.props.goal.goal_points, 10);
       const hours = (deadline.days * 24) + deadline.hours;
       points += parseInt((points / (hours / this.props.goal.goal_timedivisor)), 10);
-      this.props.submitUserGoal(this.state.goalID, deadline, points);
+      this.props.submitUserGoal(this.props.goal.goal_id, deadline, points);
       this.props.history.push('/incubator');
     }
   }
 
   render() {
     const {
-      open, dimmer, size, difficultyColor, goalName, goalPoints,
+      open, dimmer, size, difficultyColor,
     } = this.state;
 
     return (
@@ -113,7 +113,7 @@ class Goal extends React.Component {
           <Grid>
             <Grid.Row columns={2}>
               <Grid.Column>
-                <Header as="h4">{goalName}</Header>
+                <Header as="h4">{this.props.goal.goal_name}</Header>
               </Grid.Column>
               <Grid.Column>
                 <Statistic
@@ -121,7 +121,7 @@ class Goal extends React.Component {
                   floated="right"
                   size="mini"
                 >
-                  <Statistic.Value>{goalPoints}</Statistic.Value>
+                  <Statistic.Value>{this.props.goal.goal_points}</Statistic.Value>
                   <Statistic.Label>points</Statistic.Label>
                 </Statistic>
               </Grid.Column>

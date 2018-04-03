@@ -1,5 +1,5 @@
 const mysql = require('mysql');
-const config = require('../config');
+const config = require('../configReal');
 const Promise = require('bluebird');
 // needed for mysql
 Promise.promisifyAll(require('mysql/lib/Connection').prototype);
@@ -261,8 +261,6 @@ module.exports.completeGoalSuccess = async (userGoalID) => {
       `(SELECT user_id FROM user_goal WHERE user_goal_id = ${userGoalID})`;
     await db.queryAsync(updateEgg);
     return 'success';
-    // want to turn this into one call
-    // want to add check for egg hatching?
   } catch (err) {
     throw err;
   }
@@ -277,17 +275,11 @@ module.exports.completeGoalFailure = async (userGoalID) => {
   }
 };
 
-const findEggID = async(userID) => {
-  let possibleID;
-  let existingEgg;
-  do {
-    possibleID = await db.queryAsync(`SELECT FLOOR((SELECT RAND()) * (SELECT COUNT(*) FROM egg)) as id`);
-    console.log(possibleID, possibleID[0].id);
-    existingEgg = await db.queryAsync('SELECT user_egg_id FROM user_egg WHERE ' +
-      `egg_id = ${possibleID[0].id} AND user_id = ${userID};`);
-  } while (existingEgg.length);
-  console.log(possibleID, possibleID[0].id);
-  return possibleID[0].id;
+const findEggID = async (userID) => {
+  const possibleIDs = await db.queryAsync('SELECT egg_id from egg WHERE egg_id NOT IN ' +
+    `(SELECT egg_id FROM user_egg WHERE user_id=${userID})`);
+
+  return possibleIDs[Math.ceil(Math.random() * possibleIDs.length)].egg_id;
 };
 
 module.exports.hatchEgg = async (userEggID, id, nextXP) => {
@@ -299,7 +291,7 @@ module.exports.hatchEgg = async (userEggID, id, nextXP) => {
       `('${userID}', (SELECT egg_id FROM user_egg WHERE user_egg_id = '${userEggID}'), 1);`;
 
     const eggID = await findEggID(userID);
-    console.log(eggID);
+
     const makeNewEgg = 'INSERT INTO user_egg (user_id, egg_id, egg_xp) VALUES ' +
       `('${userID}', ${eggID}, ${nextXP});`;
 
