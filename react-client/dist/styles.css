@@ -125,6 +125,22 @@ orangy: background-image: linear-gradient(to right, #d95a37, #df663e, #e67146, #
 }
 
 
+@keyframes slideInLeft {
+    from {
+        transform: translate3d(-100%, 0, 0);
+        visibility: visible;
+    }
+
+    to {
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.slideInLeft {
+    animation: slideInLeft 2.5s infinite;
+    animation-name: slideInLeft;
+}
+
 .glow { 
     animation: shake 2.5s infinite;
     -webkit-filter: drop-shadow(0px 0px 20px rgba(254, 254, 90, 1));

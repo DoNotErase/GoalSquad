@@ -67,7 +67,7 @@ class BattleInterfaceBottom extends React.Component {
         <p> You lost this battle but {monster.monster_name} has gained
           {xp} XP and has leveled up and is now level {monster.user_monster_level + 1}!
         </p>
-        <Image src={monster.monster_pic} />
+        <Image src={monster.monster_pic} className="slideInLeft" />
         <p> Attack: {monster.user_monster_attack + 1} </p>
         <p> Defense: {monster.user_monster_defense + 1} </p>
         <p> MaxHP: {(monster.user_monster_level + 2) * 5} </p>
