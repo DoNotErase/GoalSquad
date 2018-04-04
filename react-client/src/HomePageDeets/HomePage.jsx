@@ -33,13 +33,19 @@ class HomePage extends React.Component {
 
   componentWillMount() {
     if (!this.props.state.user.user_id) {
+      console.log('attempting login');
       this.props.homePageActions.attemptLogin();
+    } else {
+      console.log('has user!');
     }
   }
 
   componentDidUpdate() {
     if (this.props.state.user.user_id) {
+      console.log('has user.user_id');
       this.props.history.push('/incubator');
+    } else {
+      console.log('no user yet');
     }
   }
 
