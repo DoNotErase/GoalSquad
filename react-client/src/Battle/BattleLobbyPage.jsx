@@ -188,7 +188,6 @@ class Lobby extends React.Component {
         </Grid>
       </div>
     );
-    // TODO add else statement for waiting to find players if host
   }
 }
 
