@@ -52,12 +52,14 @@ const fightReducer = (state = fightState, action) => {
         return {
           ...state,
           monster2CurrentHP: state.monster2CurrentHP - action.payload.damage,
+          monster2DefenseTurns: state.monster2DefenseTurns - 1,
           activePlayer: toggledPlayer,
         };
       } // the other monster
       return {
         ...state,
         monster1CurrentHP: state.monster1CurrentHP - action.payload.damage,
+        monster1DefenseTurns: state.monster2DefenseTurns - 1,
         activePlayer: toggledPlayer,
       };
     }
@@ -68,12 +70,14 @@ const fightReducer = (state = fightState, action) => {
         return {
           ...state,
           monster1DefenseTurns: 2,
+          monster2DefenseTurns: state.monster2DefenseTurns - 1,
           activePlayer: toggledPlayer,
         };
       } // the other monster
       return {
         ...state,
         monster2DefenseTurns: 2,
+        monster1DefenseTurns: state.monster2DefenseTurns - 1,
         activePlayer: toggledPlayer,
       };
     }

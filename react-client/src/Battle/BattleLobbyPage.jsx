@@ -136,15 +136,8 @@ class Lobby extends React.Component {
       return (
         <div>
           <BattlePage
-            monster1={fightState.monster1}
-            monster2={fightState.monster2}
-            playeriam={fightState.playeriam}
-            currentplayer={fightState.activePlayer}
-            monster1CurrentHP={fightState.monster1CurrentHP}
-            monster2CurrentHP={fightState.monster2CurrentHP}
             attack={this.attack}
             surrender={this.surrender}
-            surrenderPlayer={fightState.surrenderPlayer}
             history={this.props.history}
           />
         </div>

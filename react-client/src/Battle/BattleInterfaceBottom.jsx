@@ -175,6 +175,7 @@ class BattleInterfaceBottom extends React.Component {
                   />
                 </Grid.Column>
                 <Grid.Column textAlign="center" verticalAlign="bottom">
+                  <Header as="h5"> Defending for {monster.s}
                   <Button
                     disabled={fightState.playeriam !== fightState.activePlayer}
                     basic
