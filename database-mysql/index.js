@@ -535,10 +535,10 @@ module.exports.addXPtoMonster = async (monID, xp) => {
 
 module.exports.levelUp = async (monID) => {
   try {
-    return await db.queryAsync('UPDATE user_mosnter SET user_monster_level = user_monster_level + 1, ' +
+    return await db.queryAsync('UPDATE user_monster SET user_monster_level = user_monster_level + 1, ' +
       'user_monster_hp = user_monster_hp + 5, ' +
       'user_monster_attack = user_monster_attack + 1, ' +
-      'user_monster_defense = user_monster_defense + 1, ' +
+      'user_monster_defense = user_monster_defense + 1 ' +
       `WHERE user_monster_id = ${monID};`);
   } catch (err) {
     console.log(err);

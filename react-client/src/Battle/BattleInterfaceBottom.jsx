@@ -85,10 +85,8 @@ class BattleInterfaceBottom extends React.Component {
 
   winState() {
     const { fightState, fightActions } = this.props;
-    console.log('winState');
     if (fightState.monster1CurrentHP > 0 && fightState.monster2CurrentHP > 0) {
-      console.log('game not over');
-      return '';
+      return ''; // only actually run once game is over;
     }
     const calculateXP = (winningMon, losingMon) => {
       // if a low level mosnter beat a high level monster
@@ -103,32 +101,30 @@ class BattleInterfaceBottom extends React.Component {
       console.log(Math.floor(monster.user_monster_current_xp / 100));
       console.log(Math.floor((monster.user_monster_current_xp) / 100));
       if (Math.floor(monster.user_monster_current_xp / 100) !== Math.floor((monster.user_monster_current_xp + xp) / 100)) {
-        console.log('level up!');
         return true;
       }
-      console.log('no level!');
       return false;
     };
 
     const iWon = this.iWon();
-    console.log(iWon);
     let XPgained;
     const yourMonster = fightState.playeriam === 'player1' ? fightState.monster1 : fightState.monster2;
-    console.log('your monster: ', yourMonster.monster_name);
     const theirMonster = fightState.playeriam === 'player1' ? fightState.monster2 : fightState.monster2;
     const monsterID = yourMonster.user_monster_id;
+    
     if (iWon) {
       XPgained = calculateXP(yourMonster, theirMonster);
     } else { // you lost
       XPgained = 5;
     }
-    console.log(XPgained);
+    
     fightActions.addXPtoMonster(monsterID, XPgained);
+    
     if (checkForLevelUp(yourMonster, XPgained)) {
       fightActions.levelup(yourMonster.user_monster_id);
       return this.monsterLevelUp(iWon, yourMonster, XPgained);
     }
-    console.log('so far!');
+
     if (iWon) {
       return `Congratulations! You won and ${yourMonster.monster_name} has gained ${XPgained}!`;
     }

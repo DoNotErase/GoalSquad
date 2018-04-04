@@ -95,9 +95,7 @@ export const resetState = () => ({ type: 'RESET_STATE' });
 
 export const surrendered = surrenderPlayer => ({ type: 'SURRENDER', payload: { surrenderPlayer } });
 
-export const addXPtoMonster = (monID, xp) => {
-  console.log(monID, xp);
-  return (
+export const addXPtoMonster = (monID, xp) => (
     dispatch => (
       axios.patch('/monsterXP', { monID, xp })
         .then((res) => {
@@ -112,7 +110,7 @@ export const addXPtoMonster = (monID, xp) => {
 
 export const levelup = monID => (
   dispatch => (
-    axios.patch('/monsterXP', { monID })
+    axios.patch('/levelup', { monID })
       .then((res) => {
         console.log('done leveling', res.data);
       })
