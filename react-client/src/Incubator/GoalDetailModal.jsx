@@ -221,7 +221,6 @@ class GoalDetailModal extends React.Component {
 }
 
 GoalDetailModal.propTypes = {
-  fitbit: PropTypes.string.isRequired,
   goal: PropTypes.shape({
     goal_id: PropTypes.number,
     user_goal_id: PropTypes.number,
@@ -236,8 +235,6 @@ GoalDetailModal.propTypes = {
   }).isRequired,
   submitProgress: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
-  // dimmer: PropTypes.bool.isRequired,
-  // size: PropTypes.string.isRequired,
   open: PropTypes.bool.isRequired,
 };
 
