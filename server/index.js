@@ -1,22 +1,38 @@
-const express = require('express');
-const cookieParser = require('cookie-parser');
+const axios = require('axios');
+const bcrypt = require('bcrypt-nodejs');
 const bodyParser = require('body-parser');
-const session = require('express-session');
+const config = require('../config.js');
+const ConnectRoles = require('connect-roles');
+const cookieParser = require('cookie-parser');
+const db = require('../database-mysql/index.js');
 const FitbitStrategy = require('passport-fitbit-oauth2').FitbitOAuth2Strategy;
+const express = require('express');
+const generateName = require('sillyname');
 const LocalStrategy = require('passport-local');
 const passport = require('passport');
-const config = require('../config.js');
-const axios = require('axios');
 const path = require('path');
-const bcrypt = require('bcrypt-nodejs');
-const generateName = require('sillyname');
+const session = require('express-session');
 
 const app = express();
 // http for streaming and .server for event listeners
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
-const db = require('../database-mysql/index.js');
+
+// connect-roles for admin authorization
+const user = new ConnectRoles({
+  failureHandler: function (req, res, action) {
+    // optional function to customise code that runs when
+    // user fails authorization
+    var accept = req.headers.accept || '';
+    res.status(403);
+    if (~accept.indexOf('html')) {
+      res.render('access-denied', {action: action});
+    } else {
+      res.send('Access Denied - You don\'t have permission to: ' + action);
+    }
+  }
+});
 
 app.use(express.static(`${__dirname}/../react-client/dist`));
 app.use(cookieParser());
@@ -31,6 +47,7 @@ app.use(passport.session({
   resave: false,
   saveUninitialized: true,
 }));
+app.use(user.middleware());
 
 function isAuthorized(req, res, next) {
   if (!req.session.passport) {
@@ -40,6 +57,13 @@ function isAuthorized(req, res, next) {
   }
   next();
 }
+
+// connect-roles - check if user is admin, grant full access if so
+user.use(function (req) {
+  if (req.user.role === 'admin') {
+    return true;
+  }
+});
 
 /** **************OAUTH**************** */
 
@@ -449,8 +473,7 @@ app.patch('/updatePushNotificationsToFalse', isAuthorized, async (req, res) => {
 app.patch('/updatePushNotificationsToTrue', isAuthorized, async (req, res) => {
   try{
     const userID = req.user.id;
-    const token = req.body.token;
-    const newUserInfo = db.updatePushNotificationsToTrue(userID, token);
+    const newUserInfo = db.updatePushNotificationsToTrue(userID);
     res.json(newUserInfo);
   } catch (err) {
     res.status(500).send(err);
@@ -474,6 +497,17 @@ app.get('/userDeets', isAuthorized, async (req, res) => {
     const details = await db.getUserDeets(req.session.passport.user.id);
     res.json(details);
   } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
+
+/** ********************** ADMIN *********************************** */
+
+app.get('/admin', user.can('access admin page'), function (req, res) {
+  try {
+    res.status(200).send();
+  } catch {
     res.status(500).send(err);
   }
 });

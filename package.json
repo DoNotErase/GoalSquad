@@ -28,6 +28,7 @@
     "bcrypt-nodejs": "0.0.3",
     "bluebird": "^3.5.1",
     "body-parser": "^1.17.2",
+    "connect-roles": "^3.1.2",
     "cookie-parser": "^1.4.3",
     "express": "^4.15.0",
     "express-session": "^1.15.6",
