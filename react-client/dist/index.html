@@ -34,26 +34,26 @@ firebase.initializeApp(configs);
   
 <script type="text/javascript" src="./bundle.js"></script>
 <script>
-// if ('serviceWorker' in navigator) {
-//     navigator.serviceWorker.register('./sw.js')
-//         .then(function () {
-//             console.log('Service Worker Registered');
-//         });
-// }
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js')
+            .then(function () {
+                console.log('Service Worker Registered');
+            });
+    }
 </script>
 <script>
-// var messaging = firebase.messaging();
-// messaging.requestPermission()
-//     .then(function () {
-//         console.log('Notification permission granted.');
-//         return messaging.getToken();
-//     })
-//     .then(function (token) {
-//         console.log(token);
-//     })
-//     .catch(function (err) {
-//     console.log('Unable to get permission to notify.', err);
-//     });
+    var messaging = firebase.messaging();
+    messaging.requestPermission()
+        .then(function () {
+            console.log('Notification permission granted.');
+            return messaging.getToken();
+        })
+        .then(function (token) {
+            console.log(token);
+        })
+        .catch(function (err) {
+        console.log('Unable to get permission to notify.', err);
+        });
 </script>
 <!-- <script>
 var http = require("http"); // require not recognized
