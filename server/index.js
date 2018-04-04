@@ -23,7 +23,6 @@ const io = require('socket.io')(server);
 const db = require('../database-mysql/index.js');
 
 app.set('port', (process.env.PORT || 8080));
-app.use(express.static(`${__dirname}/../react-client/dist`));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(session({
@@ -37,8 +36,16 @@ app.use(passport.session({
   saveUninitialized: true,
 }));
 
-/** **************MIDDLEWARE**************** */
+// returns a compressed bundle
+app.get('*.js', (req, res, next) => {
+  console.log(req.url);
+  req.url += '.gz';
+  res.set('Content-Encoding', 'gzip');
+  res.set('Content-Type', 'text/javascript');
+  next();
+});
 
+app.use(express.static(`${__dirname}/../react-client/dist`));
 
 function isAuthorized(req, res, next) {
   if (!req.session.passport) {
@@ -47,14 +54,6 @@ function isAuthorized(req, res, next) {
   }
   next();
 }
-
-// returns a compressed bundle
-app.get('*.js', (req, res, next) => {
-  req.url = req.url + '.gz';
-  res.set('Content-Encoding', 'gzip');
-  res.set('Content-Type', 'text/javascript');
-  next();
-});
 
 /** **************OAUTH**************** */
 
