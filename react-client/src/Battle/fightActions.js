@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export const setLobbyInfo = ((roomInfo, player) => {
   return (dispatch) => {
     dispatch({
@@ -23,32 +25,6 @@ export const setPlayerNumber = ((playernumber) => {
     });
   };
 });
-
-// move player identification to reducer rather than action
-// export const setMonsterFighter = ((player, squaddie) => {
-//   console.log('squaddie', squaddie);
-//   if (player === 'player1') {
-//     return (dispatch) => {
-//       dispatch({
-//         type: 'CHOOSE_FIGHTER',
-//         payload: {
-//           monster1: squaddie,
-//           monster1CurrentHP: squaddie.user_monster_hp,
-//         },
-//       });
-//     };
-//   } else {
-//     return (dispatch) => {
-//       dispatch({
-//         type: 'CHOOSE_FIGHTER',
-//         payload: {
-//           monster2: squaddie,
-//           monster2CurrentHP: squaddie.user_monster_hp,
-//         },
-//       });
-//     };
-//   }
-// });
 
 export const setMonsterFighter = ((player, squaddie) => {
   return (dispatch) => {
@@ -89,22 +65,30 @@ export const setActivePlayer = ((playernumber) => {
   };
 });
 
-export const resetState = (() => {
-  return (dispatch) => {
-    dispatch({
-      type: 'RESET_STATE',
-    });
-  };
-});
+export const resetState = () => ({ type: 'RESET_STATE' });
 
+export const surrendered = surrenderPlayer => ({ type: 'SURRENDER', payload: { surrenderPlayer } });
 
-export const surrendered = ((surrenderPlayer) => {
-  return (dispatch) => {
-    dispatch({
-      type: 'SURRENDER',
-      payload: {
-        surrenderPlayer,
-      },
-    });
-  };
-});
+export const addXPtoMonster = (monID, xp) => (
+  dispatch => (
+    axios.patch('/monsterXP', { monID, xp })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  )
+);
+
+export const levelup = monID => (
+  dispatch => (
+    axios.patch('/levelup', { monID })
+      .then((res) => {
+        console.log('done leveling', res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  )
+);

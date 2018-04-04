@@ -1,13 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Grid, Button, Header, Divider, Modal, Loader } from 'semantic-ui-react';
+import { Grid, Button, Header, Divider, Modal, Loader, Image } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import socketIOClient from 'socket.io-client';
 import * as fightActions from './fightActions';
 import ChooseFightersPage from './ChooseFightersPage';
 import BattlePage from './BattlePage';
 import MainMenu from '../MainMenu';
+
+const axios = require('axios');
 
 let socket;
 
@@ -46,8 +48,8 @@ class Lobby extends React.Component {
     socket.on('fighter chosen', (fighterInfo) => {
       this.props.fightActions.setMonsterFighter(fighterInfo.player, fighterInfo.squaddie);
     });
-    socket.on('attack', ({ damage, user_monster_id }) => {
-      this.props.fightActions.decreaseHealth(damage, user_monster_id);
+    socket.on('attack', ({ damage, monID }) => {
+      this.props.fightActions.decreaseHealth(damage, monID);
     });
     socket.on('surrender', ({ surrenderPlayer }) => {
       // use to display that you either won or lost because someone surrendered
@@ -59,21 +61,31 @@ class Lobby extends React.Component {
     });
   }
 
-  componentDidMount() {}
+  componentDidMount() {axios.get('/userSquaddies')
+      .then((squaddies) => {
+        console.log('squaddies.data.length', squaddies.data.length);
+        if (squaddies.data.length < 1) {
+          this.setState({
+            noSquaddies: true,
+          });
+        }
+      });
+  }
   componentWillUnmount() {
     socket.disconnect();
   }
+
   hostGame() {
     socket.emit('host', this.props.mainState.user.user_username, (data) => {
       console.log(data);
     });
     this.setState({
       playeriam: 'player1',
-      currentplayer: 'player1',
       hostWaiting: true,
       buttonsDisabled: true,
     });
   }
+
   joinGame() {
     socket.emit('join', this.props.mainState.user.user_username, (data) => {
       console.log(data);
@@ -83,13 +95,21 @@ class Lobby extends React.Component {
       hostWaiting: false,
     });
   }
+
   chooseFighter(roomname, playeriam, squaddie) {
+    this.setState({
+      hostWaiting: false,
+      dimmer: false,
+      nojoin: false,
+      buttonsDisabled: false,
+    });
     socket.emit('fighter picked', roomname, playeriam, squaddie, (data) => {
       console.log('data', data);
     });
   }
-  attack(roomname, damage, defense, user_monster_id) {
-    socket.emit('attack', roomname, damage, defense, user_monster_id, (data) => {
+
+  attack(roomname, damage, defense, monID) {
+    socket.emit('attack', roomname, damage, defense, monID, (data) => {
       console.log('data', data);
     });
   }
@@ -105,15 +125,44 @@ class Lobby extends React.Component {
   }
 
   render() {
-    // both players joined but not monsters picked
-    const { fightState } = this.props;
-
-    if (fightState.player2 &&
+    const {fightState} = this.props;
+    // user does not have any monsters yet
+    if (this.state.noSquaddies === true) {
+      return (
+        <div>
+          <Grid
+            textAlign="center"
+            verticalAlign="middle"
+            style={{ height: '100%' }}
+          >
+            <Grid.Column computer={8} tablet={10} mobile={16}>
+              <Grid.Row>
+                <Header size="large" className="white">Obtain more Squaddies</Header>
+                <Divider hidden />
+              </Grid.Row>
+              <Grid.Row>
+                <Image size="small" src="./assets/squaddies/supahfly.png" centered />
+                <Divider hidden />
+              </Grid.Row>
+              <Grid.Row>
+                <Header size="medium" className="white">
+                  Complete goals to raise more Squaddies
+                </Header>
+                <Divider hidden />
+              </Grid.Row>
+            </Grid.Column>
+          </Grid>
+          <MainMenu history={this.props.history} />
+        </div>
+      );
+      // both players joined but not monsters picked
+    } else if (fightState.player2 &&
       (!fightState.monster1.monster_name || !fightState.monster2.monster_name)) {
       return (
         <div>
           <ChooseFightersPage
             chooseFighter={this.chooseFighter}
+            history={this.props.history}
           />
         </div>
       );
@@ -130,6 +179,7 @@ class Lobby extends React.Component {
             attack={this.attack}
             surrender={this.surrender}
             surrenderPlayer={fightState.surrenderPlayer}
+            history={this.props.history}
           />
         </div>
       );
@@ -188,9 +238,30 @@ class Lobby extends React.Component {
         </Grid>
       </div>
     );
-    // TODO add else statement for waiting to find players if host
   }
 }
+
+Lobby.propTypes = {
+  fightActions: PropTypes.shape({
+    setLobbyInfo: PropTypes.func,
+    setMonsterFighter: PropTypes.func,
+    decreaseHealth: PropTypes.func,
+    surrendered: PropTypes.func,
+  }).isRequired,
+  mainState: PropTypes.shape({
+    user: PropTypes.object,
+  }).isRequired,
+  fightState: PropTypes.shape({
+    playeriam: PropTypes.string,
+    player1: PropTypes.string,
+    player2: PropTypes.string,
+    monster1: PropTypes.object,
+    monster2: PropTypes.object,
+  }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
 
 const mapDispatchToProps = dispatch => (
   {
