@@ -11,6 +11,10 @@ import * as homePageActions from '../HomePageDeets/homePageActions';
 import * as incubatorActions from './incubatorActions';
 import * as squaddieActions from '../SquaddieYard/squaddieActions';
 
+const styles = {
+  eggBackground: 'linear-gradient(to bottom, #faedc4, #ffebd8, #ffeff1, #fff8ff, #ffffff)',
+};
+
 class IncubatorPage extends React.Component {
   constructor(props) {
     super(props);
@@ -172,9 +176,14 @@ class IncubatorPage extends React.Component {
           className="fadeIn"
         >
           <Modal.Content style={{ background: 'transparent' }}>
-            <Card centered>
+            <Card
+              centered
+              style={{ backgroundImage: styles.eggBackground }}
+            >
               {this.hatchImage()}
-              <Card.Content>
+              <Card.Content
+                style={{ backgroundColor: 'white' }}
+              >
                 <Card.Header>
                   {this.state.count === 0 && this.props.newSquaddie ?
                     <p> Your new squaddie is {this.props.newSquaddie.monster_name}! </p>
