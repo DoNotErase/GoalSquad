@@ -88,6 +88,12 @@ class Lobby extends React.Component {
   }
 
   chooseFighter(roomname, playeriam, squaddie) {
+    this.setState({
+      hostWaiting: false,
+      dimmer: false,
+      nojoin: false,
+      buttonsDisabled: false,
+    });
     socket.emit('fighter picked', roomname, playeriam, squaddie, (data) => {
       console.log('data', data);
     });

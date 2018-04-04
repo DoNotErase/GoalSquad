@@ -65,7 +65,7 @@ class BattleInterfaceBottom extends React.Component {
       <div>
         <Header as="h5"> Defeat! </Header>
         <p> You lost this battle but {monster.monster_name} has gained
-          {xp} XP and has leveled up
+          {xp} XP and has leveled up and is now level {monster.user_monster_level + 1}!
         </p>
         <Image src={monster.monster_pic} />
         <p> Attack: {monster.user_monster_attack + 1} </p>
@@ -122,6 +122,13 @@ class BattleInterfaceBottom extends React.Component {
           <Header as="h5"> Victory! </Header>
           <p> You won this battle and {yourMonster.monster_name} has gained {XPgained} XP </p>
           <Image src={yourMonster.monster_pic} />
+          <Progress
+            style={{ marginTop: 8 }}
+            size="medium"
+            percent={(yourMonster.user_monster_current_xp + XPgained) % 100}
+            progress
+            indicating
+          />
         </div>
       );
     }
@@ -130,6 +137,13 @@ class BattleInterfaceBottom extends React.Component {
         <Header as="h5"> Defeat!! </Header>
         <p> You lost this battle but {yourMonster.monster_name} has still gained {XPgained} XP </p>
         <Image src={yourMonster.monster_pic} />
+        <Progress
+          style={{ marginTop: 8 }}
+          size="medium"
+          percent={(yourMonster.user_monster_current_xp + XPgained) % 100}
+          progress
+          indicating
+        />
       </div>
     );
   }
