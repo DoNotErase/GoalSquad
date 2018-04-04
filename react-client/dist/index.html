@@ -6,12 +6,12 @@
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.12/semantic.min.css"></link>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#008F7A">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
   <link rel="shortcut icon" sizes="192x192" href="react-client/dist/assets/icons/icon-192x192.png">
   <link rel="shortcut icon" sizes="128x128" href="react-client/dist/assets/icons/icon-128x128.png">
   <link rel="stylesheet" href="styles.css">
   <link rel="manifest" href="/manifest.json">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
 </head>
 <body>
   <div id="app"></div>
@@ -35,10 +35,19 @@ firebase.initializeApp(configs);
 <script type="text/javascript" src="./bundle.js"></script>
 <script>
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js')
-        .then(function () {
-            console.log('Service Worker Registered');
-        });
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').then((registration) => {
+      // Registration was successful
+      console.log('ServiceWorker registration successful with scope: ', registration.scope);
+    }, (err) => {
+      // registration failed :(
+      console.log('ServiceWorker registration failed: ', err);
+    }).catch((err) => {
+      console.log(err);
+    });
+  });
+} else {
+  console.log('service worker is not supported');
 }
 </script>
 <script>
