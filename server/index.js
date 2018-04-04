@@ -9,7 +9,6 @@ const axios = require('axios');
 const path = require('path');
 const bcrypt = require('bcrypt-nodejs');
 const generateName = require('sillyname');
-const config = require('../config.js');
 
 let config;
 if (!process.env.PORT) {
@@ -71,13 +70,8 @@ passport.use(new LocalStrategy(
 
 passport.use(new FitbitStrategy(
   {
-<<<<<<< HEAD
-    clientID: process.env.FITBIT_ID || config.fitbit.id ,
-    clientSecret: process.env.FITBIT_SECRET || config.fitbit.secret ,
-=======
     clientID: process.env.FITBIT_ID || config.fitbit.id,
     clientSecret: process.env.FITBIT_SECRET || config.fitbit.secret,
->>>>>>> fd0573c4c4f88b14d63b7ff137f0d27b495b01cb
     scope: ['activity', 'profile', 'sleep', 'social'],
     callbackURL: process.env.CALLBACK_URL || 'http://127.0.0.1:8080/callback',
   },
