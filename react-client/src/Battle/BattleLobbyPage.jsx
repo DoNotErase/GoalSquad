@@ -30,7 +30,6 @@ class Lobby extends React.Component {
     this.chooseFighter = this.chooseFighter.bind(this);
     this.attack = this.attack.bind(this);
     this.surrender = this.surrender.bind(this);
-    const { fightState } = this.props;
 
     // not needed ('/') works by itself if using the same port as server to listen for socket
     // const socketURL = (process.env.ROOTURL + ':' + process.env.PORT) || 'http://localhost:8080';
