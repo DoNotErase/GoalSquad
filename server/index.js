@@ -60,10 +60,14 @@ function isAuthorized(req, res, next) {
 
 // connect-roles - check if user is admin, grant full access if so
 user.use(function (req) {
+  console.log('reqqqqqqqqqq', req)
   if (req.user.role === 'admin') {
     return true;
   }
 });
+
+app.set('views', path.join(__dirname, '../react-client/dist/index.html'));
+app.set('view engine', 'html');
 
 /** **************OAUTH**************** */
 
@@ -75,7 +79,6 @@ passport.use(new LocalStrategy(
   async (username, password, done) => {
     try {
       const user = await db.findByUsername(username);
-      console.log(user);
       if (!user) {
         return done(null, false);
       }
@@ -116,11 +119,11 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((user, done) => {
+  console.log('userrrr', user)
   done(null, user);
 });
 
-app.post(
-  '/localLogin', passport.authenticate('local'),
+app.post('/localLogin', passport.authenticate('local'),
   (req, res) => {
     res.redirect('/incubator');
   },
@@ -506,8 +509,8 @@ app.get('/userDeets', isAuthorized, async (req, res) => {
 
 app.get('/admin', user.can('access admin page'), function (req, res) {
   try {
-    res.status(200).send();
-  } catch {
+    res.sendFile(path.join(__dirname, '../react-client/dist/index.html' ));
+  } catch(err) {
     res.status(500).send(err);
   }
 });

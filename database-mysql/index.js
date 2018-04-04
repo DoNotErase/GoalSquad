@@ -64,7 +64,7 @@ module.exports.userExists = async (fitbitID) => {
 };
 
 module.exports.findByUsername = async (username) => {
-  const query = 'SELECT user_username, user_password as password, user_id as id, custom_goal_timer_1, custom_goal_timer_2 ' +
+  const query = 'SELECT user_username, user_password as password, user_id as id, custom_goal_timer_1, custom_goal_timer_2, role ' +
     `FROM user WHERE user_username = '${username}';`;
 
   try {

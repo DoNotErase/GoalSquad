@@ -221,7 +221,7 @@ class IncubatorPage extends React.Component {
                   />
               ))
                 : this.getGoals()
-              } {/* renders list of goals for each activity type */}
+              }
             </Scrollbars>
           </Grid.Column>
           <Grid.Row
