@@ -58,17 +58,6 @@ orangy: background-image: linear-gradient(to right, #d95a37, #df663e, #e67146, #
     color: white !important;
 }
 
-.glowingEgg {
-    border: 0px solid none;
-    border-radius: 50%;
-    background: #fff;
-    box-shadow:
-        0 0 5px 5px #fff,  /* inner white */
-        0 0 20px 10px #FEFE5A, /* middle yellow */
-        0 0 25px 15px #EBD5FF; /* outer purple */
-    animation: shake 2.5s infinite;
-}
-
 /* Progress Bar */
 
 .progressbar {
@@ -131,5 +120,13 @@ orangy: background-image: linear-gradient(to right, #d95a37, #df663e, #e67146, #
 }
 
 .shake {
+    animation: shake 2.5s infinite;
     animation-name: shake;
-    }
+}
+
+
+.glow { 
+    animation: shake 2.5s infinite;
+    -webkit-filter: drop-shadow(0px 0px 20px rgba(254, 254, 90, 1));
+    filter: drop-shadow(0px 0px 20px rgba(254, 254, 90, 1));
+}

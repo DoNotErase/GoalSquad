@@ -83,7 +83,7 @@ class IncubatorPage extends React.Component {
   eggImage() {
     if (this.props.incubatorState.egg.egg_xp >= 100) {
       return (<Image
-        className="glowingEgg"
+        className="glow"
         src="./assets/icons/egg_stage_1.png"
         onClick={() => this.setState({ open: true, dimmer: true })}
       />);
@@ -165,6 +165,7 @@ class IncubatorPage extends React.Component {
         </Grid>
         <MainMenu history={this.props.history} />
         <Modal
+          style={{ background: 'transparent' }}
           dimmer={this.state.dimmer}
           open={this.state.open}
           onClose={this.close}
