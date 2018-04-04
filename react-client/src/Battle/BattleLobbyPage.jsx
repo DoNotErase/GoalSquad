@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Grid, Button, Header, Divider } from 'semantic-ui-react';
+import { Grid, Button, Header, Divider, Modal, Loader } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import socketIOClient from 'socket.io-client';
 import * as fightActions from './fightActions';
@@ -30,10 +30,9 @@ class Lobby extends React.Component {
     this.chooseFighter = this.chooseFighter.bind(this);
     this.attack = this.attack.bind(this);
     this.surrender = this.surrender.bind(this);
-    const { fightState } = this.props;
 
-    const socketURL = (process.env.ROOTURL + ':' + process.env.PORT) || 'http://localhost:8080';
-    console.log('socketURL', socketURL);
+    // not needed ('/') works by itself if using the same port as server to listen for socket
+    // const socketURL = (process.env.ROOTURL + ':' + process.env.PORT) || 'http://localhost:8080';
     socket = socketIOClient('/');
     // only has roomname and player1
     socket.on('hosting', (roomInfo) => {
@@ -52,16 +51,17 @@ class Lobby extends React.Component {
     });
     socket.on('surrender', ({ surrenderPlayer }) => {
       // use to display that you either won or lost because someone surrendered
-      console.log('surrenderPlayer', surrenderPlayer)
+      console.log('surrenderPlayer', surrenderPlayer);
       this.props.fightActions.surrendered(surrenderPlayer);
+    });
+    socket.on('nojoin', () => {
+      this.setState({ dimmer: false, nojoin: true });
     });
   }
 
-  componentDidMount() {
-  }
+  componentDidMount() {}
   componentWillUnmount() {
     socket.disconnect();
-    alert('Disconnecting Socket as component will unmount');
   }
   hostGame() {
     socket.emit('host', this.props.mainState.user.user_username, (data) => {
@@ -70,6 +70,8 @@ class Lobby extends React.Component {
     this.setState({
       playeriam: 'player1',
       currentplayer: 'player1',
+      hostWaiting: true,
+      buttonsDisabled: true,
     });
   }
   joinGame() {
@@ -78,6 +80,7 @@ class Lobby extends React.Component {
     });
     this.setState({
       playeriam: 'player2',
+      hostWaiting: false,
     });
   }
   chooseFighter(roomname, playeriam, squaddie) {
@@ -96,6 +99,9 @@ class Lobby extends React.Component {
     socket.emit('surrender', roomname, playeriam, (data) => {
       console.log('data', data);
     });
+  }
+  closeNoJoin() {
+    this.setState({ dimmer: false, nojoin: false });
   }
 
   render() {
@@ -141,6 +147,7 @@ class Lobby extends React.Component {
             <Divider hidden />
             <Grid.Column style={{ maxWidth: 450 }}>
               <Button
+                disabled={this.state.buttonsDisabled}
                 onClick={() => this.hostGame()}
                 fluid
                 color="orange"
@@ -150,6 +157,7 @@ class Lobby extends React.Component {
               HOST A BATTLE
               </Button>
               <Button
+                disabled={this.state.buttonsDisabled}
                 onClick={() => this.joinGame()}
                 fluid
                 color="orange"
@@ -158,6 +166,22 @@ class Lobby extends React.Component {
               >
               JOIN A BATTLE
               </Button>
+              {/* Feedback when host is waiting for opponent */}
+              <Loader active={this.state.hostWaiting}>Waiting for Opponent</Loader>
+              {/* Modal for not finding a game with a host */}
+              <Modal dimmer={this.state.dimmer} open={this.state.nojoin}>
+                <Modal.Header>No hosts available</Modal.Header>
+                <Modal.Content image>
+                  <Modal.Description>
+                    <Header>Try again later or try hosting</Header>
+                  </Modal.Description>
+                </Modal.Content>
+                <Modal.Actions>
+                  <Button color="black" onClick={() => this.closeNoJoin()}>
+                    Close
+                  </Button>
+                </Modal.Actions>
+              </Modal>
             </Grid.Column>
           </Grid.Column>
           <MainMenu history={this.props.history} />

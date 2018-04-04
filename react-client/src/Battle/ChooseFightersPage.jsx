@@ -41,12 +41,14 @@ class ChooseFightersPage extends React.Component {
             {/* Modal for waiting for other player to choose character */}
             <Modal
               dimmer={dimmer}
-              open={!fightState.monster1.monster_name^!fightState.monster2.monster_name}
+              open={
+                (fightState.playeriam === 'player1' && fightState.monster1.monster_name) ||
+                (fightState.playeriam === 'player2' && fightState.monster2.monster_name) }
             >
               <Modal.Header>Opponent still choosing</Modal.Header>
               <Modal.Content image>
                 <Modal.Description>
-                  <Header>Click button to start new game!</Header>
+                  <Header>Wait for opponent to choose their Squaddie</Header>
                 </Modal.Description>
               </Modal.Content>
             </Modal>

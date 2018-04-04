@@ -481,6 +481,7 @@ io.on('connection', (socket) => {
       player1: username,
     };
     rooms.push(roomObj);
+    console.log('rooms hosting', rooms);
     io.in(roomName).emit('hosting', roomObj);
   });
 
@@ -495,6 +496,8 @@ io.on('connection', (socket) => {
         i = rooms.length; // ends loop
       }
     }
+    // no hosts found
+    io.emit('nojoin');
     // TODO add situation where no hosts are found
   });
 
