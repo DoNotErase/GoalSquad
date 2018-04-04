@@ -525,10 +525,23 @@ module.exports.saveSquaddiePosition = async (userMonsterPosition) => {
 
 module.exports.addXPtoMonster = async (monID, xp) => {
   try {
-    return await db.queryAsync(`UPDATE user_monster SET user_monster_xp = user_monster_xp + ${xp} ` +
+    return await db.queryAsync(`UPDATE user_monster SET user_monster_current_xp = user_monster_current_xp + ${xp} ` +
       `WHERE user_monster_id = ${monID};`);
   } catch (err) {
     console.log(err);
     throw new Error('ERR adding XP');
   }
-}
+};
+
+module.exports.levelUp = async (monID) => {
+  try {
+    return await db.queryAsync('UPDATE user_mosnter SET user_monster_level = user_monster_level + 1, ' +
+      'user_monster_hp = user_monster_hp + 5, ' +
+      'user_monster_attack = user_monster_attack + 1, ' +
+      'user_monster_defense = user_monster_defense + 1, ' +
+      `WHERE user_monster_id = ${monID};`);
+  } catch (err) {
+    console.log(err);
+    throw new Error('level up err');
+  }
+};

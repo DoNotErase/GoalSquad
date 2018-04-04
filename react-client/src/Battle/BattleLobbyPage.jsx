@@ -33,7 +33,7 @@ class Lobby extends React.Component {
     const { fightState } = this.props;
 
     const socketURL = (process.env.ROOTURL + ':' + process.env.PORT) || 'http://localhost:8080';
-    socket = socketIOClient(socketURL);
+    socket = socketIOClient('/');
     // only has roomname and player1
     socket.on('hosting', (roomInfo) => {
       this.props.fightActions.setLobbyInfo(roomInfo, this.state.playeriam);
@@ -109,6 +109,7 @@ class Lobby extends React.Component {
         <div>
           <ChooseFightersPage
             chooseFighter={this.chooseFighter}
+            history={this.props.history}
           />
         </div>
       );
@@ -125,6 +126,7 @@ class Lobby extends React.Component {
             attack={this.attack}
             surrender={this.surrender}
             surrenderPlayer={fightState.surrenderPlayer}
+            history={this.props.history}
           />
         </div>
       );

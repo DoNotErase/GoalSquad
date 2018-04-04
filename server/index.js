@@ -249,8 +249,8 @@ app.get('/userSquaddies', isAuthorized, async (req, res) => {
   }
 });
 
-app.post('/monsterXP', async (req, res) => {
-  console.log(req.body);
+app.patch('/monsterXP', async (req, res) => {
+  console.log(req.body, 'monster_XP');
   try {
     const { monID, xp } = req.body;
     await db.addXPtoMonster(monID, xp);
@@ -259,7 +259,19 @@ app.post('/monsterXP', async (req, res) => {
     console.log(err);
     res.status(500).send('err with increasing monster id');
   }
-})
+});
+
+app.patch('/levelup', async (req, res) => {
+  console.log(req.body, 'monster_id for level');
+  try {
+    const { monID } = req.body;
+    await db.levelUp(monID);
+    res.end();
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('err with leveling up');
+  }
+});
 
 /** *******************YARD STUFF**************************** */
 

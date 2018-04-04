@@ -108,4 +108,16 @@ export const addXPtoMonster = (monID, xp) => {
         })
     )
   );
-}
+};
+
+export const levelup = monID => (
+  dispatch => (
+    axios.patch('/monsterXP', { monID })
+      .then((res) => {
+        console.log('done leveling', res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  )
+);
