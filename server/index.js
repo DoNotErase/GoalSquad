@@ -37,6 +37,9 @@ app.use(passport.session({
   saveUninitialized: true,
 }));
 
+/** **************MIDDLEWARE**************** */
+
+
 function isAuthorized(req, res, next) {
   if (!req.session.passport) {
     res.status(401).end();
@@ -44,6 +47,14 @@ function isAuthorized(req, res, next) {
   }
   next();
 }
+
+// returns a compressed bundle
+app.get('*.js', (req, res, next) => {
+  req.url = req.url + '.gz';
+  res.set('Content-Encoding', 'gzip');
+  res.set('Content-Type', 'text/javascript');
+  next();
+});
 
 /** **************OAUTH**************** */
 
