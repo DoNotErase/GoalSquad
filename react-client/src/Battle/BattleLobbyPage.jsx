@@ -49,6 +49,9 @@ class Lobby extends React.Component {
     socket.on('attack', ({ damage, monID }) => {
       this.props.fightActions.decreaseHealth(damage, monID);
     });
+    socket.on('defend', ({ monID }) => {
+      this.props.fightActions.defend(monID);
+    });
     socket.on('surrender', ({ surrenderPlayer }) => {
       // use to display that you either won or lost because someone surrendered
       console.log('surrenderPlayer', surrenderPlayer);
