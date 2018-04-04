@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Scrollbars } from 'react-custom-scrollbars';
 import PropTypes from 'prop-types';
-import UserGoalsList from './UserGoalsList';
-import ProgressBar from './ProgressBar';
+import IntermediateAdminPage from './IntermediateAdminPage';
 import MainMenu from './MainMenu';
+import ProgressBar from './ProgressBar';
+import UserGoalsList from './UserGoalsList';
 import * as homePageActions from '../actions/homePageActions';
 import * as incubatorActions from '../actions/incubatorActions';
 import * as squaddieActions from '../actions/squaddieActions';
@@ -130,6 +131,7 @@ class IncubatorPage extends React.Component {
     );
   }
 
+
   glowingEggActivated() {
     return this.state.glowingEgg ? 'glowingEgg' : '';
   }
@@ -200,6 +202,10 @@ class IncubatorPage extends React.Component {
       },
     };
     return (
+        this.props.state.user.role === 'admin' 
+        ?
+        <IntermediateAdminPage history={this.props.history}/>
+        :
       <div className="incubatorpage">
         <Grid style={styles.position}>
           {this.state.notifiedOfPushNotifications

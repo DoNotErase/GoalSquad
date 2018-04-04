@@ -119,13 +119,16 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((user, done) => {
-  console.log('userrrr', user)
   done(null, user);
 });
 
 app.post('/localLogin', passport.authenticate('local'),
   (req, res) => {
-    res.redirect('/incubator');
+    if(req.user.role === 'admin') {
+      res.redirect('/admin')
+    } else {
+      res.redirect('/incubator');
+    }
   },
 );
 
