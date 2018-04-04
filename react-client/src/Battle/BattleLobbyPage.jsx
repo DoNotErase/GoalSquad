@@ -1,13 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Grid, Button, Header, Divider, Modal, Loader } from 'semantic-ui-react';
+import { Grid, Button, Header, Divider, Modal, Loader, Image } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import socketIOClient from 'socket.io-client';
 import * as fightActions from './fightActions';
 import ChooseFightersPage from './ChooseFightersPage';
 import BattlePage from './BattlePage';
 import MainMenu from '../MainMenu';
+
+const axios = require('axios');
 
 let socket;
 
@@ -59,7 +61,17 @@ class Lobby extends React.Component {
     });
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    axios.get('/userSquaddies')
+      .then((squaddies) => {
+        console.log('squaddies.data.length', squaddies.data.length);
+        if (squaddies.data.length < 1) {
+          this.setState({
+            noSquaddies: true,
+          });
+        }
+      });
+  }
   componentWillUnmount() {
     socket.disconnect();
   }
@@ -105,10 +117,38 @@ class Lobby extends React.Component {
   }
 
   render() {
-    // both players joined but not monsters picked
-    const { fightState } = this.props;
-
-    if (fightState.player2 &&
+    const {fightState} = this.props;
+    // user does not have any monsters yet
+    if (this.state.noSquaddies === true) {
+      return (
+        <div>
+          <Grid
+            textAlign="center"
+            verticalAlign="middle"
+            style={{ height: '100%' }}
+          >
+            <Grid.Column computer={8} tablet={10} mobile={16}>
+              <Grid.Row>
+                <Header size="large" className="white">Obtain more Squaddies</Header>
+                <Divider hidden />
+              </Grid.Row>
+              <Grid.Row>
+                <Image size="small" src="./assets/squaddies/supahfly.png" centered />
+                <Divider hidden />
+              </Grid.Row>
+              <Grid.Row>
+                <Header size="medium" className="white">
+                  Complete goals to raise more Squaddies
+                </Header>
+                <Divider hidden />
+              </Grid.Row>
+            </Grid.Column>
+          </Grid>
+          <MainMenu history={this.props.history} />
+        </div>
+      );
+      // both players joined but not monsters picked
+    } else if (fightState.player2 &&
       (!fightState.monster1.monster_name || !fightState.monster2.monster_name)) {
       return (
         <div>
