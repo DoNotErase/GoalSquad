@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Grid, Button, Header, Divider } from 'semantic-ui-react';
+import { Grid, Button, Header, Divider, Modal, Dimmer, Loader, Segment} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import socketIOClient from 'socket.io-client';
 import * as fightActions from './fightActions';
@@ -52,12 +52,16 @@ class Lobby extends React.Component {
     });
     socket.on('surrender', ({ surrenderPlayer }) => {
       // use to display that you either won or lost because someone surrendered
-      console.log('surrenderPlayer', surrenderPlayer)
+      console.log('surrenderPlayer', surrenderPlayer);
       this.props.fightActions.surrendered(surrenderPlayer);
+    });
+    socket.on('nojoin', () => {
+      this.setState({ dimmer: false, nojoin: true });
     });
   }
 
   componentDidMount() {
+    console.log('this.state', this.state);
   }
   componentWillUnmount() {
     socket.disconnect();
@@ -70,6 +74,7 @@ class Lobby extends React.Component {
     this.setState({
       playeriam: 'player1',
       currentplayer: 'player1',
+      hostWaiting: true,
     });
   }
   joinGame() {
@@ -78,6 +83,7 @@ class Lobby extends React.Component {
     });
     this.setState({
       playeriam: 'player2',
+      hostWaiting: false,
     });
   }
   chooseFighter(roomname, playeriam, squaddie) {
@@ -96,6 +102,9 @@ class Lobby extends React.Component {
     socket.emit('surrender', roomname, playeriam, (data) => {
       console.log('data', data);
     });
+  }
+  closeNoJoin() {
+    this.setState({ dimmer: false, nojoin: false });
   }
 
   render() {
@@ -158,6 +167,25 @@ class Lobby extends React.Component {
               >
               JOIN A BATTLE
               </Button>
+              <Segment>
+                <Dimmer active>
+                  <Loader indeterminate active={this.state.hostWaiting}>Preparing Files</Loader>
+                </Dimmer>
+              </Segment>
+              {/* Modal for not finding a game with a host */}
+              <Modal dimmer={this.state.dimmer} open={this.state.nojoin}>
+                <Modal.Header>No hosts available</Modal.Header>
+                <Modal.Content image>
+                  <Modal.Description>
+                    <Header>Try again later or try hosting</Header>
+                  </Modal.Description>
+                </Modal.Content>
+                <Modal.Actions>
+                  <Button color="black" onClick={() => this.closeNoJoin()}>
+                    Close
+                  </Button>
+                </Modal.Actions>
+              </Modal>
             </Grid.Column>
           </Grid.Column>
           <MainMenu history={this.props.history} />

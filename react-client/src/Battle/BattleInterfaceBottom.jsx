@@ -26,21 +26,14 @@ class BattleInterfaceBottom extends React.Component {
     console.log('gameEndShow', dimmer);
     this.setState({ dimmer, gameEndOpen: true });
   }
-  // TODO reset store here
   gameEndClose() {
     console.log('gameEndClose');
     this.props.fightActions.resetState();
-    //this.setState({ gameEndOpen: false });
-
   }
   show() {
     console.log('show');
     this.setState({ open: true });
   }
-  // handleConfirm() {
-  //   // this.setState({ open: false });
-  //   this.gameEndShow()
-  // }
   handleCancel() {
     console.log('handleCancel');
     this.setState({ open: false });
@@ -111,7 +104,7 @@ class BattleInterfaceBottom extends React.Component {
                     confirmButton="Surrender"
                     cancelButton="Stay"
                   />
-                  {/*Modal for surrendering*/}
+                  {/* Modal for surrendering */}
                   <Modal dimmer={dimmer} open={this.props.surrenderPlayer === 'player1' || this.props.surrenderPlayer === 'player2'} onClose={this.gameEndClose}>
                     <Modal.Header>{this.props.surrenderPlayer === fightState.playeriam ? 'you have' : 'oppenent has'} surrendered</Modal.Header>
                     <Modal.Content image>
@@ -125,13 +118,18 @@ class BattleInterfaceBottom extends React.Component {
                       </Button>
                     </Modal.Actions>
                   </Modal>
-                  {/*Modal for win or loss*/}
-                  <Modal dimmer={dimmer} open={fightState.monster1CurrentHP <= 0 || fightState.monster2CurrentHP <= 0} onClose={this.gameEndClose}>
+                  {/* Modal for win or loss */}
+                  <Modal
+                    dimmer={dimmer}
+                    open={fightState.monster1CurrentHP <= 0 || fightState.monster2CurrentHP <= 0}
+                    onClose={this.gameEndClose}
+                  >
                     <Modal.Header>{
                     fightState.playeriam === 'player1' ?
                       (fightState.monster1CurrentHP <= 0 ? 'You have lost' : 'You have won') :
                       (fightState.monster1CurrentHP <= 0 ? 'You have won' : 'You have lost')
-                    }</Modal.Header>
+                    }
+                    </Modal.Header>
                     <Modal.Content image>
                       <Modal.Description>
                         <Header>Click button to start new game!</Header>
