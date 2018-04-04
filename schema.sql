@@ -119,14 +119,14 @@ VALUES
   ('Kow', './assets/squaddies/kow.png', './assets/squaddies/kow-icon.png', 'Fluent in 14 languages.  Literate in none.'),
   ('Ploppo', './assets/squaddies/ploppo.png', './assets/squaddies/ploppo-icon.png', 'Mayor of Chernobyl, planning US Presidential campaign for 2028.'),
   ('Geldica', './assets/squaddies/geldica.png', './assets/squaddies/geldica-icon.png', "Pros: hasn't murdered anyone recently\nCons: relapse is imminent"),
-  ('Harry', './assets/squaddies/Hairy.png', './assets/squaddies/Hairy-icon.png', "Please donate to the NAAF to support Harry's fight with alopecia"),
-  ('Broccolli', './assets/squaddies/Broccolli.png', './assets/squaddies/Broccolli-icon.png', "Knows that he looks more like a bean. It's a sensitive subject. Please don't bring it up."),
-  ('Grumpkin', './assets/squaddies/Grumpkin.png', './assets/squaddies/Grumpkin-icon.png', 'Wears the skull of his deceased mother. His cries echo inside the skull and come out as a sad melody.'),
-  ('Kale', './assets/squaddies/Kale.png', './assets/squaddies/Kale-icon.png', 'Recently escapted from a CDC lab studying potential carcinogens, handle with care.'),
-  ('Mothra', './assets/squaddies/Mothra.png', './assets/squaddies/Mothra-icon.png', "2015 Champion of Seattle's Regional Bar Trivia Tournament"),
-  ('Pattycakes', './assets/squaddies/Pattycakes.png', './assets/squaddies/Pattycakes-icon.png', 'Founder of People for the Ethical Taping of Arguments. Is not a person.'),
-  ('Slenderbush', './assets/squaddies/Slenderbush.png', './assets/squaddies/Slenderbush-icon.png', "Has been talking about her mixtape thats about to drop for the last 5 years."),
-  ('Supahfly', './assets/squaddies/Supahfly.png', './assets/squaddies/Supahfly-icon.png', "Knows what really happened to Biggie and Tupac, but isn't talking.");
+  ('Harry', './assets/squaddies/hairy.png', './assets/squaddies/hairy-icon.png', "Please donate to the NAAF to support Harry's fight with alopecia"),
+  ('Broccolli', './assets/squaddies/broccolli.png', './assets/squaddies/broccolli-icon.png', "Knows that he looks more like a bean. It's a sensitive subject. Please don't bring it up."),
+  ('Grumpkin', './assets/squaddies/grumpkin.png', './assets/squaddies/grumpkin-icon.png', 'Wears the skull of his deceased mother. His cries echo inside the skull and come out as a sad melody.'),
+  ('Kale', './assets/squaddies/kale.png', './assets/squaddies/kale-icon.png', 'Recently escapted from a CDC lab studying potential carcinogens, handle with care.'),
+  ('Mothra', './assets/squaddies/mothra.png', './assets/squaddies/mothra-icon.png', "2015 Champion of Seattle's Regional Bar Trivia Tournament"),
+  ('Pattycakes', './assets/squaddies/pattycakes.png', './assets/squaddies/pattycakes-icon.png', 'Founder of People for the Ethical Taping of Arguments. Is not a person.'),
+  ('Slenderbush', './assets/squaddies/slenderbush.png', './assets/squaddies/slenderbush-icon.png', "Has been talking about her mixtape thats about to drop for the last 5 years."),
+  ('Supahfly', './assets/squaddies/supahfly.png', './assets/squaddies/supahfly-icon.png', "Knows what really happened to Biggie and Tupac, but isn't talking.");
 
 insert into egg
   (egg_name)
