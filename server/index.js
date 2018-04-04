@@ -249,6 +249,30 @@ app.get('/userSquaddies', isAuthorized, async (req, res) => {
   }
 });
 
+app.patch('/monsterXP', async (req, res) => {
+  console.log(req.body, 'monster_XP');
+  try {
+    const { monID, xp } = req.body;
+    await db.addXPtoMonster(monID, xp);
+    res.end();
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('err with increasing monster id');
+  }
+});
+
+app.patch('/levelup', async (req, res) => {
+  console.log(req.body, 'monster_id for level');
+  try {
+    const { monID } = req.body;
+    await db.levelUp(monID);
+    res.end();
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('err with leveling up');
+  }
+});
+
 /** *******************YARD STUFF**************************** */
 
 app.get('/yardSquad', isAuthorized, async (req, res) => {
@@ -505,9 +529,9 @@ io.on('connection', (socket) => {
     io.in(roomname).emit('fighter chosen', { player, squaddie });
   });
 
-  socket.on('attack', (roomname, damage, defense, user_monster_id) => {
-    const totalDamage = damage + 3 - defense; // change formula later
-    io.in(roomname).emit('attack', { damage: totalDamage, user_monster_id });
+  socket.on('attack', (roomname, damage, defense, monID) => {
+    const totalDamage = (damage + 3) - defense; // change formula later
+    io.in(roomname).emit('attack', { damage: totalDamage, monID });
   });
 
   socket.on('surrender', (roomname, surrenderPlayer) => {

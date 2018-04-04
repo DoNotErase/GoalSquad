@@ -46,8 +46,8 @@ class Lobby extends React.Component {
     socket.on('fighter chosen', (fighterInfo) => {
       this.props.fightActions.setMonsterFighter(fighterInfo.player, fighterInfo.squaddie);
     });
-    socket.on('attack', ({ damage, user_monster_id }) => {
-      this.props.fightActions.decreaseHealth(damage, user_monster_id);
+    socket.on('attack', ({ damage, monID }) => {
+      this.props.fightActions.decreaseHealth(damage, monID);
     });
     socket.on('surrender', ({ surrenderPlayer }) => {
       // use to display that you either won or lost because someone surrendered
@@ -59,21 +59,24 @@ class Lobby extends React.Component {
     });
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+  }
+
   componentWillUnmount() {
     socket.disconnect();
   }
+
   hostGame() {
     socket.emit('host', this.props.mainState.user.user_username, (data) => {
       console.log(data);
     });
     this.setState({
       playeriam: 'player1',
-      currentplayer: 'player1',
       hostWaiting: true,
       buttonsDisabled: true,
     });
   }
+
   joinGame() {
     socket.emit('join', this.props.mainState.user.user_username, (data) => {
       console.log(data);
@@ -83,13 +86,21 @@ class Lobby extends React.Component {
       hostWaiting: false,
     });
   }
+
   chooseFighter(roomname, playeriam, squaddie) {
+    this.setState({
+      hostWaiting: false,
+      dimmer: false,
+      nojoin: false,
+      buttonsDisabled: false,
+    });
     socket.emit('fighter picked', roomname, playeriam, squaddie, (data) => {
       console.log('data', data);
     });
   }
-  attack(roomname, damage, defense, user_monster_id) {
-    socket.emit('attack', roomname, damage, defense, user_monster_id, (data) => {
+
+  attack(roomname, damage, defense, monID) {
+    socket.emit('attack', roomname, damage, defense, monID, (data) => {
       console.log('data', data);
     });
   }
@@ -114,6 +125,7 @@ class Lobby extends React.Component {
         <div>
           <ChooseFightersPage
             chooseFighter={this.chooseFighter}
+            history={this.props.history}
           />
         </div>
       );
@@ -130,6 +142,7 @@ class Lobby extends React.Component {
             attack={this.attack}
             surrender={this.surrender}
             surrenderPlayer={fightState.surrenderPlayer}
+            history={this.props.history}
           />
         </div>
       );
@@ -191,6 +204,28 @@ class Lobby extends React.Component {
     // TODO add else statement for waiting to find players if host
   }
 }
+
+Lobby.propTypes = {
+  fightActions: PropTypes.shape({
+    setLobbyInfo: PropTypes.func,
+    setMonsterFighter: PropTypes.func,
+    decreaseHealth: PropTypes.func,
+    surrendered: PropTypes.func,
+  }).isRequired,
+  mainState: PropTypes.shape({
+    user: PropTypes.object,
+  }).isRequired,
+  fightState: PropTypes.shape({
+    playeriam: PropTypes.string,
+    player1: PropTypes.string,
+    player2: PropTypes.string,
+    monster1: PropTypes.object,
+    monster2: PropTypes.object,
+  }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
 
 const mapDispatchToProps = dispatch => (
   {

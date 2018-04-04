@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export const setLobbyInfo = ((roomInfo, player) => {
   return (dispatch) => {
     dispatch({
@@ -89,22 +91,30 @@ export const setActivePlayer = ((playernumber) => {
   };
 });
 
-export const resetState = (() => {
-  return (dispatch) => {
-    dispatch({
-      type: 'RESET_STATE',
-    });
-  };
-});
+export const resetState = () => ({ type: 'RESET_STATE' });
 
+export const surrendered = surrenderPlayer => ({ type: 'SURRENDER', payload: { surrenderPlayer } });
 
-export const surrendered = ((surrenderPlayer) => {
-  return (dispatch) => {
-    dispatch({
-      type: 'SURRENDER',
-      payload: {
-        surrenderPlayer,
-      },
-    });
-  };
-});
+export const addXPtoMonster = (monID, xp) => (
+  dispatch => (
+    axios.patch('/monsterXP', { monID, xp })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  )
+);
+
+export const levelup = monID => (
+  dispatch => (
+    axios.patch('/levelup', { monID })
+      .then((res) => {
+        console.log('done leveling', res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  )
+);

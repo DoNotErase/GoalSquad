@@ -13,7 +13,7 @@ class BattleInterfaceBottom extends React.Component {
   }
 
   render() {
-    const monster = this.props.monster;
+    const { monster } = this.props;
     return (
       <Segment>
         <Grid>
