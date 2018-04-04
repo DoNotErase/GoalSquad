@@ -10,7 +10,6 @@ import PickFighter from './PickFighter';
 
 const axios = require('axios');
 
-
 class ChooseFightersPage extends React.Component {
   constructor(props) {
     super(props);
@@ -41,12 +40,14 @@ class ChooseFightersPage extends React.Component {
             {/* Modal for waiting for other player to choose character */}
             <Modal
               dimmer={dimmer}
-              open={(fightState.playeriam === 'player1' && !fightState.monster2.monster_name && fightState.monster1.monster_name) || (fightState.playeriam === 'player2' && !fightState.monster1.monster_name && fightState.monster2.monster_name)}
+              open={
+                (fightState.playeriam === 'player1' && fightState.monster1.monster_name) ||
+                (fightState.playeriam === 'player2' && fightState.monster2.monster_name)}
             >
               <Modal.Header>Opponent still choosing</Modal.Header>
               <Modal.Content image>
                 <Modal.Description>
-                  <Header>Click button to start new game!</Header>
+                  <Header>Wait for opponent to choose their Squaddie</Header>
                 </Modal.Description>
               </Modal.Content>
             </Modal>
@@ -70,23 +71,17 @@ class ChooseFightersPage extends React.Component {
   }
 }
 
-// ChooseFightersPage.propTypes = {
-//   squadState: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.object)).isRequired,
-//   squadActions: PropTypes.objectOf(PropTypes.func).isRequired,
-//   history: PropTypes.shape({
-//     action: PropTypes.string,
-//     block: PropTypes.func,
-//     createHref: PropTypes.func,
-//     go: PropTypes.func,
-//     goBack: PropTypes.func,
-//     goForward: PropTypes.func,
-//     length: PropTypes.number,
-//     listen: PropTypes.func,
-//     location: PropTypes.object,
-//     push: PropTypes.func,
-//     replace: PropTypes.func,
-//   }).isRequired,
-// };
+ChooseFightersPage.propTypes = {
+  fightState: PropTypes.shape({
+    playeriam: PropTypes.string,
+  }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+  chooseFighter: PropTypes.shape({
+
+  }).isRequired,
+};
 
 
 const mapStateToProps = state => (

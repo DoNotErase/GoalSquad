@@ -505,6 +505,7 @@ io.on('connection', (socket) => {
       player1: username,
     };
     rooms.push(roomObj);
+    console.log('rooms hosting', rooms);
     io.in(roomName).emit('hosting', roomObj);
   });
 
@@ -519,6 +520,8 @@ io.on('connection', (socket) => {
         i = rooms.length; // ends loop
       }
     }
+    // no hosts found
+    io.emit('nojoin');
     // TODO add situation where no hosts are found
   });
 
@@ -526,9 +529,9 @@ io.on('connection', (socket) => {
     io.in(roomname).emit('fighter chosen', { player, squaddie });
   });
 
-  socket.on('attack', (roomname, damage, defense, user_monster_id) => {
-    const totalDamage = damage + 3 - defense; // change formula later
-    io.in(roomname).emit('attack', { damage: totalDamage, user_monster_id });
+  socket.on('attack', (roomname, damage, defense, monID) => {
+    const totalDamage = (damage + 3) - defense; // change formula later
+    io.in(roomname).emit('attack', { damage: totalDamage, monID });
   });
 
   socket.on('surrender', (roomname, surrenderPlayer) => {

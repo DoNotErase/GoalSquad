@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Segment, Grid, Progress, Image, Button, Header, Confirm, Modal } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 import * as unboundFightActions from './fightActions';
 
 class BattleInterfaceBottom extends React.Component {
@@ -19,31 +20,18 @@ class BattleInterfaceBottom extends React.Component {
     this.winState = this.winState.bind(this);
   }
 
-  componentDidMount() {
-    console.log('bottom props', this.props);
-  }
-
   gameEndShow(dimmer) {
-    console.log('gameEndShow', dimmer);
     this.setState({ dimmer, gameEndOpen: true });
   }
-  // TODO reset store here
   gameEndClose() {
-    console.log('gameEndClose');
     this.props.fightActions.resetState();
-    //this.setState({ gameEndOpen: false });
+    // this.setState({ gameEndOpen: false });
   }
 
   show() {
-    console.log('show');
     this.setState({ open: true });
   }
-  // handleConfirm() {
-  //   // this.setState({ open: false });
-  //   this.gameEndShow()
-  // }
   handleCancel() {
-    console.log('handleCancel');
     this.setState({ open: false });
   }
 
@@ -63,7 +51,9 @@ class BattleInterfaceBottom extends React.Component {
       return (
         <div>
           <Header as="h5"> Congratulations! </Header>
-          <p> You won this battle and {monster.monster_name} has gained {xp} XP and has leveled up </p>
+          <p> You won this battle and {monster.monster_name}
+             has gained {xp} XP and has leveled up
+          </p>
           <Image src={monster.monster_pic} />
           <p> Attack: {monster.user_monster_attack + 1} </p>
           <p> Defense: {monster.user_monster_defense + 1} </p>
@@ -74,7 +64,9 @@ class BattleInterfaceBottom extends React.Component {
     return (
       <div>
         <Header as="h5"> Defeat! </Header>
-        <p> You lost this battle but {monster.monster_name} has gained {xp} XP and has leveled up </p>
+        <p> You lost this battle but {monster.monster_name} has gained
+          {xp} XP and has leveled up
+        </p>
         <Image src={monster.monster_pic} />
         <p> Attack: {monster.user_monster_attack + 1} </p>
         <p> Defense: {monster.user_monster_defense + 1} </p>
@@ -98,9 +90,8 @@ class BattleInterfaceBottom extends React.Component {
     };
 
     const checkForLevelUp = (monster, xp) => {
-      console.log(Math.floor(monster.user_monster_current_xp / 100));
-      console.log(Math.floor((monster.user_monster_current_xp) / 100));
-      if (Math.floor(monster.user_monster_current_xp / 100) !== Math.floor((monster.user_monster_current_xp + xp) / 100)) {
+      if (Math.floor(monster.user_monster_current_xp / 100)
+        !== Math.floor((monster.user_monster_current_xp + xp) / 100)) {
         return true;
       }
       return false;
@@ -111,15 +102,15 @@ class BattleInterfaceBottom extends React.Component {
     const yourMonster = fightState.playeriam === 'player1' ? fightState.monster1 : fightState.monster2;
     const theirMonster = fightState.playeriam === 'player1' ? fightState.monster2 : fightState.monster2;
     const monsterID = yourMonster.user_monster_id;
-    
+
     if (iWon) {
       XPgained = calculateXP(yourMonster, theirMonster);
     } else { // you lost
       XPgained = 5;
     }
-    
+
     fightActions.addXPtoMonster(monsterID, XPgained);
-    
+
     if (checkForLevelUp(yourMonster, XPgained)) {
       fightActions.levelup(yourMonster.user_monster_id);
       return this.monsterLevelUp(iWon, yourMonster, XPgained);
@@ -177,7 +168,8 @@ class BattleInterfaceBottom extends React.Component {
                     color="red"
                     content="Attack"
                     style={{ marginBottom: 2 }}
-                    onClick={() => this.props.attack(fightState.roomName, this.props.attackStat, this.props.enemyDefenseStat, monster.user_monster_id)}
+                    onClick={() =>
+                      this.props.attack(fightState.roomName, this.props.attackStat, this.props.enemyDefenseStat, monster.user_monster_id)}
                   />
                   <Button
                     disabled={fightState.playeriam !== fightState.activePlayer}
@@ -222,7 +214,11 @@ class BattleInterfaceBottom extends React.Component {
                     </Modal.Actions>
                   </Modal>
                   {/* Modal for win or loss */}
-                  <Modal dimmer={dimmer} open={fightState.monster1CurrentHP <= 0 || fightState.monster2CurrentHP <= 0} onClose={this.gameEndClose}>
+                  <Modal
+                    dimmer={dimmer}
+                    open={fightState.monster1CurrentHP <= 0 || fightState.monster2CurrentHP <= 0}
+                    onClose={this.gameEndClose}
+                  >
                     <Modal.Header>
                       Fight Over!
                     </Modal.Header>
@@ -247,6 +243,33 @@ class BattleInterfaceBottom extends React.Component {
     );
   }
 }
+
+BattleInterfaceBottom.propTypes = {
+  fightActions: PropTypes.shape({
+    setLobbyInfo: PropTypes.func,
+    setMonsterFighter: PropTypes.func,
+    decreaseHealth: PropTypes.func,
+    surrendered: PropTypes.func,
+    resetState: PropTypes.func,
+  }).isRequired,
+  squaddieActions: PropTypes.objectOf(PropTypes.func).isRequired,
+  monster: PropTypes.shape({
+
+  }).isRequired,
+  currentHP: PropTypes.number.isRequired,
+  attack: PropTypes.func.isRequired,
+  attackStat: PropTypes.number.isRequired,
+  enemyDefenseStat: PropTypes.number.isRequired,
+  surrender: PropTypes.func.isRequired,
+  surrenderPlayer: PropTypes.string,
+  fightState: PropTypes.shape({
+    playeriam: PropTypes.string,
+    player1: PropTypes.string,
+    player2: PropTypes.string,
+    monster1: PropTypes.object,
+    monster2: PropTypes.object,
+  }).isRequired,
+};
 
 const mapStateToProps = state => (
   {
