@@ -26,32 +26,6 @@ export const setPlayerNumber = ((playernumber) => {
   };
 });
 
-// move player identification to reducer rather than action
-// export const setMonsterFighter = ((player, squaddie) => {
-//   console.log('squaddie', squaddie);
-//   if (player === 'player1') {
-//     return (dispatch) => {
-//       dispatch({
-//         type: 'CHOOSE_FIGHTER',
-//         payload: {
-//           monster1: squaddie,
-//           monster1CurrentHP: squaddie.user_monster_hp,
-//         },
-//       });
-//     };
-//   } else {
-//     return (dispatch) => {
-//       dispatch({
-//         type: 'CHOOSE_FIGHTER',
-//         payload: {
-//           monster2: squaddie,
-//           monster2CurrentHP: squaddie.user_monster_hp,
-//         },
-//       });
-//     };
-//   }
-// });
-
 export const setMonsterFighter = (player, squaddie) => (
   {
     type: 'CHOOSE_FIGHTER',
