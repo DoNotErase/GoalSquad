@@ -26,7 +26,6 @@ class PickFighter extends React.Component {
     const { squaddie } = this.props;
     const fightstate = this.props.fightState;
     return (
-      // TODO add scrollbar component if more than 9 monsters
       <Modal
         trigger={
           <Card
