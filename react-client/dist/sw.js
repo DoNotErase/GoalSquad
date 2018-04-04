@@ -1,36 +1,41 @@
-var cacheName = 'goalsquad-page';
+// Set this to true for production
+const doCache = true;
+// Name our cache
+const CACHE_NAME = 'goalsquad-cache';
+const filesToCache = ['/', '/index.html', '/styles,css'];
 
-var filesToCache = ['/', '/index.html', '/styles.css'];
+// Delete old caches that are not our current one!
+this.addEventListener('activate', (event) => {
+  const cacheWhitelist = [CACHE_NAME];
+  event.waitUntil(caches.keys()
+    .then(keyList =>
+      /* eslint-disable */
+      Promise.all(keyList.map((key) => {
+      /* eslint-ensable */
+        if (!cacheWhitelist.includes(key)) {
+          console.log(`Deleting cache: ${key}`);
+          return caches.delete(key);
+        }
+      }))));
+});
 
-self.addEventListener('install', (event) => {
+// The first time the user starts up the PWA, 'install' is triggered.
+this.addEventListener('install', (event) => {
   console.log('[ServiceWorker] Install');
-  event.waitUntil(caches.open(cacheName).then((cache) => {
+  event.waitUntil(caches.open(CACHE_NAME).then((cache) => {
     console.log('[ServiceWorker] Caching app shell');
     return cache.addAll(filesToCache);
-  }) );
+  }));
 });
 
-self.addEventListener('activate', (event) => {
-  event.waitUntil(self.clients.claim());
+// When the webpage goes to fetch files, we intercept that request and serve up the matching files
+// if we have them
+this.addEventListener('fetch', (event) => {
+  if (doCache) {
+    /* eslint-disable */
+    event.respondWith(caches.match(event.request).then((response) => { 
+      return response || fetch(event.request);
+    }));
+  }
 });
-
-self.addEventListener('fetch', (event) => {
-	event.respondWith(caches.open(filesToCache)
-		.then(function(cache) {
-	  	return cache.match(event.request)
-	  .then(function(response) {
-	    var fetchPromise = fetch(event.request) // used at end of request (if fetched)
-	  .then(function(networkResponse) {
-	    // if a response was received, update the cache
-      if (networkResponse) {
-        cache.put(event.request, networkResponse.clone());
-      }
-        return networkResponse;
-      }, function (e) {
-      	 // if the event of an error, do nothing since we're offline
-      });
-        // respond from the cache, or the network
-        return response || fetchPromise;
-	    });
-	}));
-});
+/* eslint-ensable */
