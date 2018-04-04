@@ -22,10 +22,10 @@ class IntermediateAdminPage extends React.Component {
 			  verticalAlign="middle"
 			  centered
 			  >
-			    <Grid.Row>
+			    <Grid.Row verticalAlign="middle">
 			        <Header>Welcome, admin user!</Header>
 			    </Grid.Row>
-			    <Grid.Row>
+			    <Grid.Row verticalAlign="middle">
 			        <Button basic inverted onClick={() => { this.props.history.push('/admin'); }}>
 			          <Button.Content visible>Go to admin page</Button.Content>
 			        </Button>

@@ -202,10 +202,10 @@ class IncubatorPage extends React.Component {
       },
     };
     return (
-        this.props.state.user.role === 'admin' 
-        ?
-        <IntermediateAdminPage history={this.props.history}/>
-        :
+        // this.props.state.user.role === 'admin' 
+        // ?
+        // <IntermediateAdminPage history={this.props.history}/>
+        // :
       <div className="incubatorpage">
         <Grid style={styles.position}>
           {this.state.notifiedOfPushNotifications

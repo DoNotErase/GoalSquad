@@ -1,6 +1,8 @@
 import axios from 'axios';
 import firebase from '../firebase/index';
 
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+
 export const attemptLogin = () => (
   dispatch => (
     axios.get('/login')
