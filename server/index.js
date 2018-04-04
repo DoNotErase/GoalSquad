@@ -522,7 +522,6 @@ io.on('connection', (socket) => {
     }
     // no hosts found
     io.emit('nojoin');
-    // TODO add situation where no hosts are found
   });
 
   socket.on('fighter picked', (roomname, player, squaddie) => {
