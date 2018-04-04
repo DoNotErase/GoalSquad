@@ -58,10 +58,12 @@ class Lobby extends React.Component {
 
   componentDidMount() {
   }
+
   componentWillUnmount() {
     socket.disconnect();
     alert('Disconnecting Socket as component will unmount');
   }
+
   hostGame() {
     console.log('host!');
     socket.emit('host', this.props.mainState.user.user_username, (data) => {
@@ -72,6 +74,7 @@ class Lobby extends React.Component {
       currentplayer: 'player1',
     });
   }
+
   joinGame() {
     console.log('join!');
     socket.emit('join', this.props.mainState.user.user_username, (data) => {
@@ -81,11 +84,13 @@ class Lobby extends React.Component {
       playeriam: 'player2',
     });
   }
+
   chooseFighter(roomname, playeriam, squaddie) {
     socket.emit('fighter picked', roomname, playeriam, squaddie, (data) => {
       console.log('data', data);
     });
   }
+  
   attack(roomname, damage, defense, user_monster_id) {
     socket.emit('attack', roomname, damage, defense, user_monster_id, (data) => {
       console.log('data', data);

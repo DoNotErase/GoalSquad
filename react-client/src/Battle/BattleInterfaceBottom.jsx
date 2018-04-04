@@ -63,10 +63,10 @@ class BattleInterfaceBottom extends React.Component {
       return (
         <div>
           <Header as="h5"> Congratulations! </Header>
-          <p> You won this battle and {monster.monster_name} has gained {xp} and has leveled up </p>
+          <p> You won this battle and {monster.monster_name} has gained {xp} XP and has leveled up </p>
           <Image src={monster.monster_pic} />
-          <p> Attack: {monster.user_monster_attack} </p>
-          <p> Defense: {monster.user_monster_defense} </p>
+          <p> Attack: {monster.user_monster_attack + 1} </p>
+          <p> Defense: {monster.user_monster_defense + 1} </p>
           <p> MaxHP: {(monster.user_monster_level + 2) * 5} </p>
         </div>
       );
@@ -74,10 +74,10 @@ class BattleInterfaceBottom extends React.Component {
     return (
       <div>
         <Header as="h5"> Defeat! </Header>
-        <p> You lost this battle but {monster.monster_name} has gained {xp}XP and has leveled up </p>
+        <p> You lost this battle but {monster.monster_name} has gained {xp} XP and has leveled up </p>
         <Image src={monster.monster_pic} />
-        <p> Attack: {monster.user_monster_attack} </p>
-        <p> Defense: {monster.user_monster_defense} </p>
+        <p> Attack: {monster.user_monster_attack + 1} </p>
+        <p> Defense: {monster.user_monster_defense + 1} </p>
         <p> MaxHP: {(monster.user_monster_level + 2) * 5} </p>
       </div>
     );
@@ -126,9 +126,21 @@ class BattleInterfaceBottom extends React.Component {
     }
 
     if (iWon) {
-      return `Congratulations! You won and ${yourMonster.monster_name} has gained ${XPgained}!`;
+      return (
+        <div>
+          <Header as="h5"> Victory! </Header>
+          <p> You won this battle and {yourMonster.monster_name} has gained {XPgained} XP </p>
+          <Image src={yourMonster.monster_pic} />
+        </div>
+      );
     }
-    return `You lost this battle, but ${yourMonster.monster_name} has gained ${XPgained} for its efforts`;
+    return (
+      <div>
+        <Header as="h5"> Defeat!! </Header>
+        <p> You lost this battle but {yourMonster.monster_name} has still gained {XPgained} XP </p>
+        <Image src={yourMonster.monster_pic} />
+      </div>
+    );
   }
 
   render() {
