@@ -522,3 +522,13 @@ module.exports.saveSquaddiePosition = async (userMonsterPosition) => {
     throw new Error('Error saving Squaddie position');
   }
 };
+
+module.exports.addXPtoMonster = async (monID, xp) => {
+  try {
+    return await db.queryAsync(`UPDATE user_monster SET user_monster_xp = user_monster_xp + ${xp} ` +
+      `WHERE user_monster_id = ${monID};`);
+  } catch (err) {
+    console.log(err);
+    throw new Error('ERR adding XP');
+  }
+}

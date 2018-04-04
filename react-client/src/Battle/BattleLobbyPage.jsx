@@ -63,6 +63,7 @@ class Lobby extends React.Component {
     alert('Disconnecting Socket as component will unmount');
   }
   hostGame() {
+    console.log('host!');
     socket.emit('host', this.props.mainState.user.user_username, (data) => {
       console.log(data);
     });
@@ -72,6 +73,7 @@ class Lobby extends React.Component {
     });
   }
   joinGame() {
+    console.log('join!');
     socket.emit('join', this.props.mainState.user.user_username, (data) => {
       console.log(data);
     });

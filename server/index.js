@@ -249,6 +249,18 @@ app.get('/userSquaddies', isAuthorized, async (req, res) => {
   }
 });
 
+app.post('/monsterXP', async (req, res) => {
+  console.log(req.body);
+  try {
+    const { monID, xp } = req.body;
+    await db.addXPtoMonster(monID, xp);
+    res.end();
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('err with increasing monster id');
+  }
+})
+
 /** *******************YARD STUFF**************************** */
 
 app.get('/yardSquad', isAuthorized, async (req, res) => {

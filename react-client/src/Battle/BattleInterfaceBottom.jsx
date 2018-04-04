@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Segment, Grid, Progress, Image, Button, Header, Confirm, Modal } from 'semantic-ui-react';
-import * as fightActions from './fightActions';
+import * as unboundFightActions from './fightActions';
 
 class BattleInterfaceBottom extends React.Component {
   constructor(props) {
@@ -16,6 +16,7 @@ class BattleInterfaceBottom extends React.Component {
     this.handleCancel = this.handleCancel.bind(this);
     this.gameEndShow = this.gameEndShow.bind(this);
     this.gameEndClose = this.gameEndClose.bind(this);
+    this.winState = this.winState.bind(this);
   }
 
   componentDidMount() {
@@ -31,8 +32,8 @@ class BattleInterfaceBottom extends React.Component {
     console.log('gameEndClose');
     this.props.fightActions.resetState();
     //this.setState({ gameEndOpen: false });
-
   }
+
   show() {
     console.log('show');
     this.setState({ open: true });
@@ -46,6 +47,79 @@ class BattleInterfaceBottom extends React.Component {
     this.setState({ open: false });
   }
 
+  iWon() {
+    const { fightState } = this.props;
+    if (fightState.playeriam === 'player1' && fightState.monster1CurrentHP > 0) {
+      return true;
+    } else if (fightState.playeriam === 'player2' && fightState.monster2CurrentHP > 0) {
+      return true;
+    }
+    return false;
+  }
+
+  monsterLevelUp(iWon, monster, xp) {
+    const { squaddieActions } = this.props;
+    if (iWon) {
+      return (
+        <div>
+          <Header as="h5"> Congratulations! </Header>
+          <p> You won this battle and {monster.monster_name} has gained {xp} and has leveled up </p>
+          <Image src={monster.monster_pic} />
+          <p> Attack: {monster.user_monster_attack} </p>
+          <p> Defense: {monster.user_monster_defense} </p>
+          <p> MaxHP: {(monster.user_monster_level + 2) * 5} </p>
+        </div>
+      );
+    }
+    return (
+      <div>
+        <Header as="h5"> Defeat! </Header>
+        <p> You lost this battle but {monster.monster_name} has gained {xp} and has leveled up </p>
+        <Image src={monster.monster_pic} />
+        <p> Attack: {monster.user_monster_attack} </p>
+        <p> Defense: {monster.user_monster_defense} </p>
+        <p> MaxHP: {(monster.user_monster_level + 2) * 5} </p>
+      </div>
+    );
+  }
+
+  winState() {
+    const calculateXP = (winningMon, losingMon) => {
+      // if a low level mosnter beat a high level monster
+      let levelDifferential = losingMon.user_monster_level - winningMon.user_monster_level;
+      if (levelDifferential < -4) {
+        levelDifferential = -4;
+      }
+      return (levelDifferential * 2) + 10;
+    };
+
+    const checkForLevelUp = (monster, xp) => {
+      if (Math.floor(monster.current_xp / 100) !== Math.floor((monster.current_xp + xp) / 100)) {
+        return true;
+      }
+      return false;
+    };
+
+    const { fightState, fightActions } = this.props;
+    const iWon = this.iWon();
+    let XPgained;
+    const yourMonster = fightState.playeriam === 'player1' ? fightState.monster1 : fightState.monster2;
+    const theirMonster = fightState.playeriam === 'player1' ? fightState.monster2 : fightState.monster2;
+    const monsterID = yourMonster.user_monster_id;
+    if (iWon) {
+      XPgained = calculateXP(yourMonster, theirMonster);
+    } else { // you lost
+      XPgained = 5;
+    }
+    fightActions.addXPtoMonster(monsterID, XPgained);
+    if (checkForLevelUp(yourMonster, XPgained)) {
+      return this.monsterLevelUp(iWon, yourMonster, XPgained);
+    }
+    if (iWon) {
+      return `Congratulations! You won and ${yourMonster.monster_name} has gained ${XPgained}!`;
+    }
+    return `You lost this battle, but ${yourMonster.monster_name} has gained ${XPgained} for its efforts`;
+  }
 
   render() {
     const { monster, fightState } = this.props;
@@ -111,7 +185,7 @@ class BattleInterfaceBottom extends React.Component {
                     confirmButton="Surrender"
                     cancelButton="Stay"
                   />
-                  {/*Modal for surrendering*/}
+                  {/* Modal for surrendering */}
                   <Modal dimmer={dimmer} open={this.props.surrenderPlayer === 'player1' || this.props.surrenderPlayer === 'player2'} onClose={this.gameEndClose}>
                     <Modal.Header>{this.props.surrenderPlayer === fightState.playeriam ? 'you have' : 'oppenent has'} surrendered</Modal.Header>
                     <Modal.Content image>
@@ -125,13 +199,11 @@ class BattleInterfaceBottom extends React.Component {
                       </Button>
                     </Modal.Actions>
                   </Modal>
-                  {/*Modal for win or loss*/}
+                  {/* Modal for win or loss */}
                   <Modal dimmer={dimmer} open={fightState.monster1CurrentHP <= 0 || fightState.monster2CurrentHP <= 0} onClose={this.gameEndClose}>
-                    <Modal.Header>{
-                    fightState.playeriam === 'player1' ?
-                      (fightState.monster1CurrentHP <= 0 ? 'You have lost' : 'You have won') :
-                      (fightState.monster1CurrentHP <= 0 ? 'You have won' : 'You have lost')
-                    }</Modal.Header>
+                    <Modal.Header>
+                      {this.winState}
+                    </Modal.Header>
                     <Modal.Content image>
                       <Modal.Description>
                         <Header>Click button to start new game!</Header>
@@ -161,7 +233,7 @@ const mapStateToProps = state => (
 
 const mapDispatchToProps = dispatch => (
   {
-    fightActions: bindActionCreators(fightActions, dispatch),
+    fightActions: bindActionCreators(unboundFightActions, dispatch),
   }
 );
 
