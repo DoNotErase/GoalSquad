@@ -23,6 +23,7 @@ class DeetsPage extends React.Component {
     this.handlePushNotificationUnsubscribe = this.handlePushNotificationUnsubscribe.bind(this);
     this.handlePushNotificationSubscription = this.handlePushNotificationSubscription.bind(this);
     this.showSubscribeButton = this.showSubscribeButton.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
 
     if (!props.state.deets.user || props.state.needsUpdate) {
       props.fetchStats();
@@ -53,7 +54,6 @@ class DeetsPage extends React.Component {
     this.setState({ open: false });
     const messaging = firebase.messaging();
     const firebaseDatabase = firebase.database();
-    const firebaseAuth = firebase.auth();
     messaging.getToken()
       .then(token => messaging.deleteToken(token))
       .then(() => firebaseDatabase.ref('/tokens').orderByChild('uid').equalTo(this.props.state.firebaseUser.uid).once('value'))
@@ -70,7 +70,7 @@ class DeetsPage extends React.Component {
   }
 
   handleCancel() {
-    this.setState({ open: false, hideUnsubscribeButton: true });
+    this.setState({ open: false });
   }
 
   showUnsubscribeButton() {
@@ -79,7 +79,7 @@ class DeetsPage extends React.Component {
         <Button onClick={this.show} floated="right" negative>Unsubscribe From Push Notifications</Button>
         <Confirm
           open={this.state.open}
-          content="Are you sure?"
+          content="Clicking OK will unsubscribe you from super-awesome push notifications. Are you sure?"
           onConfirm={this.handlePushNotificationUnsubscribe}
           onCancel={this.handleCancel}
         />
@@ -88,7 +88,7 @@ class DeetsPage extends React.Component {
   }
 
   handlePushNotificationSubscription() {
-    this.setState({ open: false });
+    this.setState({ open: false, hideUnsubscribeButton: false });
     const messaging = firebase.messaging();
     const fireBaseDatabase = firebase.database();
     messaging.getToken()
@@ -103,19 +103,15 @@ class DeetsPage extends React.Component {
 
   showSubscribeButton() {
     return (
-      this.props.state.user.unsubscribed_from_notifications === 1
-        ?
-          <div>
-            <Button onClick={this.show} floated="right" positive>Get Push Notifications</Button>
-            <Confirm
-              open={this.state.open}
-              content="Are you sure?"
-              onConfirm={this.handlePushNotificationSubscription}
-              onCancel={this.handleCancel}
-            />
-          </div>
-        :
-        null
+      <div>
+        <Button onClick={this.show} floated="right" positive>Get Push Notifications</Button>
+        <Confirm
+          open={this.state.open}
+          content="You want to bring your squad to the next level and receive push notificaitons?"
+          onConfirm={this.handlePushNotificationSubscription}
+          onCancel={this.handleCancel}
+        />
+      </div>
     );
   }
 
@@ -152,7 +148,7 @@ class DeetsPage extends React.Component {
                 <Segment compact>
                   <Grid.Row>
                     <Header as="h2">{this.props.state.user.user_username}</Header>
-                    {this.props.state.user.wants_push_notifications === 1
+                    {this.props.state.user.unsubscribed_from_notifications === 0
                     && this.state.hideUnsubscribeButton === false
                     ? this.showUnsubscribeButton() : this.showSubscribeButton()}
                   </Grid.Row>

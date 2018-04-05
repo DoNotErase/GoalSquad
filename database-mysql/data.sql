@@ -38,6 +38,10 @@ CREATE TABLE IF NOT EXISTS `user` (
   `user_total_points` int(11) NOT NULL DEFAULT '0',
   `custom_goal_timer_1` varchar(255) DEFAULT NULL,
   `custom_goal_timer_2` varchar(255) DEFAULT NULL,
+  `notified_of_push_notifications` bool default 0,
+  `wants_push_notifications` bool default 0,
+  `unsubscribed_from_notifications` bool default 0,
+  `role` varchar (30) default null,
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
