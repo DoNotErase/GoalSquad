@@ -137,9 +137,15 @@ class IncubatorPage extends React.Component {
     return (
       <div className="incubatorpage">
         <Grid centered>
+          <Grid.Row verticalAlign="bottom" columns={2}>
+            <Grid.Column mobile={8} tablet={5} computer={4}>
+              <MainMenu history={this.props.history} />
+            </Grid.Column>
+            <Grid.Column mobile={8} tablet={5} computer={4}>
+              <Header as="h1" className="white" textAlign="right">Your Goals</Header>
+            </Grid.Column>
+          </Grid.Row>
           <Grid.Column computer={8} tablet={10} mobile={16}>
-            <Header as="h1" className="white" textAlign="right">Your Goals</Header>
-            <Divider hidden />
             <Scrollbars autoHide style={{ height: '75vh' }}>
               {Object.keys(this.props.incubatorState.userGoals).length > 0
                 ? Object.keys(this.props.incubatorState.userGoals).map(activity => (
@@ -168,7 +174,6 @@ class IncubatorPage extends React.Component {
             </Grid.Column>
           </Grid.Row>
         </Grid>
-        <MainMenu history={this.props.history} />
         <Modal
           style={{ background: 'transparent' }}
           dimmer={this.state.dimmer}
