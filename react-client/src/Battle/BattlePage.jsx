@@ -22,27 +22,27 @@ const BattlePage = (props) => {
     enemy.hp = fightState.monster2CurrentHP;
     enemy.defendingTurns = fightState.monster2DefenseTurns > 0
       ? fightState.monster2DefenseTurns : 0;
-    enemy.addClass = props.monster2Class || 'slideInRight';
+    enemy.addClass = fightState.monster2Class || 'slideInRight';
     enemy.defenseStat = calculateEnemyDefense(fightState.monster2, fightState.monster2DefenseTurns);
     you.monster = fightState.monster1;
     you.hp = fightState.monster1CurrentHP;
     you.attack = fightState.monster1.user_monster_attack;
     you.defendingTurns = fightState.monster1DefenseTurns > 0 ?
       fightState.monster1DefenseTurns : 0;
-    you.addClass = props.monster1Class || 'slideInLeft';
+    you.addClass = fightState.monster1Class || 'slideInLeft';
   } else {
     enemy.monster = fightState.monster1;
     enemy.hp = fightState.monster1CurrentHP;
     enemy.defendingTurns = fightState.monster1DefenseTurns > 0
       ? fightState.monster1DefenseTurns : 0;
-    enemy.addClass = props.monster1Class || 'slideInRight';
+    enemy.addClass = fightState.monster1Class || 'slideInRight';
     enemy.defenseStat = calculateEnemyDefense(fightState.monster1, fightState.monster1DefenseTurns);
     you.monster = fightState.monster2;
     you.hp = fightState.monster2CurrentHP;
     you.attack = fightState.monster2.user_monster_attack;
     you.defendingTurns = fightState.monster2DefenseTurns > 0 ?
       fightState.monster2DefenseTurns : 0;
-    you.addClass = props.monster2Class || 'slideInLeft';
+    you.addClass = fightState.monster2Class || 'slideInLeft';
   }
 
   return (
