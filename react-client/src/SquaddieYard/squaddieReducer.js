@@ -4,6 +4,7 @@ const squadState = {
   isLoading: false,
   needsUpdate: true,
   newSquaddie: {},
+  yardLoading: false,
 };
 
 const squadReducer = (state = squadState, action) => {
@@ -25,6 +26,7 @@ const squadReducer = (state = squadState, action) => {
       return {
         ...state,
         newSquaddie: action.payload,
+        needsUpdate: true,
       };
     }
     case 'SQUADDIE_UPDATE': {
@@ -50,6 +52,18 @@ const squadReducer = (state = squadState, action) => {
       return {
         ...state,
         isLoading: false,
+      };
+    }
+    case 'YARD_LOADING': {
+      return {
+        ...state,
+        yardLoading: true,
+      };
+    }
+    case 'YARD_DONE_LOADING': {
+      return {
+        ...state,
+        yardLoading: false,
       };
     }
     default: {

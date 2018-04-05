@@ -120,6 +120,7 @@ class UserGoal extends React.Component {
           dimmer={dimmer}
           open={open}
           goal={goal}
+          goalProgress={goal.user_goal_target - goal.user_goal_current}
           className="fadeIn"
           close={this.close}
         />

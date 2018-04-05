@@ -13,7 +13,6 @@ class GoalDetailModal extends React.Component {
     this.state = {
       newCurrent: '',
       errorMessage: '',
-      activityPercentage: this.activityPercentage(),
       timePercentage: this.timePercentage(),
     };
 
@@ -24,6 +23,7 @@ class GoalDetailModal extends React.Component {
     this.onTrackMessage = this.onTrackMessage.bind(this);
     this.timeProgress = this.timeProgress.bind(this);
     this.estimateCompletion = this.estimateCompletion.bind(this);
+    this.activityPercentage = this.activityPercentage.bind(this);
   }
 
   onTrackMessage() {
@@ -42,14 +42,14 @@ class GoalDetailModal extends React.Component {
 
     if (this.props.goal.user_goal_end_date) {
       const difference = completeTime.diff(this.props.goal.user_goal_end_date, 'minutes');
-      if (this.state.timePercentage + this.state.activityPercentage < 90) {
+      if (this.state.timePercentage + this.activityPercentage() < 90) {
         return (
           <div>
             <Header as="h3" color="red" textAlign="right" floated="right"> Pick up the pace! You are at risk of failing this goal by {humanize(difference)}!</Header>
           </div>
         );
       }
-      if (this.state.timePercentage + this.state.activityPercentage > 110) {
+      if (this.state.timePercentage + this.activityPercentage() > 110) {
         return (
           <div>
             <Header as="h3" color="green" textAlign="right" floated="right">Way to go!  You are ahead of schedule by {humanize(difference)}!</Header>
@@ -73,8 +73,7 @@ class GoalDetailModal extends React.Component {
   activityPercentage() {
     const { goal } = this.props;
 
-    const progress = goal.user_goal_current - goal.user_goal_start_value;
-    return Math.floor((progress * 100) / goal.goal_amount);
+    return Math.floor((goal.user_goal_current / goal.user_goal_target) * 100);
   }
 
   timePercentage() {
@@ -175,7 +174,7 @@ class GoalDetailModal extends React.Component {
 
   estimateCompletion() {
     const { goal } = this.props;
-    const timePercentNeeded = (100 / this.state.activityPercentage) *
+    const timePercentNeeded = (100 / this.activityPercentage()) *
       (100 - this.state.timePercentage);
     const timeAllotted = moment(goal.user_goal_end_date).diff(moment(goal.user_goal_start_date), 'minutes');
     const estimatedTimeNeeded = timeAllotted * (timePercentNeeded / 100);
@@ -202,7 +201,7 @@ class GoalDetailModal extends React.Component {
                   <Progress
                     style={{ marginTop: 8 }}
                     size="medium"
-                    percent={this.state.activityPercentage}
+                    percent={this.activityPercentage()}
                     progress
                     indicating
                   />

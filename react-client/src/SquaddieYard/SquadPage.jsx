@@ -11,9 +11,7 @@ import { getUserSquaddies } from './squaddieActions';
 
 class SquadPage extends React.Component {
   componentDidMount() {
-    if (!this.props.squadState.squaddies.length || this.props.squadState.needsUpdate) {
-      this.props.getUserSquaddies();
-    }
+    this.props.getUserSquaddies();
   }
 
   render() {

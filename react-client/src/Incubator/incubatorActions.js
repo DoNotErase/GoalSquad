@@ -60,6 +60,7 @@ export const hatchEgg = (eggID, extraXP) => (
   dispatch => (
     axios.post('/hatchEgg', { eggID, xp: extraXP })
       .then((res) => {
+        dispatch({ type: 'SQUADDIE_UPDATE' });
         dispatch(newSquaddie(res.data));
         dispatch(getYardSquaddies());
         dispatch(fetchEggStatus());
@@ -97,7 +98,7 @@ export const submitProgress = (userGoalID, newCurrent) => (
     axios.patch('/updateCustom', { goalID: userGoalID, newCurrent })
       .then(() => {
         // take this out, update local
-        dispatch(getUserGoals(userGoalID));
+        dispatch(getUserGoals());
       })
       .catch((err) => { handleErr(err); })
   )

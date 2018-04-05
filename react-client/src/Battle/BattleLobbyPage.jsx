@@ -189,9 +189,6 @@ class Lobby extends React.Component {
             attack={this.attack}
             defend={this.defend}
             surrender={this.surrender}
-            surrenderPlayer={fightState.surrenderPlayer}
-            monster1Class={fightState.monster1Class}
-            monster2Class={fightState.monster2Class}
             history={this.props.history}
           />
         </div>

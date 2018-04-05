@@ -52,7 +52,8 @@ const GoalHistoryModal = (props) => {
       if (moment().diff(moment(props.user.custom_goal_timer_1), 'days') < 1) {
         return true;
       }
-    } else if (props.userGoals[goal.goal_activity].length >= 2) {
+    } else if (!props.userGoals[goal.goal_activity] ||
+        props.userGoals[goal.goal_activity].length >= 2) {
       return true;
     }
     return false;

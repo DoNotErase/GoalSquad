@@ -16,11 +16,11 @@ const historyReducer = (state = historyState, action) => {
       };
     }
     case 'SET_FILTERED': {
-      let filteredGoals = state.goals;
+      let filteredGoals = state.goals.slice();
       if (action.payload === 'success') {
-        filteredGoals = state.goals.filter(goal => (goal.user_goal_success === 1));
+        filteredGoals = filteredGoals.filter(goal => (goal.user_goal_success === 1));
       } else if (action.payload === 'fail') {
-        filteredGoals = state.goals.filter(goal => (goal.user_goal_success === 0));
+        filteredGoals = filteredGoals.filter(goal => (goal.user_goal_success === 0));
       }
       return {
         ...state,
@@ -28,19 +28,20 @@ const historyReducer = (state = historyState, action) => {
       };
     }
     case 'SET_SORTED': {
-      let sorted = state.filteredGoals;
+      let sorted = state.filteredGoals.slice();
+
       const sortType = action.payload || state.sortType;
       if (sortType === 'date') {
-        sorted = state.filteredGoals.sort((a, b) => {
+        sorted = sorted.sort((a, b) => {
           if (a.user_goal_start_date < b.user_goal_start_date) {
             return -1;
           }
           return 1;
         });
       } else if (sortType === 'points') {
-        sorted = state.filteredGoals.sort((a, b) => (a.user_goal_points - b.user_goal_points));
+        sorted = sorted.sort((a, b) => (a.user_goal_points - b.user_goal_points));
       } else if (sortType === 'activity') {
-        sorted = state.filteredGoals.sort((a, b) => {
+        sorted = sorted.sort((a, b) => {
           if (a.goal_activity < b.goal_activity) {
             return -1;
           }
@@ -50,6 +51,7 @@ const historyReducer = (state = historyState, action) => {
       if (state.inverted) {
         sorted = sorted.reverse();
       }
+
       return {
         ...state,
         sortedGoals: sorted,
@@ -59,7 +61,7 @@ const historyReducer = (state = historyState, action) => {
     case 'FLIP': {
       return {
         ...state,
-        sortedGoals: state.sortedGoals.reverse(),
+        sortedGoals: state.sortedGoals.slice().reverse(),
         inverted: !state.inverted,
       };
     }
