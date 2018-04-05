@@ -87,7 +87,7 @@ class HomePage extends React.Component {
           style={{ height: '100%' }}
         >
           <Grid.Column width={12} style={{ maxWidth: 450 }}>
-            <Image src="./assets/misc/logo.png" style={{ marginTop: 25 }} size="huge" />
+            <Image src="./assets/misc/logo.png" style={{ marginTop: 25 }} size="large" />
             <Button
               as="a"
               href="/auth/fitbit"

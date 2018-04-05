@@ -3,6 +3,9 @@ import axios from 'axios';
 const isLoading = () => ({ type: 'IS_LOADING', payload: true });
 const doneLoading = () => ({ type: 'DONE_LOADING', payload: false });
 
+const yardLoading = () => ({ type: 'YARD_LOADING', payload: true });
+const yardDoneLoading = () => ({ type: 'YARD_DONE_LOADING', payload: false });
+
 const handleErr = (err) => {
   if (err.response && err.response.status === 401) {
     window.location.href = '/';
@@ -61,14 +64,28 @@ export const getYardSquaddies = () => (
   )
 );
 
+// testing why remove from yard and add to yard does not work
+// for toggleYardStatus
+export const getUserSquaddies2 = () => (
+  dispatch => axios.get('/squaddies')
+    .then((res) => {
+      dispatch(setSquaddies(res.data));
+    })
+    .catch((err) => {
+      handleErr(err);
+    })
+);
+
 export const toggleYardStatus = userMonsterID => (
-  dispatch => (
-    axios.patch('/yardSquad', { monID: userMonsterID })
+  (dispatch) => {
+    dispatch(yardLoading());
+    return axios.patch('/yardSquad', { monID: userMonsterID })
       .then((res) => {
-        dispatch(toggleYardSquaddies(res.data));
+        dispatch(getUserSquaddies2());
+        dispatch(yardDoneLoading());
       })
-      .catch((err) => { handleErr(err); })
-  )
+      .catch((err) => { handleErr(err); });
+  }
 );
 
 export const changeName = (userMonsterID, newName) => (

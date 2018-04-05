@@ -1,12 +1,12 @@
 import React from 'react';
-import { Card, Modal, Image, Button, Input, Grid, Progress, Statistic, Header } from 'semantic-ui-react';
+import { Card, Modal, Image, Button, Input, Icon, Grid, Progress, Statistic, Header } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { toggleYardStatus, changeName } from './squaddieActions';
 
 const styles = {
-  cardBackground: 'linear-gradient(to bottom, #faedc4, #ffebd8, #ffeff1, #fff8ff, #ffffff)',
+  cardBackground: 'radial-gradient(circle, #ffffff, #ffffff, #faedc4)',
   iconBackground: 'linear-gradient(to bottom, #faedc4, #ffebd8, #ffffff)',
 };
 
@@ -89,7 +89,7 @@ class SquaddieCard extends React.Component {
       <Modal
         trigger={
           <Card
-            color={(squaddie.user && squaddie.user.user_monster_yard) || yardstatus ? 'orange' : null}
+            color={(squaddie.user && squaddie.user.user_monster_yard) || yardstatus ? 'green' : null}
             raised
             onClick={() => this.show(true, 'tiny')}
           >
@@ -127,7 +127,7 @@ class SquaddieCard extends React.Component {
                   :
                   squaddie.monster_name}
                 {squaddie.user ?
-                  <Button size="mini" style={{ marginLeft: '5px' }} onClick={() => { this.setState({ rename: true }); }}>
+                  <Button basic size="mini" style={{ marginLeft: '5px' }} onClick={() => { this.setState({ rename: true }); }}>
                   Edit
                   </Button>
                   :
@@ -140,13 +140,19 @@ class SquaddieCard extends React.Component {
             </Card.Content>
             <Card.Content extra>
               { squaddie.user ?
-                <Button
-                  inverted
-                  floated="right"
-                  color={squaddie.user.user_monster_yard || yardstatus ? 'red' : 'green'}
-                  content={squaddie.user.user_monster_yard || yardstatus ? 'Remove From Yard' : 'Add to Yard'}
-                  onClick={() => { this.toggleSquaddieToYard(squaddie.user.user_monster_id); }}
-                /> : <div />
+                <div>
+                  <Button icon circular onClick={this.close}>
+                    <Icon name="close" />
+                  </Button>
+                  <Button
+                    inverted
+                    loading={this.props.squadState.yardLoading ? true : false}
+                    floated="right"
+                    color={squaddie.user.user_monster_yard ? 'red' : 'green'}
+                    content={squaddie.user.user_monster_yard ? 'Remove From Yard' : 'Add to Yard'}
+                    onClick={() => { this.toggleSquaddieToYard(squaddie.user.user_monster_id); }}
+                  />
+                </div> : <div />
               }
             </Card.Content>
           </Card>
@@ -178,6 +184,9 @@ class SquaddieCard extends React.Component {
 }
 
 SquaddieCard.propTypes = {
+  squadState: PropTypes.shape({
+    yardLoading: PropTypes.bool,
+  }).isRequired,
   toggleYardStatus: PropTypes.func.isRequired,
   changeName: PropTypes.func.isRequired,
   squaddie: PropTypes.shape({
@@ -189,6 +198,12 @@ SquaddieCard.propTypes = {
   }).isRequired,
 };
 
+const mapStateToProps = state => (
+  {
+    squadState: state.squad,
+  }
+);
+
 const mapDispatchToProps = dispatch => (
   {
     toggleYardStatus: bindActionCreators(toggleYardStatus, dispatch),
@@ -196,4 +211,4 @@ const mapDispatchToProps = dispatch => (
   }
 );
 
-export default connect(null, mapDispatchToProps)(SquaddieCard);
+export default connect(mapStateToProps, mapDispatchToProps)(SquaddieCard);
