@@ -23,7 +23,19 @@ export const localLogin = (username, password) => (
   dispatch => (
     axios.post('/localLogin', { username, password })
       .then(() => {
-        dispatch(attemptLogin());
+        dispatch(attemptLogin())
+        .then(() => {
+              firebase.auth().signInAnonymously()
+        })
+        .then(() => {
+          firebase.auth().onAuthStateChanged(user => {
+            if(user) {
+             dispatch(setFirebaseUser(user)); 
+            } else {
+              console.log('Unable to sign user in via Firebase');
+            }
+          })
+        });
       })
       .catch((err) => {
         dispatch(errMessage('Please check your credentials and try again'));
@@ -41,7 +53,7 @@ export const localSignup = (username, password) => (
         if (!res.data.error) {
           dispatch(localLogin(username, password))
           .then(() => {
-              firebase.auth().signInAnonymously();
+              firebase.auth().signInAnonymously()
           })
           .then(() => {
             firebase.auth().onAuthStateChanged(user => {

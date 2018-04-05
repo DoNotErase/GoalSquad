@@ -16,11 +16,12 @@ class IntermediateAdminPage extends React.Component {
 
 	render() {
 		return (
-			<div className='adminpage'>
+			<div className='intadminpage'>
 			  <Grid
 			  textAlign="center"
 			  verticalAlign="middle"
 			  centered
+			  container
 			  >
 			    <Grid.Row verticalAlign="middle">
 			        <Header>Welcome, admin user!</Header>

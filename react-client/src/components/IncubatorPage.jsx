@@ -112,7 +112,7 @@ class IncubatorPage extends React.Component {
 
   showPushNotificationButton() {
     return (
-      !this.props.state.user.notified_of_push_notifications && this.props.state.firebaseUser && this.props.state.firebaseUser.uid
+      this.props.state.firebaseUser && this.props.state.firebaseUser.uid && !this.props.state.user.notified_of_push_notifications
         ?
           <div>
             <Grid.Row verticalAlign="top">
@@ -202,10 +202,10 @@ class IncubatorPage extends React.Component {
       },
     };
     return (
-        // this.props.state.user.role === 'admin' 
-        // ?
-        // <IntermediateAdminPage history={this.props.history}/>
-        // :
+        this.props.state.user.role === 'admin' 
+        ?
+        <IntermediateAdminPage history={this.props.history}/>
+        :
       <div className="incubatorpage">
         <Grid style={styles.position}>
           {this.state.notifiedOfPushNotifications

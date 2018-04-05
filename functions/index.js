@@ -6,10 +6,12 @@ admin.initializeApp(functions.config().firebase);
 exports.sendNotifications = functions.database.ref('/notifications/{notificationID}').onWrite((event) => {
 
   if (event.data.previous.val()) {
+    console.log('Post already posted');
     return;
   }
 
   if (!event.data.exists()) {
+    console.log('Post does not exist');
     return;
   }
 
