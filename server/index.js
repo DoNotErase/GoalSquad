@@ -542,10 +542,13 @@ io.on('connection', (socket) => {
   });
 
   socket.on('attack', (roomname, damage, defense, monID) => {
-    let totalDamage = (damage + 3) - defense; // change formula later
-    console.log(totalDamage, monID);
-    totalDamage = totalDamage > 1 ? totalDamage : 1;
-    console.log(totalDamage);
+    let totalDamage = (Math.ceil((Math.random() * damage) - (Math.random() * defense))) + 3;
+
+    if (totalDamage === ((damage + 3) - defense)) {
+      totalDamage += 2;
+    }
+
+    totalDamage = totalDamage > 1 ? totalDamage : 1; // min damage = 1
     io.in(roomname).emit('attack', { damage: totalDamage, monID });
   });
 

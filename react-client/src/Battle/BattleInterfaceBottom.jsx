@@ -83,6 +83,7 @@ class BattleInterfaceBottom extends React.Component {
     const calculateXP = (winningMon, losingMon) => {
       // if a low level mosnter beat a high level monster
       let levelDifferential = losingMon.user_monster_level - winningMon.user_monster_level;
+      console.log(levelDifferential, 'level differential');
       if (levelDifferential < -4) {
         levelDifferential = -4;
       }
