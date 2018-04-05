@@ -28,6 +28,7 @@ class YardSquaddie extends React.Component {
   }
 
   handleDrag(e, ui) {
+    e.preventDefault();
     const { x, y } = this.state.deltaPosition;
     this.setState({
       deltaPosition: {
@@ -43,6 +44,7 @@ class YardSquaddie extends React.Component {
   render() {
     return (
       <Draggable
+        bounds="parent"
         onDrag={this.handleDrag}
         defaultPosition={{ x: this.state.deltaPosition.x, y: this.state.deltaPosition.y }}
       >
