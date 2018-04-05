@@ -64,13 +64,13 @@ class DeetsPage extends React.Component {
       })
       .then(() => {
         this.setState({ hideUnsubscribeButton: true });
+        // make action call to delete token and set preference to false in DB
         this.props.homePageActions.unsubscribeFromPushNotifications(this.props.state.user.id);
         this.setState({ revealSubscribeButton: true });
       })
       .catch((err) => {
         console.log('Unable to delete user token from firebase database.', err);
       });
-    // make action call to delete token and set preference to false in DB
   }
 
   handleCancel() {
