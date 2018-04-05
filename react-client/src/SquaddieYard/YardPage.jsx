@@ -27,6 +27,9 @@ class YardPage extends React.Component {
           <div
             style={background}
           >
+            <MainMenu
+              history={this.props.history}
+            />
             {this.props.squadState.isLoading ?
               <Loader active size="medium" inline="centered" />
             :
@@ -38,7 +41,6 @@ class YardPage extends React.Component {
             }
           </div>
         </Scrollbars>
-        <MainMenu history={this.props.history} />
       </div>
     );
   }

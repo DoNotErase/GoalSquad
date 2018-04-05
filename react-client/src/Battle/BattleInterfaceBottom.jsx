@@ -21,7 +21,7 @@ class BattleInterfaceBottom extends React.Component {
   }
 
   gameEndShow(dimmer) {
-    this.setState({ dimmer, gameEndOpen: true });
+    this.setState({ dimmer });
   }
   gameEndClose() {
     this.props.fightActions.resetState();
@@ -45,8 +45,8 @@ class BattleInterfaceBottom extends React.Component {
     return false;
   }
 
-  monsterLevelUp(iWon, monster, xp) {
-    const { squaddieActions } = this.props;
+  monsterLevelUp(iWon, xp) {
+    const { monster } = this.props;
     if (iWon) {
       return (
         <div>
@@ -83,6 +83,7 @@ class BattleInterfaceBottom extends React.Component {
     const calculateXP = (winningMon, losingMon) => {
       // if a low level mosnter beat a high level monster
       let levelDifferential = losingMon.user_monster_level - winningMon.user_monster_level;
+      console.log(levelDifferential, 'level differential');
       if (levelDifferential < -4) {
         levelDifferential = -4;
       }
@@ -113,7 +114,7 @@ class BattleInterfaceBottom extends React.Component {
 
     if (checkForLevelUp(yourMonster, XPgained)) {
       fightActions.levelup(yourMonster.user_monster_id);
-      return this.monsterLevelUp(iWon, yourMonster, XPgained);
+      return this.monsterLevelUp(iWon, XPgained);
     }
 
     if (iWon) {
@@ -150,7 +151,14 @@ class BattleInterfaceBottom extends React.Component {
 
   render() {
     const { monster, fightState } = this.props;
-    const { gameEndOpen, dimmer } = this.state;
+    const { dimmer } = this.state;
+    // for animations
+    // let addClasses = '';
+    // if (!fightState.monster1WasAttacked && !fightState.monster2WasAttacked) {
+    //   addClasses = 'slideInLeft';
+    // } else {
+    //   addClasses = this.props.wasAttacked ? 'swing' : 'base-state';
+    // }
     return (
       <Segment>
         <Grid>
@@ -169,12 +177,16 @@ class BattleInterfaceBottom extends React.Component {
               <Grid.Row columns={2}>
                 <Grid.Column>
                   <Image
+                    className={this.props.addClass}
+                    // className={addClasses}
+                    // className={`${wasAttacked} slideInLeft`}
                     src={monster.monster_pic}
                     size="small"
                     spaced="right"
                   />
                 </Grid.Column>
                 <Grid.Column textAlign="center" verticalAlign="bottom">
+                  <Header as="h5"> {this.props.defendingTurns > 0 ? `Defending for ${this.props.defendingTurns} turns` : '' }</Header>
                   <Button
                     disabled={fightState.playeriam !== fightState.activePlayer}
                     basic
@@ -192,6 +204,8 @@ class BattleInterfaceBottom extends React.Component {
                     color="blue"
                     content="Defend"
                     style={{ marginBottom: 2 }}
+                    onClick={() =>
+                      this.props.defend(fightState.roomName, monster.user_monster_id)}
                   />
                   <Button
                     disabled={fightState.playeriam !== fightState.activePlayer}
@@ -266,16 +280,19 @@ BattleInterfaceBottom.propTypes = {
     surrendered: PropTypes.func,
     resetState: PropTypes.func,
   }).isRequired,
+  defend: PropTypes.func.isRequired,
   squaddieActions: PropTypes.objectOf(PropTypes.func).isRequired,
   monster: PropTypes.shape({
 
   }).isRequired,
   currentHP: PropTypes.number.isRequired,
+  addClass: PropTypes.string.isRequired,
   attack: PropTypes.func.isRequired,
   attackStat: PropTypes.number.isRequired,
   enemyDefenseStat: PropTypes.number.isRequired,
+  defendingTurns: PropTypes.number.isRequired,
   surrender: PropTypes.func.isRequired,
-  surrenderPlayer: PropTypes.string,
+  surrenderPlayer: PropTypes.string.isRequired,
   fightState: PropTypes.shape({
     playeriam: PropTypes.string,
     player1: PropTypes.string,

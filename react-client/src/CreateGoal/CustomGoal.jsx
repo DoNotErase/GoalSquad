@@ -307,7 +307,7 @@ class CustomGoal extends React.Component {
                 positive
                 icon="checkmark"
                 labelPosition="right"
-                content="Yep, that's me"
+                content="Create goal"
                 onClick={this.submit}
               />
             </Modal.Actions>

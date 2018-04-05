@@ -56,7 +56,6 @@ app.use(user.middleware());
 
 // returns a compressed bundle
 app.get('*bundle.js', (req, res, next) => {
-  console.log(req.url);
   req.url += '.gz';
   res.set('Content-Encoding', 'gzip');
   res.set('Content-Type', 'text/javascript');
@@ -329,7 +328,11 @@ app.get('/yardSquad', isAuthorized, async (req, res) => {
 
 app.patch('/yardSquad', isAuthorized, async (req, res) => {
   try {
+    // console.log('req.body.monID', req.body.monID);
     await db.updateYardSquaddie(req.body.monID);
+    // const userID = req.session.passport.user.id;
+    // const data = await db.getYardSquaddiesByID(userID);
+    res.status(200).json();
   } catch (err) {
     res.status(500).send(err);
   }
@@ -595,8 +598,10 @@ io.on('connection', (socket) => {
 
   socket.on('join', (username) => {
     console.log('rooms', rooms);
+    console.log('adapter rooms', io.sockets.adapter.rooms);
     for (let i = 0; i < rooms.length; i += 1) {
       const room = rooms[i].roomName;
+
       if (io.sockets.adapter.rooms[room].length < 2) {
         socket.join(room);
         rooms[i].player2 = username;
@@ -613,8 +618,18 @@ io.on('connection', (socket) => {
   });
 
   socket.on('attack', (roomname, damage, defense, monID) => {
-    const totalDamage = (damage + 3) - defense; // change formula later
+    let totalDamage = (Math.ceil((Math.random() * damage) - (Math.random() * defense))) + 3;
+
+    if (totalDamage === ((damage + 3) - defense)) {
+      totalDamage += 2;
+    }
+
+    totalDamage = totalDamage > 1 ? totalDamage : 1; // min damage = 1
     io.in(roomname).emit('attack', { damage: totalDamage, monID });
+  });
+
+  socket.on('defend', (roomname, monID) => {
+    io.in(roomname).emit('defend', { monID });
   });
 
   socket.on('surrender', (roomname, surrenderPlayer) => {

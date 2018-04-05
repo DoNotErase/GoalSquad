@@ -31,6 +31,7 @@ class Lobby extends React.Component {
     this.state = {};
     this.chooseFighter = this.chooseFighter.bind(this);
     this.attack = this.attack.bind(this);
+    this.defend = this.defend.bind(this);
     this.surrender = this.surrender.bind(this);
 
     // not needed ('/') works by itself if using the same port as server to listen for socket
@@ -51,6 +52,10 @@ class Lobby extends React.Component {
     socket.on('attack', ({ damage, monID }) => {
       this.props.fightActions.decreaseHealth(damage, monID);
     });
+    socket.on('defend', ({ monID }) => {
+      console.log('monID');
+      this.props.fightActions.defend(monID);
+    });
     socket.on('surrender', ({ surrenderPlayer }) => {
       // use to display that you either won or lost because someone surrendered
       console.log('surrenderPlayer', surrenderPlayer);
@@ -61,9 +66,9 @@ class Lobby extends React.Component {
     });
   }
 
-  componentDidMount() {axios.get('/userSquaddies')
+  componentDidMount() {
+    axios.get('/userSquaddies')
       .then((squaddies) => {
-        console.log('squaddies.data.length', squaddies.data.length);
         if (squaddies.data.length < 1) {
           this.setState({
             noSquaddies: true,
@@ -71,6 +76,7 @@ class Lobby extends React.Component {
         }
       });
   }
+
   componentWillUnmount() {
     socket.disconnect();
   }
@@ -79,6 +85,7 @@ class Lobby extends React.Component {
     socket.emit('host', this.props.mainState.user.user_username, (data) => {
       console.log(data);
     });
+    console.log('hosting');
     this.setState({
       playeriam: 'player1',
       hostWaiting: true,
@@ -90,6 +97,7 @@ class Lobby extends React.Component {
     socket.emit('join', this.props.mainState.user.user_username, (data) => {
       console.log(data);
     });
+    console.log('heeyyyooo');
     this.setState({
       playeriam: 'player2',
       hostWaiting: false,
@@ -109,7 +117,15 @@ class Lobby extends React.Component {
   }
 
   attack(roomname, damage, defense, monID) {
+    console.log('attack', roomname, monID, defense);
     socket.emit('attack', roomname, damage, defense, monID, (data) => {
+      console.log('data', data);
+    });
+  }
+
+  defend(roomname, monID) {
+    console.log('defend', roomname, monID);
+    socket.emit('defend', roomname, monID, (data) => {
       console.log('data', data);
     });
   }
@@ -125,7 +141,7 @@ class Lobby extends React.Component {
   }
 
   render() {
-    const {fightState} = this.props;
+    const { fightState } = this.props;
     // user does not have any monsters yet
     if (this.state.noSquaddies === true) {
       return (
@@ -170,15 +186,12 @@ class Lobby extends React.Component {
       return (
         <div>
           <BattlePage
-            monster1={fightState.monster1}
-            monster2={fightState.monster2}
-            playeriam={fightState.playeriam}
-            currentplayer={fightState.activePlayer}
-            monster1CurrentHP={fightState.monster1CurrentHP}
-            monster2CurrentHP={fightState.monster2CurrentHP}
             attack={this.attack}
+            defend={this.defend}
             surrender={this.surrender}
             surrenderPlayer={fightState.surrenderPlayer}
+            monster1Class={fightState.monster1Class}
+            monster2Class={fightState.monster2Class}
             history={this.props.history}
           />
         </div>
@@ -192,9 +205,15 @@ class Lobby extends React.Component {
           textAlign="center"
           verticalAlign="middle"
         >
+          <Grid.Row verticalAlign="bottom" columns={2}>
+            <Grid.Column mobile={8} tablet={7} computer={4}>
+              <MainMenu history={this.props.history} />
+            </Grid.Column>
+            <Grid.Column mobile={8} tablet={7} computer={4}>
+              <Header as="h1" className="white" textAlign="right">Lobby</Header>
+            </Grid.Column>
+          </Grid.Row>
           <Grid.Column computer={8} tablet={10} mobile={16}>
-            <Header as="h1" className="white" textAlign="right">Lobby</Header>
-            <Divider hidden />
             <Grid.Column style={{ maxWidth: 450 }}>
               <Button
                 disabled={this.state.buttonsDisabled}
@@ -234,7 +253,6 @@ class Lobby extends React.Component {
               </Modal>
             </Grid.Column>
           </Grid.Column>
-          <MainMenu history={this.props.history} />
         </Grid>
       </div>
     );
@@ -247,6 +265,7 @@ Lobby.propTypes = {
     setMonsterFighter: PropTypes.func,
     decreaseHealth: PropTypes.func,
     surrendered: PropTypes.func,
+    defend: PropTypes.func,
   }).isRequired,
   mainState: PropTypes.shape({
     user: PropTypes.object,
