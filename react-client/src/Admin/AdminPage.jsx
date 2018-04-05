@@ -16,11 +16,13 @@ class AdminPage extends React.Component {
       open: false,
       successMessage: false,
       failureMessage: false,
+      visible: true,
     };
     this.show = this.show.bind(this);
     this.sendNotification = this.sendNotification.bind(this);
     this.updateNotification = this.updateNotification.bind(this);
     this.handlePushNotificationCancel = this.handlePushNotificationCancel.bind(this);
+    this.handleDismiss = this.handleDismiss.bind(this);
   }
 
   updateNotification(e) { this.setState({ notification: e.target.value }); }
@@ -39,11 +41,11 @@ class AdminPage extends React.Component {
     })
       .then(() => {
         console.log('Notification sent to users!');
-        this.setState({ notification: '', successMessage: true });
+        this.setState({ notification: '', visible: true, successMessage: true });
       })
       .catch(() => {
         console.log('Unable to send notification to Firebase database');
-        this.setState({ failureMessage: true });
+        this.setState({ visible: true, failureMessage: true });
       });
   }
 
@@ -55,27 +57,37 @@ class AdminPage extends React.Component {
     this.setState({ open: true });
   }
 
+  handleDismiss() {
+    this.setState({ visible: false });
+  }
+
   showSuccessAlert() {
-    return (
-      <div>
-        <Message
-          positive
-          header="Message successfully sent"
-          content="Woohoo! Users are now more informed."
-        />
-      </div>
-    );
+    if (this.state.visible) {
+      return (
+        <div>
+          <Message
+            onDismiss={this.handleDismiss}
+            positive
+            header="Message successfully sent"
+            content="Woohoo! Users are now more informed."
+          />
+        </div>
+      );
+    }
   }
 
   showFailureAlert() {
-    return (
-      <div>
-        <Message
-          negative
-          header="Hm, something didn't work. Check the logs for more information."
-        />
-      </div>
-    );
+    if (this.state.visible) {
+      return (
+        <div>
+          <Message
+            onDismiss={this.handleDismiss}
+            negative
+            header="Hm, something didn't work. Check the logs for more information."
+          />
+        </div>
+      );
+    }
   }
 
   render() {
