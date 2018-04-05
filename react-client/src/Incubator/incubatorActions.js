@@ -97,7 +97,7 @@ export const submitProgress = (userGoalID, newCurrent) => (
     axios.patch('/updateCustom', { goalID: userGoalID, newCurrent })
       .then(() => {
         // take this out, update local
-        dispatch(getUserGoals(userGoalID));
+        dispatch(getUserGoals());
       })
       .catch((err) => { handleErr(err); })
   )
