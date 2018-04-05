@@ -46,7 +46,6 @@ class SquaddieCard extends React.Component {
 
   battleStuff() {
     if (!this.props.squaddie.user) {
-      console.log('no user!!!');
       return '';
     }
     return (

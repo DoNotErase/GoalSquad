@@ -42,7 +42,6 @@ class HomePage extends React.Component {
 
   componentDidUpdate() {
     if (this.props.state.user.user_id) {
-      console.log('has user.user_id');
       this.props.history.push('/incubator');
     } else {
       console.log('no user yet');
