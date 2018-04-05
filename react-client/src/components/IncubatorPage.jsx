@@ -87,15 +87,13 @@ class IncubatorPage extends React.Component {
 
   handleTokenRefresh() {
     const messaging = firebase.messaging();
-    const firebase_database = firebase.database();
-    const firebase_auth = firebase.auth();
+    const fireBaseDatabase = firebase.database();
     messaging.getToken()
       .then((userToken) => {
-        firebase_database.ref('/tokens').push({
-            token: userToken,
-            uid: this.props.state.firebaseUser.uid
+        fireBaseDatabase.ref('/tokens').push({
+          token: userToken,
+          uid: this.props.state.firebaseUser.uid,
         });
-        // TODO: remove token since shifting to firebase database
         this.props.homePageActions.updatePushNotificationsToTrue(this.props.state.user.id);
       });
   }
@@ -111,8 +109,10 @@ class IncubatorPage extends React.Component {
   }
 
   showPushNotificationButton() {
+    const firebaseUserHolder = this.props.state.firebaseUser;
+    const firebaseUser = firebaseUserHolder;
     return (
-      this.props.state.firebaseUser && this.props.state.firebaseUser.uid && !this.props.state.user.notified_of_push_notifications
+      firebaseUser && firebaseUser.uid && !this.props.state.user.notified_of_push_notifications
         ?
           <div>
             <Grid.Row verticalAlign="top">
@@ -138,7 +138,7 @@ class IncubatorPage extends React.Component {
 
   subtractFromCount() {
     if (this.state.count === 0) {
-      this.setState({ count: 3, firstTime: true, newSquaddie: true });
+      this.setState({ count: 3, firstTime: true });
     }
     this.setState(prevState => ({ count: prevState.count - 1, glowingEgg: false }));
   }
@@ -202,23 +202,23 @@ class IncubatorPage extends React.Component {
       },
     };
     return (
-        this.props.state.user.role === 'admin' 
+      this.props.state.user.role === 'admin'
         ?
-        <IntermediateAdminPage history={this.props.history}/>
+          <IntermediateAdminPage history={this.props.history} />
         :
-      <div className="incubatorpage">
-        <Grid style={styles.position}>
-          {this.state.notifiedOfPushNotifications
+          <div className="incubatorpage">
+            <Grid style={styles.position}>
+              {this.state.notifiedOfPushNotifications
               ? null
               : this.showPushNotificationButton()
           }
-          <Grid.Row verticalAlign="middle"><Header as="h1" className="white" textAlign="right">Your Goals</Header></Grid.Row>
-          <Divider hidden />
-        </Grid>
-        <Grid centered>
-          <Grid.Column computer={8} tablet={10} mobile={16}>
-            <Scrollbars autoHide style={{ height: '75vh' }}>
-              {Object.keys(this.props.incubatorState.userGoals).length > 0
+              <Grid.Row verticalAlign="middle"><Header as="h1" className="white" textAlign="right">Your Goals</Header></Grid.Row>
+              <Divider hidden />
+            </Grid>
+            <Grid centered>
+              <Grid.Column computer={8} tablet={10} mobile={16}>
+                <Scrollbars autoHide style={{ height: '75vh' }}>
+                  {Object.keys(this.props.incubatorState.userGoals).length > 0
                 ? Object.keys(this.props.incubatorState.userGoals).map(activity => (
                   <UserGoalsList
                     key={activity}
@@ -228,25 +228,25 @@ class IncubatorPage extends React.Component {
               ))
                 : this.getGoals()
               }
-            </Scrollbars>
-          </Grid.Column>
-          <Grid.Row
-            columns={2}
-            verticalAlign="top"
-            style={{ position: 'fixed', bottom: 0, padding: 1 }}
-          >
-            <Grid.Column width={3}>
-              {this.openEggModal()}
-            </Grid.Column>
-            <Grid.Column width={13}>
-              <ProgressBar
-                history={this.props.history}
-              />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-        <MainMenu history={this.props.history} />
-      </div>
+                </Scrollbars>
+              </Grid.Column>
+              <Grid.Row
+                columns={2}
+                verticalAlign="top"
+                style={{ position: 'fixed', bottom: 0, padding: 1 }}
+              >
+                <Grid.Column width={3}>
+                  {this.openEggModal()}
+                </Grid.Column>
+                <Grid.Column width={13}>
+                  <ProgressBar
+                    history={this.props.history}
+                  />
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+            <MainMenu history={this.props.history} />
+          </div>
     );
   }
 }
@@ -255,6 +255,7 @@ IncubatorPage.propTypes = {
   state: PropTypes.shape({
     needsUpdate: PropTypes.bool, // really bool 0/1
     user: PropTypes.object,
+    firebaseUser: PropTypes.object,
   }).isRequired,
   incubatorState: PropTypes.shape({
     userGoals: PropTypes.object,
@@ -263,6 +264,7 @@ IncubatorPage.propTypes = {
   }).isRequired,
   yardState: PropTypes.shape({
     yardSquaddies: PropTypes.object,
+    newSquaddie: PropTypes.object,
   }).isRequired,
   incubatorActions: PropTypes.objectOf(PropTypes.func).isRequired,
   homePageActions: PropTypes.objectOf(PropTypes.func).isRequired,
