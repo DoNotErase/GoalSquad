@@ -520,8 +520,10 @@ io.on('connection', (socket) => {
 
   socket.on('join', (username) => {
     console.log('rooms', rooms);
+    console.log('adapter rooms', io.sockets.adapter.rooms);
     for (let i = 0; i < rooms.length; i += 1) {
       const room = rooms[i].roomName;
+
       if (io.sockets.adapter.rooms[room].length < 2) {
         socket.join(room);
         rooms[i].player2 = username;
@@ -538,8 +540,18 @@ io.on('connection', (socket) => {
   });
 
   socket.on('attack', (roomname, damage, defense, monID) => {
-    const totalDamage = (damage + 3) - defense; // change formula later
+    let totalDamage = (Math.ceil((Math.random() * damage) - (Math.random() * defense))) + 3;
+
+    if (totalDamage === ((damage + 3) - defense)) {
+      totalDamage += 2;
+    }
+
+    totalDamage = totalDamage > 1 ? totalDamage : 1; // min damage = 1
     io.in(roomname).emit('attack', { damage: totalDamage, monID });
+  });
+
+  socket.on('defend', (roomname, monID) => {
+    io.in(roomname).emit('defend', { monID });
   });
 
   socket.on('surrender', (roomname, surrenderPlayer) => {
