@@ -61,11 +61,27 @@ export const getYardSquaddies = () => (
   )
 );
 
+// testing why remove from yard and add to yard does not work
+// for toggleYardStatus
+export const getUserSquaddies2 = () => (
+  (dispatch) => {
+    return axios.get('/squaddies')
+      .then((res) => {
+        dispatch(setSquaddies(res.data));
+      })
+      .catch((err) => {
+        handleErr(err);
+      });
+  }
+);
+
 export const toggleYardStatus = userMonsterID => (
   dispatch => (
     axios.patch('/yardSquad', { monID: userMonsterID })
       .then((res) => {
-        dispatch(toggleYardSquaddies(res.data));
+        console.log('res.data after db update', res.data);
+        // dispatch(toggleYardSquaddies(res.data));
+        dispatch(getUserSquaddies2());
       })
       .catch((err) => { handleErr(err); })
   )

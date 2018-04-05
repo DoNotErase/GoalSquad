@@ -57,7 +57,7 @@ class SquaddieCard extends React.Component {
       <Modal
         trigger={
           <Card
-            color={(squaddie.user && squaddie.user.user_monster_yard) || yardstatus ? 'orange' : null}
+            color={(squaddie.user && squaddie.user.user_monster_yard) || yardstatus ? 'green' : null}
             raised
             onClick={() => this.show(true, 'tiny')}
           >
@@ -114,8 +114,8 @@ class SquaddieCard extends React.Component {
                   <Button
                     inverted
                     floated="right"
-                    color={squaddie.user.user_monster_yard || yardstatus ? 'red' : 'green'}
-                    content={squaddie.user.user_monster_yard || yardstatus ? 'Remove From Yard' : 'Add to Yard'}
+                    color={squaddie.user.user_monster_yard ? 'red' : 'green'}
+                    content={squaddie.user.user_monster_yard ? 'Remove From Yard' : 'Add to Yard'}
                     onClick={() => { this.toggleSquaddieToYard(squaddie.user.user_monster_id); }}
                   />
                 </div> : <div />

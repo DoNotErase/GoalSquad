@@ -296,7 +296,11 @@ app.get('/yardSquad', isAuthorized, async (req, res) => {
 
 app.patch('/yardSquad', isAuthorized, async (req, res) => {
   try {
+    // console.log('req.body.monID', req.body.monID);
     await db.updateYardSquaddie(req.body.monID);
+    // const userID = req.session.passport.user.id;
+    // const data = await db.getYardSquaddiesByID(userID);
+    res.status(200).json();
   } catch (err) {
     res.status(500).send(err);
   }
