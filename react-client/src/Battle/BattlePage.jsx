@@ -13,76 +13,67 @@ const BattlePage = (props) => {
     }
     return monster.user_monster_defense;
   };
-
   const { fightState } = props;
-  // monsters show up on different parts if you are player 1 or player 2
+  let enemy;
+  let you;
+
   if (fightState.playeriam === 'player1') {
-    // TODO clean this up so it is DRY
-    return (
-      <div className="battlepage">
-        <Grid centered stretched>
-          <Grid.Column computer={8} tablet={10} mobile={16}>
-            <Header as="h1" className="white" textAlign="right">Battle</Header>
-            <Divider hidden />
-            <BattleInterfaceTop
-              monster={fightState.monster2}
-              currentHP={fightState.monster2CurrentHP}
-              defendingTurns={fightState.monster2DefenseTurns > 0
-                ? fightState.monster2DefenseTurns : 0}
-              addClass={props.monster2Class || 'slideInRight'}
-            />
-            <BattleInterfaceBottom
-              monster={fightState.monster1}
-              currentHP={fightState.monster1CurrentHP}
-              attackStat={fightState.monster1.user_monster_attack}
-              defendingTurns={fightState.monster1DefenseTurns > 0 ?
-                fightState.monster1DefenseTurns : 0}
-              enemyDefenseStat={calculateEnemyDefense(fightState.monster2, fightState.monster2DefenseTurns)}
-              attack={props.attack}
-              defend={props.defend}
-              surrender={props.surrender}
-              surrenderPlayer={props.surrenderPlayer}
-              addClass={props.monster1Class || 'slideInLeft'}
-            />
-          </Grid.Column>
-        </Grid>
-        <MainMenu history={props.history} />
-      </div>
-    );
-  } else if (fightState.playeriam === 'player2') {
-    return (
-      <div className="battlepage">
-        <Header as="h1" className="white" textAlign="right">Battle</Header>
-        <Divider hidden />
-        <Grid centered >
-          <Grid.Column computer={8} mobile={16}>
-            <BattleInterfaceTop
-              monster={fightState.monster1}
-              currentHP={fightState.monster1CurrentHP}
-              defendingTurns={fightState.monster1DefenseTurns > 0 ?
-                fightState.monster1DefenseTurns : 0}
-              addClass={props.monster1Class || 'slideInRight'}
-            />
-            <BattleInterfaceBottom
-              monster={fightState.monster2}
-              currentHP={fightState.monster2CurrentHP}
-              attackStat={fightState.monster2.user_monster_attack}
-              defendingTurns={fightState.monster2DefenseTurns > 0 ?
-                fightState.monster2DefenseTurns : 0}
-              enemyDefenseStat={calculateEnemyDefense(fightState.monster1, fightState.monster1DefenseTurns)}
-              attack={props.attack}
-              defend={props.defend}
-              surrender={props.surrender}
-              surrenderPlayer={props.surrenderPlayer}
-              addClass={props.monster2Class || 'slideInLeft'}
-            />
-          </Grid.Column>
-        </Grid>
-        <MainMenu history={props.history} />
-      </div>
-    );
+    enemy.monster = fightState.monster2;
+    enemy.hp = fightState.monster2CurrentHP;
+    enemy.defendingTurns = fightState.monster2DefenseTurns > 0
+      ? fightState.monster2DefenseTurns : 0;
+    enemy.addClass = props.monster2Class || 'slideInRight';
+    enemy.defenseStat = calculateEnemyDefense(fightState.monster2, fightState.monster2DefenseTurns);
+    you.monster = fightState.monster1;
+    you.hp = fightState.monster1CurrentHP;
+    you.attack = fightState.monster1.user_monster_attack;
+    you.defendingTurns = fightState.monster1DefenseTurns > 0 ?
+      fightState.monster1DefenseTurns : 0;
+    you.addClass = props.monster1Class || 'slideInLeft';
+  } else {
+    enemy.monster = fightState.monster1;
+    enemy.hp = fightState.monster1CurrentHP;
+    enemy.defendingTurns = fightState.monster1DefenseTurns > 0
+      ? fightState.monster1DefenseTurns : 0;
+    enemy.addClass = props.monster1Class || 'slideInRight';
+    enemy.defenseStat = calculateEnemyDefense(fightState.monster1, fightState.monster1DefenseTurns);
+    you.monster = fightState.monster2;
+    you.hp = fightState.monster2CurrentHP;
+    you.attack = fightState.monster2.user_monster_attack;
+    you.defendingTurns = fightState.monster2DefenseTurns > 0 ?
+      fightState.monster2DefenseTurns : 0;
+    you.addClass = props.monster2Class || 'slideInLeft';
   }
-  return <div> Somthing terrible has happened </div>;
+
+  return (
+    <div className="battlepage">
+      <Grid centered stretched>
+        <Grid.Column computer={8} tablet={10} mobile={16}>
+          <Header as="h1" className="white" textAlign="right">Battle</Header>
+          <Divider hidden />
+          <BattleInterfaceTop
+            monster={enemy.monster}
+            currentHP={enemy.hp}
+            defendingTurns={enemy.defendingTurns}
+            addClass={enemy.addClass}
+          />
+          <BattleInterfaceBottom
+            monster={you.monster}
+            currentHP={you.hp}
+            attackStat={you.attack}
+            defendingTurns={you.defendingTurns}
+            enemyDefenseStat={enemy.defenseStat}
+            attack={props.attack}
+            defend={props.defend}
+            surrender={props.surrender}
+            surrenderPlayer={props.surrenderPlayer}
+            addClass={you.addClass}
+          />
+        </Grid.Column>
+      </Grid>
+      <MainMenu history={props.history} />
+    </div>
+  );
 };
 
 BattlePage.propTypes = {
