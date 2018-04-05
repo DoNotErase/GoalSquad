@@ -53,6 +53,7 @@ class Lobby extends React.Component {
       this.props.fightActions.decreaseHealth(damage, monID);
     });
     socket.on('defend', ({ monID }) => {
+      console.log('monID');
       this.props.fightActions.defend(monID);
     });
     socket.on('surrender', ({ surrenderPlayer }) => {

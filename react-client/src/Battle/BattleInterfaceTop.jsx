@@ -1,7 +1,8 @@
 import React from 'react';
 import { Segment, Grid, Progress, Image, Header } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 
-const BattleInterfaceBottom = (props) => {
+const BattleInterfaceTop = (props) => {
   const { monster } = props;
 
   return (
@@ -17,7 +18,7 @@ const BattleInterfaceBottom = (props) => {
               value={props.currentHP}
               total={monster.user_monster_hp}
             />
-            <Header sub size="tiny" textAlign="right"> Defending for {props.defendingTurns} </Header>
+            <Header sub size="tiny" textAlign="right"> {props.defendingTurns > 0 ? `Defending for ${props.defendingTurns} turns` : ''} </Header>
           </Grid.Row>
           <Grid>
             <Grid.Row columns={2}>
@@ -37,4 +38,12 @@ const BattleInterfaceBottom = (props) => {
   );
 };
 
-export default BattleInterfaceBottom;
+BattleInterfaceTop.propTypes = {
+  currentHP: PropTypes.number.isRequired,
+  defendingTurns: PropTypes.number.isRequired,
+  monster: PropTypes.shape({
+    monster_pic: PropTypes.string,
+  }).isRequired,
+};
+
+export default BattleInterfaceTop;

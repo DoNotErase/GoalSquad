@@ -59,15 +59,17 @@ const fightReducer = (state = fightState, action) => {
       return {
         ...state,
         monster1CurrentHP: state.monster1CurrentHP - action.payload.damage,
-        monster1DefenseTurns: state.monster2DefenseTurns - 1,
+        monster1DefenseTurns: state.monster1DefenseTurns - 1,
         activePlayer: toggledPlayer,
       };
     }
     case 'START_DEFEND': {
-      console.log('defening!');
+      console.log('defending!', action.payload);
       const toggledPlayer = state.activePlayer === 'player1' ? 'player2' : 'player1';
+
       // the monster that did the defending is in the payload
       if (state.monster1.user_monster_id === action.payload.userMonsterID) {
+        console.log('mosnter1');
         return {
           ...state,
           monster1DefenseTurns: 2,
@@ -75,10 +77,11 @@ const fightReducer = (state = fightState, action) => {
           activePlayer: toggledPlayer,
         };
       } // the other monster
+      console.log('mosnter2');
       return {
         ...state,
         monster2DefenseTurns: 2,
-        monster1DefenseTurns: state.monster2DefenseTurns - 1,
+        monster1DefenseTurns: state.monster1DefenseTurns - 1,
         activePlayer: toggledPlayer,
       };
     }

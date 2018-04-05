@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Grid, Header, Divider } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 import BattleInterfaceBottom from './BattleInterfaceBottom';
 import BattleInterfaceTop from './BattleInterfaceTop';
 import MainMenu from '../MainMenu';
@@ -9,7 +10,6 @@ const BattlePage = (props) => {
   const calculateEnemyDefense = (monster, monsterDefending) => {
     console.log(monsterDefending);
     if (monsterDefending > 0) {
-
       return monster.user_monster_defense + 2;
     }
     return monster.user_monster_defense;
@@ -29,13 +29,15 @@ const BattlePage = (props) => {
             <BattleInterfaceTop
               monster={fightState.monster2}
               currentHP={fightState.monster2CurrentHP}
-              defendingTurns={fightState.monster2DefenseTurns > 0 ? fightState.monster2DefenseTurns : 0}
+              defendingTurns={fightState.monster2DefenseTurns > 0
+                ? fightState.monster2DefenseTurns : 0}
             />
             <BattleInterfaceBottom
               monster={fightState.monster1}
               currentHP={fightState.monster1CurrentHP}
               attackStat={fightState.monster1.user_monster_attack}
-              defendingTurns={fightState.monster1DefenseTurns > 0 ? fightState.monster1DefenseTurns : 0}
+              defendingTurns={fightState.monster1DefenseTurns > 0 ?
+                fightState.monster1DefenseTurns : 0}
               enemyDefenseStat={calculateEnemyDefense(fightState.monster2, fightState.monster2DefenseTurns)}
               attack={props.attack}
               defend={props.defend}
@@ -80,6 +82,19 @@ const BattlePage = (props) => {
     );
   }
   return <div> Somthing terrible has happened </div>;
+};
+
+BattlePage.propTypes = {
+  fightState: PropTypes.shape({
+    playeriam: PropTypes.string,
+  }).isRequired,
+  attack: PropTypes.func.isRequired,
+  defend: PropTypes.func.isRequired,
+  surrender: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+  surrenderPlayer: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => (

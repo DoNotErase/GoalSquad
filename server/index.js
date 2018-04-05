@@ -522,8 +522,10 @@ io.on('connection', (socket) => {
 
   socket.on('join', (username) => {
     console.log('rooms', rooms);
+    console.log('adapter rooms', io.sockets.adapter.rooms);
     for (let i = 0; i < rooms.length; i += 1) {
       const room = rooms[i].roomName;
+
       if (io.sockets.adapter.rooms[room].length < 2) {
         socket.join(room);
         rooms[i].player2 = username;
@@ -548,7 +550,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('defend', (roomname, monID) => {
-    io.in(roomname).emit('defend', { defendingMon: monID });
+    io.in(roomname).emit('defend', { monID });
   });
 
   socket.on('surrender', (roomname, surrenderPlayer) => {

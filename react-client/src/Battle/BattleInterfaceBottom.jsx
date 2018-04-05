@@ -175,7 +175,7 @@ class BattleInterfaceBottom extends React.Component {
                   />
                 </Grid.Column>
                 <Grid.Column textAlign="center" verticalAlign="bottom">
-                  <Header as="h5"> Defending for {monster.s} </Header>
+                  <Header as="h5"> {this.props.defendingTurns > 0 ? `Defending for ${this.props.defendingTurns} turns` : '' }</Header>
                   <Button
                     disabled={fightState.playeriam !== fightState.activePlayer}
                     basic
@@ -268,8 +268,8 @@ BattleInterfaceBottom.propTypes = {
     decreaseHealth: PropTypes.func,
     surrendered: PropTypes.func,
     resetState: PropTypes.func,
-    defend: PropTypes.func,
   }).isRequired,
+  defend: PropTypes.func.isRequired,
   squaddieActions: PropTypes.objectOf(PropTypes.func).isRequired,
   monster: PropTypes.shape({
 
@@ -278,7 +278,9 @@ BattleInterfaceBottom.propTypes = {
   attack: PropTypes.func.isRequired,
   attackStat: PropTypes.number.isRequired,
   enemyDefenseStat: PropTypes.number.isRequired,
+  defendingTurns: PropTypes.number.isRequired,
   surrender: PropTypes.func.isRequired,
+  surrenderPlayer: PropTypes.string.isRequired,
   fightState: PropTypes.shape({
     playeriam: PropTypes.string,
     player1: PropTypes.string,
