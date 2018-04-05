@@ -69,7 +69,7 @@ HistoryGoal.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  historyState: state.history,
+  historyState: state.archives,
 });
 
 // const mapDispatchToActions = dispatch => ({

@@ -54,7 +54,7 @@ HistoryPage.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  sortedGoals: state.history.sortedGoals,
+  sortedGoals: state.archives.sortedGoals,
 });
 
 const mapDispatchToProps = dispatch => ({
