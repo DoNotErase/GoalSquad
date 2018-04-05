@@ -25,6 +25,7 @@ const BattleInterfaceTop = (props) => {
               <Grid.Column />
               <Grid.Column textAlign="center" verticalAlign="bottom">
                 <Image
+                  className={props.addClass}
                   src={monster.monster_pic}
                   size="small"
                   spaced="right"
@@ -44,6 +45,7 @@ BattleInterfaceTop.propTypes = {
   monster: PropTypes.shape({
     monster_pic: PropTypes.string,
   }).isRequired,
+  addClass: PropTypes.string.isRequired,
 };
 
 export default BattleInterfaceTop;

@@ -54,6 +54,9 @@ const fightReducer = (state = fightState, action) => {
           monster2CurrentHP: state.monster2CurrentHP - action.payload.damage,
           monster2DefenseTurns: state.monster2DefenseTurns - 1,
           activePlayer: toggledPlayer,
+          monster1Class: 'lightSpeedOut', // does the hitting
+          monster2Class: 'shake', // is hit
+
         };
       } // the other monster
       return {
@@ -75,6 +78,10 @@ const fightReducer = (state = fightState, action) => {
           monster1DefenseTurns: 2,
           monster2DefenseTurns: state.monster2DefenseTurns - 1,
           activePlayer: toggledPlayer,
+          wasAttacked: true,
+          monster1Class: 'shake', // is hit
+          monster2Class: 'lightSpeedOut', // does the hitting
+
         };
       } // the other monster
       console.log('mosnter2');

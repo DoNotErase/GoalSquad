@@ -1,30 +1,25 @@
 import axios from 'axios';
 
-export const setLobbyInfo = ((roomInfo, player) => {
-  return (dispatch) => {
-    dispatch({
-      type: 'GET_LOBBY_INFO',
-      payload: {
-        playeriam: player,
-        roomName: roomInfo.roomName,
-        player1: roomInfo.player1,
-        player2: roomInfo.player2,
+export const setLobbyInfo = (roomInfo, player) => (
+  {
+    type: 'GET_LOBBY_INFO',
+    payload: {
+      playeriam: player,
+      roomName: roomInfo.roomName,
+      player1: roomInfo.player1,
+      player2: roomInfo.player2,
+    },
+  }
+);
 
-      },
-    });
-  };
-});
-
-export const setPlayerNumber = ((playernumber) => {
-  return (dispatch) => {
-    dispatch({
-      type: 'SET_PLAYER_NUMBER',
-      payload: {
-        user: playernumber,
-      },
-    });
-  };
-});
+export const setPlayerNumber = playernumber => (
+  {
+    type: 'SET_PLAYER_NUMBER',
+    payload: {
+      user: playernumber,
+    },
+  }
+);
 
 export const setMonsterFighter = (player, squaddie) => (
   {
@@ -71,7 +66,7 @@ export const resetState = () => ({ type: 'RESET_STATE' });
 export const surrendered = surrenderPlayer => ({ type: 'SURRENDER', payload: { surrenderPlayer } });
 
 export const addXPtoMonster = (monID, xp) => (
-  dispatch => (
+  () => (
     axios.patch('/monsterXP', { monID, xp })
       .then((res) => {
         console.log(res.data);
@@ -83,7 +78,7 @@ export const addXPtoMonster = (monID, xp) => (
 );
 
 export const levelup = monID => (
-  dispatch => (
+  () => (
     axios.patch('/levelup', { monID })
       .then((res) => {
         console.log('done leveling', res.data);
