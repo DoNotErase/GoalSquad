@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider, Grid, Header, Segment } from 'semantic-ui-react';
+import { Grid, Header, Segment } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -17,10 +17,16 @@ class HistoryPage extends React.Component {
   render() {
     return (
       <div className="historypage">
-        <Header as="h1" className="white" textAlign="right">Past Goals</Header>
-        <Divider hidden />
         <Grid centered>
-          <Grid.Column computer={8} mobile={16}>
+          <Grid.Row verticalAlign="bottom" columns={2}>
+            <Grid.Column mobile={8} tablet={7} computer={4}>
+              <MainMenu history={this.props.history} />
+            </Grid.Column>
+            <Grid.Column mobile={8} tablet={7} computer={4}>
+              <Header as="h1" className="white" textAlign="right">Past Goals</Header>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Column computer={8} tablet={10} mobile={16}>
             <Grid.Row style={{ marginBottom: '8px' }}>
               <HistorySort />
             </Grid.Row>
@@ -39,7 +45,6 @@ class HistoryPage extends React.Component {
             </Grid.Row>
           </Grid.Column>
         </Grid>
-        <MainMenu history={this.props.history} />
       </div>
     );
   }

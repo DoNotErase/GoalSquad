@@ -24,7 +24,7 @@ orangy: background-image: linear-gradient(to right, #d95a37, #df663e, #e67146, #
 
 */
 
-@media (min-width: 600px) and (max-width: 1024px){
+@media (min-width: 600px) {
     .homepage {
         background-image: url('./assets/backgrounds/background-tablet.png') !important;
         background-size: cover !important;
@@ -37,6 +37,13 @@ orangy: background-image: linear-gradient(to right, #d95a37, #df663e, #e67146, #
         background-size: cover !important;
     }
 }
+
+@media (min-width:600px) {
+    .egg, .glow {
+        margin-bottom: 25px;
+    }
+}
+
 
 ::-webkit-scrollbar {
     display: none;
@@ -64,6 +71,12 @@ orangy: background-image: linear-gradient(to right, #d95a37, #df663e, #e67146, #
     position: fixed !important;
     bottom: 0;
     padding: 1px !important;
+}
+
+.yardpage button {
+    top: 15px;
+    left: 15px;
+    position: fixed;
 }
 
 

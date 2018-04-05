@@ -1,5 +1,5 @@
 import React from 'react';
-import { Accordion, Icon, Segment, Grid, Header, Divider, Loader } from 'semantic-ui-react';
+import { Accordion, Icon, Segment, Grid, Header, Loader } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -67,9 +67,15 @@ class GoalsPage extends React.Component {
     return (
       <div className="goalspage">
         <Grid centered>
+          <Grid.Row verticalAlign="bottom" columns={2}>
+            <Grid.Column mobile={8} tablet={7} computer={4}>
+              <MainMenu history={this.props.history} />
+            </Grid.Column>
+            <Grid.Column mobile={8} tablet={7} computer={4}>
+              <Header as="h1" className="white" textAlign="right">Add A Goal</Header>
+            </Grid.Column>
+          </Grid.Row>
           <Grid.Column computer={8} tablet={10} mobile={16}>
-            <Header as="h1" className="white" textAlign="right">Add A Goal</Header>
-            <Divider hidden />
             <Scrollbars autoHide style={{ height: '85vh' }}>
               <Header as="h3" className="white" textAlign="center">Available Categories</Header>
               {this.props.goalsState.isLoading ? <Loader active size="medium" inline="centered" /> : listItems }
@@ -79,7 +85,6 @@ class GoalsPage extends React.Component {
               <CustomGoal history={this.props.history} />
             </Scrollbars>
           </Grid.Column>
-          <MainMenu history={this.props.history} />
         </Grid>
       </div>
     );

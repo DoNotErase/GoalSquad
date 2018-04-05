@@ -28,15 +28,13 @@ class ProgressBar extends React.Component {
 
   render() {
     return (
-      <div>
-        <Progress
-          style={{ marginTop: 12 }}
-          percent={Math.floor(this.props.incubatorState.egg.egg_xp)}
-          size="medium"
-          progress
-          indicating
-        />
-      </div>
+      <Progress
+        className="incubatorbar"
+        percent={Math.floor(this.props.incubatorState.egg.egg_xp)}
+        size="medium"
+        progress
+        indicating
+      />
     );
   }
 }

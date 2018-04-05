@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Grid, Card, Header, Divider, Segment, Loader } from 'semantic-ui-react';
+import { Grid, Card, Header, Segment, Loader } from 'semantic-ui-react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
@@ -20,9 +20,15 @@ class SquadPage extends React.Component {
     return (
       <div className="squadpage">
         <Grid centered>
+          <Grid.Row verticalAlign="bottom" columns={2}>
+            <Grid.Column mobile={8} tablet={7} computer={4}>
+              <MainMenu history={this.props.history} />
+            </Grid.Column>
+            <Grid.Column mobile={8} tablet={7} computer={4}>
+              <Header as="h1" className="white" textAlign="right">Your Squad</Header>
+            </Grid.Column>
+          </Grid.Row>
           <Grid.Column computer={8} tablet={10} mobile={16}>
-            <Header as="h1" className="white" textAlign="right">Your Squad</Header>
-            <Divider hidden />
             <Scrollbars autoHide style={{ height: '85vh' }}>
               <Segment>
                 <Card.Group itemsPerRow={3} centered>
@@ -37,7 +43,6 @@ class SquadPage extends React.Component {
               </Segment>
             </Scrollbars>
           </Grid.Column>
-          <MainMenu history={this.props.history} />
         </Grid>
       </div>
     );
