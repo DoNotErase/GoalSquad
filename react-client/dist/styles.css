@@ -24,7 +24,7 @@ orangy: background-image: linear-gradient(to right, #d95a37, #df663e, #e67146, #
 
 */
 
-@media (min-width: 600px) and (max-width: 1024px){
+@media (min-width: 600px) {
     .homepage {
         background-image: url('./assets/backgrounds/background-tablet.png') !important;
         background-size: cover !important;

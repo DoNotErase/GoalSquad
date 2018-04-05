@@ -113,7 +113,7 @@ class IncubatorPage extends React.Component {
     if (this.state.count >= 1) {
       return (
         <Image
-          size="mini"
+          size="medium"
           className={classByCount[this.state.count]}
           onClick={this.subtractFromCount}
           src={pictureByCount[this.state.count]}
@@ -123,7 +123,7 @@ class IncubatorPage extends React.Component {
     }
     return (
       <Image
-        size="mini"
+        size="medium"
         src={this.props.newSquaddie.monster_pic}
         centered
       />
@@ -165,10 +165,10 @@ class IncubatorPage extends React.Component {
             verticalAlign="top"
             style={{ position: 'fixed', bottom: 0, padding: 1 }}
           >
-            <Grid.Column mobile={3} tablet={2} computer={2}>
+            <Grid.Column mobile={3} tablet={2} computer={1}>
               {this.eggImage()}
             </Grid.Column>
-            <Grid.Column mobile={13} tablet={12} computer={6} style={{ marginTop: 15 }}>
+            <Grid.Column mobile={13} tablet={12} computer={7} style={{ marginTop: 15 }}>
               <ProgressBar
                 history={this.props.history}
               />
@@ -193,9 +193,9 @@ class IncubatorPage extends React.Component {
               >
                 <Card.Header>
                   {this.state.count === 0 && this.props.newSquaddie ?
-                    <p> Your new squaddie is {this.props.newSquaddie.monster_name}! </p>
+                    <p> Your new Squaddie is {this.props.newSquaddie.monster_name}! </p>
                   :
-                    <p>Tap {this.state.count} {this.state.count === 1 ? 'more time' : 'more times'} to reveal your new squaddie!</p>
+                    <p>Tap {this.state.count} {this.state.count === 1 ? 'more time' : 'more times'} to reveal your new Squaddie!</p>
                   }
                 </Card.Header>
                 <Card.Description>
