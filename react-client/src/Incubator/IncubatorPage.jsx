@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Card, Confirm, Divider, Grid, Header, Loader, Image, Modal } from 'semantic-ui-react';
+import { Button, Card, Divider, Grid, Header, Loader, Image, Modal } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -19,8 +19,8 @@ class IncubatorPage extends React.Component {
     this.state = {
       count: 3,
       open: false,
-      openNotification: false,
-      notifiedOfPushNotifications: false,
+      openModal: true,
+      openNotificationModal: true,
       dimmer: false,
     };
     this.show = this.show.bind(this);
@@ -32,7 +32,7 @@ class IncubatorPage extends React.Component {
     this.eggImage = this.eggImage.bind(this);
     this.close = this.close.bind(this);
     this.showNotifcation = this.showNotifcation.bind(this);
-    this.showPushNotificationButton = this.showPushNotificationButton.bind(this);
+    this.showPushNotificationModal = this.showPushNotificationModal.bind(this);
   }
 
   componentDidMount() {
@@ -86,7 +86,7 @@ class IncubatorPage extends React.Component {
   handlePushNotificationCancel() {
     this.props.homePageActions.updatePushNotificationsToFalse(this.props.state.user.id);
     // temporarily set push notification to true to remove button
-    this.setState({ open: false, notifiedOfPushNotifications: true });
+    this.setState({ open: false, openModal: false });
     console.log('User did not allow permission');
   }
 
@@ -105,7 +105,7 @@ class IncubatorPage extends React.Component {
 
   handlePushNotificationConfirm() {
     // temporarily set push notification to true to remove button
-    this.setState({ openNotification: false, notifiedOfPushNotifications: true });
+    this.setState({ openModal: false });
     this.handleTokenRefresh();
   }
 
@@ -114,24 +114,28 @@ class IncubatorPage extends React.Component {
   }
 
   showNotifcation() {
-    this.setState({ openNotification: true });
+    this.setState({ openNotificationModal: false });
   }
 
-  showPushNotificationButton() {
+  showPushNotificationModal() {
     return (
-      !this.props.state.user.notified_of_push_notifications && !this.state.notifiedOfPushNotifications
+      !this.props.state.user.notified_of_push_notifications && this.state.openNotificationModal
         ?
           <div>
-            <Grid.Row verticalAlign="top">
-              <Button onClick={this.showNotifcation} floated="right">Enable Push Notifications</Button>
-              <Confirm
-                open={this.state.openNotification}
-                content="Would you like to receive occassional but super helpful push notifcations?"
-                onCancel={this.handlePushNotificationCancel}
-                onConfirm={this.handlePushNotificationConfirm}
-              />
-              <Divider />
-            </Grid.Row>
+            <Modal
+              style={{ background: 'transparent' }}
+              dimmer={this.state.dimmer}
+              open={!this.props.state.user.notified_of_push_notifications && this.state.openModal}
+              onClose={this.close}
+              className="fadeIn"
+            >
+              <Modal.Header>What are your thoughts on push notifications?</Modal.Header>
+              <Modal.Content>You can always subscribe/unsubscribe in your deets page.</Modal.Content>
+              <Modal.Actions>
+                <Button labelPosition="left" content="Nah" onClick={this.handlePushNotificationCancel} />
+                <Button labelPosition="right" content="Sign me up" onClick={this.handlePushNotificationConfirm} />
+              </Modal.Actions>
+            </Modal>
           </div>
         :
         null
@@ -208,7 +212,7 @@ class IncubatorPage extends React.Component {
           <div className="incubatorpage">
             <Grid style={styles.position}>
               {this.props.state.firebaseUser && this.props.state.firebaseUser.uid
-              ? this.showPushNotificationButton()
+              ? this.showPushNotificationModal()
               : null
           }
               <Grid.Row verticalAlign="middle"><Header as="h1" className="white" textAlign="right">Your Goals</Header></Grid.Row>
