@@ -52,9 +52,18 @@ class DeetsPage extends React.Component {
   handlePushNotificationUnsubscribe() {
     this.setState({ open: false });
     const messaging = firebase.messaging();
+    const firebaseDatabase = firebase.database();
+    const firebaseAuth = firebase.auth();
     messaging.getToken()
-      .then((token) => {
-        messaging.deleteToken(token);
+      .then(token => messaging.deleteToken(token))
+      .then(() => firebaseDatabase.ref('/tokens').orderByChild('uid').equalTo(this.props.state.firebaseUser.uid).once('value'))
+      .then((snapshot) => {
+        const key = Object.keys(snapshot.val())[0];
+        return firebaseDatabase.ref('/tokens').child(key).remove();
+      })
+      .then(() => this.setState({ hideUnsubscribeButton: true }))
+      .catch((err) => {
+        console.log('Unable to delete user token from firebase database.', err);
       });
     // make action call to delete token and set preference to false in DB
     this.props.homePageActions.unsubscribeFromPushNotifications(this.props.state.user.id);
@@ -81,8 +90,13 @@ class DeetsPage extends React.Component {
   handlePushNotificationSubscription() {
     this.setState({ open: false });
     const messaging = firebase.messaging();
+    const fireBaseDatabase = firebase.database();
     messaging.getToken()
-      .then((token) => {
+      .then((userToken) => {
+        fireBaseDatabase.ref('/tokens').push({
+          token: userToken,
+          uid: this.props.state.firebaseUser.uid,
+        });
         this.props.homePageActions.updatePushNotificationsToTrue(this.props.state.user.id);
       });
   }
@@ -138,7 +152,9 @@ class DeetsPage extends React.Component {
                 <Segment compact>
                   <Grid.Row>
                     <Header as="h2">{this.props.state.user.user_username}</Header>
-                    {this.props.state.user.wants_push_notifications === 1 && this.state.hideUnsubscribeButton === false ? this.showUnsubscribeButton() : this.showSubscribeButton()}
+                    {this.props.state.user.wants_push_notifications === 1
+                    && this.state.hideUnsubscribeButton === false
+                    ? this.showUnsubscribeButton() : this.showSubscribeButton()}
                   </Grid.Row>
                   <Header as="h4">{deets.user.total.attempted} Lifetime Goals </Header>
                   {this.makeDisconnectButton()}
@@ -235,9 +251,14 @@ DeetsPage.propTypes = {
     user: PropTypes.object,
     deets: PropTypes.object,
     needsUpdate: PropTypes.bool,
+    firebaseUser: PropTypes.object,
   }).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
+  }).isRequired,
+  homePageActions: PropTypes.shape({
+    updatePushNotificationsToTrue: PropTypes.func,
+    unsubscribeFromPushNotifications: PropTypes.func,
   }).isRequired,
 };
 
