@@ -162,7 +162,7 @@ class DeetsPage extends React.Component {
                 <Segment compact>
                   <Grid.Row>
                     <Header as="h2">{this.props.state.user.user_username}</Header>
-                    {this.props.state.user.unsubscribed_from_notifications === 0
+                    {this.props.state.user.wants_push_notifications === 1
                     ? this.showUnsubscribeButton() : this.showSubscribeButton()
                     }
                     {this.state.revealSubscribeButton ? this.showSubscribeButton() : null}
