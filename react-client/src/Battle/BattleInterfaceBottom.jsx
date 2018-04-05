@@ -67,7 +67,7 @@ class BattleInterfaceBottom extends React.Component {
         <p> You lost this battle but {monster.monster_name} has gained
           {xp} XP and has leveled up and is now level {monster.user_monster_level + 1}!
         </p>
-        <Image src={monster.monster_pic} className="slideInLeft" />
+        <Image src={monster.monster_pic} />
         <p> Attack: {monster.user_monster_attack + 1} </p>
         <p> Defense: {monster.user_monster_defense + 1} </p>
         <p> MaxHP: {(monster.user_monster_level + 2) * 5} </p>
@@ -150,7 +150,14 @@ class BattleInterfaceBottom extends React.Component {
 
   render() {
     const { monster, fightState } = this.props;
-    const { gameEndOpen, dimmer } = this.state;
+    const { dimmer } = this.state;
+    // for animations
+    // let addClasses = '';
+    // if (!fightState.monster1WasAttacked && !fightState.monster2WasAttacked) {
+    //   addClasses = 'slideInLeft';
+    // } else {
+    //   addClasses = this.props.wasAttacked ? 'swing' : 'base-state';
+    // }
     return (
       <Segment>
         <Grid>
@@ -169,6 +176,9 @@ class BattleInterfaceBottom extends React.Component {
               <Grid.Row columns={2}>
                 <Grid.Column>
                   <Image
+                    className={this.props.addClass}
+                    // className={addClasses}
+                    // className={`${wasAttacked} slideInLeft`}
                     src={monster.monster_pic}
                     size="small"
                     spaced="right"

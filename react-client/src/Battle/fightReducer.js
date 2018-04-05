@@ -56,6 +56,9 @@ const fightReducer = (state = fightState, action) => {
           ...state,
           monster2CurrentHP: newHP,
           activePlayer: toggledPlayer,
+          monster1Class: 'lightSpeedOut', // does the hitting
+          monster2Class: 'shake', // is hit
+
         };
       } else {
         newHP = state.monster1CurrentHP - action.payload.damage;
@@ -63,6 +66,10 @@ const fightReducer = (state = fightState, action) => {
           ...state,
           monster1CurrentHP: newHP,
           activePlayer: toggledPlayer,
+          wasAttacked: true,
+          monster1Class: 'shake', // is hit
+          monster2Class: 'lightSpeedOut', // does the hitting
+
         };
       }
     }
