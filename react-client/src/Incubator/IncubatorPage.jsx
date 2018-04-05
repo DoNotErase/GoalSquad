@@ -31,7 +31,6 @@ class IncubatorPage extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props.state.user);
     if (this.props.state.user) {
       this.props.homePageActions.attemptLogin();
     }

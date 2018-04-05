@@ -26,6 +26,7 @@ const squadReducer = (state = squadState, action) => {
       return {
         ...state,
         newSquaddie: action.payload,
+        needsUpdate: true,
       };
     }
     case 'SQUADDIE_UPDATE': {

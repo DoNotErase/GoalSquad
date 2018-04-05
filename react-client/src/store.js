@@ -18,7 +18,7 @@ const reducer = combineReducers({ // combines reducers from reducer folder
   routing: routerReducer,
   squaddies: squaddieReducer,
   fight: fightReducer,
-  history: historyReducer,
+  archives: historyReducer,
 });
 
 // creates store and allows for chrome redux plugin

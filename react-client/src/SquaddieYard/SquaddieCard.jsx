@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Modal, Image, Button, Input, Icon } from 'semantic-ui-react';
+import { Card, Modal, Image, Button, Input, Icon, Grid, Progress, Statistic, Header } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
@@ -24,6 +24,7 @@ class SquaddieCard extends React.Component {
     this.close = this.close.bind(this);
     this.closeRename = this.closeRename.bind(this);
     this.saveRename = this.saveRename.bind(this);
+    this.battleStuff = this.battleStuff.bind(this);
   }
 
   toggleSquaddieToYard(monID) {
@@ -41,6 +42,37 @@ class SquaddieCard extends React.Component {
     } else {
       this.setState({ alert: true });
     }
+  }
+
+  battleStuff() {
+    if (!this.props.squaddie.user) {
+      return '';
+    }
+    return (
+      <div style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
+        <Statistic.Group size="tiny" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }} >
+          <Statistic>
+            <Statistic.Label>Level</Statistic.Label>
+            <Statistic.Value>{this.props.squaddie.user.user_monster_level}</Statistic.Value>
+          </Statistic>
+          <Statistic>
+            <Statistic.Label>Attack</Statistic.Label>
+            <Statistic.Value>{this.props.squaddie.user.user_monster_attack}</Statistic.Value>
+          </Statistic>
+          <Statistic>
+            <Statistic.Label>Defense</Statistic.Label>
+            <Statistic.Value>{this.props.squaddie.user.user_monster_defense}</Statistic.Value>
+          </Statistic>
+        </Statistic.Group>
+        <Progress
+          style={{ marginTop: '5px', marginBottom: '5px' }}
+          percent={this.props.squaddie.user.user_monster_current_xp % 100}
+          size="small"
+          label={`${this.props.squaddie.user.user_monster_current_xp}/${Math.ceil(this.props.squaddie.user.user_monster_current_xp / 100) * 100} XP`}
+          color="blue"
+        />
+      </div>
+    );
   }
 
   show(dimmer, size) { this.setState({ dimmer, size, open: true }); }
@@ -102,7 +134,8 @@ class SquaddieCard extends React.Component {
                   <div />}
               </Card.Header>
               <Card.Description>
-                {squaddie.user ? squaddie.monster_description : 'Complete goals to unlock this monster!'}
+                {squaddie.user ? <p as="h5">{squaddie.monster_description}</p> : 'Complete goals to unlock this monster!'}
+                {this.battleStuff()}
               </Card.Description>
             </Card.Content>
             <Card.Content extra>

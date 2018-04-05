@@ -228,8 +228,8 @@ class BattleInterfaceBottom extends React.Component {
                     cancelButton="Stay"
                   />
                   {/* Modal for surrendering */}
-                  <Modal dimmer={dimmer} open={this.props.surrenderPlayer === 'player1' || this.props.surrenderPlayer === 'player2'} onClose={this.gameEndClose}>
-                    <Modal.Header>{this.props.surrenderPlayer === fightState.playeriam ? 'you have' : 'oppenent has'} surrendered</Modal.Header>
+                  <Modal dimmer={dimmer} open={fightState.surrenderPlayer === 'player1' || fightState.surrenderPlayer === 'player2'} onClose={this.gameEndClose}>
+                    <Modal.Header>{fightState.surrenderPlayer === fightState.playeriam ? 'you have' : 'oppenent has'} surrendered</Modal.Header>
                     <Modal.Content image>
                       <Modal.Description>
                         <Header>Click button to start new game!</Header>
@@ -281,9 +281,8 @@ BattleInterfaceBottom.propTypes = {
     resetState: PropTypes.func,
   }).isRequired,
   defend: PropTypes.func.isRequired,
-  squaddieActions: PropTypes.objectOf(PropTypes.func).isRequired,
   monster: PropTypes.shape({
-
+    monster_pic: PropTypes.string,
   }).isRequired,
   currentHP: PropTypes.number.isRequired,
   addClass: PropTypes.string.isRequired,
@@ -292,7 +291,6 @@ BattleInterfaceBottom.propTypes = {
   enemyDefenseStat: PropTypes.number.isRequired,
   defendingTurns: PropTypes.number.isRequired,
   surrender: PropTypes.func.isRequired,
-  surrenderPlayer: PropTypes.string.isRequired,
   fightState: PropTypes.shape({
     playeriam: PropTypes.string,
     player1: PropTypes.string,

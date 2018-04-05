@@ -92,6 +92,7 @@ class Goal extends React.Component {
       let points = parseInt(this.props.goal.goal_points, 10);
       const hours = (deadline.days * 24) + deadline.hours;
       points += parseInt((points / (hours / this.props.goal.goal_timedivisor)), 10);
+      points = points > 100 ? (parseInt(this.props.goal.goal_points, 10) * 2) : points;
       this.props.submitUserGoal(this.props.goal.goal_id, deadline, points);
       this.props.history.push('/incubator');
     }
