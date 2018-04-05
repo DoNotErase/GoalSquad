@@ -1,8 +1,8 @@
 {
   "name": "Goal Squad",
   "short_name": "GoalSquad",
-  "theme_color": "#fff",
-  "background_color": "#fff",
+  "theme_color": "#4a5b63",
+  "background_color": "#43806e",
   "display": "standalone",
   "start_url": "/?standalone",
   "gcm_sender_id": "103953800507", 
@@ -46,6 +46,6 @@
      "src": "/assets/icons/icon-512x512.png",	
      "sizes": "512x512",	
      "type": "image/png"	
-           }
+      }
   ]
 }
