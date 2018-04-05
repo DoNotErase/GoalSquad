@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { toggleYardStatus, changeName } from './squaddieActions';
 
 const styles = {
-  cardBackground: 'linear-gradient(to bottom, #faedc4, #ffebd8, #ffeff1, #fff8ff, #ffffff)',
+  cardBackground: 'radial-gradient(circle, #ffffff, #ffffff, #faedc4)',
   iconBackground: 'linear-gradient(to bottom, #faedc4, #ffebd8, #ffffff)',
 };
 
