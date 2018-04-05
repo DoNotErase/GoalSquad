@@ -14,7 +14,8 @@ body {
     min-height:100%;
     padding: 20px;
     background-color: #465c64;
-    background-image: linear-gradient(to top, #474c4f, #465c64, #406e75, #398081, #379286);}
+    background-image: radial-gradient(circle, #43806e, #3e7772, #406e71, #45646c, #4a5b63);
+}
 
 /* gradients
 
@@ -27,16 +28,12 @@ orangy: background-image: linear-gradient(to right, #d95a37, #df663e, #e67146, #
 
 /* FULLSCREEN STYLES */
 @media (min-width: 1024px) {
-    .homepage {
-        background-image: url('./assets/backgrounds/background-tablet.png') !important;
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: center;
-    }
-
     .homepage img {
         max-width: 80% !important;
         margin: auto;
+    }
+    .egg, .glow, .incubatorbar {
+        margin-bottom: 25px;
     }
 }
 
@@ -72,7 +69,7 @@ orangy: background-image: linear-gradient(to right, #d95a37, #df663e, #e67146, #
     min-width:100%;
     min-height:100%;
     background-color: #474c4f;
-    background-image: linear-gradient(to top, #474c4f, #465c64, #406e75, #398081, #379286);
+    background-image: radial-gradient(circle, #43806e, #3e7772, #406e71, #45646c, #4a5b63);
 }
 
 .white {
