@@ -59,10 +59,10 @@ class DeetsPage extends React.Component {
       <div className="deetspage">
         <Grid centered>
           <Grid.Row verticalAlign="bottom" columns={2}>
-            <Grid.Column mobile={8} tablet={5} computer={4}>
+            <Grid.Column mobile={8} tablet={7} computer={4}>
               <MainMenu history={this.props.history} />
             </Grid.Column>
-            <Grid.Column mobile={8} tablet={5} computer={4}>
+            <Grid.Column mobile={8} tablet={7} computer={4}>
               <Header as="h1" className="white" textAlign="right">Deets</Header>
             </Grid.Column>
           </Grid.Row>

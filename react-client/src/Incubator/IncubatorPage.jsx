@@ -88,13 +88,14 @@ class IncubatorPage extends React.Component {
   eggImage() {
     if (this.props.incubatorState.egg.egg_xp >= 100) {
       return (<Image
+        inline
         className="glow"
         src="./assets/icons/egg_stage_1.png"
         onClick={() => this.setState({ open: true, dimmer: true })}
       />);
     }
     return (
-      <Image src="./assets/icons/egg_stage_1.png" />
+      <Image inline className="egg" src="./assets/icons/egg_stage_1.png" />
     );
   }
 
@@ -112,7 +113,7 @@ class IncubatorPage extends React.Component {
     if (this.state.count >= 1) {
       return (
         <Image
-          size="medium"
+          size="mini"
           className={classByCount[this.state.count]}
           onClick={this.subtractFromCount}
           src={pictureByCount[this.state.count]}
@@ -122,7 +123,7 @@ class IncubatorPage extends React.Component {
     }
     return (
       <Image
-        size="medium"
+        size="mini"
         src={this.props.newSquaddie.monster_pic}
         centered
       />
@@ -138,10 +139,10 @@ class IncubatorPage extends React.Component {
       <div className="incubatorpage">
         <Grid centered>
           <Grid.Row verticalAlign="bottom" columns={2}>
-            <Grid.Column mobile={8} tablet={5} computer={4}>
+            <Grid.Column mobile={8} tablet={7} computer={4}>
               <MainMenu history={this.props.history} />
             </Grid.Column>
-            <Grid.Column mobile={8} tablet={5} computer={4}>
+            <Grid.Column mobile={8} tablet={7} computer={4}>
               <Header as="h1" className="white" textAlign="right">Your Goals</Header>
             </Grid.Column>
           </Grid.Row>
@@ -164,10 +165,10 @@ class IncubatorPage extends React.Component {
             verticalAlign="top"
             style={{ position: 'fixed', bottom: 0, padding: 1 }}
           >
-            <Grid.Column width={3}>
+            <Grid.Column mobile={3} tablet={2} computer={2}>
               {this.eggImage()}
             </Grid.Column>
-            <Grid.Column width={13}>
+            <Grid.Column mobile={13} tablet={12} computer={6} style={{ marginTop: 15 }}>
               <ProgressBar
                 history={this.props.history}
               />

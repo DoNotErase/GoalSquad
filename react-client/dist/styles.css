@@ -38,6 +38,13 @@ orangy: background-image: linear-gradient(to right, #d95a37, #df663e, #e67146, #
     }
 }
 
+@media (min-width:600px) {
+    .egg, .glow {
+        margin-bottom: 25px;
+    }
+}
+
+
 ::-webkit-scrollbar {
     display: none;
 }

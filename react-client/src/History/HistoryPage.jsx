@@ -19,10 +19,10 @@ class HistoryPage extends React.Component {
       <div className="historypage">
         <Grid centered>
           <Grid.Row verticalAlign="bottom" columns={2}>
-            <Grid.Column mobile={8} tablet={5} computer={4}>
+            <Grid.Column mobile={8} tablet={7} computer={4}>
               <MainMenu history={this.props.history} />
             </Grid.Column>
-            <Grid.Column mobile={8} tablet={5} computer={4}>
+            <Grid.Column mobile={8} tablet={7} computer={4}>
               <Header as="h1" className="white" textAlign="right">Past Goals</Header>
             </Grid.Column>
           </Grid.Row>
