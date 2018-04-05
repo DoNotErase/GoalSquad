@@ -18,8 +18,9 @@ class IncubatorPage extends React.Component {
     super(props);
     this.state = {
       count: 3,
-      notifiedOfPushNotifications: false,
       open: false,
+      openNotification: false,
+      notifiedOfPushNotifications: false,
       dimmer: false,
     };
     this.show = this.show.bind(this);
@@ -30,6 +31,8 @@ class IncubatorPage extends React.Component {
     this.hatchImage = this.hatchImage.bind(this);
     this.eggImage = this.eggImage.bind(this);
     this.close = this.close.bind(this);
+    this.showNotifcation = this.showNotifcation.bind(this);
+    this.showPushNotificationButton = this.showPushNotificationButton.bind(this);
   }
 
   componentDidMount() {
@@ -102,7 +105,7 @@ class IncubatorPage extends React.Component {
 
   handlePushNotificationConfirm() {
     // temporarily set push notification to true to remove button
-    this.setState({ open: false, notifiedOfPushNotifications: true });
+    this.setState({ openNotification: false, notifiedOfPushNotifications: true });
     this.handleTokenRefresh();
   }
 
@@ -110,17 +113,19 @@ class IncubatorPage extends React.Component {
     this.setState({ open: true });
   }
 
+  showNotifcation() {
+    this.setState({ openNotification: true });
+  }
+
   showPushNotificationButton() {
-    const firebaseUserHolder = this.props.state.firebaseUser;
-    const firebaseUser = firebaseUserHolder;
     return (
-      firebaseUser && firebaseUser.uid && !this.props.state.user.notified_of_push_notifications
+      !this.props.state.user.notified_of_push_notifications && !this.state.notifiedOfPushNotifications
         ?
           <div>
             <Grid.Row verticalAlign="top">
-              <Button onClick={this.show} floated="right">Enable Push Notifications</Button>
+              <Button onClick={this.showNotifcation} floated="right">Enable Push Notifications</Button>
               <Confirm
-                open={this.state.open}
+                open={this.state.openNotification}
                 content="Would you like to receive occassional but super helpful push notifcations?"
                 onCancel={this.handlePushNotificationCancel}
                 onConfirm={this.handlePushNotificationConfirm}
@@ -132,7 +137,6 @@ class IncubatorPage extends React.Component {
         null
     );
   }
-
 
   glowingEggActivated() {
     return this.state.glowingEgg ? 'glowingEgg' : '';
@@ -160,11 +164,6 @@ class IncubatorPage extends React.Component {
   }
 
   hatchImage() {
-    const classByCount = {
-      1: 'eggClass1',
-      2: 'eggClass2',
-      3: 'eggClass3',
-    };
     const pictureByCount = {
       1: './assets/icons/egg_stage_3.png',
       2: './assets/icons/egg_stage_2.png',
@@ -174,7 +173,6 @@ class IncubatorPage extends React.Component {
       return (
         <Image
           size="medium"
-          className={classByCount[this.state.count]}
           onClick={this.subtractFromCount}
           src={pictureByCount[this.state.count]}
           centered
@@ -209,9 +207,9 @@ class IncubatorPage extends React.Component {
         :
           <div className="incubatorpage">
             <Grid style={styles.position}>
-              {this.state.notifiedOfPushNotifications
-              ? null
-              : this.showPushNotificationButton()
+              {this.props.state.firebaseUser && this.props.state.firebaseUser.uid
+              ? this.showPushNotificationButton()
+              : null
           }
               <Grid.Row verticalAlign="middle"><Header as="h1" className="white" textAlign="right">Your Goals</Header></Grid.Row>
               <Divider hidden />
