@@ -38,7 +38,6 @@ app.use(passport.session({
 
 // returns a compressed bundle
 app.get('*bundle.js', (req, res, next) => {
-  console.log(req.url);
   req.url += '.gz';
   res.set('Content-Encoding', 'gzip');
   res.set('Content-Type', 'text/javascript');
