@@ -61,7 +61,8 @@ class Lobby extends React.Component {
     });
   }
 
-  componentDidMount() {axios.get('/userSquaddies')
+  componentDidMount() {
+    axios.get('/userSquaddies')
       .then((squaddies) => {
         console.log('squaddies.data.length', squaddies.data.length);
         if (squaddies.data.length < 1) {
@@ -125,7 +126,7 @@ class Lobby extends React.Component {
   }
 
   render() {
-    const {fightState} = this.props;
+    const { fightState } = this.props;
     // user does not have any monsters yet
     if (this.state.noSquaddies === true) {
       return (
@@ -192,9 +193,15 @@ class Lobby extends React.Component {
           textAlign="center"
           verticalAlign="middle"
         >
+          <Grid.Row verticalAlign="bottom" columns={2}>
+            <Grid.Column mobile={8} tablet={5} computer={4}>
+              <MainMenu history={this.props.history} />
+            </Grid.Column>
+            <Grid.Column mobile={8} tablet={5} computer={4}>
+              <Header as="h1" className="white" textAlign="right">Lobby</Header>
+            </Grid.Column>
+          </Grid.Row>
           <Grid.Column computer={8} tablet={10} mobile={16}>
-            <Header as="h1" className="white" textAlign="right">Lobby</Header>
-            <Divider hidden />
             <Grid.Column style={{ maxWidth: 450 }}>
               <Button
                 disabled={this.state.buttonsDisabled}
@@ -234,7 +241,6 @@ class Lobby extends React.Component {
               </Modal>
             </Grid.Column>
           </Grid.Column>
-          <MainMenu history={this.props.history} />
         </Grid>
       </div>
     );
