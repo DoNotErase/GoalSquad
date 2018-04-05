@@ -28,6 +28,7 @@ class YardSquaddie extends React.Component {
   }
 
   handleDrag(e, ui) {
+    e.preventDefault();
     const { x, y } = this.state.deltaPosition;
     this.setState({
       deltaPosition: {
