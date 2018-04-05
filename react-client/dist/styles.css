@@ -66,6 +66,12 @@ orangy: background-image: linear-gradient(to right, #d95a37, #df663e, #e67146, #
     padding: 1px !important;
 }
 
+.yardpage button {
+    top: 15px;
+    left: 15px;
+    position: fixed;
+}
+
 
 /* ANIMATIONS  */
 @keyframes fadeIn {
