@@ -4,6 +4,7 @@ import TransitionSwitch from 'react-router-transition-switch';
 import Fader from 'react-fader';
 
 //  VIEW TO RENDER
+import AdminPage from './Admin/AdminPage';
 import HomePage from './HomePageDeets/HomePage';
 import IncubatorPage from './Incubator/IncubatorPage';
 import YardPage from './SquaddieYard/YardPage';
@@ -24,6 +25,7 @@ const Routes = () => (
       <Route path="/yard" component={YardPage} />
       <Route path="/goals" component={GoalsPage} />
       <Route path="/lobby" component={BattleLobbyPage} />
+      <Route path="/admin" component={AdminPage} />
       <Route path="/battle" component={BattlePage} />
       <Route path="/history" component={HistoryPage} />
     </TransitionSwitch>

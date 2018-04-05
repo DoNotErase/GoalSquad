@@ -80,7 +80,7 @@ module.exports.userExists = async (fitbitID) => {
 };
 
 module.exports.findByUsername = async (username) => {
-  const query = 'SELECT user_username, user_password as password, user_id as id, custom_goal_timer_1, custom_goal_timer_2 ' +
+  const query = 'SELECT user_username, user_password as password, user_id as id, custom_goal_timer_1, custom_goal_timer_2, role ' +
     `FROM user WHERE user_username = '${username}';`;
 
   try {
@@ -327,18 +327,6 @@ module.exports.hatchEgg = async (userEggID, id, nextXP) => {
   }
 };
 
-module.exports.getNewSquaddie = async (userID) => {
-  try {
-    const getSquaddie = 'SELECT user_monster.*, monster.*, user.* FROM user_monster INNER JOIN monster ' +
-      'ON user_monster.monster_id = monster.monster_id' +
-      `WHERE user_monster_creation IN (SELECT max(user_monster_creation) AND user_monster.user_id = ${userID} FROM user_monster);`;
-
-    return await db.queryAsync(getSquaddie);
-  } catch (err) {
-    throw err;
-  }
-};
-
 module.exports.getEggInfo = async (id) => {
   try {
     const userID = await getRightID(id);
@@ -420,6 +408,35 @@ module.exports.updateCustomGoalProgress = async (goalID, newCurrent) => {
     throw (err);
   }
 };
+
+module.exports.updatePushNotificationsToFalse = async userID => {
+  try {
+    const updatePushNotificationsToFalse = `UPDATE user SET notified_of_push_notifications = 1 WHERE user_id = ${userID}`;
+    await db.queryAsync(updatePushNotificationsToFalse);
+  } catch (err) {
+    throw (err);
+  }
+}
+
+module.exports.updatePushNotificationsToTrue = async userID => {
+  try {
+    const updatePushNotificationsToTrue = 'UPDATE user SET notified_of_push_notifications = 1, ' +
+    `wants_push_notifications = 1 WHERE user_id = ${userID}`;
+    await db.queryAsync(updatePushNotificationsToTrue);
+  } catch (err) {
+    throw (err);
+  }
+}
+
+module.exports.unsubscribeFromPushNotifications = async userID => {
+  try {
+    const unsubscribeFromPushNotifications = 'UPDATE user SET wants_push_notifications = 0, ' +
+    `unsubscribed_from_notifications = 1 WHERE user_id = ${userID}`;
+    await db.queryAsync(unsubscribeFromPushNotifications);
+  } catch (err) {
+    throw (err);
+  }
+}
 
 module.exports.updateGoalStatuses = async () => {
   const markDoneGoals = 'UPDATE user_goal SET user_goal_success = 1, user_goal_concluded = 1 ' +

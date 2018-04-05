@@ -4,16 +4,14 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Scrollbars } from 'react-custom-scrollbars';
 import PropTypes from 'prop-types';
-import UserGoalsList from './UserGoalsList';
-import ProgressBar from './ProgressBar';
+import IntermediateAdminPage from '../Admin/IntermediateAdminPage';
 import MainMenu from '../MainMenu';
+import ProgressBar from './ProgressBar';
+import UserGoalsList from './UserGoalsList';
 import * as homePageActions from '../HomePageDeets/homePageActions';
 import * as incubatorActions from './incubatorActions';
 import * as squaddieActions from '../SquaddieYard/squaddieActions';
-
-const styles = {
-  eggBackground: 'linear-gradient(to bottom, #faedc4, #ffebd8, #ffeff1, #fff8ff, #ffffff)',
-};
+import firebase from '../firebase/index';
 
 class IncubatorPage extends React.Component {
   constructor(props) {
@@ -21,13 +19,20 @@ class IncubatorPage extends React.Component {
     this.state = {
       count: 3,
       open: false,
+      openModal: true,
+      openNotificationModal: true,
       dimmer: false,
     };
+    this.show = this.show.bind(this);
+    this.handlePushNotificationCancel = this.handlePushNotificationCancel.bind(this);
+    this.handlePushNotificationConfirm = this.handlePushNotificationConfirm.bind(this);
     this.subtractFromCount = this.subtractFromCount.bind(this);
     this.getGoals = this.getGoals.bind(this);
     this.hatchImage = this.hatchImage.bind(this);
     this.eggImage = this.eggImage.bind(this);
     this.close = this.close.bind(this);
+    this.showNotifcation = this.showNotifcation.bind(this);
+    this.showPushNotificationModal = this.showPushNotificationModal.bind(this);
   }
 
   componentDidMount() {
@@ -40,6 +45,7 @@ class IncubatorPage extends React.Component {
       this.props.incubatorActions.getUserGoals();
       this.props.incubatorActions.fetchEggStatus();
     }
+    console.log('state', this.props.state);
   }
 
   getGoals() {
@@ -76,6 +82,69 @@ class IncubatorPage extends React.Component {
     );
   }
 
+  handlePushNotificationCancel() {
+    this.props.homePageActions.updatePushNotificationsToFalse(this.props.state.user.id);
+    // temporarily set push notification to true to remove button
+    this.setState({ open: false, openModal: false });
+    console.log('User did not allow permission');
+  }
+
+  handleTokenRefresh() {
+    const messaging = firebase.messaging();
+    const fireBaseDatabase = firebase.database();
+    messaging.getToken()
+      .then((userToken) => {
+        fireBaseDatabase.ref('/tokens').push({
+          token: userToken,
+          uid: this.props.state.firebaseUser.uid,
+        });
+        this.props.homePageActions.updatePushNotificationsToTrue(this.props.state.user.id);
+      });
+  }
+
+  handlePushNotificationConfirm() {
+    // temporarily set push notification to true to remove button
+    this.setState({ openModal: false });
+    this.handleTokenRefresh();
+  }
+
+  show() {
+    this.setState({ open: true });
+  }
+
+  showNotifcation() {
+    this.setState({ openNotificationModal: false });
+  }
+
+  showPushNotificationModal() {
+    return (
+      !this.props.state.user.notified_of_push_notifications && this.state.openNotificationModal
+        ?
+          <div>
+            <Modal
+              style={{ background: 'transparent' }}
+              dimmer={this.state.dimmer}
+              open={!this.props.state.user.notified_of_push_notifications && this.state.openModal}
+              onClose={this.close}
+              className="fadeIn"
+            >
+              <Modal.Header>What are your thoughts on push notifications?</Modal.Header>
+              <Modal.Content>You can always subscribe/unsubscribe in your deets page.</Modal.Content>
+              <Modal.Actions>
+                <Button labelPosition="left" content="Nah" onClick={this.handlePushNotificationCancel} />
+                <Button labelPosition="right" content="Sign me up" onClick={this.handlePushNotificationConfirm} />
+              </Modal.Actions>
+            </Modal>
+          </div>
+        :
+        null
+    );
+  }
+
+  glowingEggActivated() {
+    return this.state.glowingEgg ? 'glowingEgg' : '';
+  }
+
   subtractFromCount() {
     if (this.state.count === 3) {
       const { egg } = this.props.incubatorState;
@@ -99,11 +168,6 @@ class IncubatorPage extends React.Component {
   }
 
   hatchImage() {
-    const classByCount = {
-      1: 'eggClass1',
-      2: 'eggClass2',
-      3: 'eggClass3',
-    };
     const pictureByCount = {
       1: './assets/icons/egg_stage_3.png',
       2: './assets/icons/egg_stage_2.png',
@@ -113,7 +177,6 @@ class IncubatorPage extends React.Component {
       return (
         <Image
           size="medium"
-          className={classByCount[this.state.count]}
           onClick={this.subtractFromCount}
           src={pictureByCount[this.state.count]}
           centered
@@ -134,20 +197,35 @@ class IncubatorPage extends React.Component {
   }
 
   render() {
+    const styles = {
+      position: {
+        top: 15,
+        right: 15,
+        position: 'fixed',
+      },
+    };
     return (
-      <div className="incubatorpage">
-        <Grid centered>
-          <Grid.Row verticalAlign="bottom" columns={2}>
-            <Grid.Column mobile={8} tablet={7} computer={4}>
-              <MainMenu history={this.props.history} />
-            </Grid.Column>
-            <Grid.Column mobile={8} tablet={7} computer={4}>
-              <Header as="h1" className="white" textAlign="right">Your Goals</Header>
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Column computer={8} tablet={10} mobile={16}>
-            <Scrollbars autoHide style={{ height: '75vh' }}>
-              {Object.keys(this.props.incubatorState.userGoals).length > 0
+      this.props.state.user.role === 'admin'
+        ?
+          <IntermediateAdminPage history={this.props.history} />
+        :
+          <div className="incubatorpage">
+            <Grid centered>
+              {this.props.state.firebaseUser && this.props.state.firebaseUser.uid
+            ? this.showPushNotificationModal()
+            : null
+          }
+              <Grid.Row verticalAlign="bottom" columns={2}>
+                <Grid.Column mobile={8} tablet={7} computer={4}>
+                  <MainMenu history={this.props.history} />
+                </Grid.Column>
+                <Grid.Column mobile={8} tablet={7} computer={4}>
+                  <Header as="h1" className="white" textAlign="right">Your Goals</Header>
+                </Grid.Column>
+              </Grid.Row>
+              <Grid.Column computer={8} tablet={10} mobile={16}>
+                <Scrollbars autoHide style={{ height: '75vh' }}>
+                  {Object.keys(this.props.incubatorState.userGoals).length > 0
                 ? Object.keys(this.props.incubatorState.userGoals).map(activity => (
                   <UserGoalsList
                     key={activity}
@@ -157,61 +235,61 @@ class IncubatorPage extends React.Component {
               ))
                 : this.getGoals()
               } {/* renders list of goals for each activity type */}
-            </Scrollbars>
-          </Grid.Column>
-          <Grid.Row
-            columns={2}
-            verticalAlign="top"
-            style={{ position: 'fixed', bottom: 0, padding: 1 }}
-          >
-            <Grid.Column mobile={3} tablet={2} computer={1}>
-              {this.eggImage()}
-            </Grid.Column>
-            <Grid.Column mobile={13} tablet={12} computer={7} style={{ marginTop: 15 }}>
-              <ProgressBar
-                history={this.props.history}
-              />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-        <Modal
-          style={{ background: 'transparent' }}
-          dimmer={this.state.dimmer}
-          open={this.state.open}
-          onClose={this.close}
-          className="fadeIn"
-        >
-          <Modal.Content style={{ background: 'transparent' }}>
-            <Card
-              centered
-              style={{ backgroundImage: styles.eggBackground }}
-            >
-              {this.hatchImage()}
-              <Card.Content
-                style={{ backgroundColor: 'white' }}
+                </Scrollbars>
+              </Grid.Column>
+              <Grid.Row
+                columns={2}
+                verticalAlign="top"
+                style={{ position: 'fixed', bottom: 0, padding: 1 }}
               >
-                <Card.Header>
-                  {this.state.count === 0 && this.props.newSquaddie ?
-                    <p> Your new Squaddie is {this.props.newSquaddie.monster_name}! </p>
+                <Grid.Column mobile={3} tablet={2} computer={1}>
+                  {this.eggImage()}
+                </Grid.Column>
+                <Grid.Column mobile={13} tablet={12} computer={7} style={{ marginTop: 15 }}>
+                  <ProgressBar
+                    history={this.props.history}
+                  />
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+            <Modal
+              style={{ background: 'transparent' }}
+              dimmer={this.state.dimmer}
+              open={this.state.open}
+              onClose={this.close}
+              className="fadeIn"
+            >
+              <Modal.Content style={{ background: 'transparent' }}>
+                <Card
+                  centered
+                  style={{ backgroundImage: styles.eggBackground }}
+                >
+                  {this.hatchImage()}
+                  <Card.Content
+                    style={{ backgroundColor: 'white' }}
+                  >
+                    <Card.Header>
+                      {this.state.count === 0 && this.props.newSquaddie ?
+                        <p> Your new Squaddie is {this.props.newSquaddie.monster_name}! </p>
                   :
-                    <p>Tap {this.state.count} {this.state.count === 1 ? 'more time' : 'more times'} to reveal your new Squaddie!</p>
+                        <p>Tap {this.state.count} {this.state.count === 1 ? 'more time' : 'more times'} to reveal your new Squaddie!</p>
                   }
-                </Card.Header>
-                <Card.Description>
-                  {this.state.count === 0 ?
-                    <p> Head over to
-                      <a onClick={() => { this.props.history.push('/yard'); }}> your yard </a>
-                      for some well-deserved play time
-                    </p>
+                    </Card.Header>
+                    <Card.Description>
+                      {this.state.count === 0 ?
+                        <p> Head over to
+                          <a onClick={() => { this.props.history.push('/yard'); }}> your yard </a>
+                          for some well-deserved play time
+                        </p>
                   :
                     null
                   }
-                </Card.Description>
-              </Card.Content>
-            </Card>
-          </Modal.Content>
-        </Modal>
-      </div>
+                    </Card.Description>
+                  </Card.Content>
+                </Card>
+              </Modal.Content>
+            </Modal>
+          </div>
     );
   }
 }
@@ -220,6 +298,7 @@ IncubatorPage.propTypes = {
   state: PropTypes.shape({
     needsUpdate: PropTypes.bool, // really bool 0/1
     user: PropTypes.object,
+    firebaseUser: PropTypes.object,
   }).isRequired,
   incubatorState: PropTypes.shape({
     userGoals: PropTypes.object,

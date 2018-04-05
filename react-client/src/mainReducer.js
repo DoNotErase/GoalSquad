@@ -2,6 +2,7 @@ const mainState = {
   user: {},
   deets: {},
   needsUpdate: true,
+  firebaseUser: null,
 };
 
 const mainReducer = (state = mainState, action) => {
@@ -13,6 +14,12 @@ const mainReducer = (state = mainState, action) => {
       return {
         ...state,
         user: action.payload,
+      };
+    }
+    case 'SET_FIREBASE_USER': {
+      return {
+        ...state,
+        firebaseUser: action.payload,
       };
     }
     case 'SET_DEETS': {

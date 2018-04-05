@@ -1,0 +1,20 @@
+{
+  "rules": {
+    "tokens": {
+      ".indexOn": ["uid", "token"],
+      // ".read": "auth != null",
+      ".read": true,
+      // ".write": "auth != null",
+      ".write": true,
+    },
+    "notifications": {
+      ".read": true,
+      /*".read": "auth != null",*/
+      ".write": true,
+      /*".write": "auth != null",*/
+      "$notification": {
+        ".validate": "newData.hasChildren(['user', 'message'])"
+      }
+    }
+  }
+}

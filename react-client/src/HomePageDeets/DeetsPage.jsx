@@ -1,17 +1,31 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Header, Divider, Grid, Statistic, Segment, Button, Loader } from 'semantic-ui-react';
 import { bindActionCreators } from 'redux';
+import { Button, Confirm, Divider, Header, Grid, Loader, Segment, Statistic } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { Scrollbars } from 'react-custom-scrollbars';
 import MainMenu from '../MainMenu';
+import * as actions from '../actions';
+import * as homePageActions from './homePageActions';
 import { fetchStats, deauthorizeFitbit } from '../actions';
+import firebase from '../firebase/index';
 
 class DeetsPage extends React.Component {
   constructor(props) {
     super(props);
-
+    this.state = {
+      open: false,
+      hideUnsubscribeButton: false,
+      hideSubscribeButton: false,
+    };
     this.makeDisconnectButton = this.makeDisconnectButton.bind(this);
+    this.show = this.show.bind(this);
+    this.showUnsubscribeButton = this.showUnsubscribeButton.bind(this);
+    this.handlePushNotificationUnsubscribe = this.handlePushNotificationUnsubscribe.bind(this);
+    this.handlePushNotificationSubscription = this.handlePushNotificationSubscription.bind(this);
+    this.showSubscribeButton = this.showSubscribeButton.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
+
     if (!props.state.deets.user || props.state.needsUpdate) {
       props.fetchStats();
     }
@@ -31,6 +45,88 @@ class DeetsPage extends React.Component {
       );
     }
     return <div />;
+  }
+
+  show() {
+    this.setState({ open: true });
+  }
+
+  handlePushNotificationUnsubscribe() {
+    this.setState({ open: false, hideUnsubscribeButton: true, hideSubscribeButton: false });
+    const messaging = firebase.messaging();
+    const firebaseDatabase = firebase.database();
+    messaging.getToken()
+      .then(token => messaging.deleteToken(token))
+      .then(() => firebaseDatabase.ref('/tokens').orderByChild('uid').equalTo(this.props.state.firebaseUser.uid).once('value'))
+      .then((snapshot) => {
+        const key = Object.keys(snapshot.val())[0];
+        return firebaseDatabase.ref('/tokens').child(key).remove();
+      })
+      .then(() => {
+        this.setState({ hideUnsubscribeButton: true });
+        // make action call to delete token and set preference to false in DB
+        this.props.homePageActions.unsubscribeFromPushNotifications(this.props.state.user.id);
+        this.setState({ revealSubscribeButton: true });
+      })
+      .catch((err) => {
+        console.log('Unable to delete user token from firebase database.', err);
+      });
+  }
+
+  handleCancel() {
+    this.setState({ open: false });
+  }
+
+  showUnsubscribeButton() {
+    return (
+      this.props.state.user.notified_of_push_notifications === 1 && !this.state.hideUnsubscribeButton
+        ?
+          <div>
+            <Button onClick={this.show} floated="right" negative>Unsubscribe From Push Notifications</Button>
+            <Confirm
+              open={this.state.open}
+              content="Clicking OK will unsubscribe you from super-awesome push notifications. Are you sure?"
+              onConfirm={this.handlePushNotificationUnsubscribe}
+              onCancel={this.handleCancel}
+            />
+          </div>
+        :
+        null
+    );
+  }
+
+  handlePushNotificationSubscription() {
+    this.setState({ open: false, hideSubscribeButton: true, hideUnsubscribeButton: false });
+    const messaging = firebase.messaging();
+    const fireBaseDatabase = firebase.database();
+    messaging.getToken()
+      .then((userToken) => {
+        fireBaseDatabase.ref('/tokens').push({
+          token: userToken,
+          uid: this.props.state.firebaseUser.uid,
+        });
+      })
+      .then(() => {
+        this.props.homePageActions.updatePushNotificationsToTrue(this.props.state.user.id);
+      });
+  }
+
+  showSubscribeButton() {
+    return (
+      this.props.state.user.notified_of_push_notifications === 1 && !this.state.hideSubscribeButton
+        ?
+          <div>
+            <Button onClick={this.show} floated="right" positive>Get Push Notifications</Button>
+            <Confirm
+              open={this.state.open}
+              content="You want to bring your squad to the next level and receive push notificaitons?"
+              onConfirm={this.handlePushNotificationSubscription}
+              onCancel={this.handleCancel}
+            />
+          </div>
+        :
+        null
+    );
   }
 
   render() {
@@ -70,8 +166,14 @@ class DeetsPage extends React.Component {
             <Scrollbars autoHide style={{ height: '85vh' }}>
               <Segment.Group raised>
                 <Segment compact>
-                  <Header as="h2">{this.props.state.user.user_username}</Header>
-                  <Header as="h4" sub>{deets.user.total.attempted} Lifetime Goals </Header>
+                  <Grid.Row>
+                    <Header as="h2">{this.props.state.user.user_username}</Header>
+                    {this.props.state.user.wants_push_notifications === 1
+                    ? this.showUnsubscribeButton() : this.showSubscribeButton()
+                    }
+                    {this.state.revealSubscribeButton ? this.showSubscribeButton() : null}
+                  </Grid.Row>
+                  <Header as="h4">{deets.user.total.attempted} Lifetime Goals </Header>
                   {this.makeDisconnectButton()}
                 </Segment>
               </Segment.Group>
@@ -165,9 +267,14 @@ DeetsPage.propTypes = {
     user: PropTypes.object,
     deets: PropTypes.object,
     needsUpdate: PropTypes.bool,
+    firebaseUser: PropTypes.object,
   }).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
+  }).isRequired,
+  homePageActions: PropTypes.shape({
+    updatePushNotificationsToTrue: PropTypes.func,
+    unsubscribeFromPushNotifications: PropTypes.func,
   }).isRequired,
 };
 
@@ -179,6 +286,8 @@ const mapStateToProps = state => (
 
 const mapDispatchToProps = dispatch => (
   {
+    actions: bindActionCreators(actions, dispatch),
+    homePageActions: bindActionCreators(homePageActions, dispatch),
     fetchStats: bindActionCreators(fetchStats, dispatch),
     deauthorizeFitbit: bindActionCreators(deauthorizeFitbit, dispatch),
   }

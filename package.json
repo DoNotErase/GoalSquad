@@ -24,6 +24,7 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
     "nodemon": "^1.17.2",
+    "sw-precache": "^5.2.1",
     "webpack": "^2.2.1"
   },
   "dependencies": {
@@ -31,10 +32,12 @@
     "bcrypt-nodejs": "0.0.3",
     "bluebird": "^3.5.1",
     "body-parser": "^1.17.2",
+    "connect-roles": "^3.1.2",
     "cookie-parser": "^1.4.3",
     "express": "^4.15.0",
     "express-session": "^1.15.6",
     "file-loader": "^1.1.11",
+    "firebase": "^4.12.1",
     "history": "^4.7.2",
     "moment": "^2.21.0",
     "mysql": "^2.13.0",

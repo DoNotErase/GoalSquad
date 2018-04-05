@@ -17,18 +17,39 @@
   <div id="app"></div>
 
   <!-- FIREBASE SCRIPT TAG - DON'T PASTE SCRIPTS ABOVE THIS -->
-<script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
 <script>
-// Initialize Firebase
-var configs = {
+  // Initialize Firebase
+var config = {
     apiKey: "AIzaSyDbOhdxctAyUdSrr0xbDxSazzQfu1wYeNY",
     authDomain: "goalsquad-f12a7.firebaseapp.com",
     databaseURL: "https://goalsquad-f12a7.firebaseio.com",
     projectId: "goalsquad-f12a7",
-    storageBucket: "",
+    storageBucket: "goalsquad-f12a7.appspot.com",
     messagingSenderId: "177647825623"
 };
-firebase.initializeApp(configs);
+firebase.initializeApp(config);
+
+var messaging = firebase.messaging();
+
+messaging.onTokenRefresh(function () {
+  messaging.getToken().then(function (refreshedToken) {
+        console.log('Token refreshed.');
+        // Indicate that the new Instance ID token has not yet been sent to the
+        // app server.
+        setTokenSentToServer(false);
+        // Send Instance ID token to app server.
+        sendTokenToServer(refreshedToken);
+        // ...
+    }).catch(function (err) {
+        console.log('Unable to retrieve refreshed token ', err);
+        showToken('Unable to retrieve refreshed token ', err);
+    });
+});
+
+// firebase.auth().onAuthStateChanged(firebaseUser => {
+//   console.log('firebase user', firebaseUser);
+// });
 </script>
   <!-- END OF FIREBASE SCRIPT -->
   
@@ -50,27 +71,6 @@ if ('serviceWorker' in navigator) {
   console.log('service worker is not supported');
 }
 </script>
-<script>
-    var messaging = firebase.messaging();
-    messaging.requestPermission()
-        .then(function () {
-            console.log('Notification permission granted.');
-            return messaging.getToken();
-        })
-        .then(function (token) {
-            console.log(token);
-        })
-        .catch(function (err) {
-        console.log('Unable to get permission to notify.', err);
-        });
-</script>
-<!-- <script>
-var http = require("http"); // require not recognized
-setInterval(function () {
-  http.get("http://goal-squad.herokuapp.com");
-}, 300000);
-</script> -->
-
   <!-- noscript tag used to satisfy Lighthouse test that wants a display page/notification when there is no JS -->
   <noscript>Javascript is needed to run the site. Please enable JavaScript.</noscript>
 </body>

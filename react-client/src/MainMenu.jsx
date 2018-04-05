@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import * as actions from './actions';
+import firebase from './firebase/index';
 
 const src = './assets/icons/';
 
@@ -27,6 +28,11 @@ class MainMenu extends React.Component {
 
   show() { this.setState({ open: true }); }
   close() { this.setState({ open: false }); }
+
+  signOutProcess() {
+    firebase.auth().signOut();
+    Link;
+  }
 
   render() {
     const { open } = this.state;
@@ -59,7 +65,7 @@ class MainMenu extends React.Component {
             <Card raised style={cardstyles} image={`${src}squad_icon.png`} onClick={() => { this.props.history.push('/squad'); }} />
             <Card raised style={cardstyles} image={`${src}battle_icon.png`} onClick={() => { this.props.history.push('/lobby'); }} />
             <Card raised style={cardstyles} image={`${src}history_icon.png`} onClick={() => { this.props.history.push('/history'); }} />
-            <Card raised style={cardstyles} image={`${src}logout_icon.png`} onClick={Link} href="/logout" />
+            <Card raised style={cardstyles} image={`${src}logout_icon.png`} onClick={this.signOutProcess()} href="/logout" />
           </Card.Group>
         </Modal.Content>
         <Modal.Actions

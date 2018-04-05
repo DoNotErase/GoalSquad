@@ -24,6 +24,11 @@ CREATE TABLE user (
   user_total_points int NOT NULL DEFAULT 0,
   custom_goal_timer_1 varchar(255),
   custom_goal_timer_2 varchar(255),
+  notified_of_push_notifications bool default 0,
+  wants_push_notifications bool default 0,
+  -- push_notification_token varchar(255),
+  unsubscribed_from_notifications bool default 0,
+  role varchar (30) default null,
   PRIMARY KEY (user_id)
 );
 
