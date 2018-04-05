@@ -13,9 +13,14 @@ const passport = require('passport');
 const path = require('path');
 const session = require('express-session');
 
+let config;
+if (!process.env.PORT) {
+  config = require('../config.js');
+}
+
 const app = express();
 // http for streaming and .server for event listeners
-const server = require('http').Server(app);
+const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
 
@@ -34,7 +39,7 @@ const user = new ConnectRoles({
   }
 });
 
-app.use(express.static(`${__dirname}/../react-client/dist`));
+app.set('port', (process.env.PORT || 8080));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(session({
@@ -49,9 +54,19 @@ app.use(passport.session({
 }));
 app.use(user.middleware());
 
+// returns a compressed bundle
+app.get('*bundle.js', (req, res, next) => {
+  console.log(req.url);
+  req.url += '.gz';
+  res.set('Content-Encoding', 'gzip');
+  res.set('Content-Type', 'text/javascript');
+  next();
+});
+
+app.use(express.static(`${__dirname}/../react-client/dist`));
+
 function isAuthorized(req, res, next) {
   if (!req.session.passport) {
-    console.log('redirect');
     res.status(401).end();
     return;
   }
@@ -83,7 +98,6 @@ passport.use(new LocalStrategy(
         return done(null, false);
       }
       if (bcrypt.compareSync(password, user.password)) {
-        console.log('yay!');
         return done(null, user);
       }
       return done(null, false);
@@ -95,10 +109,10 @@ passport.use(new LocalStrategy(
 
 passport.use(new FitbitStrategy(
   {
-    clientID: config.fitbit.id,
-    clientSecret: config.fitbit.secret,
+    clientID: process.env.FITBIT_ID || config.fitbit.id,
+    clientSecret: process.env.FITBIT_SECRET || config.fitbit.secret,
     scope: ['activity', 'profile', 'sleep', 'social'],
-    callbackURL: 'http://127.0.0.1:8080/callback',
+    callbackURL: process.env.CALLBACK_URL || 'http://127.0.0.1:8080/callback',
   },
   async (accessToken, refreshToken, profile, done) => {
     try {
@@ -199,7 +213,7 @@ app.post('/fitbit/deauthorize/', async (req, res) => {
       {
         headers:
         {
-          Authorization: `Basic ${(Buffer.from(`${config.fitbit.id}:${config.fitbit.secret}`)).toString('base64')};`,
+          Authorization: `Basic ${(Buffer.from(`${process.env.FITBIT_ID}:${process.env.FITBIT_SECRET}`)).toString('base64')};`,
           'Content-Type': 'application/x-www-form-urlencoded',
         },
       },
@@ -249,7 +263,6 @@ app.get('/eggStatus', isAuthorized, async (req, res) => {
   try {
     const userID = req.session.passport.user.id;
     const data = await db.getEggInfo(userID);
-    console.log('Got the egg data!')
     res.status(200).json(data);
   } catch (err) {
     res.status(500).send('err in get Egg info');
@@ -275,6 +288,30 @@ app.get('/userSquaddies', isAuthorized, async (req, res) => {
     res.status(200).json(data);
   } catch (err) {
     res.status(500).send('Err in getting Squaddies');
+  }
+});
+
+app.patch('/monsterXP', async (req, res) => {
+  console.log(req.body, 'monster_XP');
+  try {
+    const { monID, xp } = req.body;
+    await db.addXPtoMonster(monID, xp);
+    res.end();
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('err with increasing monster id');
+  }
+});
+
+app.patch('/levelup', async (req, res) => {
+  console.log(req.body, 'monster_id for level');
+  try {
+    const { monID } = req.body;
+    await db.levelUp(monID);
+    res.end();
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('err with leveling up');
   }
 });
 
@@ -327,7 +364,7 @@ app.get('/getSquaddie', async (req, res) => {
   } catch (err) {
     res.status(500).send(err);
   }
-})
+});
 
 /** *******************GOAL STUFF**************************** */
 
@@ -340,14 +377,6 @@ app.get('/userGoals', isAuthorized, async (req, res) => {
       } catch (err) {
         console.log(err);
         res.status(500).send('err in getActiveUserGoals');
-      }
-    } else if (req.query.type === 'all') {
-      try {
-        const userGoals = await db.getUserGoals(req.session.passport.user.id);
-        res.json(userGoals);
-      } catch (err) {
-        console.log(err);
-        res.status(500).send('err in get userGoals');
       }
     } else {
       res.status(500).send('type of goal not yet recognized!');
@@ -366,6 +395,15 @@ app.get('/defaultGoals', isAuthorized, async (req, res) => {
   }
 });
 
+app.get('/historicGoals', isAuthorized, async (req, res) => {
+  try {
+    const goals = await db.getOldUserGoals(req.session.passport.user.id);
+    res.json(goals);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
 app.post('/createUserGoal', isAuthorized, async (req, res) => {
   // req.body needs: goal_id, deadline existance(deadline(length)), goal points
   const newGoal = {
@@ -375,12 +413,11 @@ app.post('/createUserGoal', isAuthorized, async (req, res) => {
     targetValue: 0,
     goalLength: req.body.goalLength,
     points: req.body.points,
-    start: req.body.startDate,
   };
   try {
     newGoal.userID = req.session.passport.user.id;
     const goalDetails = await db.getGoalInfo(newGoal.goalID);
-    if (typeof newGoal.userID === 'string') {
+    if (typeof newGoal.userID === 'string' && newGoal.goalID < 19) {
       const token = await db.getAccessToken(req.session.passport.user.id);
       let currentLifeTime = await axios.get('https://api.fitbit.com/1/user/-/activities.json', {
         headers: {
@@ -396,7 +433,7 @@ app.post('/createUserGoal', isAuthorized, async (req, res) => {
     await db.createUserGoal(newGoal);
     res.end();
   } catch (err) {
-    console.log(err.response.data);
+    console.log(err);
     res.status(500).send('could not create goal');
   }
 });
@@ -458,7 +495,8 @@ app.post('/hatchEgg', isAuthorized, async (req, res) => {
   try {
     const userID = req.session.passport.user.id;
     const userEggID = req.body.eggID;
-    const newSquaddie = db.hatchEgg(userEggID, userID, req.body.xp);
+    const newSquaddie = await db.hatchEgg(userEggID, userID, req.body.xp);
+
     res.json(newSquaddie[0]);
   } catch (err) {
     res.status(500).send(err);
@@ -520,12 +558,8 @@ app.get('/admin', user.can('access admin page'), function (req, res) {
 
 /** ********************************************************* */
 
-app.get('/*', (req, res) => {
+app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../react-client/dist', '/index.html'));
-});
-
-app.listen(8080, () => {
-  console.log('listening on port 8080!');
 });
 
 /* *********************** socket io stuff ********************************** */
@@ -547,37 +581,47 @@ io.on('connection', (socket) => {
   // user hosts game - connect to room random room and add room to list of rooms
 
   socket.on('host', (username) => {
+    console.log('rooms', rooms);
     const roomName = generateName();
     socket.join(roomName);
     const roomObj = {
-      roomName: roomName,
+      roomName,
       player1: username,
     };
     rooms.push(roomObj);
+    console.log('rooms hosting', rooms);
     io.in(roomName).emit('hosting', roomObj);
   });
 
   socket.on('join', (username) => {
+    console.log('rooms', rooms);
     for (let i = 0; i < rooms.length; i += 1) {
-      let room = rooms[i].roomName;
+      const room = rooms[i].roomName;
       if (io.sockets.adapter.rooms[room].length < 2) {
         socket.join(room);
         rooms[i].player2 = username;
         io.in(room).emit('joining', rooms[i]);
         i = rooms.length; // ends loop
       }
-      // TODO add situation where no hosts are found
     }
+    // no hosts found
+    io.emit('nojoin');
   });
 
   socket.on('fighter picked', (roomname, player, squaddie) => {
     io.in(roomname).emit('fighter chosen', { player, squaddie });
   });
 
-  socket.on('attack', (roomname, damage, user_monster_id) => {
-    console.log('attack server', roomname, damage);
-    io.in(roomname).emit('attack', { damage, user_monster_id });
+  socket.on('attack', (roomname, damage, defense, monID) => {
+    const totalDamage = (damage + 3) - defense; // change formula later
+    io.in(roomname).emit('attack', { damage: totalDamage, monID });
+  });
+
+  socket.on('surrender', (roomname, surrenderPlayer) => {
+    io.in(roomname).emit('surrender', { surrenderPlayer });
   });
 });
 
-io.listen(8081);
+server.listen(app.get('port'), () => {
+  console.log('listening on port', app.get('port'));
+});

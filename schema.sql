@@ -117,20 +117,21 @@ VALUES
 insert into monster
   (monster_name, monster_pic, monster_icon, monster_description)
 VALUES
-  ('Scuttlebutt', './assets/squaddies/scuttlebutt.png', './assets/squaddies/scuttlebutt-icon.png', 'This is a sample description of Scuttlebutt.'),
-  ('Pruny', './assets/squaddies/pruny.png', './assets/squaddies/pruny-icon.png', 'This is a sample description of Pruny.'),
-  ('Bard', './assets/squaddies/bard.png', './assets/squaddies/bard-icon.png', 'This is a sample description of Bard.'),
-  ('Squaggle', './assets/squaddies/squaggle.png', './assets/squaddies/squaggle-icon.png', 'This is a sample description of Squaggle.'),
-  ('Kow', './assets/squaddies/kow.png', './assets/squaddies/kow-icon.png', 'This is a sample description of Kow.'),
-  ('Ploppo', './assets/squaddies/ploppo.png', './assets/squaddies/ploppo-icon.png', 'This is a sample description of Ploppo.'),
-  ('Broccolli', './assets/squaddies/Broccolli.png', './assets/squaddies/Broccolli-icon.png', 'This is a sample description of Broccolli.'),
-  ('Grumpkin', './assets/squaddies/Grumpkin.png', './assets/squaddies/Grumpkin-icon.png', 'This is a sample description of Grumpkin.'),
-  ('Hairy', './assets/squaddies/Hairy.png', './assets/squaddies/Hairy-icon.png', 'This is a sample description of Hairy.'),
-  ('Kale', './assets/squaddies/Kale.png', './assets/squaddies/Kale-icon.png', 'This is a sample description of Kale.'),
-  ('Mothra', './assets/squaddies/Mothra.png', './assets/squaddies/Mothra-icon.png', 'This is a sample description of Mothra.'),
-  ('Pattycakes', './assets/squaddies/Pattycakes.png', './assets/squaddies/Pattycakes-icon.png', 'This is a sample description of Pattycakes.'),
-  ('Slenderbush', './assets/squaddies/Slenderbush.png', './assets/squaddies/Slenderbush-icon.png', 'This is a sample description of Slenderbush.'),
-  ('Supahfly', './assets/squaddies/Supahfly.png', './assets/squaddies/Supahfly-icon.png', 'This is a sample description of Supahfly.');
+  ('Scuttlebutt', './assets/squaddies/scuttlebutt.png', './assets/squaddies/scuttlebutt-icon.png', "Likes neither pina coladas nor getting caught in the rain."),
+  ('Pruny', './assets/squaddies/pruny.png', './assets/squaddies/pruny-icon.png', 'Once held Guiness Book of World Record for longest clarinet solo.'),
+  ('Bard', './assets/squaddies/bard.png', './assets/squaddies/bard-icon.png', "Banned from New Hampshire since 2006, case files for the crime have since been sealed."),
+  ('Squaggle', './assets/squaddies/squaggle.png', './assets/squaddies/squaggle-icon.png', 'Nephew of that sea monster in the Indian Ocean you see on old maps.'),
+  ('Kow', './assets/squaddies/kow.png', './assets/squaddies/kow-icon.png', 'Fluent in 14 languages.  Literate in none.'),
+  ('Ploppo', './assets/squaddies/ploppo.png', './assets/squaddies/ploppo-icon.png', 'Mayor of Chernobyl, planning US Presidential campaign for 2028.'),
+  ('Geldica', './assets/squaddies/geldica.png', './assets/squaddies/geldica-icon.png', "Pros: hasn't murdered anyone recently\nCons: relapse is imminent"),
+  ('Harry', './assets/squaddies/hairy.png', './assets/squaddies/hairy-icon.png', "Please donate to the NAAF to support Harry's fight with alopecia"),
+  ('Broccolli', './assets/squaddies/broccolli.png', './assets/squaddies/broccolli-icon.png', "Knows that he looks more like a bean. It's a sensitive subject. Please don't bring it up."),
+  ('Grumpkin', './assets/squaddies/grumpkin.png', './assets/squaddies/grumpkin-icon.png', 'Wears the skull of his deceased mother. His cries echo inside the skull and come out as a sad melody.'),
+  ('Kale', './assets/squaddies/kale.png', './assets/squaddies/kale-icon.png', 'Recently escapted from a CDC lab studying potential carcinogens, handle with care.'),
+  ('Mothra', './assets/squaddies/mothra.png', './assets/squaddies/mothra-icon.png', "2015 Champion of Seattle's Regional Bar Trivia Tournament"),
+  ('Pattycakes', './assets/squaddies/pattycakes.png', './assets/squaddies/pattycakes-icon.png', 'Founder of People for the Ethical Taping of Arguments. Is not a person.'),
+  ('Slenderbush', './assets/squaddies/slenderbush.png', './assets/squaddies/slenderbush-icon.png', "Has been talking about her mixtape thats about to drop for the last 5 years."),
+  ('Supahfly', './assets/squaddies/supahfly.png', './assets/squaddies/supahfly-icon.png', "Knows what really happened to Biggie and Tupac, but isn't talking.");
 
 insert into egg
   (egg_name)
@@ -141,15 +142,15 @@ VALUES
   ('squaggle_egg'),
   ('kow_egg'),
   ('ploppo_egg'),
+  ('geldica_egg'),
   ('broccolli_egg'),
   ('grumpkin_egg'),
-  ('hairy_egg'),
+  ('harry_egg'),
   ('kale_egg'),
   ('mothra_egg'),
   ('pattycakes_egg'),
   ('slenderbush_egg'),
-  ('supahfly_egg'),
-  ('geldica_egg');
+  ('supahfly_egg');
 
 insert into goal 
   (goal_name, goal_activity, goal_amount, goal_difficulty, goal_class, goal_points, goal_timedivisor)
