@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Modal, Image, Button, Input } from 'semantic-ui-react';
+import { Card, Modal, Image, Button, Input, Icon } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
@@ -95,7 +95,7 @@ class SquaddieCard extends React.Component {
                   :
                   squaddie.monster_name}
                 {squaddie.user ?
-                  <Button size="mini" style={{ marginLeft: '5px' }} onClick={() => { this.setState({ rename: true }); }}>
+                  <Button basic size="mini" style={{ marginLeft: '5px' }} onClick={() => { this.setState({ rename: true }); }}>
                   Edit
                   </Button>
                   :
@@ -107,13 +107,18 @@ class SquaddieCard extends React.Component {
             </Card.Content>
             <Card.Content extra>
               { squaddie.user ?
-                <Button
-                  inverted
-                  floated="right"
-                  color={squaddie.user.user_monster_yard || yardstatus ? 'red' : 'green'}
-                  content={squaddie.user.user_monster_yard || yardstatus ? 'Remove From Yard' : 'Add to Yard'}
-                  onClick={() => { this.toggleSquaddieToYard(squaddie.user.user_monster_id); }}
-                /> : <div />
+                <div>
+                  <Button icon circular onClick={this.close}>
+                    <Icon name="close" />
+                  </Button>
+                  <Button
+                    inverted
+                    floated="right"
+                    color={squaddie.user.user_monster_yard || yardstatus ? 'red' : 'green'}
+                    content={squaddie.user.user_monster_yard || yardstatus ? 'Remove From Yard' : 'Add to Yard'}
+                    onClick={() => { this.toggleSquaddieToYard(squaddie.user.user_monster_id); }}
+                  />
+                </div> : <div />
               }
             </Card.Content>
           </Card>
