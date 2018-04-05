@@ -175,7 +175,7 @@ class BattleInterfaceBottom extends React.Component {
                   />
                 </Grid.Column>
                 <Grid.Column textAlign="center" verticalAlign="bottom">
-                  <Header as="h5"> Defending for {monster.s}
+                  <Header as="h5"> Defending for {monster.s} </Header>
                   <Button
                     disabled={fightState.playeriam !== fightState.activePlayer}
                     basic
@@ -193,6 +193,8 @@ class BattleInterfaceBottom extends React.Component {
                     color="blue"
                     content="Defend"
                     style={{ marginBottom: 2 }}
+                    onClick={() =>
+                      this.props.defend(fightState.roomName, monster.user_monster_id)}
                   />
                   <Button
                     disabled={fightState.playeriam !== fightState.activePlayer}
@@ -266,6 +268,7 @@ BattleInterfaceBottom.propTypes = {
     decreaseHealth: PropTypes.func,
     surrendered: PropTypes.func,
     resetState: PropTypes.func,
+    defend: PropTypes.func,
   }).isRequired,
   squaddieActions: PropTypes.objectOf(PropTypes.func).isRequired,
   monster: PropTypes.shape({
@@ -276,7 +279,6 @@ BattleInterfaceBottom.propTypes = {
   attackStat: PropTypes.number.isRequired,
   enemyDefenseStat: PropTypes.number.isRequired,
   surrender: PropTypes.func.isRequired,
-  surrenderPlayer: PropTypes.string,
   fightState: PropTypes.shape({
     playeriam: PropTypes.string,
     player1: PropTypes.string,

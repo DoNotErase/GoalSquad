@@ -540,8 +540,15 @@ io.on('connection', (socket) => {
   });
 
   socket.on('attack', (roomname, damage, defense, monID) => {
-    const totalDamage = (damage + 3) - defense; // change formula later
+    let totalDamage = (damage + 3) - defense; // change formula later
+    console.log(totalDamage, monID);
+    totalDamage = totalDamage > 1 ? totalDamage : 1;
+    console.log(totalDamage);
     io.in(roomname).emit('attack', { damage: totalDamage, monID });
+  });
+
+  socket.on('defend', (roomname, monID) => {
+    io.in(roomname).emit('defend', { defendingMon: monID });
   });
 
   socket.on('surrender', (roomname, surrenderPlayer) => {

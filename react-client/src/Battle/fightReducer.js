@@ -48,7 +48,7 @@ const fightReducer = (state = fightState, action) => {
 
       // action.payload.user_monster_id has the monster that did the damage
       // so find the other one to decrease their hp
-      if (state.monster1.user_monster_id === action.payload.user_monster_id) {
+      if (state.monster1.user_monster_id === action.payload.userMonsterID) {
         return {
           ...state,
           monster2CurrentHP: state.monster2CurrentHP - action.payload.damage,
@@ -64,9 +64,10 @@ const fightReducer = (state = fightState, action) => {
       };
     }
     case 'START_DEFEND': {
+      console.log('defening!');
       const toggledPlayer = state.activePlayer === 'player1' ? 'player2' : 'player1';
       // the monster that did the defending is in the payload
-      if (state.monster1.user_monster_id === action.payload.user_monster_id) {
+      if (state.monster1.user_monster_id === action.payload.userMonsterID) {
         return {
           ...state,
           monster1DefenseTurns: 2,

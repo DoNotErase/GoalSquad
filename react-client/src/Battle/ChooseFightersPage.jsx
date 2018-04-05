@@ -78,9 +78,7 @@ ChooseFightersPage.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
-  chooseFighter: PropTypes.shape({
-
-  }).isRequired,
+  chooseFighter: PropTypes.func.isRequired,
 };
 
 
