@@ -113,6 +113,7 @@ class SquaddieCard extends React.Component {
                   </Button>
                   <Button
                     inverted
+                    loading={this.props.squadState.yardLoading ? true : false}
                     floated="right"
                     color={squaddie.user.user_monster_yard ? 'red' : 'green'}
                     content={squaddie.user.user_monster_yard ? 'Remove From Yard' : 'Add to Yard'}
@@ -150,6 +151,9 @@ class SquaddieCard extends React.Component {
 }
 
 SquaddieCard.propTypes = {
+  squadState: PropTypes.shape({
+    yardLoading: PropTypes.bool,
+  }).isRequired,
   toggleYardStatus: PropTypes.func.isRequired,
   changeName: PropTypes.func.isRequired,
   squaddie: PropTypes.shape({
@@ -161,6 +165,12 @@ SquaddieCard.propTypes = {
   }).isRequired,
 };
 
+const mapStateToProps = state => (
+  {
+    squadState: state.squad,
+  }
+);
+
 const mapDispatchToProps = dispatch => (
   {
     toggleYardStatus: bindActionCreators(toggleYardStatus, dispatch),
@@ -168,4 +178,4 @@ const mapDispatchToProps = dispatch => (
   }
 );
 
-export default connect(null, mapDispatchToProps)(SquaddieCard);
+export default connect(mapStateToProps, mapDispatchToProps)(SquaddieCard);
