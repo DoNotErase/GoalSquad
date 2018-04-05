@@ -150,7 +150,14 @@ class BattleInterfaceBottom extends React.Component {
 
   render() {
     const { monster, fightState } = this.props;
-    const { gameEndOpen, dimmer } = this.state;
+    const { dimmer } = this.state;
+    // for animations
+    // let addClasses = '';
+    // if (!fightState.monster1WasAttacked && !fightState.monster2WasAttacked) {
+    //   addClasses = 'slideInLeft';
+    // } else {
+    //   addClasses = this.props.wasAttacked ? 'swing' : 'base-state';
+    // }
     return (
       <Segment>
         <Grid>
@@ -169,6 +176,9 @@ class BattleInterfaceBottom extends React.Component {
               <Grid.Row columns={2}>
                 <Grid.Column>
                   <Image
+                    className={this.props.addClass}
+                    // className={addClasses}
+                    // className={`${wasAttacked} slideInLeft`}
                     src={monster.monster_pic}
                     size="small"
                     spaced="right"

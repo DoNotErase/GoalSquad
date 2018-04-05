@@ -61,16 +61,15 @@ class Lobby extends React.Component {
     });
   }
 
-  componentDidMount() {
-    axios.get('/userSquaddies')
-      .then((squaddies) => {
-        console.log('squaddies.data.length', squaddies.data.length);
-        if (squaddies.data.length < 1) {
-          this.setState({
-            noSquaddies: true,
-          });
-        }
-      });
+  componentDidMount() {axios.get('/userSquaddies')
+    .then((squaddies) => {
+      console.log('squaddies.data.length', squaddies.data.length);
+      if (squaddies.data.length < 1) {
+        this.setState({
+          noSquaddies: true,
+        });
+      }
+    });
   }
   componentWillUnmount() {
     socket.disconnect();
@@ -180,6 +179,8 @@ class Lobby extends React.Component {
             attack={this.attack}
             surrender={this.surrender}
             surrenderPlayer={fightState.surrenderPlayer}
+            monster1Class={fightState.monster1Class}
+            monster2Class={fightState.monster2Class}
             history={this.props.history}
           />
         </div>

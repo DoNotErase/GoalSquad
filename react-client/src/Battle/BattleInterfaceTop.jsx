@@ -13,7 +13,13 @@ class BattleInterfaceBottom extends React.Component {
   }
 
   render() {
-    const { monster } = this.props;
+    const { fightState, monster } = this.props;
+    // let addClasses = '';
+    // if (!fightState.monster1WasAttacked && !fightState.monster2WasAttacked) {
+    //   addClasses = 'slideInRight';
+    // } else {
+    //   addClasses = this.props.wasAttacked ? 'swing' : 'base-state';
+    // }
     return (
       <Segment>
         <Grid>
@@ -33,6 +39,9 @@ class BattleInterfaceBottom extends React.Component {
                 <Grid.Column />
                 <Grid.Column textAlign="center" verticalAlign="bottom">
                   <Image
+                    className={this.props.addClass}
+                    // className={addClasses}
+                    // className={`${wasAttacked} slideInRight`}
                     src={monster.monster_pic}
                     size="small"
                     spaced="right"
@@ -47,4 +56,10 @@ class BattleInterfaceBottom extends React.Component {
   }
 }
 
-export default connect(null, null)(BattleInterfaceBottom);
+const mapStateToProps = state => (
+  {
+    fightState: state.fight,
+  }
+);
+
+export default connect(mapStateToProps, null)(BattleInterfaceBottom);

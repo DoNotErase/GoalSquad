@@ -28,6 +28,7 @@ class BattlePage extends React.Component {
               <BattleInterfaceTop
                 monster={this.props.monster2}
                 currentHP={this.props.monster2CurrentHP}
+                addClass={this.props.monster2Class || 'slideInRight'}
               />
               <BattleInterfaceBottom
                 monster={this.props.monster1}
@@ -37,6 +38,7 @@ class BattlePage extends React.Component {
                 attack={this.props.attack}
                 surrender={this.props.surrender}
                 surrenderPlayer={this.props.surrenderPlayer}
+                addClass={this.props.monster1Class || 'slideInLeft'}
               />
             </Grid.Column>
           </Grid>
@@ -59,6 +61,7 @@ class BattlePage extends React.Component {
               <BattleInterfaceTop
                 monster={this.props.monster1}
                 currentHP={this.props.monster1CurrentHP}
+                addClass={this.props.monster1Class || 'slideInRight'}
               />
               <BattleInterfaceBottom
                 monster={this.props.monster2}
@@ -68,6 +71,7 @@ class BattlePage extends React.Component {
                 attack={this.props.attack}
                 surrender={this.props.surrender}
                 surrenderPlayer={this.props.surrenderPlayer}
+                addClass={this.props.monster2Class || 'slideInLeft'}
               />
             </Grid.Column>
           </Grid>
