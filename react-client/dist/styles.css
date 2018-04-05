@@ -3,7 +3,7 @@ body {
     color: black;
 }
 
-.homepage, .goalspage, .incubatorpage, .deetspage, .squadpage, .battlepage, .lobbypage, .intadminpage {
+.homepage, .goalspage, .incubatorpage, .deetspage, .squadpage, .battlepage, .lobbypage, .intadminpage, .admin-page {
     position: fixed;
     top: 0;
     left: 0;
@@ -18,8 +18,8 @@ body {
 }
 
 .admin-page {
-    margin-top: 150px;
-    background-image: linea-gradient(to top, #a14055, #aa4554, #b24b54, #ba5152, #c15851);
+    padding-top: 120px;
+    background-image: linear-gradient(to top, #CBBAA6, #CBB4A5, #9D8C77);
 }
 
 /* gradients

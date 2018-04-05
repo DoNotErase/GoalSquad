@@ -1,7 +1,7 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button, Divider, Grid, Header, Input }  from 'semantic-ui-react';
+import { Button, Confirm, Divider, Grid, Header, Input, List, Message }  from 'semantic-ui-react';
 import firebase from '../firebase/index';
 import MainMenu from './MainMenu';
 import * as homePageActions from '../actions/homePageActions';
@@ -13,15 +13,21 @@ class AdminPage extends React.Component {
 		this.state = {
 			notification: '',
 			open: false,
+			successMessage: false,
+			failureMessage: false,
 		}
+		this.show = this.show.bind(this);
 		this.sendNotification = this.sendNotification.bind(this);
 		this.updateNotification = this.updateNotification.bind(this);
-		this.show = this.show.bind(this);
+		this.handlePushNotificationCancel = this.handlePushNotificationCancel.bind(this);
+		this.showSuccessAlert = this.showSuccessAlert.bind(this);
+		this.showFailureAlert = this.showFailureAlert.bind(this);
 	}
 
 	updateNotification(e) { this.setState({ notification: e.target.value }); }
 
 	sendNotification(e) {
+			this.setState({ open: false })
   		e.preventDefault();
   		console.log('notifcation', this.state.notification)
   		let notification  = this.state.notification;
@@ -34,12 +40,13 @@ class AdminPage extends React.Component {
     	})
   		.then(() => {
   				console.log('Notification sent to users!')
-    			this.setState({ notification: '' });
-    			this.showSuccessAlert();
+    			this.setState({ notification: '', successMessage: true });
+    			// this.showSuccessAlert();
   		})
   		.catch((err) => {
     			console.log("Unable to send notification to Firebase database");
-    			this.showFailureAlert(err);
+    			this.setState({ failureMessage: true })
+    			// this.showFailureAlert(err);
   		});
 	}
 
@@ -47,18 +54,18 @@ class AdminPage extends React.Component {
 			this.setState({ open: false });
 	}
 
-	handlePushNotificationSend() {
-			this.sendNotification();
-			this.setState({ open: false });
+	show() {
+	  this.setState({ open: true });
 	}
 
 	showSuccessAlert() {
 		return (
 			<div>
-				<Message positive>
-				    <Message.Header>Message successfully sent</Message.Header>
-				    <p>Woohoo, our users are now more informed!</p>
-				  </Message>
+				<Message 
+						positive
+				    header="Message successfully sent"
+				    content="Woohoo! Users are now more informed."
+				/>
 			</div>
 		)
 	}
@@ -66,52 +73,62 @@ class AdminPage extends React.Component {
 	showFailureAlert(err) {
 		return (
 			<div>
-				<Message negative>
-				    <Message.Header>Hm, something didn't work. Check the logs below for more information.</Message.Header>
-				    <p>{ err }</p>
-				  </Message>
+				<Message 
+						negative
+		    		header="Hm, something didn't work. Check the logs below for more information."
+		    		content="{ err }"
+		    />
 			</div>
 		)
 	}
 
 	render() {
-		const styles = {
-			container: {
-				marginTop: '100px'
-			}
-		}
 		return (
 			<div className="admin-page">
 				<Grid 
-				textAlign="center"
+				// textAlign="center"
 				style={{ height: '100%' }}
 				verticalAlign="middle"
 				container
+				centered
 				>
 				<MainMenu />
 					<Grid.Row centered>
-						<Header>Welcome, {this.props.state.user.user_username}</Header>
-						<p>Send push notifications to our users below!</p>
-						<Divider />
+							{this.state.successMessage ? this.showSuccessAlert() : null }
+							{this.state.failureMessage ? this.showFailureAlert() : null }
 					</Grid.Row>
+					<Grid.Row centered>
+							<Header>Welcome, {this.props.state.user.user_username}!</Header>
+					</Grid.Row>
+					<Grid.Row centered>
+							<p>Push notification guidelines:</p>
+					</Grid.Row>
+					<Grid.Row >
+							<List bulleted>
+								<List.Item>Must...</List.Item>
+								<List.Item>Cannot...</List.Item>
+								<List.Item>Consider...</List.Item>
+							</List>
+					</Grid.Row>
+						<Divider hidden/>
 				  <Grid.Row centered>
 				    <Input
 				      value={this.state.notification}
 				      onChange={this.updateNotification}
 				      style={{ width: '75%' }}
-				      label={{ basic: true }}
 				      placeholder="type push notification here"
-				      labelPosition="left"
 				      type="text"
 				    />
+				  </Grid.Row>
+				  <Grid.Row>
 						<Button onClick={this.show}>Send Notification</Button>
               <Confirm
                 open={this.state.open}
                 content="YOU ARE ABOUT TO SEND THIS TO EVERY USER. Are you sure?"
                 onCancel={this.handlePushNotificationCancel}
-                onConfirm={this.handlePushNotificationSend}
+                onConfirm={this.sendNotification}
               />
-				  </Grid.Row>
+          </Grid.Row>
 				</Grid>
 			</div>
 		)

@@ -26,7 +26,7 @@ const Routes = () => (
       <Route path="/yard" component={YardPage} />
       <Route path="/goals" component={GoalsPage} />
       <Route path="/lobby" component={BattleLobbyPage} />
-      <Route path="/admin" component={AdminPage} />
+      <Route path="/admin" component={AdminPage} history={history} />
     </TransitionSwitch>
   </Router>
 );

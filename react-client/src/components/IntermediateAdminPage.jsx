@@ -15,8 +15,13 @@ class IntermediateAdminPage extends React.Component {
 	}
 
 	render() {
+		const styles = {
+			buffer: {
+				paddingTop: '150px'
+			}
+		}
 		return (
-			<div className='intadminpage'>
+			<div style={styles.buffer} className='intadminpage'>
 			  <Grid
 			  textAlign="center"
 			  verticalAlign="middle"
