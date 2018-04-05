@@ -10,7 +10,6 @@ class BattlePage extends React.Component {
     super(props);
     this.state = {
     };
-    console.log('battlepage props', this.props);
   }
   componentDidMount() {
 
@@ -47,9 +46,15 @@ class BattlePage extends React.Component {
     } else if (this.props.playeriam === 'player2') {
       return (
         <div className="battlepage">
-          <Header as="h1" className="white" textAlign="right">Battle</Header>
-          <Divider hidden />
           <Grid centered >
+            <Grid.Row verticalAlign="bottom" columns={2}>
+              <Grid.Column mobile={8} tablet={5} computer={4}>
+                <MainMenu history={this.props.history} />
+              </Grid.Column>
+              <Grid.Column mobile={8} tablet={5} computer={4}>
+                <Header as="h1" className="white" textAlign="right">Battle</Header>
+              </Grid.Column>
+            </Grid.Row>
             <Grid.Column computer={8} mobile={16}>
               <BattleInterfaceTop
                 monster={this.props.monster1}
@@ -66,7 +71,6 @@ class BattlePage extends React.Component {
               />
             </Grid.Column>
           </Grid>
-          <MainMenu history={this.props.history} />
         </div>
       );
     }
