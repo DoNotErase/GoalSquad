@@ -1,65 +1,51 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Segment, Grid, Progress, Image, Header } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 
-class BattleInterfaceBottom extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
-  componentDidMount() {
+const BattleInterfaceTop = (props) => {
+  const { monster } = props;
 
-  }
-
-  render() {
-    const { fightState, monster } = this.props;
-    // let addClasses = '';
-    // if (!fightState.monster1WasAttacked && !fightState.monster2WasAttacked) {
-    //   addClasses = 'slideInRight';
-    // } else {
-    //   addClasses = this.props.wasAttacked ? 'swing' : 'base-state';
-    // }
-    return (
-      <Segment>
-        <Grid>
-          <Grid.Column>
-            <Grid.Row>
-              <Header sub size="tiny" textAlign="right">{monster.user_monster_new_name || monster.monster_name}</Header>
-              <Progress
-                size="small"
-                progress="ratio"
-                color="orange"
-                value={this.props.currentHP}
-                total={monster.user_monster_hp}
-              />
+  return (
+    <Segment>
+      <Grid>
+        <Grid.Column>
+          <Grid.Row>
+            <Header sub size="tiny" textAlign="right">{monster.user_monster_new_name || monster.monster_name}</Header>
+            <Progress
+              size="small"
+              progress="ratio"
+              color="orange"
+              value={props.currentHP}
+              total={monster.user_monster_hp}
+            />
+            <Header sub size="tiny" textAlign="right"> {props.defendingTurns > 0 ? `Defending for ${props.defendingTurns} turns` : ''} </Header>
+          </Grid.Row>
+          <Grid>
+            <Grid.Row columns={2}>
+              <Grid.Column />
+              <Grid.Column textAlign="center" verticalAlign="bottom">
+                <Image
+                  className={props.addClass}
+                  src={monster.monster_pic}
+                  size="small"
+                  spaced="right"
+                />
+              </Grid.Column>
             </Grid.Row>
-            <Grid>
-              <Grid.Row columns={2}>
-                <Grid.Column />
-                <Grid.Column textAlign="center" verticalAlign="bottom">
-                  <Image
-                    className={this.props.addClass}
-                    // className={addClasses}
-                    // className={`${wasAttacked} slideInRight`}
-                    src={monster.monster_pic}
-                    size="small"
-                    spaced="right"
-                  />
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
-          </Grid.Column>
-        </Grid>
-      </Segment>
-    );
-  }
-}
+          </Grid>
+        </Grid.Column>
+      </Grid>
+    </Segment>
+  );
+};
 
-const mapStateToProps = state => (
-  {
-    fightState: state.fight,
-  }
-);
+BattleInterfaceTop.propTypes = {
+  currentHP: PropTypes.number.isRequired,
+  defendingTurns: PropTypes.number.isRequired,
+  monster: PropTypes.shape({
+    monster_pic: PropTypes.string,
+  }).isRequired,
+  addClass: PropTypes.string.isRequired,
+};
 
-export default connect(mapStateToProps, null)(BattleInterfaceBottom);
+export default BattleInterfaceTop;
