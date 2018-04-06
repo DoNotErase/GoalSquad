@@ -78,7 +78,8 @@ class Lobby extends React.Component {
   }
 
   componentWillUnmount() {
-    socket.disconnect();
+    socket.disconnect(this.props.fightState.roomName);
+    this.props.fightActions.resetState();
   }
 
   hostGame() {
@@ -97,7 +98,6 @@ class Lobby extends React.Component {
     socket.emit('join', this.props.mainState.user.user_username, (data) => {
       console.log(data);
     });
-    console.log('heeyyyooo');
     this.setState({
       playeriam: 'player2',
       hostWaiting: false,
@@ -270,11 +270,13 @@ Lobby.propTypes = {
     decreaseHealth: PropTypes.func,
     surrendered: PropTypes.func,
     defend: PropTypes.func,
+    resetState: PropTypes.func,
   }).isRequired,
   mainState: PropTypes.shape({
     user: PropTypes.object,
   }).isRequired,
   fightState: PropTypes.shape({
+    roomName: PropTypes.string,
     playeriam: PropTypes.string,
     player1: PropTypes.string,
     player2: PropTypes.string,
