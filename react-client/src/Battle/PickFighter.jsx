@@ -14,14 +14,14 @@ class PickFighter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      dimmer: false,
+      open: false,
     };
     this.close = this.close.bind(this);
+    this.show = this.show.bind(this);
   }
-  close() {
-    console.log('inside close modal');
-    this.setState({ open: false });
-  }
+
+  show(dimmer, size) { this.setState({ dimmer, size, open: true }); }
+  close() { this.setState({ open: false }); }
 
   render() {
     const {
@@ -32,13 +32,14 @@ class PickFighter extends React.Component {
       <Modal
         trigger={
           <Card
+            centered
             raised
             image={squaddie.monster_icon}
             description={
               squaddie.user_monster_new_name ?
               squaddie.user_monster_new_name : squaddie.monster_name
             }
-            // onClick={() => this.pickFighter(this.props.squaddie)}
+            onClick={() => this.show(true, 'tiny')}
             className="squaddieicon"
           />
         }
