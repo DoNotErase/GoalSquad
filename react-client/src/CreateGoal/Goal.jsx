@@ -76,6 +76,7 @@ class Goal extends React.Component {
 
     const { deadline } = this.state;
 
+    // FORM VALIDATION
     if (deadline.hours === '0' || deadline.hours === '' || deadline.hours === ' ') {
       deadline.hours = 0;
     }
@@ -89,10 +90,14 @@ class Goal extends React.Component {
       this.setState({ errorMessage: 'please mark no deadline or set a deadline!' });
     } else {
       this.setState({ open: false, errorMessage: '', noDeadline: false });
+
       let points = parseInt(this.props.goal.goal_points, 10);
-      const hours = (deadline.days * 24) + deadline.hours;
+      const hours = (deadline.days * 24) + deadline.hours; // points are calculated off hours
       points += parseInt((points / (hours / this.props.goal.goal_timedivisor)), 10);
+      // Prevent goals with crazy amount of points due to short deadline on huge goal
+      // max out point at twice face value
       points = points > 100 ? (parseInt(this.props.goal.goal_points, 10) * 2) : points;
+
       this.props.submitUserGoal(this.props.goal.goal_id, deadline, points);
       this.props.history.push('/incubator');
     }
