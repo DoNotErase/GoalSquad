@@ -82,7 +82,7 @@ class DeetsPage extends React.Component {
       this.props.state.user.notified_of_push_notifications === 1 && !this.state.hideUnsubscribeButton
         ?
           <div>
-            <Button onClick={this.show} floated="right" negative>Unsubscribe From Push Notifications</Button>
+            <Button onClick={this.show} floated="right" basic color="red">Unsubscribe From Push Notifications</Button>
             <Confirm
               open={this.state.open}
               content="Clicking OK will unsubscribe you from super-awesome push notifications. Are you sure?"
@@ -116,7 +116,7 @@ class DeetsPage extends React.Component {
       this.props.state.user.notified_of_push_notifications === 1 && !this.state.hideSubscribeButton
         ?
           <div>
-            <Button onClick={this.show} floated="right" positive>Get Push Notifications</Button>
+            <Button onClick={this.show} floated="right" basic color="green">Get Push Notifications</Button>
             <Confirm
               open={this.state.open}
               content="You want to bring your squad to the next level and receive push notificaitons?"
