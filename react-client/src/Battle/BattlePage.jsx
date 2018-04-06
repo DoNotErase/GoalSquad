@@ -50,9 +50,16 @@ const BattlePage = (props) => {
 
   return (
     <div className="battlepage">
-      <Grid centered stretched>
+      <Grid centered>
+        <Grid.Row verticalAlign="bottom" columns={2}>
+          <Grid.Column mobile={8} tablet={7} computer={4}>
+            <MainMenu history={this.props.history} />
+          </Grid.Column>
+          <Grid.Column mobile={8} tablet={7} computer={4}>
+            <Header as="h1" className="white" textAlign="right">Battle</Header>
+          </Grid.Column>
+        </Grid.Row>
         <Grid.Column computer={8} tablet={10} mobile={16}>
-          <Header as="h1" className="white" textAlign="right">Battle</Header>
           <Divider hidden />
           {/* Shows enemy monster */}
           <BattleInterfaceTop
@@ -76,7 +83,6 @@ const BattlePage = (props) => {
           />
         </Grid.Column>
       </Grid>
-      <MainMenu history={props.history} />
     </div>
   );
 };
