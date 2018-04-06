@@ -80,9 +80,9 @@ export const toggleYardStatus = userMonsterID => (
   (dispatch) => {
     dispatch(yardLoading());
     return axios.patch('/yardSquad', { monID: userMonsterID })
-      .then((res) => {
-        dispatch(getUserSquaddies2());
+      .then(() => {
         dispatch(yardDoneLoading());
+        dispatch(getUserSquaddies2());
       })
       .catch((err) => { handleErr(err); });
   }
