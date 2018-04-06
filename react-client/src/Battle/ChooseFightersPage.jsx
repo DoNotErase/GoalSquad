@@ -34,9 +34,15 @@ class ChooseFightersPage extends React.Component {
     return (
       <div className="squadpage">
         <Grid centered>
-          <Grid.Column computer={8} tablet={10} mobile={16}>
+        <Grid.Row verticalAlign="bottom" columns={2}>
+                <Grid.Column mobile={8} tablet={7} computer={4}>
+                  <MainMenu history={this.props.history} />
+                </Grid.Column>
+                <Grid.Column mobile={8} tablet={7} computer={4}>
             <Header as="h1" className="white" textAlign="right">Your Squad</Header>
-            <Divider hidden />
+                </Grid.Column>
+              </Grid.Row>
+          <Grid.Column computer={8} tablet={10} mobile={16}>
             {/* Modal for waiting for other player to choose character */}
             <Modal
               dimmer={dimmer}
@@ -64,7 +70,6 @@ class ChooseFightersPage extends React.Component {
               </Segment>
             </Scrollbars>
           </Grid.Column>
-          <MainMenu history={this.props.history} />
         </Grid>
       </div>
     );
