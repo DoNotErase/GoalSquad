@@ -45,7 +45,6 @@ class IncubatorPage extends React.Component {
       this.props.incubatorActions.getUserGoals();
       this.props.incubatorActions.fetchEggStatus();
     }
-    console.log('state', this.props.state);
   }
 
   getGoals() {

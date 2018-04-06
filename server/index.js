@@ -74,7 +74,6 @@ function isAuthorized(req, res, next) {
 
 // connect-roles - check if user is admin, grant full access if so
 user.use(function (req) {
-  console.log('reqqqqqqqqqq', req)
   if (req.user.role === 'admin') {
     return true;
   }
@@ -193,13 +192,11 @@ app.get('/auth/fitbit/success', async (req, res) => {
     await db.updateGoalStatuses();
     res.redirect('/incubator');
   } catch (err) {
-    console.log('hello was in success then failed');
     res.redirect('/auth/fitbit/failure');
   }
 });
 
 app.get('/auth/fitbit/failure', (req, res) => {
-  console.log('authenticaiton failure!');
   res.status(401).send('authentication failure!');
 });
 
@@ -291,7 +288,6 @@ app.get('/userSquaddies', isAuthorized, async (req, res) => {
 });
 
 app.patch('/monsterXP', async (req, res) => {
-  console.log(req.body, 'monster_XP');
   try {
     const { monID, xp } = req.body;
     await db.addXPtoMonster(monID, xp);
@@ -303,7 +299,6 @@ app.patch('/monsterXP', async (req, res) => {
 });
 
 app.patch('/levelup', async (req, res) => {
-  console.log(req.body, 'monster_id for level');
   try {
     const { monID } = req.body;
     await db.levelUp(monID);
@@ -328,10 +323,7 @@ app.get('/yardSquad', isAuthorized, async (req, res) => {
 
 app.patch('/yardSquad', isAuthorized, async (req, res) => {
   try {
-    // console.log('req.body.monID', req.body.monID);
     await db.updateYardSquaddie(req.body.monID);
-    // const userID = req.session.passport.user.id;
-    // const data = await db.getYardSquaddiesByID(userID);
     res.status(200).json();
   } catch (err) {
     res.status(500).send(err);
@@ -569,42 +561,37 @@ app.get('*', (req, res) => {
 const connections = [];
 const rooms = []; // change to object
 io.on('connection', (socket) => {
-  // console.log('new client connected', socket.id);
   connections.push(socket);
-  // socket.join('my room');
-  // socket.broadcast.emit('broadcast', 'hello friends!');
-  // socket.emit('rooms', io.sockets.apadter.rooms);
-  // console.log('ROOMS', io.sockets.adapter.rooms);
-  // socket.leave(socket.id);
 
   // notice for sockets disconnecting
-  socket.on('disconnect', () => {
+  socket.on('disconnect', (roomName) => {
     console.log('Disconnected - ', socket.id);
+    // remove room from list of available rooms if the adapter does not contain room
+    if (!io.sockets.adapter.rooms[roomName]) {
+      rooms.splice(rooms.indexOf(roomName), 1);
+    }
   });
   // user hosts game - connect to room random room and add room to list of rooms
-
   socket.on('host', (username) => {
-    console.log('rooms', rooms);
+    // console.log('rooms', rooms);
     const roomName = generateName();
     socket.join(roomName);
     const roomObj = {
       roomName,
       player1: username,
+      player1socketID: socket.id,
     };
     rooms.push(roomObj);
-    console.log('rooms hosting', rooms);
     io.in(roomName).emit('hosting', roomObj);
   });
 
   socket.on('join', (username) => {
-    console.log('rooms', rooms);
-    console.log('adapter rooms', io.sockets.adapter.rooms);
     for (let i = 0; i < rooms.length; i += 1) {
       const room = rooms[i].roomName;
-
       if (io.sockets.adapter.rooms[room].length < 2) {
         socket.join(room);
         rooms[i].player2 = username;
+        rooms[i].player2socketID = socket.id;
         io.in(room).emit('joining', rooms[i]);
         i = rooms.length; // ends loop
       }
