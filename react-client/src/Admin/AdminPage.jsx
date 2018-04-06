@@ -30,7 +30,6 @@ class AdminPage extends React.Component {
   sendNotification(e) {
     this.setState({ open: false });
     e.preventDefault();
-    console.log('notifcation', this.state.notification);
     const notificationHolder = this.state.notification;
     const notification = notificationHolder;
     const firebaseDatabase = firebase.database();
@@ -40,11 +39,9 @@ class AdminPage extends React.Component {
       message: notification,
     })
       .then(() => {
-        console.log('Notification sent to users!');
         this.setState({ notification: '', visible: true, successMessage: true });
       })
       .catch(() => {
-        console.log('Unable to send notification to Firebase database');
         this.setState({ visible: true, failureMessage: true });
       });
   }
@@ -74,6 +71,7 @@ class AdminPage extends React.Component {
         </div>
       );
     }
+    return null;
   }
 
   showFailureAlert() {
@@ -88,6 +86,7 @@ class AdminPage extends React.Component {
         </div>
       );
     }
+    return null;
   }
 
   render() {

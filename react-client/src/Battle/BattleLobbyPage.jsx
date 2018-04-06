@@ -53,12 +53,10 @@ class Lobby extends React.Component {
       this.props.fightActions.decreaseHealth(damage, monID);
     });
     socket.on('defend', ({ monID }) => {
-      console.log('monID');
       this.props.fightActions.defend(monID);
     });
     socket.on('surrender', ({ surrenderPlayer }) => {
       // use to display that you either won or lost because someone surrendered
-      console.log('surrenderPlayer', surrenderPlayer);
       this.props.fightActions.surrendered(surrenderPlayer);
     });
     socket.on('nojoin', () => {
@@ -83,10 +81,7 @@ class Lobby extends React.Component {
   }
 
   hostGame() {
-    socket.emit('host', this.props.mainState.user.user_username, (data) => {
-      console.log(data);
-    });
-    console.log('hosting');
+    socket.emit('host', this.props.mainState.user.user_username);
     this.setState({
       playeriam: 'player1',
       hostWaiting: true,
@@ -95,9 +90,7 @@ class Lobby extends React.Component {
   }
 
   joinGame() {
-    socket.emit('join', this.props.mainState.user.user_username, (data) => {
-      console.log(data);
-    });
+    socket.emit('join', this.props.mainState.user.user_username);
     this.setState({
       playeriam: 'player2',
       hostWaiting: false,
@@ -111,31 +104,21 @@ class Lobby extends React.Component {
       nojoin: false,
       buttonsDisabled: false,
     });
-    socket.emit('fighter picked', roomname, playeriam, squaddie, (data) => {
-      console.log('data', data);
-    });
+    socket.emit('fighter picked', roomname, playeriam, squaddie);
   }
 
   attack(roomname, damage, defense, monID) {
-    console.log('attack', roomname, monID, defense);
-    socket.emit('attack', roomname, damage, defense, monID, (data) => {
-      console.log('data', data);
-    });
+    socket.emit('attack', roomname, damage, defense, monID);
   }
 
   defend(roomname, monID) {
-    console.log('defend', roomname, monID);
-    socket.emit('defend', roomname, monID, (data) => {
-      console.log('data', data);
-    });
+    socket.emit('defend', roomname, monID);
   }
 
   surrender(roomname, playeriam) {
-    console.log('clicked');
-    socket.emit('surrender', roomname, playeriam, (data) => {
-      console.log('data', data);
-    });
+    socket.emit('surrender', roomname, playeriam);
   }
+
   closeNoJoin() {
     this.setState({ dimmer: false, nojoin: false });
   }
@@ -146,11 +129,7 @@ class Lobby extends React.Component {
     if (this.state.noSquaddies === true) {
       return (
         <div className="lobbypage">
-          <Grid
-            textAlign="center"
-            verticalAlign="middle"
-            style={{ height: '80%' }}
-          >
+          <Grid centered>
             <Grid.Row verticalAlign="bottom" columns={1}>
               <Grid.Column mobile={8} tablet={7} computer={4}>
                 <MainMenu history={this.props.history} />
@@ -160,17 +139,20 @@ class Lobby extends React.Component {
               </Grid.Column>
             </Grid.Row>
             <Grid.Column computer={8} tablet={10} mobile={16}>
-              <Grid.Row>
-                <Header size="large" className="white">Obtain more Squaddies</Header>
+              <Grid.Row centered>
+                <Divider hidden />
+                <Divider hidden />
+                <Divider hidden />
+                <Header size="large" className="white" textAlign="center">Obtain more Squaddies</Header>
                 <Divider hidden />
               </Grid.Row>
               <Grid.Row>
                 <Image size="small" src="./assets/squaddies/supahfly.png" centered />
                 <Divider hidden />
               </Grid.Row>
-              <Grid.Row>
-                <Header size="medium" className="white">
-                  Complete goals to raise more Squaddies
+              <Grid.Row centered>
+                <Header size="medium" className="white" textAlign="center">
+                  Complete goals to get your first Squaddie!
                 </Header>
                 <Divider hidden />
               </Grid.Row>
@@ -240,7 +222,7 @@ class Lobby extends React.Component {
               JOIN A BATTLE
               </Button>
               {/* Feedback when host is waiting for opponent */}
-              <Loader active={this.state.hostWaiting}>Waiting for Opponent</Loader>
+              <Loader inverted active={this.state.hostWaiting}>Waiting for Opponent</Loader>
               {/* Modal for not finding a game with a host */}
               <Modal dimmer={this.state.dimmer} open={this.state.nojoin}>
                 <Modal.Header>No hosts available</Modal.Header>

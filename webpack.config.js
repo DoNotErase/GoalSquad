@@ -34,7 +34,7 @@ module.exports = {
       output: {
         comments: false,
       },
-      exclude: [/\.min\.js$/gi] // skip pre-minified libs
+      exclude: [/\.min\.js$/gi], // skip pre-minified libs
     }),
     new CompressionPlugin({
       asset: '[path].gz[query]',

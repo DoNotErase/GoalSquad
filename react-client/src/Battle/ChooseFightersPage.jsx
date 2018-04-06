@@ -21,7 +21,6 @@ class ChooseFightersPage extends React.Component {
   componentDidMount() {
     axios.get('/userSquaddies')
       .then((squaddies) => {
-        console.log('squaddies', squaddies);
         this.setState({
           squaddies: squaddies.data,
         });
@@ -34,9 +33,15 @@ class ChooseFightersPage extends React.Component {
     return (
       <div className="squadpage">
         <Grid centered>
+          <Grid.Row verticalAlign="bottom" columns={2}>
+            <Grid.Column mobile={8} tablet={7} computer={4}>
+              <MainMenu history={this.props.history} />
+            </Grid.Column>
+            <Grid.Column mobile={8} tablet={7} computer={4}>
+              <Header as="h1" className="white" textAlign="right">Your Squad</Header>
+            </Grid.Column>
+          </Grid.Row>
           <Grid.Column computer={8} tablet={10} mobile={16}>
-            <Header as="h1" className="white" textAlign="right">Your Squad</Header>
-            <Divider hidden />
             {/* Modal for waiting for other player to choose character */}
             <Modal
               dimmer={dimmer}
@@ -52,7 +57,7 @@ class ChooseFightersPage extends React.Component {
               </Modal.Content>
             </Modal>
             <Scrollbars autoHide style={{ height: '85vh' }}>
-              <Segment compact>
+              <Segment compact fluid>
                 <Card.Group itemsPerRow={3} centered>
                   {this.state.squaddies.map(squaddie => (
                     <PickFighter
@@ -64,7 +69,6 @@ class ChooseFightersPage extends React.Component {
               </Segment>
             </Scrollbars>
           </Grid.Column>
-          <MainMenu history={this.props.history} />
         </Grid>
       </div>
     );

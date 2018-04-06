@@ -11,6 +11,8 @@ const fightState = {
   monster2CurrentHP: 0,
   monster2DefenseTurns: 0,
 };
+// yes this is a dumb way to set up the state, but putting the monsters and their
+// hp/defense within the user object made it all very nested and difficult to manipulate
 
 const fightReducer = (state = fightState, action) => {
   switch (action.type) {
@@ -67,12 +69,10 @@ const fightReducer = (state = fightState, action) => {
       };
     }
     case 'START_DEFEND': {
-      console.log('defending!', action.payload);
       const toggledPlayer = state.activePlayer === 'player1' ? 'player2' : 'player1';
 
       // the monster that did the defending is in the payload
       if (state.monster1.user_monster_id === action.payload.userMonsterID) {
-        console.log('mosnter1');
         return {
           ...state,
           monster1DefenseTurns: 2,
@@ -81,10 +81,8 @@ const fightReducer = (state = fightState, action) => {
           wasAttacked: true,
           monster1Class: 'shake', // is hit
           monster2Class: 'lightSpeedOut', // does the hitting
-
         };
       } // the other monster
-      console.log('mosnter2');
       return {
         ...state,
         monster2DefenseTurns: 2,
@@ -92,17 +90,6 @@ const fightReducer = (state = fightState, action) => {
         activePlayer: toggledPlayer,
       };
     }
-    // state becomes too nested. Decided to flatten out
-    // case 'CHOOSE_FIGHTER': {
-    //   const key = Object.keys(action.payload);
-    //   return {
-    //     ...state,
-    //     monster: {
-    //       ...state.monster,
-    //       [key]: action.payload[key],
-    //     },
-    //   };
-    // }
     case 'SET_ACTIVE_PLAYER': {
       const key = Object.keys(action.payload);
       return {

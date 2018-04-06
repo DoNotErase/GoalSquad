@@ -14,28 +14,32 @@ class PickFighter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      open: false,
     };
     this.close = this.close.bind(this);
+    this.show = this.show.bind(this);
   }
+
+  show(dimmer, size) { this.setState({ dimmer, size, open: true }); }
   close() { this.setState({ open: false }); }
 
   render() {
     const {
       open, dimmer, size,
     } = this.state;
-    const { squaddie } = this.props;
-    const fightstate = this.props.fightState;
+    const { squaddie, fightState } = this.props;
     return (
       <Modal
         trigger={
           <Card
+            centered
             raised
             image={squaddie.monster_icon}
             description={
               squaddie.user_monster_new_name ?
               squaddie.user_monster_new_name : squaddie.monster_name
             }
-            // onClick={() => this.pickFighter(this.props.squaddie)}
+            onClick={() => this.show(true, 'tiny')}
             className="squaddieicon"
           />
         }
@@ -44,7 +48,7 @@ class PickFighter extends React.Component {
         size={size}
         dimmer={dimmer}
         open={open}
-        onClose={this.close}
+        onClose={() => this.close()}
       >
         <Modal.Content style={{ background: 'transparent' }}>
           <Card centered>
@@ -60,7 +64,9 @@ class PickFighter extends React.Component {
                 <Button
                   size="mini"
                   style={{ marginLeft: '5px' }}
-                  onClick={() => { this.props.chooseFighter(fightstate.roomName, fightstate.playeriam, squaddie); }}
+                  onClick={() => {
+                    this.props.chooseFighter(fightState.roomName, fightState.playeriam, squaddie);
+                  }}
                 >
                   pick this monster
                 </Button>
@@ -78,16 +84,20 @@ class PickFighter extends React.Component {
   }
 }
 
-// PickFighter.propTypes = {
-//   squaddieActions: PropTypes.objectOf(PropTypes.func).isRequired,
-//   squaddie: PropTypes.shape({
-//     monster_id: PropTypes.number,
-//     monster_name: PropTypes.string,
-//     monster_pic: PropTypes.string,
-//     monster_description: PropTypes.string,
-//     monster_icon: PropTypes.string,
-//   }).isRequired,
-// };
+PickFighter.propTypes = {
+  squaddie: PropTypes.shape({
+    monster_id: PropTypes.number,
+    monster_name: PropTypes.string,
+    monster_pic: PropTypes.string,
+    monster_description: PropTypes.string,
+    monster_icon: PropTypes.string,
+  }).isRequired,
+  fightState: PropTypes.shape({
+    playeriam: PropTypes.string,
+    roomName: PropTypes.string,
+  }).isRequired,
+  chooseFighter: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = state => ({
   fightState: state.fight,
