@@ -17,6 +17,7 @@ class DeetsPage extends React.Component {
       open: false,
       hideUnsubscribeButton: false,
       hideSubscribeButton: false,
+      uid: 100,
     };
     this.makeDisconnectButton = this.makeDisconnectButton.bind(this);
     this.show = this.show.bind(this);
