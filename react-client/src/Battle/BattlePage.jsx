@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Grid, Header, Divider } from 'semantic-ui-react';
+import { Scrollbars } from 'react-custom-scrollbars';
 import PropTypes from 'prop-types';
 import BattleInterfaceBottom from './BattleInterfaceBottom';
 import BattleInterfaceTop from './BattleInterfaceTop';
@@ -62,25 +63,27 @@ const BattlePage = (props) => {
         <Grid.Column computer={8} tablet={10} mobile={16}>
           <Divider hidden />
           {/* Shows enemy monster */}
-          <BattleInterfaceTop
-            monster={enemy.monster}
-            currentHP={enemy.hp}
-            defendingTurns={enemy.defendingTurns}
-            addClass={enemy.addClass}
-          />
-          {/* Holds your monster and available actions */}
-          <BattleInterfaceBottom
-            monster={you.monster}
-            currentHP={you.hp}
-            attackStat={you.attack}
-            defendingTurns={you.defendingTurns}
-            enemyDefenseStat={enemy.defenseStat}
-            attack={props.attack}
-            defend={props.defend}
-            surrender={props.surrender}
-            surrenderPlayer={props.surrenderPlayer}
-            addClass={you.addClass}
-          />
+          <Scrollbars>
+            <BattleInterfaceTop
+              monster={enemy.monster}
+              currentHP={enemy.hp}
+              defendingTurns={enemy.defendingTurns}
+              addClass={enemy.addClass}
+            />
+            {/* Holds your monster and available actions */}
+            <BattleInterfaceBottom
+              monster={you.monster}
+              currentHP={you.hp}
+              attackStat={you.attack}
+              defendingTurns={you.defendingTurns}
+              enemyDefenseStat={enemy.defenseStat}
+              attack={props.attack}
+              defend={props.defend}
+              surrender={props.surrender}
+              surrenderPlayer={props.surrenderPlayer}
+              addClass={you.addClass}
+            />
+          </Scrollbars>
         </Grid.Column>
       </Grid>
     </div>
