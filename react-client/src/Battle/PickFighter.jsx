@@ -14,10 +14,14 @@ class PickFighter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      dimmer: false,
     };
     this.close = this.close.bind(this);
   }
-  close() { this.setState({ open: false }); }
+  close() {
+    console.log('inside close modal');
+    this.setState({ open: false });
+  }
 
   render() {
     const {
@@ -43,7 +47,7 @@ class PickFighter extends React.Component {
         size={size}
         dimmer={dimmer}
         open={open}
-        onClose={this.close}
+        onClose={() => this.close()}
       >
         <Modal.Content style={{ background: 'transparent' }}>
           <Card centered>

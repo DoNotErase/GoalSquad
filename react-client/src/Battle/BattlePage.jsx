@@ -15,8 +15,8 @@ const BattlePage = (props) => {
     return monster.user_monster_defense;
   };
   const { fightState } = props;
-  let enemy;
-  let you;
+  const enemy = {};
+  const you = {};
 
   // assign you and enemy characteristics depending on who you are
   if (fightState.playeriam === 'player1') {
@@ -91,7 +91,7 @@ BattlePage.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
-  surrenderPlayer: PropTypes.string.isRequired,
+  surrenderPlayer: PropTypes.string,
 };
 
 const mapStateToProps = state => (
