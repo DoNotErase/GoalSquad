@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import * as homePageActions from './homePageActions';
 import * as actions from '../actions';
+import FitbitWarning from './FitbitWarning';
 
 const buttonstyles = {
   backgroundImage: 'linear-gradient(to right, #d95a37, #df663e, #e67146, #ec7d4e, #f28857)',
@@ -22,6 +23,7 @@ class HomePage extends React.Component {
       password: '',
       type: '',
       errorMessage: '',
+      fitbit: false,
     };
     this.close = this.close.bind(this);
     this.openSignUp = this.openSignUp.bind(this);
@@ -29,6 +31,7 @@ class HomePage extends React.Component {
     this.submit = this.submit.bind(this);
     this.updateUsername = this.updateUsername.bind(this);
     this.updatePassword = this.updatePassword.bind(this);
+    this.closeFitbit = this.closeFitbit.bind(this);
   }
 
   componentWillMount() {
@@ -45,9 +48,24 @@ class HomePage extends React.Component {
 
   close() { this.setState({ open: false }); }
 
-  openLogin() { this.setState({ open: true, type: 'Log In' }); }
+  openLogin() {
+    this.setState({
+      open: true, type: 'Log In', fitbit: false, errorMessage: '',
+    });
+  }
 
-  openSignUp() { this.setState({ open: true, type: 'Sign Up' }); }
+  openSignUp() {
+    console.log('open signup');
+    this.setState({
+      open: true, type: 'Sign Up', fitbit: false, errorMessage: '',
+    });
+  }
+
+  closeFitbit() {
+    this.setState({
+      fitbit: false,
+    });
+  }
 
   updatePassword(event) { this.setState({ password: event.target.value }); }
 
@@ -85,8 +103,7 @@ class HomePage extends React.Component {
           <Grid.Column width={12} style={{ maxWidth: 450 }}>
             <Image src="./assets/misc/logo.png" style={{ marginTop: 25 }} size="large" />
             <Button
-              as="a"
-              href="/auth/fitbit"
+              onClick={() => { this.setState({ fitbit: true }); }}
               fluid
               color="orange"
               size="large"
@@ -112,7 +129,11 @@ class HomePage extends React.Component {
             </Button>
           </Grid.Column>
         </Grid>
-
+        <FitbitWarning
+          open={this.state.fitbit}
+          close={this.closeFitbit}
+          openSignUp={this.openSignUp}
+        />
         <Modal
           size={size}
           dimmer={dimmer}

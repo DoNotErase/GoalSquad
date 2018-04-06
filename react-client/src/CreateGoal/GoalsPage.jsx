@@ -34,6 +34,7 @@ class GoalsPage extends React.Component {
   render() {
     const { activeIndex } = this.state;
     const goalsList = this.props.goalsState.standardGoals;
+    // show default goals for categories you don't have already have 2 active of
     const listItems = Object.keys(goalsList).map((category, categoryIndex) => {
       if (!this.props.userGoals[category] ||
         this.props.userGoals[category].length < 2) {

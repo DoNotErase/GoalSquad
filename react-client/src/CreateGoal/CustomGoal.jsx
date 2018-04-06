@@ -14,6 +14,7 @@ class CustomGoal extends React.Component {
     const now = moment();
     let available = true;
 
+    // allowed 2 every 24 hours maintained
     if (now.diff(lastCustom, 'days') === 0) {
       available = false;
     }
@@ -45,6 +46,7 @@ class CustomGoal extends React.Component {
     const lastCustom = moment(this.props.customTimer).add(1, 'days');
     const now = moment();
     const hours = lastCustom.diff(now, 'hours');
+    // humanize message, no one wants to see 698 minutes
     if (hours > 0) {
       return `${hours} hour(s)`;
     }
@@ -136,11 +138,11 @@ class CustomGoal extends React.Component {
     if (this.state.noDeadline) {
       this.setState({ open: false, errorMessage: '', noDeadline: false });
       this.props.submitCustomGoal(goalName, units, amount, null, 20);
-      // local update?
       this.props.history.push('/incubator');
       return;
     }
 
+    // FORM VALIDATION
     if (deadline.hours === '0' || deadline.hours === '' || deadline.hours === ' ') {
       deadline.hours = 0;
     }
@@ -156,6 +158,7 @@ class CustomGoal extends React.Component {
       this.setState({ open: false, errorMessage: '', noDeadline: false });
       let points = 20;
       const hours = (deadline.days * 24) + deadline.hours;
+      // five is an arbitary number (timedivisor in schema)
       points += parseInt((points / (hours / 5)), 10);
       this.props.submitCustomGoal(goalName, units, amount, deadline, points);
 
@@ -173,7 +176,7 @@ class CustomGoal extends React.Component {
           <Accordion styled fluid>
             <Accordion.Title
               active={this.state.available}
-              index={10}
+              index={-1}
               onClick={this.handleClick}
             >
               <Icon name="dropdown" />
