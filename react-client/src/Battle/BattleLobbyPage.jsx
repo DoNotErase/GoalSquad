@@ -239,7 +239,7 @@ class Lobby extends React.Component {
               JOIN A BATTLE
               </Button>
               {/* Feedback when host is waiting for opponent */}
-              <Loader active={this.state.hostWaiting}>Waiting for Opponent</Loader>
+              <Loader inverted active={this.state.hostWaiting}>Waiting for Opponent</Loader>
               {/* Modal for not finding a game with a host */}
               <Modal dimmer={this.state.dimmer} open={this.state.nojoin}>
                 <Modal.Header>No hosts available</Modal.Header>

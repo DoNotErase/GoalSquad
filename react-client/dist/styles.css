@@ -41,6 +41,9 @@ orangy: background-image: linear-gradient(to right, #d95a37, #df663e, #e67146, #
     .egg, .glow, .incubatorbar {
         margin-bottom: 25px;
     }
+    .yardBackground {
+        background-image: linear-gradient(to top, #a14055, #aa4554, #b24b54, #ba5152, #c15851);
+    }
 }
 
 /* TABLET STYLES */

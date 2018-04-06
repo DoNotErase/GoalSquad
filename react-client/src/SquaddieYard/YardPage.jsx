@@ -25,6 +25,7 @@ class YardPage extends React.Component {
       <div className="yardpage">
         <Scrollbars>
           <div
+            className="yardBackground"
             style={background}
           >
             <MainMenu
