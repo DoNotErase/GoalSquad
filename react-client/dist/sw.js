@@ -4,7 +4,6 @@ const doCache = true;
 const CACHE_NAME = 'goalsquad-cache';
 const filesToCache = [
   '/',
-  '/index.html',
   '/styles.css',
   '/assets/backgrounds/background-mobile.png',
   '/assets/backgrounds/background-tablet.png',
