@@ -2,7 +2,7 @@
 const doCache = true;
 // Name our cache
 const CACHE_NAME = 'goalsquad-cache';
-const filesToCache = ['/', '/index.html', '/styles,css'];
+const filesToCache = ['/', '/index.html', '/styles.css', '/assets'];
 
 // Delete old caches that are not our current one!
 this.addEventListener('activate', (event) => {
