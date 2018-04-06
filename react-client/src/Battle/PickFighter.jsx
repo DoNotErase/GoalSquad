@@ -15,13 +15,17 @@ class PickFighter extends React.Component {
     super(props);
     this.state = {
       open: false,
+      dimmer: false,
     };
     this.close = this.close.bind(this);
     this.show = this.show.bind(this);
   }
 
   show(dimmer, size) { this.setState({ dimmer, size, open: true }); }
-  close() { this.setState({ open: false }); }
+  close() {
+    console.log('inside close modal');
+    this.setState({ open: false });
+  }
 
   render() {
     const {
