@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Grid, Header, Divider } from 'semantic-ui-react';
-import { Scrollbars } from 'react-custom-scrollbars';
+// import { Scrollbars } from 'react-custom-scrollbars';
 import PropTypes from 'prop-types';
 import BattleInterfaceBottom from './BattleInterfaceBottom';
 import BattleInterfaceTop from './BattleInterfaceTop';
@@ -63,7 +63,7 @@ const BattlePage = (props) => {
         <Grid.Column computer={8} tablet={10} mobile={16}>
           <Divider hidden />
           {/* Shows enemy monster */}
-          <Scrollbars>
+          {/* <Scrollbars> */}
             <BattleInterfaceTop
               monster={enemy.monster}
               currentHP={enemy.hp}
@@ -83,7 +83,7 @@ const BattlePage = (props) => {
               surrenderPlayer={props.surrenderPlayer}
               addClass={you.addClass}
             />
-          </Scrollbars>
+          {/* </Scrollbars> */}
         </Grid.Column>
       </Grid>
     </div>

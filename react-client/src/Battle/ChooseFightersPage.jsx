@@ -57,7 +57,7 @@ class ChooseFightersPage extends React.Component {
               </Modal.Content>
             </Modal>
             <Scrollbars autoHide style={{ height: '85vh' }}>
-              <Segment compact fluid>
+              <Segment compact>
                 <Card.Group itemsPerRow={3} centered>
                   {this.state.squaddies.map(squaddie => (
                     <PickFighter
