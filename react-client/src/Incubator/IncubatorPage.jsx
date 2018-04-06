@@ -22,6 +22,7 @@ class IncubatorPage extends React.Component {
       openModal: true,
       openNotificationModal: true,
       dimmer: false,
+      uid: '100'
     };
     this.show = this.show.bind(this);
     this.handlePushNotificationCancel = this.handlePushNotificationCancel.bind(this);
@@ -95,7 +96,7 @@ class IncubatorPage extends React.Component {
       .then((userToken) => {
         fireBaseDatabase.ref('/tokens').push({
           token: userToken,
-          uid: this.props.state.firebaseUser.uid,
+          uid: this.state.uid,
         });
         this.props.homePageActions.updatePushNotificationsToTrue(this.props.state.user.id);
       });
@@ -127,11 +128,11 @@ class IncubatorPage extends React.Component {
               onClose={this.close}
               className="fadeIn"
             >
-              <Modal.Header>What are your thoughts on push notifications?</Modal.Header>
-              <Modal.Content>You can always subscribe/unsubscribe in your deets page.</Modal.Content>
+              <Modal.Header>Push notifications?</Modal.Header>
+              <Modal.Content>Get occasional updates, alerts, and more. You can always subscribe/unsubscribe in your Deets page later.</Modal.Content>
               <Modal.Actions>
-                <Button labelPosition="left" content="Nah" onClick={this.handlePushNotificationCancel} />
-                <Button labelPosition="right" content="Sign me up" onClick={this.handlePushNotificationConfirm} />
+                <Button labelPosition="left" content="No thanks" onClick={this.handlePushNotificationCancel} />
+                <Button labelPosition="right" content="Yes please!" onClick={this.handlePushNotificationConfirm} />
               </Modal.Actions>
             </Modal>
           </div>
@@ -210,7 +211,7 @@ class IncubatorPage extends React.Component {
         :
           <div className="incubatorpage">
             <Grid centered>
-              {this.props.state.firebaseUser && this.props.state.firebaseUser.uid
+              {this.state.uid
             ? this.showPushNotificationModal()
             : null
           }
