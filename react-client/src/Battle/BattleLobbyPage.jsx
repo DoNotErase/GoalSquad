@@ -76,7 +76,8 @@ class Lobby extends React.Component {
   }
 
   componentWillUnmount() {
-    socket.disconnect();
+    socket.disconnect(this.props.fightState.roomName);
+    this.props.fightActions.resetState();
   }
 
   hostGame() {
@@ -127,12 +128,20 @@ class Lobby extends React.Component {
     // user does not have any monsters yet
     if (this.state.noSquaddies === true) {
       return (
-        <div>
+        <div className="lobbypage">
           <Grid
             textAlign="center"
             verticalAlign="middle"
-            style={{ height: '100%' }}
+            style={{ height: '80%' }}
           >
+            <Grid.Row verticalAlign="bottom" columns={1}>
+              <Grid.Column mobile={8} tablet={7} computer={4}>
+                <MainMenu history={this.props.history} />
+              </Grid.Column>
+              <Grid.Column mobile={8} tablet={7} computer={4}>
+                <Header as="h1" className="white" textAlign="right" />
+              </Grid.Column>
+            </Grid.Row>
             <Grid.Column computer={8} tablet={10} mobile={16}>
               <Grid.Row>
                 <Header size="large" className="white">Obtain more Squaddies</Header>
@@ -150,7 +159,6 @@ class Lobby extends React.Component {
               </Grid.Row>
             </Grid.Column>
           </Grid>
-          <MainMenu history={this.props.history} />
         </div>
       );
       // both players joined but not monsters picked
@@ -245,11 +253,13 @@ Lobby.propTypes = {
     decreaseHealth: PropTypes.func,
     surrendered: PropTypes.func,
     defend: PropTypes.func,
+    resetState: PropTypes.func,
   }).isRequired,
   mainState: PropTypes.shape({
     user: PropTypes.object,
   }).isRequired,
   fightState: PropTypes.shape({
+    roomName: PropTypes.string,
     playeriam: PropTypes.string,
     player1: PropTypes.string,
     player2: PropTypes.string,
