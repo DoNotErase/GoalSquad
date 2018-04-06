@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Modal, Image, Button, Input, Icon, Grid, Progress, Statistic, Header } from 'semantic-ui-react';
+import { Card, Modal, Image, Button, Input, Icon, Progress, Statistic } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
@@ -146,7 +146,7 @@ class SquaddieCard extends React.Component {
                   </Button>
                   <Button
                     inverted
-                    loading={this.props.squadState.yardLoading ? true : false}
+                    loading={this.props.squadState.yardLoading}
                     floated="right"
                     color={squaddie.user.user_monster_yard ? 'red' : 'green'}
                     content={squaddie.user.user_monster_yard ? 'Remove From Yard' : 'Add to Yard'}
@@ -195,6 +195,7 @@ SquaddieCard.propTypes = {
     monster_pic: PropTypes.string,
     monster_description: PropTypes.string,
     monster_icon: PropTypes.string,
+    user: PropTypes.object,
   }).isRequired,
 };
 

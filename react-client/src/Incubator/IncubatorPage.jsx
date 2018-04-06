@@ -86,7 +86,6 @@ class IncubatorPage extends React.Component {
     this.props.homePageActions.updatePushNotificationsToFalse(this.props.state.user.id);
     // temporarily set push notification to true to remove button
     this.setState({ open: false, openModal: false });
-    console.log('User did not allow permission');
   }
 
   handleTokenRefresh() {
