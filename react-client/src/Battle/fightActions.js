@@ -68,9 +68,6 @@ export const surrendered = surrenderPlayer => ({ type: 'SURRENDER', payload: { s
 export const addXPtoMonster = (monID, xp) => (
   () => (
     axios.patch('/monsterXP', { monID, xp })
-      .then((res) => {
-        console.log(res.data);
-      })
       .catch((err) => {
         console.log(err);
       })
@@ -80,9 +77,6 @@ export const addXPtoMonster = (monID, xp) => (
 export const levelup = monID => (
   () => (
     axios.patch('/levelup', { monID })
-      .then((res) => {
-        console.log('done leveling', res.data);
-      })
       .catch((err) => {
         console.log(err);
       })

@@ -45,7 +45,6 @@ class IncubatorPage extends React.Component {
       this.props.incubatorActions.getUserGoals();
       this.props.incubatorActions.fetchEggStatus();
     }
-    console.log('state', this.props.state);
   }
 
   getGoals() {
@@ -86,7 +85,6 @@ class IncubatorPage extends React.Component {
     this.props.homePageActions.updatePushNotificationsToFalse(this.props.state.user.id);
     // temporarily set push notification to true to remove button
     this.setState({ open: false, openModal: false });
-    console.log('User did not allow permission');
   }
 
   handleTokenRefresh() {
@@ -129,7 +127,9 @@ class IncubatorPage extends React.Component {
               className="fadeIn"
             >
               <Modal.Header>What are your thoughts on push notifications?</Modal.Header>
-              <Modal.Content>You can always subscribe/unsubscribe in your deets page.</Modal.Content>
+              <Modal.Content>
+                You can always subscribe/unsubscribe in your deets page.
+              </Modal.Content>
               <Modal.Actions>
                 <Button labelPosition="left" content="Nah" onClick={this.handlePushNotificationCancel} />
                 <Button labelPosition="right" content="Sign me up" onClick={this.handlePushNotificationConfirm} />

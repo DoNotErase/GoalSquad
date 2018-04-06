@@ -21,7 +21,6 @@ class ChooseFightersPage extends React.Component {
   componentDidMount() {
     axios.get('/userSquaddies')
       .then((squaddies) => {
-        console.log('squaddies', squaddies);
         this.setState({
           squaddies: squaddies.data,
         });

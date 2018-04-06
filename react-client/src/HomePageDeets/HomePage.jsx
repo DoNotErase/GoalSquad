@@ -33,18 +33,13 @@ class HomePage extends React.Component {
 
   componentWillMount() {
     if (!this.props.state.user.user_id) {
-      console.log('attempting login');
       this.props.homePageActions.attemptLogin();
-    } else {
-      console.log('has user!');
     }
   }
 
   componentDidUpdate() {
     if (this.props.state.user.user_id) {
       this.props.history.push('/incubator');
-    } else {
-      console.log('no user yet');
     }
   }
 
@@ -63,7 +58,7 @@ class HomePage extends React.Component {
     if (this.state.type === 'Sign Up') {
       if (this.state.username.length > 4) {
         if (this.state.password.length > 3) {
-          this.props.homePageActions.localSignup(this.state.username, this.state.password)
+          this.props.homePageActions.localSignup(this.state.username, this.state.password);
         } else {
           this.setState({ errorMessage: 'password must be at least 4 characters!' });
         }
