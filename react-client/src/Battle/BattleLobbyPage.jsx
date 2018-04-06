@@ -53,12 +53,10 @@ class Lobby extends React.Component {
       this.props.fightActions.decreaseHealth(damage, monID);
     });
     socket.on('defend', ({ monID }) => {
-      console.log('monID');
       this.props.fightActions.defend(monID);
     });
     socket.on('surrender', ({ surrenderPlayer }) => {
       // use to display that you either won or lost because someone surrendered
-      console.log('surrenderPlayer', surrenderPlayer);
       this.props.fightActions.surrendered(surrenderPlayer);
     });
     socket.on('nojoin', () => {
@@ -83,10 +81,7 @@ class Lobby extends React.Component {
   }
 
   hostGame() {
-    socket.emit('host', this.props.mainState.user.user_username, (data) => {
-      console.log(data);
-    });
-    console.log('hosting');
+    socket.emit('host', this.props.mainState.user.user_username);
     this.setState({
       playeriam: 'player1',
       hostWaiting: true,
@@ -95,9 +90,7 @@ class Lobby extends React.Component {
   }
 
   joinGame() {
-    socket.emit('join', this.props.mainState.user.user_username, (data) => {
-      console.log(data);
-    });
+    socket.emit('join', this.props.mainState.user.user_username);
     this.setState({
       playeriam: 'player2',
       hostWaiting: false,
@@ -111,31 +104,21 @@ class Lobby extends React.Component {
       nojoin: false,
       buttonsDisabled: false,
     });
-    socket.emit('fighter picked', roomname, playeriam, squaddie, (data) => {
-      console.log('data', data);
-    });
+    socket.emit('fighter picked', roomname, playeriam, squaddie);
   }
 
   attack(roomname, damage, defense, monID) {
-    console.log('attack', roomname, monID, defense);
-    socket.emit('attack', roomname, damage, defense, monID, (data) => {
-      console.log('data', data);
-    });
+    socket.emit('attack', roomname, damage, defense, monID);
   }
 
   defend(roomname, monID) {
-    console.log('defend', roomname, monID);
-    socket.emit('defend', roomname, monID, (data) => {
-      console.log('data', data);
-    });
+    socket.emit('defend', roomname, monID);
   }
 
   surrender(roomname, playeriam) {
-    console.log('clicked');
-    socket.emit('surrender', roomname, playeriam, (data) => {
-      console.log('data', data);
-    });
+    socket.emit('surrender', roomname, playeriam);
   }
+
   closeNoJoin() {
     this.setState({ dimmer: false, nojoin: false });
   }

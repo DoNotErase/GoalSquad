@@ -27,9 +27,7 @@ class PickFighter extends React.Component {
     const {
       open, dimmer, size,
     } = this.state;
-
-    const { squaddie } = this.props;
-    const fightstate = this.props.fightState;
+    const { squaddie, fightState } = this.props;
     return (
       <Modal
         trigger={
@@ -50,7 +48,7 @@ class PickFighter extends React.Component {
         size={size}
         dimmer={dimmer}
         open={open}
-        onClose={this.close}
+        onClose={() => this.close()}
       >
         <Modal.Content style={{ background: 'transparent' }}>
           <Card centered>
@@ -66,7 +64,9 @@ class PickFighter extends React.Component {
                 <Button
                   size="mini"
                   style={{ marginLeft: '5px' }}
-                  onClick={() => { this.props.chooseFighter(fightstate.roomName, fightstate.playeriam, squaddie); }}
+                  onClick={() => {
+                    this.props.chooseFighter(fightState.roomName, fightState.playeriam, squaddie);
+                  }}
                 >
                   pick this monster
                 </Button>
@@ -84,16 +84,20 @@ class PickFighter extends React.Component {
   }
 }
 
-// PickFighter.propTypes = {
-//   squaddieActions: PropTypes.objectOf(PropTypes.func).isRequired,
-//   squaddie: PropTypes.shape({
-//     monster_id: PropTypes.number,
-//     monster_name: PropTypes.string,
-//     monster_pic: PropTypes.string,
-//     monster_description: PropTypes.string,
-//     monster_icon: PropTypes.string,
-//   }).isRequired,
-// };
+PickFighter.propTypes = {
+  squaddie: PropTypes.shape({
+    monster_id: PropTypes.number,
+    monster_name: PropTypes.string,
+    monster_pic: PropTypes.string,
+    monster_description: PropTypes.string,
+    monster_icon: PropTypes.string,
+  }).isRequired,
+  fightState: PropTypes.shape({
+    playeriam: PropTypes.string,
+    roomName: PropTypes.string,
+  }).isRequired,
+  chooseFighter: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = state => ({
   fightState: state.fight,

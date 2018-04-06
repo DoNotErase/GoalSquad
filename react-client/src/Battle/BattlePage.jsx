@@ -7,6 +7,7 @@ import BattleInterfaceTop from './BattleInterfaceTop';
 import MainMenu from '../MainMenu';
 
 const BattlePage = (props) => {
+  // if enemy is in defending state they get +2 defense from their base stat
   const calculateEnemyDefense = (monster, monsterDefending) => {
     if (monsterDefending > 0) {
       return monster.user_monster_defense + 2;
@@ -14,12 +15,14 @@ const BattlePage = (props) => {
     return monster.user_monster_defense;
   };
   const { fightState } = props;
-  let enemy;
-  let you;
+  const enemy = {};
+  const you = {};
 
+  // assign you and enemy characteristics depending on who you are
   if (fightState.playeriam === 'player1') {
     enemy.monster = fightState.monster2;
     enemy.hp = fightState.monster2CurrentHP;
+    // defending turns drops below zero sometimes, protect against that
     enemy.defendingTurns = fightState.monster2DefenseTurns > 0
       ? fightState.monster2DefenseTurns : 0;
     enemy.addClass = fightState.monster2Class || 'slideInRight';
@@ -51,12 +54,14 @@ const BattlePage = (props) => {
         <Grid.Column computer={8} tablet={10} mobile={16}>
           <Header as="h1" className="white" textAlign="right">Battle</Header>
           <Divider hidden />
+          {/* Shows enemy monster */}
           <BattleInterfaceTop
             monster={enemy.monster}
             currentHP={enemy.hp}
             defendingTurns={enemy.defendingTurns}
             addClass={enemy.addClass}
           />
+          {/* Holds your monster and available actions */}
           <BattleInterfaceBottom
             monster={you.monster}
             currentHP={you.hp}
@@ -86,7 +91,7 @@ BattlePage.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
-  surrenderPlayer: PropTypes.string.isRequired,
+  surrenderPlayer: PropTypes.string,
 };
 
 const mapStateToProps = state => (

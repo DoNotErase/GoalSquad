@@ -10,10 +10,8 @@ class BattleInterfaceBottom extends React.Component {
     super(props);
     this.state = {
       open: false,
-      // gameEndOpen: this.props.surrenderPlayer ? true : false, // this line doesn't work
     };
     this.show = this.show.bind(this);
-    // this.handleConfirm = this.handleConfirm.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
     this.gameEndShow = this.gameEndShow.bind(this);
     this.gameEndClose = this.gameEndClose.bind(this);
@@ -25,7 +23,6 @@ class BattleInterfaceBottom extends React.Component {
   }
   gameEndClose() {
     this.props.fightActions.resetState();
-    // this.setState({ gameEndOpen: false });
   }
 
   show() {
@@ -80,40 +77,41 @@ class BattleInterfaceBottom extends React.Component {
     if (fightState.monster1CurrentHP > 0 && fightState.monster2CurrentHP > 0) {
       return ''; // only actually run once game is over;
     }
-    const calculateXP = (winningMon, losingMon) => {
+
+    const calculateXP = (winningMonLevel, losingMonLevel) => {
       // if a low level mosnter beat a high level monster
-      let levelDifferential = losingMon.user_monster_level - winningMon.user_monster_level;
-      console.log(levelDifferential, 'level differential');
+      let levelDifferential = losingMonLevel - winningMonLevel;
       if (levelDifferential < -4) {
         levelDifferential = -4;
       }
+      // get more xp if you won against a higher level monster, less if lower
       return (levelDifferential * 2) + 10;
     };
 
+    // level up every 100xp, check if you've crossed over from e.g. 99 to 4 (104xp)
     const checkForLevelUp = (monster, xp) => {
-      if (Math.floor(monster.user_monster_current_xp / 100)
-        !== Math.floor((monster.user_monster_current_xp + xp) / 100)) {
+      if (monster.user_monster_current_xp % 100 > (monster.user_monster_current_xp + xp) % 100) {
         return true;
       }
       return false;
     };
 
     const iWon = this.iWon();
-    let XPgained;
     const yourMonster = fightState.playeriam === 'player1' ? fightState.monster1 : fightState.monster2;
     const theirMonster = fightState.playeriam === 'player1' ? fightState.monster2 : fightState.monster2;
-    const monsterID = yourMonster.user_monster_id;
 
-    if (iWon) {
-      XPgained = calculateXP(yourMonster, theirMonster);
-    } else { // you lost
-      XPgained = 5;
-    }
+    // 5xp if you lost around 10 if you won
+    const XPgained = iWon ?
+      calculateXP(yourMonster.user_monster_level, theirMonster.user_monster_level)
+      :
+      5;
 
-    fightActions.addXPtoMonster(monsterID, XPgained);
+    fightActions.addXPtoMonster(yourMonster.user_monster_id, XPgained);
 
+    // true if level up should occur
     if (checkForLevelUp(yourMonster, XPgained)) {
       fightActions.levelup(yourMonster.user_monster_id);
+      // populate modal with levelup info
       return this.monsterLevelUp(iWon, XPgained);
     }
 
@@ -152,13 +150,6 @@ class BattleInterfaceBottom extends React.Component {
   render() {
     const { monster, fightState } = this.props;
     const { dimmer } = this.state;
-    // for animations
-    // let addClasses = '';
-    // if (!fightState.monster1WasAttacked && !fightState.monster2WasAttacked) {
-    //   addClasses = 'slideInLeft';
-    // } else {
-    //   addClasses = this.props.wasAttacked ? 'swing' : 'base-state';
-    // }
     return (
       <Segment>
         <Grid>
@@ -178,8 +169,6 @@ class BattleInterfaceBottom extends React.Component {
                 <Grid.Column>
                   <Image
                     className={this.props.addClass}
-                    // className={addClasses}
-                    // className={`${wasAttacked} slideInLeft`}
                     src={monster.monster_pic}
                     size="small"
                     spaced="right"
@@ -220,10 +209,8 @@ class BattleInterfaceBottom extends React.Component {
                     open={this.state.open}
                     onCancel={this.handleCancel}
                     onConfirm={() => {
-                      // this.gameEndShow(false)
                       this.props.surrender(fightState.roomName, fightState.playeriam);
-                    }
-                    }
+                    }}
                     confirmButton="Surrender"
                     cancelButton="Stay"
                   />
