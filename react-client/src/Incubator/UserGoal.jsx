@@ -22,11 +22,22 @@ class UserGoal extends React.Component {
     this.open = this.open.bind(this);
   }
 
+  adjustForCentralTime(endDate) {
+    let deadline = moment(endDate);
+    let adjustedDeadline = deadline.subtract(5, 'hours');
+
+    if(adjustedDeadline < 0) {
+      return deadline;
+    } else {
+      return adjustedDeadline;
+    }
+  }
+
   makeDeadLineMessage() {
     const { goal } = this.props;
     if (goal.user_goal_end_date && !goal.user_goal_concluded) {
       const now = moment();
-      const deadline = moment(goal.user_goal_end_date).subtract(5, 'hours');
+      const deadline = this.adjustForCentralTime(goal.user_goal_end_date);
       const days = deadline.diff(now, 'days');
       if (days >= 1) {
         return `${(days + 1)} days left!`; // plus 1 because diff uses 'floor'

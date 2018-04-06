@@ -38,6 +38,7 @@
     "express-session": "^1.15.6",
     "file-loader": "^1.1.11",
     "firebase": "^4.12.1",
+    "firebase-admin": "^5.12.0",
     "history": "^4.7.2",
     "moment": "^2.21.0",
     "mysql": "^2.13.0",
