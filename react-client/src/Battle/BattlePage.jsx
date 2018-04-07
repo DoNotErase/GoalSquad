@@ -63,7 +63,7 @@ const BattlePage = (props) => {
         <Grid.Column computer={8} tablet={10} mobile={16}>
           <Divider hidden />
           {/* Shows enemy monster */}
-          <Scrollbars>
+          <Scrollbars autoHide style={{ height: '85vh' }}>
             <BattleInterfaceTop
               monster={enemy.monster}
               currentHP={enemy.hp}
