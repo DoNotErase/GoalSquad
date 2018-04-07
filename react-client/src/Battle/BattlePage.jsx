@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Grid, Header, Divider } from 'semantic-ui-react';
+import { Grid, Header } from 'semantic-ui-react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import PropTypes from 'prop-types';
 import BattleInterfaceBottom from './BattleInterfaceBottom';
@@ -61,7 +61,6 @@ const BattlePage = (props) => {
           </Grid.Column>
         </Grid.Row>
         <Grid.Column computer={8} tablet={10} mobile={16}>
-          <Divider hidden />
           {/* Shows enemy monster */}
           <Scrollbars autoHide style={{ height: '85vh' }}>
             <BattleInterfaceTop

@@ -230,6 +230,7 @@ class BattleInterfaceBottom extends React.Component {
                   </Modal>
                   {/* Modal for win or loss */}
                   <Modal
+                    size="small"
                     dimmer={dimmer}
                     open={fightState.monster1CurrentHP <= 0 || fightState.monster2CurrentHP <= 0}
                     onClose={this.gameEndClose}
