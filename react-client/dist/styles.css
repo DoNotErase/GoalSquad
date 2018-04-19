@@ -65,6 +65,11 @@ orangy: background-image: linear-gradient(to right, #d95a37, #df663e, #e67146, #
     }
 }
 
+.homepage iframe {
+    border-width: 0 !important;
+    height: 700px !important;
+}
+
 ::-webkit-scrollbar {
     display: none;
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Button, Image, Modal, Input, Divider } from 'semantic-ui-react';
+import { Grid, Button, Image, Modal, Input, Divider, Embed } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
@@ -100,7 +100,13 @@ class HomePage extends React.Component {
           verticalAlign="middle"
           style={{ height: '100%' }}
         >
-          <Grid.Column width={12} style={{ maxWidth: 450 }}>
+        <Grid.Column width={5} only="computer">
+          <iframe
+            style={{height: '90% !important'}}
+            src="https://www.goalsquadgame.com"
+          />
+        </Grid.Column>
+          <Grid.Column width={12} style={{ maxWidth: 450 }} only="tablet" only="mobile">
             <Image src="./assets/misc/logo.png" style={{ marginTop: 25 }} size="large" />
             <Button
               onClick={() => { this.setState({ fitbit: true }); }}
@@ -129,6 +135,7 @@ class HomePage extends React.Component {
             </Button>
           </Grid.Column>
         </Grid>
+        
         <FitbitWarning
           open={this.state.fitbit}
           close={this.closeFitbit}
