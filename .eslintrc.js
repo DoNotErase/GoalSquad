@@ -1,3 +1,6 @@
-module.exports = {
-    "extends": "airbnb"
+export default {
+    "extends": "airbnb",
+    "rules": {
+        "linebreak-style": 0
+    }
 };
