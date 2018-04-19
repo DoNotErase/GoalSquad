@@ -3,8 +3,7 @@
 # Logs
 logs
 *.log
-config.js
-.config.js
+GoalSquad1.pem
 
 # Runtime data
 pids
@@ -23,6 +22,7 @@ coverage
 # Compiled Dirs (http://nodejs.org/api/addons.html)
 build/
 react-client/dist/bundle.js
+react-client/dist/bundle.js.gz
 
 
 # Dependency directorys
@@ -30,7 +30,7 @@ react-client/dist/bundle.js
 # see https://npmjs.org/doc/faq.html#Should-I-check-my-node_modules-folder-into-git
 node_modules/
 bower_components/
-config.js
+/config.js
 
 # Floobits
 .floo

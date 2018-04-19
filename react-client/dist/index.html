@@ -1,60 +1,85 @@
-
-
 <!DOCTYPE html>
 <html>
 <head>
   <title>Goal Squad</title>
+  <base href="/">
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.12/semantic.min.css"></link>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#ffffff">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="theme-color" content="#008F7A">
+  <link rel="shortcut icon" sizes="192x192" href="react-client/dist/assets/icons/icon-192x192.png">
+  <link rel="shortcut icon" sizes="128x128" href="react-client/dist/assets/icons/icon-128x128.png">
   <link rel="stylesheet" href="styles.css">
-  <link rel="manifest" href="manifest.json">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="apple-touch-icon" href="react-client/dist/assets/icons/icon-72x72.png" >
+  <link rel="apple-touch-icon" sizes="72x72" href="react-client/dist/assets/icons/icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="128x128" href="react-client/dist/assets/icons/icon-128x128.png">
 </head>
 <body>
   <div id="app"></div>
 
   <!-- FIREBASE SCRIPT TAG - DON'T PASTE SCRIPTS ABOVE THIS -->
-<script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
 <script>
-// Initialize Firebase
-var configs = {
+  // Initialize Firebase
+var config = {
     apiKey: "AIzaSyDbOhdxctAyUdSrr0xbDxSazzQfu1wYeNY",
     authDomain: "goalsquad-f12a7.firebaseapp.com",
     databaseURL: "https://goalsquad-f12a7.firebaseio.com",
     projectId: "goalsquad-f12a7",
-    storageBucket: "",
+    storageBucket: "goalsquad-f12a7.appspot.com",
     messagingSenderId: "177647825623"
 };
-firebase.initializeApp(configs);
+firebase.initializeApp(config);
+
+var messaging = firebase.messaging();
+
+messaging.onTokenRefresh(function () {
+  messaging.getToken().then(function (refreshedToken) {
+        console.log('Token refreshed.');
+        // Indicate that the new Instance ID token has not yet been sent to the
+        // app server.
+        setTokenSentToServer(false);
+        // Send Instance ID token to app server.
+        sendTokenToServer(refreshedToken);
+        // ...
+    }).catch(function (err) {
+        console.log('Unable to retrieve refreshed token ', err);
+        showToken('Unable to retrieve refreshed token ', err);
+    });
+});
+
+// firebase.auth().onAuthStateChanged(firebaseUser => {
+//   console.log('firebase user', firebaseUser);
+// });
 </script>
   <!-- END OF FIREBASE SCRIPT -->
   
-<script type="text/javascript" src="/bundle.js"></script>
+<script type="text/javascript" src="./bundle.js"></script>
 <script>
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js')
-        .then(function () {
-            console.log('Service Worker Registered');
-        });
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').then((registration) => {
+      // Registration was successful
+      console.log('ServiceWorker registration successful with scope: ', registration.scope);
+    }, (err) => {
+      // registration failed :(
+      console.log('ServiceWorker registration failed: ', err);
+    }).catch((err) => {
+      console.log(err);
+    });
+  });
+} else {
+  console.log('service worker is not supported');
 }
 </script>
-<script>
-var messaging = firebase.messaging();
-messaging.requestPermission()
-    .then(function () {
-        console.log('Notification permission granted.');
-        return messaging.getToken();
-    })
-    .then(function (token) {
-        console.log(token);
-    })
-    .catch(function (err) {
-    console.log('Unable to get permission to notify.', err);
-    });
-</script>
-
   <!-- noscript tag used to satisfy Lighthouse test that wants a display page/notification when there is no JS -->
   <noscript>Javascript is needed to run the site. Please enable JavaScript.</noscript>
 </body>
+<script type="text/javascript">
+    if ('ontouchstart' in document.documentElement) {
+    document.body.style.cursor = 'pointer';
+  }
+</script>
 </html>
-

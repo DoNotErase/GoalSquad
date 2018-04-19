@@ -1,9 +1,9 @@
 body {
-    background-color: #ffffff;
+    background-color: #465c64;
     color: black;
 }
 
-.homepage, .barnpage, .goalspage, .incubatorpage {
+.homepage, .goalspage, .incubatorpage, .deetspage, .squadpage, .battlepage, .historypage, .lobbypage, .intadminpage, .admin-page {
     position: fixed;
     top: 0;
     left: 0;
@@ -13,98 +13,290 @@ body {
     min-width:100%;
     min-height:100%;
     padding: 20px;
-    background-color: #845EC2;
-    background-image: linear-gradient(#845EC2, #008F7A);
+    background-color: #465c64;
+    background-image: radial-gradient(circle, #43806e, #3e7772, #406e71, #45646c, #4a5b63);
+}
+
+.admin-page {
+    padding-top: 120px;
+    background-image: linear-gradient(to top, #CBBAA6, #CBB4A5, #9D8C77);
+}
+
+
+/* gradients
+
+maroon: background-image: linear-gradient(to top, #a14055, #aa4554, #b24b54, #ba5152, #c15851);
+pinkish: background-image: linear-gradient(to right, #fe8275, #fb8877, #f88f79, #f5947c, #f29a7f);
+orangy: background-image: linear-gradient(to right, #d95a37, #df663e, #e67146, #ec7d4e, #f28857);
+
+*/
+
+
+/* FULLSCREEN STYLES */
+@media (min-width: 1024px) {
+    .homepage img {
+        max-width: 80% !important;
+        margin: auto;
+    }
+    .egg, .glow, .incubatorbar {
+        margin-bottom: 25px;
+    }
+    .yardBackground {
+        background-image: linear-gradient(to top, #a14055, #aa4554, #b24b54, #ba5152, #c15851);
+    }
+}
+
+/* TABLET STYLES */
+@media (min-width: 600px) and (max-width: 1024px){
+    .homepage {
+        background-image: url('./assets/backgrounds/background-tablet.png') !important;
+        background-size: cover !important;
+    }
+}
+
+ /* MOBILE STYLES */
+@media (max-width: 600px) {
+    .homepage {
+        background-image: url('./assets/backgrounds/background-mobile.png') !important;
+        background-size: cover !important;
+    }
+    .egg, .glow {
+        margin-bottom: 25px;
+    }
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.yardpage {
+    top: 0;
+    left: 0;
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    min-width:100%;
+    min-height:100%;
+    background-color: #474c4f;
+    background-image: radial-gradient(circle, #43806e, #3e7772, #406e71, #45646c, #4a5b63);
 }
 
 .white {
     color: white !important;
 }
 
-/* Menu Modal */
-.menubutton {
+/* Progress Bar */
+
+.progressbar {
+    position: fixed !important;
+    bottom: 0;
+    padding: 1px !important;
+}
+
+.yardpage button {
     top: 15px;
     left: 15px;
-    position: fixed !important;
-}
-
-.menuicons {
-    padding: 20px;
-}
-
-/* INCUBATOR PAGE */
-/* .add-goal-icon {
-    max-height: 30px;
-    min-height: 10px;
-    max-width: 30px;
-    min-width: 10px;
-}
-
-.goals-list {
-    margin: 25px;
-}
-
-.goal-container {
-    background-color: #EFF7F0;
-    border: 1px solid black;
-    border-radius: 5px;
-    margin-top: 10px;
-    margin-left: 15px;
-    margin-right: 15px;
-    min-height: 100%;
-}
-
-.incubator-container {
     position: fixed;
-    top: 0;
-    left: 0;
-    padding: 0;
-    margin: 0;
-    height: 100vh;
-    min-width:100%;
-    min-height:100%;
-    background: #B5D8B9;
 }
 
-.logout-button a {
-    text-decoration: none;
-    color: black;
-    margin: 20px;
+
+/* ANIMATIONS  */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    
+    to {
+        opacity: 1;
+    }
 }
 
-.progress-bar-container {
-    background: #D7EAD9;
-    height: 100%;
-    width: 100%;
-    margin-top: 15px;
-    border-radius: 5px
+.fadeIn {
+    animation-name: fadeIn;
 }
 
-.progress-bar {
-    padding-top: 20px;
-} */
-
-/* GOAL ITEMS PAGE */
-/* .goal-item {
-    background: white;
-    border: 1px solid black;
+@keyframes slideInDown {
+    from {
+        transform: translate3d(0, -100%, 0);
+        visibility: visible;
+    }
+    
+    to {
+        transform: translate3d(0, 0, 0);
+    }
 }
 
-.activity-icon {
-    max-height: 30px;
-    min-height: 10px;
-    max-width: 30px;
-    min-width: 10px;
+.slideInDown {
+    animation-name: slideInDown;
 }
 
-.goalspage {
-    position: fixed;
-    top: 0;
-    left: 0;
-    padding: 0;
-    margin: 0;
-    height: 100vh;
-    min-width:100%;
-    min-height:100%;
-    padding: 20px;
-} 
+@keyframes shake {
+    from,
+    to {
+        transform: translate3d(0, 0, 0);
+    }
+    
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+    
+    20%,
+    40%,
+    60%,
+    80% {
+        transform: translate3d(1px, 0, 0);
+    }
+}
+
+.shake {
+    animation: shake 2.5s infinite;
+    animation-name: shake;
+}
+
+
+.glow {
+    animation: shake 2.5s infinite;
+    -webkit-filter: drop-shadow(0px 0px 20px rgba(254, 254, 90, 1));
+    filter: drop-shadow(0px 0px 20px rgba(254, 254, 90, 1));
+}
+
+@keyframes slideInLeft {
+    from {
+        transform: translate3d(-100%, 0, 0);
+        visibility: visible;
+    }
+
+    to {
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.slideInLeft {
+    animation: slideInLeft 2.5s;
+    animation-name: slideInLeft;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translate3d(100%, 0, 0);
+        visibility: visible;
+    }
+
+    to {
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.slideInRight {
+    animation: slideInRight 2.5s;
+    animation-name: slideInRight;
+}
+
+@keyframes swing {
+    20% {
+        transform: rotate3d(0, 0, 1, 15deg);
+    }
+
+    40% {
+        transform: rotate3d(0, 0, 1, -10deg);
+    }
+
+    60% {
+        transform: rotate3d(0, 0, 1, 5deg);
+    }
+
+    80% {
+        transform: rotate3d(0, 0, 1, -5deg);
+    }
+
+    to {
+        transform: rotate3d(0, 0, 1, 0deg);
+    }
+}
+
+.swing {
+    transform-origin: top center;
+    animation: swing 2.5s;
+    animation-name: swing;
+}
+
+@keyframes tada {
+    from {
+        transform: scale3d(1, 1, 1);
+    }
+
+    10%,
+    20% {
+        transform: scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, -3deg);
+    }
+
+    30%,
+    50%,
+    70%,
+    90% {
+        transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
+    }
+
+    40%,
+    60%,
+    80% {
+        transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
+    }
+
+    to {
+        transform: scale3d(1, 1, 1);
+    }
+}
+
+.tada {
+    animation-name: tada;
+    animation: tada 2.5s;
+}
+
+@keyframes shake {
+    from,
+    to {
+        transform: translate3d(0, 0, 0);
+    }
+
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+        transform: translate3d(-10px, 0, 0);
+    }
+
+    20%,
+    40%,
+    60%,
+    80% {
+        transform: translate3d(10px, 0, 0);
+    }
+}
+
+.shake {
+    animation: shake 2.5s;
+    animation-name: shake;
+}
+
+@keyframes lightSpeedOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        transform: translate3d(100%, 0, 0) skewX(30deg);
+        opacity: 0;
+    }
+}
+
+.lightSpeedOut {
+    animation-name: lightSpeedOut;
+    animation-timing-function: ease-in;
+    animation: lightSpeedOut .5s;
+}
