@@ -65,6 +65,21 @@ orangy: background-image: linear-gradient(to right, #d95a37, #df663e, #e67146, #
     }
 }
 
+.homepage iframe {
+    border-width: 0 !important;
+    height: 736px !important;
+    width: 414px !important;
+    border-radius: 10px;
+}
+
+/* .homepage .frame {
+    background-image: url('./assets/backgrounds/backleaves.png');
+    background-repeat: no-repeat;
+    position: relative;
+    height: 839px;
+    width: 614px;
+} */
+
 ::-webkit-scrollbar {
     display: none;
 }
