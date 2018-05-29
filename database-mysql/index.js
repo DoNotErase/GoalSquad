@@ -106,10 +106,12 @@ module.exports.updateTokens = async (fitbitID, accessToken, refreshToken) => {
 module.exports.createUser = async (fitbitID, displayName, accessToken, refreshToken) => {
   const makeUserFB = 'INSERT INTO user (fitbit_id, user_username, user_accesstoken, user_refreshtoken) VALUES (?, ?, ?, ?)';
   const makeNewEgg = 'INSERT INTO user_egg (user_id, egg_id, egg_xp) VALUES ' +
-    '((SELECT user_id FROM user WHERE user_username = ?), FLOOR(RAND() * (SELECT COUNT (*) FROM egg) + 1), 0);';
+    '(?, FLOOR(RAND() * (SELECT COUNT (*) FROM egg) + 1), 0);';
   try {
-    await db.queryAsync(makeUserFB, [fitbitID, displayName, accessToken, refreshToken]);
-    return db.queryAsync(makeNewEgg, [displayName]);
+    await db.queryAsync(makeUserFB, [fitbitID, displayName, accessToken, refreshToken])
+      .then(results => {
+        db.queryAsync(makeNewEgg, [results.insertId]);
+      }); 
   } catch (e) {
     throw e;
   }
@@ -127,12 +129,11 @@ module.exports.getAccessToken = async (fitbitID) => {
 module.exports.getOldUserGoals = async (id) => {
   try {
     const userID = await getRightID(id);
-    const query = 'SELECT user_goal.*, goal.goal_name, goal.goal_activity, goal.goal_amount, goal.goal_difficulty ' +
+    const fetchOldGoals = 'SELECT user_goal.*, goal.goal_name, goal.goal_activity, goal.goal_amount, goal.goal_difficulty ' +
       'FROM user_goal INNER JOIN goal ON goal.goal_id = user_goal.goal_id ' +
-      `WHERE user_goal.user_id = '${userID}' AND user_goal.user_goal_finalized = 1;`;
+      'WHERE user_goal.user_id = ? AND user_goal.user_goal_finalized = 1';
 
-    const goals = await db.queryAsync(query);
-    return goals;
+    return await db.queryAsync(fetchOldGoals, [userID]);
   } catch (err) {
     throw new Error('trouble in getOldUserGoals');
   }
@@ -141,11 +142,11 @@ module.exports.getOldUserGoals = async (id) => {
 module.exports.getActiveUserGoals = async (id) => {
   try {
     const userID = await getRightID(id);
-    const query = 'SELECT user_goal.*, goal.goal_name, goal.goal_activity, goal.goal_amount, goal.goal_difficulty ' +
+    const fetchNewGoals = 'SELECT user_goal.*, goal.goal_name, goal.goal_activity, goal.goal_amount, goal.goal_difficulty ' +
       'FROM user_goal INNER JOIN goal ON goal.goal_id = user_goal.goal_id ' +
-      `WHERE user_goal.user_id = '${userID}' AND user_goal.user_goal_finalized = 0;`;
+      `WHERE user_goal.user_id = ? AND user_goal.user_goal_finalized = 0;`;
 
-    return await db.queryAsync(query);
+    return await db.queryAsync(fetchNewGoals, [userID]);
   } catch (err) {
     throw new Error('trouble in getActiveUserGoals');
   }
@@ -153,7 +154,7 @@ module.exports.getActiveUserGoals = async (id) => {
 
 module.exports.getGoalInfo = async (goalID) => {
   try {
-    const goal = await db.queryAsync(`SELECT * FROM goal WHERE goal_id = '${goalID}';`);
+    const goal = await db.queryAsync(`SELECT * FROM goal WHERE goal_id = ?`, [goalID]);
     return goal[0];
   } catch (err) {
     throw new Error('trouble in getGoalInfo');
@@ -163,24 +164,20 @@ module.exports.getGoalInfo = async (goalID) => {
 module.exports.createUserGoal = async (goalObj) => {
   try {
     const userID = await getRightID(goalObj.userID);
-    let attachUser = '';
 
     if (goalObj.goalLength) { // include end date
-      attachUser = 'INSERT INTO user_goal (user_id, goal_id, user_goal_start_value, user_goal_current, ' +
+      let attachUserWithLength = 'INSERT INTO user_goal (user_id, goal_id, user_goal_start_value, user_goal_current, ' +
       'user_goal_target, user_goal_points, user_goal_start_date, user_goal_end_date) VALUES ' +
-      `('${userID}', ${goalObj.goalID}, ${goalObj.startValue}, ${goalObj.startValue}, ` +
-      `${goalObj.targetValue}, ${goalObj.points}, (utc_timestamp()), ` +
-      '(SELECT DATE_ADD((SELECT DATE_ADD((utc_timestamp()), ' +
-      `INTERVAL ${goalObj.goalLength.days} DAY)), ` +
-      `INTERVAL ${goalObj.goalLength.hours} HOUR)));`;
+      '(?, ?, ?, ?, ?, ?, (utc_timestamp()), (SELECT DATE_ADD((SELECT DATE_ADD((utc_timestamp()), ' +
+      `INTERVAL ? DAY)), INTERVAL ? HOUR)));`;
+      await db.queryAsync(attachUserWithLength, [userID, goalObj.goalID, goalObj.startValue, goalObj.startValue, goalObj.targetValue, goalObj.points, goalObj.goalLength.days, goalObj.goalLength.hours]);
     } else {
-      attachUser = 'INSERT INTO user_goal (user_id, goal_id, user_goal_start_value, user_goal_current, ' +
+      let attachUser = 'INSERT INTO user_goal (user_id, goal_id, user_goal_start_value, user_goal_current, ' +
       'user_goal_target, user_goal_points, user_goal_start_date) VALUES ' +
-      `('${userID}', ${goalObj.goalID}, ${goalObj.startValue}, ${goalObj.startValue}, ${goalObj.targetValue}, ${goalObj.points}, (utc_timestamp()));`;
+      `(?, ?, ?, ?, ?, ?, (utc_timestamp()));`;
+      await db.queryAsync(attachUser, [userID, goalObj.goalID, goalObj.startValue, goalObj.startValue, goalObj.targetValue, goalObj.points]);
     }
-    await db.queryAsync(attachUser);
-
-    return '';
+    return;
   } catch (err) {
     throw new Error('trouble in createUserGoal');
   }
@@ -189,47 +186,51 @@ module.exports.createUserGoal = async (goalObj) => {
 module.exports.createCustomGoal = async (goalObj) => {
   try {
     let goalID;
-    const existing = db.queryAsync(`SELECT goal_id FROM goal WHERE goal_name = '${goalObj.goalName}'`);
+    const existing = db.queryAsync('SELECT goal_id FROM goal WHERE goal_name = ?', [goalObj.goalName]);
 
     if (existing.length) {
       [goalID] = existing;
+      goalID = goalID[0].goal_id;
     } else {
       const createGoal = 'INSERT INTO goal (goal_name, goal_activity, ' +
         'goal_amount, goal_difficulty, goal_class, goal_points, goal_timedivisor) VALUES ' +
-        `('${goalObj.goalName}', '${goalObj.goalActivity}', '${goalObj.goalAmount}', ` +
-        '"custom", "custom", 20, 5);';
+        '(?, ?, ?, "custom", "custom", 20, 5);';
 
-      await db.queryAsync(createGoal);
-      goalID = await db.queryAsync('SELECT MAX(goal_id) as "goal_id" FROM goal');
+      await db.queryAsync(createGoal, [goalObj.goalName, goalObj.goalActivity, goalObj.goalAmount])
+        .then(results => {
+          goalID = results.insertId;
+        });
     }
-
-    goalID = goalID[0].goal_id;
 
     const userID = await getRightID(goalObj.userID);
 
     let attachUser = '';
+    
+    const updateUserCustomTimers = 'UPDATE user SET custom_goal_timer_1 = custom_goal_timer_2, ' +
+      'custom_goal_timer_2 = (utc_timestamp()) WHERE user_id = ?';
 
     if (goalObj.goalLength) {
-      attachUser = 'INSERT INTO user_goal (user_id, goal_id, user_goal_start_value, user_goal_current, ' +
+      attachUserWithLength = 'INSERT INTO user_goal (user_id, goal_id, user_goal_start_value, user_goal_current, ' +
         'user_goal_target, user_goal_points, user_goal_start_date, user_goal_end_date) VALUES ' +
-        `('${userID}', ${goalID}, 0, 0, ${goalObj.goalAmount}, ${goalObj.points}, (utc_timestamp()), ` +
+        `(?, ?, 0, 0, ?, ?, (utc_timestamp()), ` +
         '(SELECT DATE_ADD((SELECT DATE_ADD((utc_timestamp()), ' +
-        `INTERVAL ${goalObj.goalLength.days} DAY)), ` +
-        `INTERVAL ${goalObj.goalLength.hours} HOUR)));`;
+        `INTERVAL ? DAY)), ` +
+        `INTERVAL ? HOUR)));`;
+            
+      await Promise.all([
+        db.queryAsync(attachUserWithLength, [userID, goalID, goalObj.goalAmount, goalObj.points, goalObj.goalLength.days, goalObj.goalLength.hours]),
+        db.queryAsync(updateUserCustomTimers, [userID]),
+      ]);
     } else {
-      attachUser = 'INSERT INTO user_goal (user_id, goal_id, user_goal_start_value, user_goal_current, ' +
+      attachUserNoLength = 'INSERT INTO user_goal (user_id, goal_id, user_goal_start_value, user_goal_current, ' +
         'user_goal_target, user_goal_points, user_goal_start_date) VALUES ' +
-        `('${userID}', ${goalID}, 0, 0, ${goalObj.goalAmount}, ` +
-        `${goalObj.points}, (utc_timestamp()));`;
+        `(?, ?, 0, 0, ?, ?, (utc_timestamp()));`;
+      
+      await Promise.all([
+        db.queryAsync(attachUserNoLength, [userID, goalID, goalObj.goalAmount, goalObj.points]),
+        db.queryAsync(updateUserCustomTimers, [userID]),
+      ]);
     }
-
-    const updateUserCustomTimers = 'UPDATE user SET custom_goal_timer_1 = custom_goal_timer_2, ' +
-      `custom_goal_timer_2 = (utc_timestamp()) WHERE user_id = '${userID}'`;
-
-    await Promise.all([
-      db.queryAsync(attachUser),
-      db.queryAsync(updateUserCustomTimers),
-    ]);
 
     if (goalObj.goalLength) {
       const setEndDate = 'UPDATE user_goal SET user_goal_end_date = ' +
@@ -243,6 +244,7 @@ module.exports.createCustomGoal = async (goalObj) => {
 
     return '';
   } catch (err) {
+    console.log(err);
     throw new Error('trouble in createUserGoal');
   }
 };
