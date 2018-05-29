@@ -33,43 +33,42 @@ const getRightID = async (id) => {
   if (typeof id === 'number') {
     return id;
   }
-  const userID = await db.queryAsync(`SELECT user_id FROM user WHERE fitbit_id = '${id}'`);
+  const userID = await db.queryAsync('SELECT user_id FROM user WHERE fitbit_id = ?', [id]);
   return userID[0].user_id;
 };
 
 module.exports.getUserByID = async (id) => {
   try {
     const userID = await getRightID(id);
-    return await db.queryAsync(`SELECT * FROM user WHERE user_id = '${userID}'`);
+    return await db.queryAsync('SELECT * FROM user WHERE user_id = ?', [userID]);
   } catch (e) {
     throw e;
   }
 };
 
 module.exports.createUserLocal = async (username, password) => {
-  const query = `SELECT * FROM user WHERE user_username = '${username}';`;
+  const selectUser = 'SELECT * FROM user WHERE user_username = ?';
   try {
-    const user = await db.queryAsync(query);
-    if (user.length) {
+    const user = await db.queryAsync(selectUser, [username]);
+    if (user.length !== 0) {
       return false;
     }
-    const create = 'INSERT INTO user (user_username, user_password) ' +
-      `VALUES ('${username}', '${password}')`;
-    const makeNewEgg = 'INSERT INTO user_egg (user_id, egg_id, egg_xp) VALUES ' +
-      '((SELECT MAX(user_id) FROM user), (FLOOR(RAND() * (SELECT COUNT(*) FROM egg) + 1)), 0);';
-    await db.queryAsync(create);
-    await db.queryAsync(makeNewEgg);
-    return await db.queryAsync(query);
+    const createUser = 'INSERT INTO user (user_username, user_password) VALUES (?, ?)';
+    const createFirstEgg = 'INSERT INTO user_egg (user_id, egg_id, egg_xp) VALUES ' +
+      '((SELECT user_id FROM user WHERE user_username = ?), (FLOOR(RAND() * (SELECT COUNT(*) FROM egg) + 1)), 0)';
+    await db.queryAsync(createUser, [username, password]);
+    await db.queryAsync(createFirstEgg, [username]);
+    return await db.queryAsync(selectUser, [username]);
   } catch (err) {
     throw err;
   }
 };
 
 module.exports.userExists = async (fitbitID) => {
-  const query = `SELECT * FROM user WHERE fitbit_id = '${fitbitID}';`;
+  const selectFitbitUser = 'SELECT * FROM user WHERE fitbit_id = ?';
 
   try {
-    const user = await db.queryAsync(query);
+    const user = await db.queryAsync(selectFitbitUser, [fitbitID]);
     if (user.length === 0) {
       return false;
     }
@@ -80,11 +79,11 @@ module.exports.userExists = async (fitbitID) => {
 };
 
 module.exports.findByUsername = async (username) => {
-  const query = 'SELECT user_username, user_password as password, user_id as id, custom_goal_timer_1, custom_goal_timer_2, role ' +
-    `FROM user WHERE user_username = '${username}';`;
+  const fetchUser = 'SELECT user_username, user_password as password, user_id as id, custom_goal_timer_1, custom_goal_timer_2, role ' +
+    'FROM user WHERE user_username = ?';
 
   try {
-    const user = await db.queryAsync(query);
+    const user = await db.queryAsync(fetchUser, [username]);
     if (user.length === 0) {
       return false;
     }
@@ -95,24 +94,22 @@ module.exports.findByUsername = async (username) => {
 };
 
 module.exports.updateTokens = async (fitbitID, accessToken, refreshToken) => {
-  const query = `UPDATE user SET user_accesstoken = '${accessToken}', user_refreshtoken = '${refreshToken}' ` +
-    `WHERE fitbit_id = '${fitbitID}';`;
+  const setTokens = 'UPDATE user SET user_accesstoken = ?, user_refreshtoken = ? WHERE fitbit_id = ?';
 
   try {
-    return await db.queryAsync(query);
+    return await db.queryAsync(setTokens, [accessToken, refreshToken, fitbitID]);
   } catch (e) {
     throw e;
   }
 };
 
 module.exports.createUser = async (fitbitID, displayName, accessToken, refreshToken) => {
-  const query = 'INSERT INTO user (fitbit_id, user_username, user_accesstoken, user_refreshtoken) ' +
-    `VALUES ('${fitbitID}', '${displayName}', '${accessToken}', '${refreshToken}');`;
+  const makeUserFB = 'INSERT INTO user (fitbit_id, user_username, user_accesstoken, user_refreshtoken) VALUES (?, ?, ?, ?)';
   const makeNewEgg = 'INSERT INTO user_egg (user_id, egg_id, egg_xp) VALUES ' +
-    '((SELECT MAX(user_id) FROM user), FLOOR(RAND() * (SELECT COUNT (*) FROM egg) + 1), 0);';
+    '((SELECT user_id FROM user WHERE user_username = ?), FLOOR(RAND() * (SELECT COUNT (*) FROM egg) + 1), 0);';
   try {
-    await db.queryAsync(query);
-    return db.queryAsync(makeNewEgg);
+    await db.queryAsync(makeUserFB, [fitbitID, displayName, accessToken, refreshToken]);
+    return db.queryAsync(makeNewEgg, [displayName]);
   } catch (e) {
     throw e;
   }
@@ -120,7 +117,7 @@ module.exports.createUser = async (fitbitID, displayName, accessToken, refreshTo
 
 module.exports.getAccessToken = async (fitbitID) => {
   try {
-    const data = await db.queryAsync(`SELECT user_accesstoken FROM user WHERE fitbit_id = '${fitbitID}';`);
+    const data = await db.queryAsync('SELECT user_accesstoken FROM user WHERE fitbit_id = ?', [fitbitID]);
     return data[0].user_accesstoken;
   } catch (e) {
     throw e;
