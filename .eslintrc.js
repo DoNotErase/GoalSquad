@@ -1,3 +1,3 @@
-module.exports = {
-    "extends": "airbnb"
+export default {
+    "extends": "airbnb",
 };

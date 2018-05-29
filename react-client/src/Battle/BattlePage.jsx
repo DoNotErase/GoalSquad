@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Grid, Header, Divider } from 'semantic-ui-react';
+import { Grid, Header } from 'semantic-ui-react';
+import { Scrollbars } from 'react-custom-scrollbars';
 import PropTypes from 'prop-types';
 import BattleInterfaceBottom from './BattleInterfaceBottom';
 import BattleInterfaceTop from './BattleInterfaceTop';
@@ -15,8 +16,8 @@ const BattlePage = (props) => {
     return monster.user_monster_defense;
   };
   const { fightState } = props;
-  let enemy;
-  let you;
+  const enemy = {};
+  const you = {};
 
   // assign you and enemy characteristics depending on who you are
   if (fightState.playeriam === 'player1') {
@@ -50,33 +51,40 @@ const BattlePage = (props) => {
 
   return (
     <div className="battlepage">
-      <Grid centered stretched>
+      <Grid centered>
+        <Grid.Row verticalAlign="bottom" columns={2}>
+          <Grid.Column mobile={8} tablet={7} computer={4}>
+            <MainMenu history={props.history} />
+          </Grid.Column>
+          <Grid.Column mobile={8} tablet={7} computer={4}>
+            <Header as="h1" className="white" textAlign="right">Battle</Header>
+          </Grid.Column>
+        </Grid.Row>
         <Grid.Column computer={8} tablet={10} mobile={16}>
-          <Header as="h1" className="white" textAlign="right">Battle</Header>
-          <Divider hidden />
           {/* Shows enemy monster */}
-          <BattleInterfaceTop
-            monster={enemy.monster}
-            currentHP={enemy.hp}
-            defendingTurns={enemy.defendingTurns}
-            addClass={enemy.addClass}
-          />
-          {/* Holds your monster and available actions */}
-          <BattleInterfaceBottom
-            monster={you.monster}
-            currentHP={you.hp}
-            attackStat={you.attack}
-            defendingTurns={you.defendingTurns}
-            enemyDefenseStat={enemy.defenseStat}
-            attack={props.attack}
-            defend={props.defend}
-            surrender={props.surrender}
-            surrenderPlayer={props.surrenderPlayer}
-            addClass={you.addClass}
-          />
+          <Scrollbars autoHide style={{ height: '85vh' }}>
+            <BattleInterfaceTop
+              monster={enemy.monster}
+              currentHP={enemy.hp}
+              defendingTurns={enemy.defendingTurns}
+              addClass={enemy.addClass}
+            />
+            {/* Holds your monster and available actions */}
+            <BattleInterfaceBottom
+              monster={you.monster}
+              currentHP={you.hp}
+              attackStat={you.attack}
+              defendingTurns={you.defendingTurns}
+              enemyDefenseStat={enemy.defenseStat}
+              attack={props.attack}
+              defend={props.defend}
+              surrender={props.surrender}
+              surrenderPlayer={props.surrenderPlayer}
+              addClass={you.addClass}
+            />
+          </Scrollbars>
         </Grid.Column>
       </Grid>
-      <MainMenu history={props.history} />
     </div>
   );
 };
@@ -91,7 +99,7 @@ BattlePage.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
-  surrenderPlayer: PropTypes.string.isRequired,
+  surrenderPlayer: PropTypes.string,
 };
 
 const mapStateToProps = state => (

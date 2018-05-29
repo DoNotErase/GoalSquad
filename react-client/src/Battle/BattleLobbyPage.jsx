@@ -129,11 +129,7 @@ class Lobby extends React.Component {
     if (this.state.noSquaddies === true) {
       return (
         <div className="lobbypage">
-          <Grid
-            textAlign="center"
-            verticalAlign="middle"
-            style={{ height: '80%' }}
-          >
+          <Grid centered>
             <Grid.Row verticalAlign="bottom" columns={1}>
               <Grid.Column mobile={8} tablet={7} computer={4}>
                 <MainMenu history={this.props.history} />
@@ -143,17 +139,20 @@ class Lobby extends React.Component {
               </Grid.Column>
             </Grid.Row>
             <Grid.Column computer={8} tablet={10} mobile={16}>
-              <Grid.Row>
-                <Header size="large" className="white">Obtain more Squaddies</Header>
+              <Grid.Row centered>
+                <Divider hidden />
+                <Divider hidden />
+                <Divider hidden />
+                <Header size="large" className="white" textAlign="center">Obtain more Squaddies</Header>
                 <Divider hidden />
               </Grid.Row>
               <Grid.Row>
                 <Image size="small" src="./assets/squaddies/supahfly.png" centered />
                 <Divider hidden />
               </Grid.Row>
-              <Grid.Row>
-                <Header size="medium" className="white">
-                  Complete goals to raise more Squaddies
+              <Grid.Row centered>
+                <Header size="medium" className="white" textAlign="center">
+                  Complete goals to get your first Squaddie!
                 </Header>
                 <Divider hidden />
               </Grid.Row>
@@ -223,7 +222,7 @@ class Lobby extends React.Component {
               JOIN A BATTLE
               </Button>
               {/* Feedback when host is waiting for opponent */}
-              <Loader active={this.state.hostWaiting}>Waiting for Opponent</Loader>
+              <Loader inverted active={this.state.hostWaiting}>Waiting for Opponent</Loader>
               {/* Modal for not finding a game with a host */}
               <Modal dimmer={this.state.dimmer} open={this.state.nojoin}>
                 <Modal.Header>No hosts available</Modal.Header>
