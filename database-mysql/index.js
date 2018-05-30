@@ -11,12 +11,19 @@ Promise.promisifyAll(require('mysql/lib/Connection').prototype);
 Promise.promisifyAll(require('mysql/lib/Pool').prototype);
 
 const connection = {
-  host: process.env.RDS_HOSTNAME || config.aws.RDS_HOSTNAME,
-  user: process.env.RDS_USERNAME || config.aws.RDS_USERNAME,
-  password: process.env.RDS_PASSWORD || config.aws.RDS_PASSWORD,
-  port: process.env.RDS_PORT || config.aws.RDS_PORT,
-  database: 'goalsquad',
-};
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: 'goalsquad'
+}
+
+// const connection = {
+//   host: process.env.RDS_HOSTNAME || config.aws.RDS_HOSTNAME,
+//   user: process.env.RDS_USERNAME || config.aws.RDS_USERNAME,
+//   password: process.env.RDS_PASSWORD || config.aws.RDS_PASSWORD,
+//   port: process.env.RDS_PORT || config.aws.RDS_PORT,
+//   database: 'goalsquad',
+// };
 
 const db = mysql.createPool({ connectionLimit: 5, ...connection });
 
@@ -238,7 +245,6 @@ module.exports.createCustomGoal = async (goalObj) => {
       ]);
     }
   } catch (err) {
-    console.log(err);
     throw new Error('trouble in createUserGoal');
   }
 };
@@ -313,7 +319,6 @@ module.exports.hatchEgg = async (userEggID, id, nextXP) => {
 
     return await db.queryAsync(returnSquaddie);
   } catch (err) {
-    console.log(err);
     throw err;
   }
 };
@@ -363,7 +368,7 @@ module.exports.newUserLifetimeDistance = async (id, distance) => {
       'WHERE user_id = ? AND goal_id > 0 AND goal_id < 7 AND user_goal_concluded = 0';
     return await db.queryAsync(updateGoals, [distance, userID]);
   } catch (err) {
-    throw (err);
+    throw new Error('new user lifetime distance err');
   }
 };
 
@@ -374,7 +379,7 @@ module.exports.newUserLifetimeSteps = async (id, steps) => {
       `WHERE user_id = ? AND goal_id > 6 AND goal_id < 13 AND user_goal_concluded = 0`;
     return await db.queryAsync(updateGoals, [steps, userID]);
   } catch (err) {
-    throw (err);
+    throw new Error('new user lifetime steps err');
   }
 };
 
@@ -383,9 +388,9 @@ module.exports.newUserLifetimeFloors = async (id, floors) => {
     const userID = await getRightID(id);
     const updateGoals = 'UPDATE user_goal SET user_goal_current = ? ' +
       'WHERE user_id = ? AND goal_id > 12 AND goal_id < 19 AND user_goal_concluded = 0';
-    return await db.queryAsync(updateGoals, floors, userID);
+    return await db.queryAsync(updateGoals, [floors, userID]);
   } catch (err) {
-    throw (err);
+    throw new Error('new user lifetime floors err');
   }
 };
 
@@ -399,8 +404,10 @@ module.exports.updateCustomGoalProgress = async (goalID, newCurrent) => {
   }
 };
 
-module.exports.updatePushNotificationsToFalse = async (userID) => {
+module.exports.updatePushNotificationsToFalse = async (id) => {
   try {
+    const userID = await getRightID(id)
+
     const updatePushNotificationsToFalse = 'UPDATE user SET notified_of_push_notifications = 1 WHERE user_id = ?';
     await db.queryAsync(updatePushNotificationsToFalse, [userID]);
   } catch (err) {
@@ -408,8 +415,10 @@ module.exports.updatePushNotificationsToFalse = async (userID) => {
   }
 };
 
-module.exports.updatePushNotificationsToTrue = async (userID) => {
+module.exports.updatePushNotificationsToTrue = async (id) => {
   try {
+    const userID = await getRightID(id)
+
     const updatePushNotificationsToTrue = 'UPDATE user SET notified_of_push_notifications = 1, ' +
     'wants_push_notifications = 1 WHERE user_id = ?';
     await db.queryAsync(updatePushNotificationsToTrue, [userID]);
@@ -418,8 +427,10 @@ module.exports.updatePushNotificationsToTrue = async (userID) => {
   }
 };
 
-module.exports.unsubscribeFromPushNotifications = async (userID) => {
+module.exports.unsubscribeFromPushNotifications = async (id) => {
   try {
+    const userID = await getRightID(id)
+
     const unsubscribeFromPushNotifications = 'UPDATE user SET wants_push_notifications = 0, ' +
     'unsubscribed_from_notifications = 1 WHERE user_id = ?';
     await db.queryAsync(unsubscribeFromPushNotifications, [userID]);
@@ -534,7 +545,6 @@ module.exports.addXPtoMonster = async (monID, xp) => {
     return await db.queryAsync(`UPDATE user_monster SET user_monster_current_xp = user_monster_current_xp + ? ` +
       `WHERE user_monster_id = ?`, [xp, monID]);
   } catch (err) {
-    console.log(err);
     throw new Error('ERR adding XP');
   }
 };
@@ -545,7 +555,6 @@ module.exports.levelUp = async (monID) => {
       'user_monster_hp = user_monster_hp + 5, user_monster_attack = user_monster_attack + 1, ' +
       'user_monster_defense = user_monster_defense + 1 WHERE user_monster_id = ?', [monID]);
   } catch (err) {
-    console.log(err);
     throw new Error('level up err');
   }
 };

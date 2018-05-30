@@ -157,7 +157,6 @@ app.post('/localSignup', async (req, res) => {
       res.json(newUser);
     }
   } catch (err) {
-    console.log(err);
     res.status(500).end();
   }
 });
