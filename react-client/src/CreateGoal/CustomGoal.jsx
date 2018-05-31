@@ -43,7 +43,7 @@ class CustomGoal extends React.Component {
   }
 
   timeUntilCustomGoal() {
-    const lastCustom = moment(this.props.customTimer).add(1, 'days');
+    const lastCustom = moment(this.props.customTimer).add(1, 'days').add(-4, 'hours');
     const now = moment();
     const hours = lastCustom.diff(now, 'hours');
     // humanize message, no one wants to see 698 minutes
