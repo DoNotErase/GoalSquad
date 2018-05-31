@@ -27,11 +27,11 @@ class HistoryPage extends React.Component {
             </Grid.Column>
           </Grid.Row>
           <Grid.Column computer={8} tablet={10} mobile={16}>
-            <Grid.Row style={{ marginBottom: '8px' }}>
+            <Grid.Row style={{ marginBottom: '2vh' }}>
               <HistorySort />
             </Grid.Row>
             <Grid.Row>
-              <Scrollbars autoHide style={{ height: '75vh' }}>
+              <Scrollbars autoHide style={{ height: '65vh' }}>
                 <Segment.Group raised>
                   {this.props.sortedGoals.map(goal => (
                     <HistoryGoal

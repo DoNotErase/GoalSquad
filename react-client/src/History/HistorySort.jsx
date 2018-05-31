@@ -13,23 +13,23 @@ const HistorySort = (props) => {
 
   return (
     <div>
-      <Header as="h5" style={{ marginBottom: '2px' }}> Sort By: </Header>
+      <Header as="h5" style={{ marginBottom: '.5vh', color: 'white' }}> Sort By: </Header>
       <Grid.Row>
         <div>
-          <Button.Group style={{ marginBottom: '2px', align: 'top' }}>
+          <Button.Group style={{ marginBottom: '.5vh', align: 'top' }}>
             <Button onClick={() => historyActions.sort('date')} compact>Start Date</Button>
             <Button.Or />
             <Button onClick={() => historyActions.sort('points')} compact>Points</Button>
             <Button.Or />
             <Button onClick={() => historyActions.sort('activity')} compact>Activity</Button>
             {`${src}reverse.png`}
-            <Button onClick={historyActions.flipSort} style={{ marginLeft: '5px' }} compact>
+            <Button onClick={historyActions.flipSort} style={{ marginLeft: '.5vh' }} compact>
               <img
                 src={`${src}reverse.png`}
                 alt=""
                 style={{
-                  height: '25px',
-                  width: '25px',
+                  height: '4vh',
+                  width: '4vh',
                 }}
               />
             </Button>
@@ -37,9 +37,9 @@ const HistorySort = (props) => {
         </div>
       </Grid.Row>
 
-      <Header as="h5" style={{ marginBottom: '2px', marginTop: '4px' }}> Filter: </Header>
+      <Header as="h5" style={{ marginBottom: '.5vh', marginTop: '.5vh', color: 'white' }}> Filter: </Header>
       <Grid.Row>
-        <Button.Group style={{ marginBottom: '2px' }}>
+        <Button.Group style={{ marginBottom: '.5vh' }}>
           <Button onClick={() => historyActions.filter('all')} compact>All</Button>
           <Button.Or />
           <Button onClick={() => historyActions.filter('success')} compact>Successful</Button>
