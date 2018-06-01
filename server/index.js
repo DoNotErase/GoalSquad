@@ -1,7 +1,6 @@
 const axios = require('axios');
 const bcrypt = require('bcrypt-nodejs');
 const bodyParser = require('body-parser');
-// const config = require('../config.js');
 const ConnectRoles = require('connect-roles');
 const cookieParser = require('cookie-parser');
 const db = require('../database-mysql/index.js');
@@ -157,7 +156,6 @@ app.post('/localSignup', async (req, res) => {
       res.json(newUser);
     }
   } catch (err) {
-    console.log(err);
     res.status(500).end();
   }
 });

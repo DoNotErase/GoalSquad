@@ -25,13 +25,10 @@ class HomePage extends React.Component {
       errorMessage: '',
       fitbit: false,
     };
-    this.close = this.close.bind(this);
     this.openSignUp = this.openSignUp.bind(this);
     this.openLogin = this.openLogin.bind(this);
     this.submit = this.submit.bind(this);
-    this.updateUsername = this.updateUsername.bind(this);
-    this.updatePassword = this.updatePassword.bind(this);
-    this.closeFitbit = this.closeFitbit.bind(this);
+    this.updateState = this.updateState.bind(this);
   }
 
   componentWillMount() {
@@ -46,7 +43,9 @@ class HomePage extends React.Component {
     }
   }
 
-  close() { this.setState({ open: false }); }
+  updateState(field, value) {
+    this.setState({ [field]: value })
+  }
 
   openLogin() {
     this.setState({
@@ -55,21 +54,10 @@ class HomePage extends React.Component {
   }
 
   openSignUp() {
-    console.log('open signup');
     this.setState({
       open: true, type: 'Sign Up', fitbit: false, errorMessage: '',
     });
   }
-
-  closeFitbit() {
-    this.setState({
-      fitbit: false,
-    });
-  }
-
-  updatePassword(event) { this.setState({ password: event.target.value }); }
-
-  updateUsername(event) { this.setState({ username: event.target.value }); }
 
   submit(e) {
     e.preventDefault();
@@ -119,7 +107,7 @@ class HomePage extends React.Component {
           <Grid.Column width={12} style={{ maxWidth: 450 }} only="tablet" only="mobile">
             <Image src="./assets/misc/logo.png" style={{ marginTop: 25 }} size="large" />
             <Button
-              onClick={() => { this.setState({ fitbit: true }); }}
+              onClick={() => { this.updateState('fitbit', true) }}
               fluid
               color="orange"
               size="large"
@@ -148,14 +136,14 @@ class HomePage extends React.Component {
         
         <FitbitWarning
           open={this.state.fitbit}
-          close={this.closeFitbit}
+          close={() => {this.updateState('fitbit', false)}}
           openSignUp={this.openSignUp}
         />
         <Modal
           size={size}
           dimmer={dimmer}
           open={open}
-          onClose={this.close}
+          onClose={() => { this.updateState('open', false)}}
         >
           <Modal.Header>{this.state.type}</Modal.Header>
           <Modal.Content >
@@ -164,7 +152,7 @@ class HomePage extends React.Component {
                 <Grid.Row centered>
                   <Input
                     value={this.state.username}
-                    onChange={this.updateUsername}
+                    onChange={(event) => {this.updateState('username', event.target.value)}}
                     style={{ width: '75%' }}
                     label={{ basic: true, content: 'username' }}
                     labelPosition="left"
@@ -174,7 +162,7 @@ class HomePage extends React.Component {
                 <Grid.Row centered>
                   <Input
                     value={this.state.password}
-                    onChange={this.updatePassword}
+                    onChange={(event) => {this.updateState('password', event.target.value)}}
                     style={{ width: '75%' }}
                     label={{ basic: true, content: 'password' }}
                     labelPosition="left"
@@ -186,7 +174,7 @@ class HomePage extends React.Component {
           </Modal.Content>
           <Modal.Actions>
             {this.state.errorMessage} <br /> {this.props.state.user.loginErr}
-            <Button color="grey" onClick={this.close}>
+            <Button color="grey" onClick={() => { this.updateState('open', false) }}>
               Cancel
             </Button>
             <Button
