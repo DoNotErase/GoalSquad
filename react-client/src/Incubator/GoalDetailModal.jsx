@@ -14,6 +14,7 @@ class GoalDetailModal extends React.Component {
       newCurrent: '',
       errorMessage: '',
       timePercentage: this.timePercentage(),
+      activityPercentage: this.activityPercentage(),
     };
 
     this.updateForm = this.updateForm.bind(this);
@@ -27,6 +28,13 @@ class GoalDetailModal extends React.Component {
   }
 
   onTrackMessage() {
+    if (this.state.activityPercentage < 2) {
+      return (
+      <div>
+        <Header as="h3" color="red" textAlign="right" floated="right"> You haven't started this goal yet!</Header>
+      </div>
+      );
+    }
     const humanize = (minutes) => {
       const positive = Math.abs(minutes);
       if (positive / 60 < 1) {
@@ -42,14 +50,14 @@ class GoalDetailModal extends React.Component {
 
     if (this.props.goal.user_goal_end_date) {
       const difference = completeTime.diff(this.props.goal.user_goal_end_date, 'minutes');
-      if (this.state.timePercentage + this.activityPercentage() < 90) {
+      if (this.state.timePercentage + this.state.activityPercentage < 90) {
         return (
           <div>
             <Header as="h3" color="red" textAlign="right" floated="right"> Pick up the pace! You are at risk of failing this goal by {humanize(difference)}!</Header>
           </div>
         );
       }
-      if (this.state.timePercentage + this.activityPercentage() > 110) {
+      if (this.state.timePercentage + this.state.activityPercentage > 110) {
         return (
           <div>
             <Header as="h3" color="green" textAlign="right" floated="right">Way to go!  You are ahead of schedule by {humanize(difference)}!</Header>
@@ -72,8 +80,7 @@ class GoalDetailModal extends React.Component {
 
   activityPercentage() {
     const { goal } = this.props;
-
-    return Math.floor((goal.user_goal_current / goal.user_goal_target) * 100);
+    return 100 - Math.floor(((goal.user_goal_target - goal.user_goal_current ) / goal.goal_amount) * 100);
   }
 
   timePercentage() {
