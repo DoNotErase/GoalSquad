@@ -1,7 +1,6 @@
 const axios = require('axios');
 const bcrypt = require('bcrypt-nodejs');
 const bodyParser = require('body-parser');
-// const config = require('../config.js');
 const ConnectRoles = require('connect-roles');
 const cookieParser = require('cookie-parser');
 const db = require('../database-mysql/index.js');

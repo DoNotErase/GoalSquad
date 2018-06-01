@@ -75,23 +75,24 @@ class UserGoal extends React.Component {
         >
           Goal Failed :(
         </Button>);
+    } else {
+      return ( // goal has neither been completed nor expired
+        <Statistic
+          floated="right"
+          size="mini"
+        >
+          <Statistic.Value>
+            {goal.user_goal_target - goal.user_goal_current}
+            <br />
+            {this.state.activityName}
+          </Statistic.Value>
+          <Statistic.Label>
+            to go!
+          </Statistic.Label>
+        </Statistic>
+      );
     }
 
-    return ( // goal has neither been completed nor expired
-      <Statistic
-        floated="right"
-        size="mini"
-      >
-        <Statistic.Value>
-          {goal.user_goal_target - goal.user_goal_current}
-          <br />
-          {this.state.activityName}
-        </Statistic.Value>
-        <Statistic.Label>
-          to go!
-        </Statistic.Label>
-      </Statistic>
-    );
   }
 
   close() {

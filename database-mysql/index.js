@@ -10,20 +10,20 @@ if (!process.env.PORT) {
 Promise.promisifyAll(require('mysql/lib/Connection').prototype);
 Promise.promisifyAll(require('mysql/lib/Pool').prototype);
 
-const connection = {
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'goalsquad'
-}
-
 // const connection = {
-//   host: process.env.RDS_HOSTNAME || config.aws.RDS_HOSTNAME,
-//   user: process.env.RDS_USERNAME || config.aws.RDS_USERNAME,
-//   password: process.env.RDS_PASSWORD || config.aws.RDS_PASSWORD,
-//   port: process.env.RDS_PORT || config.aws.RDS_PORT,
-//   database: 'goalsquad',
-// };
+//   host: 'localhost',
+//   user: 'root',
+//   password: '',
+//   database: 'goalsquad'
+// }
+
+const connection = {
+  host: process.env.RDS_HOSTNAME || config.aws.RDS_HOSTNAME,
+  user: process.env.RDS_USERNAME || config.aws.RDS_USERNAME,
+  password: process.env.RDS_PASSWORD || config.aws.RDS_PASSWORD,
+  port: process.env.RDS_PORT || config.aws.RDS_PORT,
+  database: 'goalsquad',
+};
 
 const db = mysql.createPool({ connectionLimit: 5, ...connection });
 
